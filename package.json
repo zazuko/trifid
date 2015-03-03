@@ -1,0 +1,33 @@
+{
+  "name": "trifid-ld",
+  "description": "Trifid-LD - Lightweight Linked Data Server and Proxy",
+  "version": "0.0.1",
+  "homepage": "https://github.com/zazukoians/trifid-ld",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazukoians/trifid-ld.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zazukoians/trifid-ld/issues"
+  },
+  "dependencies": {
+    "body-parser": "1.10.*",
+    "es6-promise": "1.0.*",
+    "express": "4.*",
+    "express-negotiate": "0.0.*",
+    "express-utils": "0.1.*",
+    "ldp": "0.1.*",
+    "morgan": "1.5.*",
+    "bunyan": "1.2.*",
+    "rdf-ext": "0.1.*",
+    "rdf-interfaces": "0.1.*",
+    "request": "2.47.*",
+    "stream-buffers": "1.1.*",
+    "tbbt-ld": "*",
+    "yasgui": "1.*"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
