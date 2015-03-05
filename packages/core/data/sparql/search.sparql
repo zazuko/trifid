@@ -1,0 +1,14 @@
+PREFIX s: <http://schema.org/>
+
+CONSTRUCT {
+  ?s s:givenName ?givenName;
+    s:familyName ?familyName;
+} WHERE 
+
+{
+  GRAPH ?g {
+    ?s s:givenName ?givenName;
+      s:familyName ?familyName;
+  }
+  FILTER ( CONTAINS(?givenName, %searchstring%) || CONTAINS(?familyName, %searchstring%) )
+}
