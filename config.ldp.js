@@ -77,6 +77,7 @@ var patchResponseHeaders = function (res, headers) {
 };
 
 module.exports = {
+  app: 'trifid-ld',
   logger: {
     level: 'debug'
   },
