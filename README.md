@@ -38,30 +38,28 @@ Note that it is not recommended to run Node applications on [well-known ports](h
 
 ## Using it
 
-`config.js` contains two configurations. The default configuration uses the SPARQL endpoint. The second configuration
-uses the LDP module with an in memory store which might be useful during development. The in memory store does the graph
-splitting in the init process, which takes some time. All configurations require a proxy which sets the
-`X-Forwarded-Host` and `X-Forwarded-Port` header fields.
+Trifid-LD comes with two configurations.
+The default configuration `config.js` uses the LDP module with an in memory store and the Big Bang Theory dataset.
+During the init process the graphs are splitted.
+This may take some time for bigger graphs.
+For development the LDP module is useful, but should be replaced by a SPARQL endpoint for production environments.
+`config.sparql.js` is already prepared to work with the Fuseki configuration in `data/scripts/`.
+The folder contains scripts to run a Fuseki server with the same example data used in the LDP module configuration.
+If you run Trifid-LD with a reverse proxy, the proxy must set the `X-Forwarded-Host` and `X-Forwarded-Port` header fields.
 
 ## Folder Structure
-
-### data/graphs
-
-This folder contains the named graphs per canton.
 
 ### data/public
 
 Static files (JavaScript, CSS, images) for HTML rendering. `js/render-ld.js` contains the JSON-LD graph render code.
 
-
 ### data/scripts
 
-Scripts for external applications (Fuseki), dynamic graph creation, etc.
+Scripts for external applications (Fuseki).
 
 ### data/templates
 
-HTML templates per canton.
-
+HTML templates for graph rendering and errors.
 
 ## HTTPRange-14
 
