@@ -4,7 +4,7 @@ global.Promise = require('es6-promise').Promise;
 
 var
   bodyParser = require('body-parser'),
-  config = require('./config.ldp.js'),
+  config = require('./config.js'),
   express = require('express'),
   expressUtils = require('express-utils'),
   handlerMiddleware = require('./lib/handler-middleware'),
