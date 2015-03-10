@@ -54,6 +54,10 @@ For production systems we recommend data access via the [SPARQL 1.1 Graph Store 
 
 If you run Trifid-LD behind a reverse proxy, the proxy must set the `X-Forwarded-Host` and `X-Forwarded-Port` header fields. This constructed URI is used in the `SPARQL DESCRIBE` query which is also defined in the configuration. If you want to use another query you need to adjust the `buildQuery` method.
 
+### SPARQL Proxy
+
+The SPARQL web proxy is by default listening on `/sparql`. If you want to adjust that alter the configuration in the `sparqlProxy` section. Note that SPARQL is currently not supported by the in-memory store.
+
 ## Folder Structure
 
 ### data/public
