@@ -3,13 +3,13 @@
 'use strict';
 
 
-global.rdf = require('rdf-interfaces');
-require('rdf-ext')(rdf);
+global.rdf = require('rdf-ext')(rdf);
 
 
 var
   fs = require('fs'),
-  graphSplit = require('./lib/graph-split')(rdf);
+  graphSplit = require('./lib/graph-split')(rdf),
+  url = require('url');
 
 
 var init = function () {
@@ -26,15 +26,24 @@ var init = function () {
   return Promise.all([
     importGraph('./node_modules/tbbt-ld/dist/tbbt.nt')
   ]).then(function (graphs) {
-    var mergedGraph = rdf.createGraph();
+    var
+      mergedGraph = rdf.createGraph(),
+      searchNs = 'http://localhost:8080',
+      replaceNs = url.format({
+        protocol: 'http:',
+        hostname: config.hostname || 'localhost',
+        port: config.listener.port});
 
     graphs.forEach(function (graph) {
+      // map namespace to listener config
+      graph = rdf.utils.mapNamespaceGraph(graph, searchNs, replaceNs);
+
       mergedGraph.addAll(graph);
     });
 
     config.handlerOptions.storeOptions = {
       graph: mergedGraph,
-      split: graphSplit.subjectIriSplit
+      split: rdf.utils.splitGraphByNamedNodeSubject
     };
 
     return Promise.resolve();
