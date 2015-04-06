@@ -31,7 +31,7 @@ var init = function () {
       searchNs = 'http://localhost:8080',
       replaceNs = url.format({
         protocol: 'http:',
-        hostname: config.hostname || 'localhost',
+        hostname: config.hostname,
         port: config.listener.port});
 
     graphs.forEach(function (graph) {
@@ -90,6 +90,7 @@ module.exports = {
   logger: {
     level: 'debug'
   },
+  hostname: 'localhost',
   listener: {
     port: 8080
   },
