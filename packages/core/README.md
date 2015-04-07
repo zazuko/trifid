@@ -48,7 +48,7 @@ During the init process the graphs are splitted, which may take some time for bi
 
 ### Using a HTTP SPARQL endpoint
 
-For production systems we recommend data access via the [SPARQL 1.1 Graph Store HTTP Protocol](http://www.w3.org/TR/sparql11-http-rdf-update/) interface.
+For production systems we recommend data access via the [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/) interface.
 
 `config.sparql.js` is already prepared to work with the sample Fuseki configuration in `data/scripts/`. The folder contains scripts to run a Fuseki server with the same example data used in the LDP module configuration, adjust this according to your needs.
 
