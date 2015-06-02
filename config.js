@@ -32,7 +32,9 @@ var init = function () {
       replaceNs = url.format({
         protocol: 'http:',
         hostname: config.hostname,
-        port: config.listener.port});
+        port: config.port || '',
+        pathname: config.path || ''
+      });
 
     graphs.forEach(function (graph) {
       // map namespace to listener config
@@ -60,7 +62,7 @@ var patchResponseHeaders = function (res, headers) {
       'Server',
       'Vary'];
 
-    if ('_headers' in res) {
+    if (res._headers) {
       fieldList.forEach(function (field) {
         if (field in res._headers) {
           delete res._headers[field];
@@ -90,8 +92,13 @@ module.exports = {
   logger: {
     level: 'debug'
   },
+  // public interface visible after any reverse proxies
   hostname: 'localhost',
+  port: 8080,
+  path: '',
+  // listener
   listener: {
+    hostname: 'localhost',
     port: 8080
   },
   expressSettings: {

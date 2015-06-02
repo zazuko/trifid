@@ -56,9 +56,9 @@ config.init()
 
     app.use(renderHtmlMiddleware(handler));
     app.use(handlerMiddleware(handler));
-    app.listen(config.listener.port);
+    app.listen(config.listener.port, config.listener.hostname);
 
-    log.info('listening on port: ' + config.listener.port);
+    log.info('listening on hostname:port: ' + config.listener.hostname + ':' + config.listener.port);
   })
   .catch(function (error) {
     console.error(error.stack);
