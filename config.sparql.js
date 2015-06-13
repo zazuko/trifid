@@ -25,7 +25,7 @@ var patchResponseHeaders = function (res, headers) {
       'Server',
       'Vary'];
 
-    if ('_headers' in res) {
+    if (res._headers) {
       fieldList.forEach(function (field) {
         if (field in res._headers) {
           delete res._headers[field];
