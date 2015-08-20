@@ -98,7 +98,7 @@ module.exports = {
   path: '',
   // listener
   listener: {
-    hostname: 'localhost',
+    hostname: '',
     port: 8080
   },
   expressSettings: {
