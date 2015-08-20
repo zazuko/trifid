@@ -1,0 +1,40 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix s: <http://schema.org/>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+[ a r2h:Matcher ;
+  r2h:triplePattern [
+    r2h:subject r2h:this;
+    r2h:predicate rdf:type;
+    r2h:object s:Person
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''
+<h1>{{s:givenName}} {{s:additionalName}} {{s:familyName}}</h1>
+{{#+s:knows}}
+  <h2>Knows</h2>
+  <ul>
+  {{#s:knows}}
+    {{#+s:givenName}}
+    <li>{{s:givenName}} {{s:additionalName}} {{s:familyName}}</li>
+    {{/+s:givenName}}
+    {{^+s:givenName}}
+    <li><a href="{{.}}">{{.}}</a></li>
+    {{/+s:givenName}}                            
+  {{/s:knows}}                             
+  </ul>                         
+{{/+s:knows}} 
+    '''
+  ];
+  r2h:before <catchall>
+].
+
+<catchall> a r2h:Matcher ;
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache "<!-- no (more) template for {{{.}}} -->"
+  ].  
