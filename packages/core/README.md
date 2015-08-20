@@ -23,7 +23,15 @@ Trifid-LD supports all content-types provided by the SPARQL endpoint and does no
 
 ## Installation
 
-Trifid-LD requires [Node.js](http://nodejs.org/) or [IO.js](https://iojs.org/). Make sure you have either of it installed. Once this is done clone the Github repository and run `npm install` to install all module dependencies.
+Trifid-LD is a [Node.js](http://nodejs.org/) based application. To install and run it you either have to have [Node.js](http://nodejs.org/) or [IO.js](https://iojs.org/) installed or you can use [Docker](https://www.docker.com/) an build a docker image containing Trifid-LD and all its dependencies.
+
+### Installing with Node.js or IO.js
+
+Make sure you have either [Node.js](http://nodejs.org/) or [IO.js](https://iojs.org/) installed. Once this is done clone the Github repository and run 
+
+    npm install
+    
+to install all module dependencies.
 
 Trifid-LD is using Bunyan for logging. To pretty print log output on the console you might want to install it globally using
 
@@ -35,6 +43,20 @@ To start the server execute
 
 
 Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024). You should use a reverse proxy like [Varnish](https://www.varnish-cache.org/) instead.
+
+### Installing/Using with Docker
+
+To use Trifid-LD with this method you only need to have Docker installed, see https://docs.docker.com/installation/ for installation intructions for your platform.
+
+Once Docker is inatlled clone the Github repository and run
+
+    docker build -t trifid .
+    
+This creates an image named `trifid` that you can execute with
+
+    docker run -p 8080:8080 trifid 
+
+Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper.
 
 ## Using it
 
