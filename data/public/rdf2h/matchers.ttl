@@ -4,37 +4,204 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/>.
 @prefix s: <http://schema.org/>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix zzm: <http://zz2h.zazukoinas.org/modes/> .
+@prefix zz2h: <http://zz2h.zazukoinas.org/ontology/> .
 
-[ a r2h:Matcher ;
-  r2h:triplePattern [
+<page> a r2h:Matcher ;
+  r2h:triplePattern [    
     r2h:subject r2h:this;
-    r2h:predicate rdf:type;
-    r2h:object s:Person
+    r2h:predicate s:headline;
+  ];
+  r2h:template [ 
+    r2h:context zzm:FullPage;
+    r2h:mustache '''
+    <head>
+      <title>{{s:headline}}</title>
+    </head>
+    <body>
+        {{{:continue}}}
+    </body>
+'''
+  ];
+  r2h:before <genericFrame>.
+
+<genericFrame> a r2h:Matcher ;  
+  r2h:template [ 
+    r2h:context zzm:FullPage;
+    r2h:mustache '''
+    <head>
+      <link rel="stylesheet" href="/css/bootstrap.css" />
+      <title>Resource {{.}}</title>
+    </head>
+    <body>
+        {{{:continue}}}
+    </body>
+'''
+  ];
+r2h:before <title>.
+
+<title> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate dc:title;
   ];
   r2h:template [ 
     r2h:context r2h:Default;
-    r2h:mustache '''
-<h1>{{s:givenName}} {{s:additionalName}} {{s:familyName}}</h1>
-{{#+s:knows}}
-  <h2>Knows</h2>
-  <ul>
-  {{#s:knows}}
-    {{#+s:givenName}}
-    <li>{{s:givenName}} {{s:additionalName}} {{s:familyName}}</li>
-    {{/+s:givenName}}
-    {{^+s:givenName}}
-    <li><a href="{{.}}">{{.}}</a></li>
-    {{/+s:givenName}}                            
-  {{/s:knows}}                             
-  </ul>                         
-{{/+s:knows}} 
+    r2h:mustache '''<h2>{{dc:title}}</h2>
+        {{{:continue}}}'''
+  ];
+  r2h:before <label>.
+
+<title> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate dc:title;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''<h2>{{dc:title}}</h2>
+        {{{:continue}}}'''
+  ];
+  r2h:before <label>.
+
+
+<headline> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate s:headline;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''<h1>{{s:headline}}</h1>
+         {{{:continue}}}'''
+  ];
+  r2h:before <matcherEdit>.
+
+<matcherEdit> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate zz2h:matcherGraph;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''{{{@prefix zz2h: <http://zz2h.zazukoinas.org/ontology/>}}}
+         <div id="matcherEditor"></div>
+         <script id="editorLoader">
+             var store = new rdf.LdpStore({parsers: {
+                            'text/turtle': rdf.parseTurtle }
+                        });
+             store.match("{{{zz2h:matcherGraph}}}",
+                                null,
+                                null,
+                                null,
+                                function (data, error) {
+                                    if (!data) {
+                                        console.warn("Couldn't get any triple. reason: "+error);
+                                        return;
+                                    }
+                                    console.log("Got graph of size "+data.length);
+                                    var editors = new Object();
+                                    editors["turtle"] = function() {
+                                        //debugger;
+                                        var html = '&lt;textarea id="matcherGraph">&lt;/textarea>';
+                                        $("#matcherEditor").html(html);
+                                        rdf.serializeTurtle(data, function(turtle) {
+                                            $("#matcherGraph").val(turtle);
+                                        });
+                                    };
+                                    editors["turtle"]();
+                                    //debugger;
+                                });
+             /*$.ajax({
+                url : "{{{zz2h:matcherGraph}}}",
+                dataType: "text",
+                success : function (data) {
+                    rdf.parseTurtle(data, function (data) {
+                        console.log(data.toString());
+                        callback(data);
+                    }, window.location.toString().split('#')[0]);
+                    $("#matcherGraph").val(data);
+                }
+            });*/
+         </script>
+         {{{:continue}}}
     '''
   ];
-  r2h:before <catchall>
-].
+  r2h:before <catchall>.
+          
+<name> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate foaf:name;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''Name: {{foaf:name}}<br/>
+         {{{:continue}}}'''
+  ];
+  r2h:before <label>.  
+
+<address> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate s:address;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''Address: {{{:render s:address}}}<br/>
+         {{{:continue}}}'''
+  ];
+  r2h:before <label>.  
 
 <catchall> a r2h:Matcher ;
   r2h:template [ 
     r2h:context r2h:Default;
-    r2h:mustache "<!-- no (more) template for {{{.}}} -->"
-  ].  
+    r2h:javaScript '''function(n) {
+        var result = "";
+        //alert(n.graph);
+        //alert(n.node);
+        var nodesToRender = [];
+        var renderedNodesToId = new Object();
+        nodesToRender.push(n.node);
+        while (nodesToRender.length > 0) {
+           var node = nodesToRender.pop();
+           var s = n.graph.filter(function(t) {return t.subject.equals(node)}).toArray();
+           if (s.length === 0) continue;
+           if (renderedNodesToId[node.toString()]) continue;
+           renderedNodesToId[node.toString()] = true;
+           result += '<table id="'+node+'" class="table table-bordered">';
+           result += '<thead><tr><th colspan="2">subject: ';
+           if (node.toString().split('#')[0] == window.location.toString().split('#')[0]) {
+             result += '<span id="'+node.toString().split('#')[1]+'">'+node+'</span>';
+           } else {
+             result += node;
+           }
+           result += '</th></tr>';
+           result += '<tr>';
+           result += '<th style="width:50%;">predicate</th>';
+           result += '<th>object</th></tr></thead>';
+           result += '<tbody>';
+           s.forEach(function(t) {
+            var objectHtml;
+            if ((t.object.interfaceName != "Literal") && (!renderedNodesToId[t.object.toString()])) {
+                nodesToRender.push(t.object);
+                if (t.object.interfaceName == "BlankNode") {
+                    objectHtml = '<a onclick=\\'$("#'+t.object+'")[0].scrollIntoView( true );\\'>'+t.object+'</a>';
+                } else {
+                    objectHtml = '<a href="'+t.object+'">'+t.object+'</a>';
+                }
+                
+            } else {
+                //debugger;
+                objectHtml = t.object;
+            }
+            result += '<tr><td>'+t.predicate+'</td><td>'+objectHtml+'</td></tr>';
+            
+           });
+           result += '</tbody>';
+           result += '</table>';
+        };
+        return result;
+    }'''
+  ].
+
