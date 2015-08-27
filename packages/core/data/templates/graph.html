@@ -6,9 +6,9 @@
         <script id="data" type="text/turtle">%graph%</script>
 
         <link rel="matchers" href="/rdf2h/matchers.ttl" type="text/turtle" />
-        <script src="http://rdf2h.github.io/ld2h/js/libs/rdf2h/rdf2h.js"></script>
-        <script src="http://rdf2h.github.io/ld2h/js/libs/jquery/jquery.min.js"></script>
-        <script src="http://rdf2h.github.io/ld2h/js/ld2h.js"></script>
+        <script src="https://rdf2h.github.io/ld2h/js/libs/rdf2h/rdf2h.js"></script>
+        <script src="https://rdf2h.github.io/ld2h/js/libs/jquery/jquery.min.js"></script>
+        <script src="https://rdf2h.github.io/ld2h/js/ld2h.js"></script>
     </head>
     <body>
         <div class="page-header"></div>
@@ -24,25 +24,6 @@
                 <div class="col-xs-1"></div>
             </div>
         </div>
-        <script id="page-template" type="text/x-mustache-template">
-            <head>
-            <title>{{s:headline}}</title>
-            </heaad>
-            <body>
-            <h1>{{s:headline}}</h1>
-            <p>{{{s:text}}}</p>
-
-            <p>Created by:<br/>
-            <span resource="https://farewellutopia.com/me" class="render">Reto from local RDF should appear here</span></p>
-            <p>With the help of:<br/>
-            <span resource="https://www.bergnet.org/people/bergi/card#me" class="fetch">Bergi from remote RDF should appear here</span>
-            </p>
-            <p>On the web invented by:<br/>
-            <span resource="https://www.w3.org/People/Berners-Lee/card#i" class="fetch">TimBL from remote RDF should appear here</span>
-            </p>
-            </body>
-        </script>
-
         <script type="text/javascript">
 $(function () {
     LD2h.expand();
