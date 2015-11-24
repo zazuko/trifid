@@ -3,28 +3,19 @@
     <head lang="en">
         <meta charset="UTF-8">
         <link rel="stylesheet" href="/css/bootstrap.css" />
+
         <script id="data" type="text/turtle">%graph%</script>
 
+        <link rel="matchers" href="//rawgit.com/rdf2h/rdf2h.github.io/master/2015/rdf2h-points.ttl" type="text/turtle"/>
         <link rel="matchers" href="/rdf2h/matchers.ttl" type="text/turtle" />
+        <link rel="matchers" href="/rdf2h/site-matchers.ttl" type="text/turtle" />
         <script src="//cdn.rawgit.com/rdf2h/rdf2h/v0.1.1/dist/rdf-ext.js"></script>
         <script src="//cdn.rawgit.com/rdf2h/rdf2h/v0.2.0/dist/rdf2h.js"></script>
         <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="//cdn.rawgit.com/rdf2h/ld2h/v0.2.0/dist/ld2h.js"></script>
     </head>
     <body>
-        <div class="page-header"></div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-1"></div>
-
-                <div class="col-xs-10">
-                    <div id="graph"></div>
-                </div>
-
-                <div class="col-xs-1"></div>
-            </div>
-        </div>
         <script type="text/javascript">
 $(function () {
     LD2h.expand();
