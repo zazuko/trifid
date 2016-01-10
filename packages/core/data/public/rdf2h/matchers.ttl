@@ -188,7 +188,8 @@ r2h:before <title>.
                 if (t.object.interfaceName == "BlankNode") {
                     objectHtml = '<a onclick=\\'$("#'+t.object+'")[0].scrollIntoView( true );\\'>'+t.object+'</a>';
                 } else {
-                    objectHtml = '<a href="'+t.object+'">'+t.object+'</a>';
+                    var safeUri = t.object.toString().replace(/&/g,"&amp;");
+                    objectHtml = '<a href="'+safeUri+'">'+safeUri+'</a>';
                 }
                 
             } else {
