@@ -13,13 +13,20 @@
         <script src="//cdn.rawgit.com/rdf2h/rdf2h/v0.3.0/dist/rdf2h.js"></script>
         <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="//cdn.rawgit.com/rdf2h/ld2h/v0.2.0/dist/ld2h.js"></script>
+        <script src="//cdn.rawgit.com/retog/rdf-store-ldp-browser/v0.3.0-rc2f/dist/rdf-store-ldp.js"></script>
     </head>
     <body>
 
         <script type="text/javascript">
-$(function () {
-    LD2h.expand();
-});
+        $(function () {
+            var store = new LdpStore({
+                parsers: new LdpStore.ParserUtil({
+                    'text/turtle': LdpStore.parsers.findParsers("text/turtle")[0]
+                })
+            });
+            LD2h.store = store;
+            LD2h.expand();
+        });
         </script>
 
 
