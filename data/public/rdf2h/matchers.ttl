@@ -32,6 +32,7 @@
     <head>
       <link rel="stylesheet" href="/css/bootstrap.css" />
       <link rel="stylesheet" href="/css/custom.css" />
+      <script src="/js/sticky.js"></script>
       <title>Resource {{.}}</title>
     </head>
     <body>
@@ -61,7 +62,8 @@ r2h:before <title>.
   r2h:template [ 
     r2h:context r2h:Default;
     r2h:mustache '''
-      <div class="list-group" style="width: 100%;">
+      <div id="sticky-anchor"></div>
+      <div id="sticky" class="list-group" style="width: 100%;">
         <a href="#" class="list-group-item">
           <h4 class="list-group-item-heading">Resource: {{.}}</h4>
           <p class="list-group-item-text">Type of resource: {{rdf:type}}</p>
