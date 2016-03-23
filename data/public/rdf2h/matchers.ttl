@@ -4,8 +4,8 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/>.
 @prefix s: <http://schema.org/>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix zzm: <http://zz2h.zazukoinas.org/modes/> .
-@prefix zz2h: <http://zz2h.zazukoinas.org/ontology/> .
+@prefix zzm: <http://zz2h.zazukoians.org/modes/> .
+@prefix zz2h: <http://zz2h.zazukoians.org/ontology/> .
 
 <page> a r2h:Matcher ;
   r2h:triplePattern [    
@@ -28,29 +28,17 @@
 <genericFrame> a r2h:Matcher ;  
   r2h:template [ 
     r2h:context zzm:FullPage;
-    r2h:mustache '''
+    r2h:mustache '''{{{@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#>}}}
     <head>
       <link rel="stylesheet" href="/css/bootstrap.css" />
       <title>Resource {{.}}</title>
     </head>
     <body>
-        {{{:continue}}}
+        {{{:render . r2h:Default}}}
     </body>
 '''
   ];
 r2h:before <title>.
-
-<title> a r2h:Matcher ;
-  r2h:triplePattern [    
-    r2h:subject r2h:this;
-    r2h:predicate dc:title;
-  ];
-  r2h:template [ 
-    r2h:context r2h:Default;
-    r2h:mustache '''<h2>{{dc:title}}</h2>
-        {{{:continue}}}'''
-  ];
-  r2h:before <label>.
 
 <title> a r2h:Matcher ;
   r2h:triplePattern [    
@@ -84,7 +72,7 @@ r2h:before <title>.
   ];
   r2h:template [ 
     r2h:context r2h:Default;
-    r2h:mustache '''{{{@prefix zz2h: <http://zz2h.zazukoinas.org/ontology/>}}}
+    r2h:mustache '''{{{@prefix zz2h: <http://zz2h.zazukoians.org/ontology/>}}}
          <div id="matcherEditor"></div>
          <script id="editorLoader">
              var store = new rdf.LdpStore({parsers: {
@@ -152,6 +140,18 @@ r2h:before <title>.
          {{{:continue}}}'''
   ];
   r2h:before <label>.  
+
+<caps> a r2h:Matcher ;
+  r2h:triplePattern [
+    r2h:subject r2h:this;
+    r2h:predicate rdf:type;
+  ];
+  r2h:template [
+    r2h:context r2h:Default;
+    r2h:mustache '''header
+        {{{:continue}}}footer'''
+  ];
+  r2h:before <catchall>.
 
 <catchall> a r2h:Matcher ;
   r2h:template [ 
