@@ -203,7 +203,17 @@ r2h:before <title>.
                 //debugger;
                 objectHtml = t.object;
             }
-            result += '<li>'+t.predicate+' - '+objectHtml+'</li>';
+            var prefixes = [{url: "http://schema.org/", shortcut: "s:"},{url: "http://example.com", shortcut: "ex:"}];
+            var prefix = "";
+            var predicate = t.predicate.toString();
+            prefixes.forEach(function(p) {
+                var predicateHtml = predicate.split(p.url);
+                if (predicateHtml[0] === "") {
+                    prefix = p.shortcut;
+                    predicate = predicateHtml[1];
+                }
+            });
+            result += '<li>'+prefix+'<b>'+predicate+'</b> - '+objectHtml+'</li>';
             });
            result += '</ul></div>'
         };
