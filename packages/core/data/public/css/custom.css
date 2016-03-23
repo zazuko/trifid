@@ -12,31 +12,46 @@ html {
     font-size: 0.9em;
     height: 10em;
 }
+
+/* TREE */
 .clt, .clt ul, .clt li {
-     position: relative;
+    position: relative;
+    padding: 10px; /* space between lines */
 }
 .clt ul {
     list-style: none;
-    padding-left: 32px;
+    padding-left: 3em;
 }
 .clt li::before, .clt li::after {
     content: "";
     position: absolute;
-    left: -12px;
+    left: -20px; /* text position, related with oriz. length */
 }
-.clt li::before {
+.clt li::before { /* - */
     border-top: 1px solid #000;
-    top: 9px;
-    width: 8px;
+    top: 20px;
+    width: 15px; /*orizontal length*/
     height: 0;
 }
-.clt li::after {
+.clt li::after { /* | */
     border-left: 1px solid #000;
     height: 100%;
     width: 0px;
-    top: 2px;
+    top: -40px;
 }
 .clt ul > li:last-child::after {
-    height: 8px;
+    height: 61px;
+}
+
+/* STICKY */
+#sticky {
+    width: 600px;
+}
+
+#sticky.stick {
+    margin-top: 0 !important;
+    position: fixed;
+    top: 0;
+    z-index: 10000;
 }
 
