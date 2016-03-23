@@ -1,0 +1,14 @@
+html {
+    font-size: 1em;
+}
+#header {
+    background-color: #7287C6;
+    color: #fff;
+    height: 10em;
+}
+#footer {
+    background-color: #7287C6;
+    color: #fff;
+    font-size: 0.9em;
+    height: 10em;
+}

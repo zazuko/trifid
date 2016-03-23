@@ -31,6 +31,7 @@
     r2h:mustache '''{{{@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#>}}}
     <head>
       <link rel="stylesheet" href="/css/bootstrap.css" />
+      <link rel="stylesheet" href="/css/custom.css" />
       <title>Resource {{.}}</title>
     </head>
     <body>
@@ -148,8 +149,8 @@ r2h:before <title>.
   ];
   r2h:template [
     r2h:context r2h:Default;
-    r2h:mustache '''header
-        {{{:continue}}}footer'''
+    r2h:mustache '''<div id="header">I'm a div header</div>
+        {{{:continue}}}<div id="footer">I'm a div footer</div>'''
   ];
   r2h:before <catchall>.
 
