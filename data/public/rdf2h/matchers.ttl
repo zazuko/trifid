@@ -53,6 +53,23 @@ r2h:before <title>.
   ];
   r2h:before <label>.
 
+<main> a r2h:Matcher ;
+  r2h:triplePattern [    
+    r2h:subject r2h:this;
+    r2h:predicate rdf:type;
+  ];
+  r2h:template [ 
+    r2h:context r2h:Default;
+    r2h:mustache '''
+      <div class="list-group" style="width: 100%;">
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading">Resource: {{.}}</h4>
+          <p class="list-group-item-text">Type of resource: {{rdf:type}}</p>
+        </a>
+      </div>
+         {{{:continue}}}'''
+  ];
+  r2h:before <matcherEdit>.
 
 <headline> a r2h:Matcher ;
   r2h:triplePattern [    
@@ -150,7 +167,7 @@ r2h:before <title>.
   r2h:template [
     r2h:context r2h:Default;
     r2h:mustache '''<div id="header">I'm a div header</div>
-        {{{:continue}}}<div id="footer">I'm a div footer</div>'''
+        {{{:continue}}}<div id="footer"></div>'''
   ];
   r2h:before <catchall>.
 
@@ -170,18 +187,7 @@ r2h:before <title>.
            if (s.length === 0) continue;
            if (renderedNodesToId[node.toString()]) continue;
            renderedNodesToId[node.toString()] = true;
-           result += '<table id="'+node+'" class="table table-bordered">';
-           result += '<thead><tr><th colspan="2">subject: ';
-           if (node.toString().split('#')[0] == window.location.toString().split('#')[0]) {
-             result += '<span id="'+node.toString().split('#')[1]+'">'+node+'</span>';
-           } else {
-             result += node;
-           }
-           result += '</th></tr>';
-           result += '<tr>';
-           result += '<th style="width:50%;">predicate</th>';
-           result += '<th>object</th></tr></thead>';
-           result += '<tbody>';
+           result += '<div class="clt"><ul>';
            s.forEach(function(t) {
             var objectHtml;
             if ((t.object.interfaceName != "Literal") && (!renderedNodesToId[t.object.toString()])) {
@@ -197,11 +203,9 @@ r2h:before <title>.
                 //debugger;
                 objectHtml = t.object;
             }
-            result += '<tr><td>'+t.predicate+'</td><td>'+objectHtml+'</td></tr>';
-            
-           });
-           result += '</tbody>';
-           result += '</table>';
+            result += '<li>'+t.predicate+' - '+objectHtml+'</li>';
+            });
+           result += '</ul></div>'
         };
         return result;
     }'''
