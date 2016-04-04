@@ -2,56 +2,60 @@ html {
     font-size: 1em;
 }
 #header {
-    background-color: #7287C6;
+    background-color: #53BBF4;
     color: #fff;
-    height: 10em;
+    width: 100%;
+    font-size: 3em;
+    padding: 1em 3em 1em 1em;
 }
 #footer {
-    background-color: #7287C6;
+    background-color: #4298B5;
     color: #fff;
     font-size: 0.9em;
-    height: 10em;
+    width: 100%;
+    text-align: center;
+    padding: 2em 3em 2em 1em;
 }
-
-/* TREE */
-.clt, .clt ul, .clt li {
-    position: relative;
-    padding: 10px; /* space between lines */
+hr.dashed {
+    border-top: 1px dashed #8c8b8b;
+    width: 5%;
+    margin-right:100%;
 }
-.clt ul {
-    list-style: none;
-    padding-left: 3em;
+hr.baffone { 
+  height: 30px; 
+  border-style: solid; 
+  border-color: #8c8b8b; 
+  border-width: 1px 0 0 0; 
+  border-radius: 20px; 
+} 
+hr.baffone:before { 
+  display: block; 
+  content: ""; 
+  height: 30px; 
+  margin-top: -31px; 
+  border-style: solid; 
+  border-color: #8c8b8b; 
+  border-width: 0 0 1px 0; 
+  border-radius: 20px; 
 }
-.clt li::before, .clt li::after {
-    content: "";
-    position: absolute;
-    left: -20px; /* text position, related with oriz. length */
-}
-.clt li::before { /* - */
-    border-top: 1px solid #000;
-    top: 20px;
-    width: 15px; /*orizontal length*/
-    height: 0;
-}
-.clt li::after { /* | */
-    border-left: 1px solid #000;
-    height: 100%;
-    width: 0px;
-    top: -40px;
-}
-.clt ul > li:last-child::after {
-    height: 61px;
+.moving {
+  padding-top: 100px;
+  margin-top: -100px;
 }
 
 /* STICKY */
-#sticky {
-    width: 600px;
-}
-
 #sticky.stick {
     margin-top: 0 !important;
     position: fixed;
     top: 0;
     z-index: 10000;
 }
+
+
+/* CONTAINER */
+.container {
+    width: 100%;
+    padding: 2% 2% 2% 2%;
+}
+
 

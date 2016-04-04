@@ -2,7 +2,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/>.
-@prefix s: <http://schema.org/>.
+@prefix s: <http://schema.org/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix zzm: <http://zz2h.zazukoians.org/modes/> .
 @prefix zz2h: <http://zz2h.zazukoians.org/ontology/> .
@@ -168,8 +168,22 @@ r2h:before <title>.
   ];
   r2h:template [
     r2h:context r2h:Default;
-    r2h:mustache '''<div id="header">I'm a div header</div>
-        {{{:continue}}}<div id="footer"></div>'''
+    r2h:mustache '''<div id="header">Demo</div>
+        {{{:continue}}}<div id="footer">
+            <table align="center" width="30%">
+              <tr>
+                <td colspan="2">Powered by</td>
+              </tr>
+              <tr>
+                <td><a href="http://zazuko.com"><img src="/img/zazuko-logo.png" width="150px"></a></td>
+                <td><a href="http://synapta.it"><img src="/img/synapta-logo.svg" width="150px"></a></td>
+              </tr>
+            </table>
+            <br>
+            Code on <a href="https://github.com/zazukoians/trifid-ld" style="color:white"><b>github</b></a>
+            <br><br><br><br>
+            ...licenza...
+        </div>'''
   ];
   r2h:before <catchall>.
 
@@ -177,7 +191,12 @@ r2h:before <title>.
   r2h:template [ 
     r2h:context r2h:Default;
     r2h:javaScript '''function(n) {
+        var prefixes = [{url: "http://schema.org/", shortcut: "s:"},
+                        {url: "http://example.com", shortcut: "ex:"}];
         var result = "";
+        var first = 0;
+        var predicatesArray = [];
+        var blankBack = [];
         //alert(n.graph);
         //alert(n.node);
         var nodesToRender = [];
@@ -189,13 +208,32 @@ r2h:before <title>.
            if (s.length === 0) continue;
            if (renderedNodesToId[node.toString()]) continue;
            renderedNodesToId[node.toString()] = true;
-           result += '<div class="clt" id="'+node+'"><ul>';
+           if (first > 0) {
+               result += '<hr class="baffone">';
+               result += '<div align="center">'+blankBack[first-1]+'</div>';
+           }
+           result += '<div class="container" id="'+node+'"><table id="tt" width="100%">';
+           first++;
            s.forEach(function(t) {
             var objectHtml;
+
+            var prefix = "";
+            var predicate = t.predicate.toString();
+            var link = predicate;
+            prefixes.forEach(function(p) {
+                var predicateHtml = predicate.split(p.url);
+                if (predicateHtml[0] === "") {
+                    prefix = p.shortcut;
+                    predicate = predicateHtml[1];
+                }
+            });
+
             if ((t.object.interfaceName != "Literal") && (!renderedNodesToId[t.object.toString()])) {
                 nodesToRender.push(t.object);
                 if (t.object.interfaceName == "BlankNode") {
-                    objectHtml = '<a onclick=\\'$("#'+t.object+'")[0].scrollIntoView( true );\\'>'+t.object+'</a>';
+                    objectHtml = '<div id="blank' + first + '" class="moving"></div><a onclick=\\'$("#'+t.object+'")[0].scrollIntoView( true );\\'>'+t.object+'</a>';
+                    returnObjectLink = '<a onclick=\\'$("#blank' + first + '")[0].scrollIntoView( true );\\'>'+t.object+'</a>';
+                    blankBack.push('<table width="30%"><tr><td>'+prefix+'<b>'+predicate+'</b></td><td>'+returnObjectLink+'</td></tr></table><br>');
                 } else {
                     var safeUri = t.object.toString().replace(/&/g,"&amp;");
                     objectHtml = '<a href="'+safeUri+'">'+safeUri+'</a>';
@@ -205,19 +243,23 @@ r2h:before <title>.
                 //debugger;
                 objectHtml = t.object;
             }
-            var prefixes = [{url: "http://schema.org/", shortcut: "s:"},{url: "http://example.com", shortcut: "ex:"}];
-            var prefix = "";
-            var predicate = t.predicate.toString();
-            prefixes.forEach(function(p) {
-                var predicateHtml = predicate.split(p.url);
-                if (predicateHtml[0] === "") {
-                    prefix = p.shortcut;
-                    predicate = predicateHtml[1];
+
+            var isNew = 1;
+            for (var i = 0; i < predicatesArray.length; i++) {
+                if (predicatesArray[i] === predicate) {
+                    isNew = 0;
+                    break;
                 }
+            }
+
+            predicatesArray.push(predicate);
+            if (isNew) {
+                result += '<tr><td width="35%" cellpadding=".1em" valign="top" id="sticky"><a href="'+link+'" title="'+link+'" style="background-color:#FFFFFF;color:#000000;text-decoration:none">'+prefix+'<b>'+predicate+'</b></a></td><td width="65%" cellpadding=".1em">'+objectHtml+'<hr /></td>';
+            } else {
+                result += '<tr><td width="35%"></td><td width="65%" cellpadding=".1em">'+objectHtml+'<hr class="dashed"></td>';
+            }
             });
-            result += '<li>'+prefix+'<b>'+predicate+'</b> - '+objectHtml+'</li>';
-            });
-           result += '</ul></div>'
+           result += '</table></div>'
         };
         return result;
     }'''
