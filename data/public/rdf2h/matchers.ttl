@@ -64,10 +64,10 @@ r2h:before <title>.
     r2h:mustache '''
       <div id="sticky-anchor"></div>
       <div id="sticky" class="list-group" style="width: 100%;">
-        <a href="#" class="list-group-item">
+        <span class="list-group-item">
           <h4 class="list-group-item-heading">Resource: {{.}}</h4>
-          <p class="list-group-item-text">Type of resource: {{rdf:type}}</p>
-        </a>
+          <p class="list-group-item-text">a {{#rdf:type}}<a href="{{.}}">{{.}}</a> {{/rdf:type}}</p>
+        </span>
       </div>
          {{{:continue}}}'''
   ];
@@ -190,7 +190,7 @@ r2h:before <title>.
     r2h:context r2h:Default;
     r2h:javaScript '''function(n) {
         var prefixes = [{url: "http://schema.org/", shortcut: "s:"},
-                        {url: "http://www.w3.org/1999/02/22-rdf-syntax-ns#", shortcut: "rdfs:"}];
+                        {url: "http://www.w3.org/1999/02/22-rdf-syntax-ns#", shortcut: "rdf:"}];
         var result = "";
         var first = 0;
         var predicatesArray = [];
@@ -233,12 +233,24 @@ r2h:before <title>.
                     returnObjectLink = '<a onclick=\\'$("#blank' + first + '")[0].scrollIntoView( true );\\'>'+t.object+'</a>';
                     blankBack.push('<table width="30%"><tr><td>'+prefix+'<b>'+predicate+'</b></td><td>'+returnObjectLink+'</td></tr></table><br>');
                 } else {
-                    var safeUri = t.object.toString().replace(/&/g,"&amp;");
-                    objectHtml = '<a href="'+safeUri+'">'+safeUri+'</a>';
+                    var objectPrefix = "";
+                    var object = t.object.toString().replace(/&/g,"&amp;");
+                    var objectLink = object;
+                    prefixes.forEach(function(p) {
+                        var objectSplit = object.split(p.url);
+                        if (objectSplit[0] === "") {
+                            objectPrefix = p.shortcut;
+                            object = objectSplit[1];
+                        }
+                    });
+                    if (objectPrefix === "") {
+                        objectHtml = '<a href="'+objectLink+'" title="'+objectLink+'">'+object+'</a>';
+                    } else {
+                        objectHtml = '<a href="'+objectLink+'" title="'+objectLink+'" style="background-color:#FFFFFF;color:#000000;text-decoration:none">'+objectPrefix+'<b>'+object+'</b></a>';
+                    }
                 }
                 
             } else {
-                //debugger;
                 objectHtml = t.object;
             }
 
