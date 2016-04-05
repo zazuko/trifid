@@ -168,7 +168,7 @@ r2h:before <title>.
   ];
   r2h:template [
     r2h:context r2h:Default;
-    r2h:mustache '''<div id="header">Demo</div>
+    r2h:mustache '''<div id="header">trifid-ld</div>
         {{{:continue}}}<div id="footer">
             <table align="center" width="30%">
               <tr>
@@ -181,8 +181,6 @@ r2h:before <title>.
             </table>
             <br>
             Code on <a href="https://github.com/zazukoians/trifid-ld" style="color:white"><b>github</b></a>
-            <br><br><br><br>
-            ...licenza...
         </div>'''
   ];
   r2h:before <catchall>.
@@ -192,7 +190,7 @@ r2h:before <title>.
     r2h:context r2h:Default;
     r2h:javaScript '''function(n) {
         var prefixes = [{url: "http://schema.org/", shortcut: "s:"},
-                        {url: "http://example.com", shortcut: "ex:"}];
+                        {url: "http://www.w3.org/1999/02/22-rdf-syntax-ns#", shortcut: "rdfs:"}];
         var result = "";
         var first = 0;
         var predicatesArray = [];
