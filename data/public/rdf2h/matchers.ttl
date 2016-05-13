@@ -352,7 +352,6 @@ r2h:before <title>.
           if (dbpediaGraph.length > 0) {
               var dbSubject = $('a[href*="http://dbpedia.org/resource/"]');
               dbSubject = dbSubject[0].href;
-              alert(dbSubject);
               result += '<div class="LOD">DBpedia LOD enrichment with <a href="' + dbSubject + '">dbr:' + dbSubject.replace("http://dbpedia.org/resource/","") + '</a></div>';
               result += '<div class="container" id="dbpedia"><table id="tt-dbpedia" width="100%">';
 
