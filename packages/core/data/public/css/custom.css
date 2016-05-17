@@ -21,22 +21,22 @@ hr.dashed {
     width: 5%;
     margin-right:100%;
 }
-hr.baffone { 
-  height: 30px; 
-  border-style: solid; 
-  border-color: #8c8b8b; 
-  border-width: 1px 0 0 0; 
-  border-radius: 20px; 
-} 
-hr.baffone:before { 
-  display: block; 
-  content: ""; 
-  height: 30px; 
-  margin-top: -31px; 
-  border-style: solid; 
-  border-color: #8c8b8b; 
-  border-width: 0 0 1px 0; 
-  border-radius: 20px; 
+hr.baffone {
+  height: 30px;
+  border-style: solid;
+  border-color: #8c8b8b;
+  border-width: 1px 0 0 0;
+  border-radius: 20px;
+}
+hr.baffone:before {
+  display: block;
+  content: "";
+  height: 30px;
+  margin-top: -31px;
+  border-style: solid;
+  border-color: #8c8b8b;
+  border-width: 0 0 1px 0;
+  border-radius: 20px;
 }
 .moving {
   padding-top: 100px;
@@ -58,4 +58,10 @@ hr.baffone:before {
     padding: 2% 2% 2% 2%;
 }
 
-
+.LOD {
+  background-color: #28abe3;
+  color: #FFF;
+  font-size: 2em;
+  width: 100%;
+  padding: 1em 3em 1em 2em;
+}
