@@ -241,6 +241,8 @@ r2h:before <title>.
            if (first > 0) {
                result += '<hr class="baffone">';
                result += '<div align="center">'+blankBack[first-1]+'</div>';
+               predicatesArray = [];
+               firstDash = -1;
            }
            result += '<div class="container" id="'+node+'"><table id="tt" width="100%">';
            first++;
