@@ -1,3 +1,4 @@
+@base <http://zazukoians.org/2016/generic-rdf2h-matchers/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
@@ -7,6 +8,7 @@
 @prefix zzm: <http://zz2h.zazukoians.org/modes/> .
 @prefix zz2h: <http://zz2h.zazukoians.org/ontology/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix r2hp: <http://rdf2h.github.io/2015/rdf2h-points/> .
 
 <page> a r2h:Matcher ;
   r2h:triplePattern [
@@ -203,6 +205,7 @@ r2h:before <title>.
   ];
   r2h:before <catchall>.
 
+r2hp:fallback r2h:before <catchall> .
 
 <catchall> a r2h:Matcher ;
   r2h:template [
