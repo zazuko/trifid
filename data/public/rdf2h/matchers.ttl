@@ -216,7 +216,6 @@ r2h:before <title>.
   ];
   r2h:before <catchall>.
 
-<<<<<<< HEAD
 <caps> r2h:before <endSameAs>.
 <sameAs> r2h:before <endSameAs>.
 
@@ -233,8 +232,6 @@ r2h:before <title>.
     ];
     r2h:before <catchall>.
 
-=======
->>>>>>> 63f47299573529ecd25d46c6ada66548a1fd189e
 r2hp:fallback r2h:before <catchall> .
 
 <catchall> a r2h:Matcher ;
