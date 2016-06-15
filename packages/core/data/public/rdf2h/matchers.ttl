@@ -1,3 +1,4 @@
+@base <http://zazukoians.org/2016/generic-rdf2h-matchers/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix r2h: <http://rdf2h.github.io/2015/rdf2h#> .
@@ -7,6 +8,7 @@
 @prefix zzm: <http://zz2h.zazukoians.org/modes/> .
 @prefix zz2h: <http://zz2h.zazukoians.org/ontology/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix r2hp: <http://rdf2h.github.io/2015/rdf2h-points/> .
 
 <page> a r2h:Matcher ;
   r2h:triplePattern [
@@ -184,9 +186,9 @@ r2h:before <title>.
             Code on <a href="https://github.com/zazukoians/trifid-ld" style="color:white"><b>github</b></a>
         </div>'''
   ];
-  r2h:before <dbpedia>.
+  r2h:before <sameAs>.
 
-<dbpedia> a r2h:Matcher ;
+<sameAs> a r2h:Matcher ;
   r2h:triplePattern [
     r2h:subject r2h:this;
     r2h:predicate owl:sameAs;
@@ -195,14 +197,42 @@ r2h:before <title>.
     r2h:context r2h:Default;
     r2h:mustache '''
         {{{:continue}}}
-        <hr />
         {{#owl:sameAs}}
-            <div class="fetch" resource="{{.}}" context="http://rdf2h.github.io/2015/rdf2h#Dbpedia" />
+	<div class="panel-group">
+	  <div class="panel panel-default">
+	    <div class="panel-heading">
+              <h4 class="panel-title">sameAs with {{.}}</h4>
+	    </div>
+	    <div id="collapseHistory" class="panel-collapse">
+	      <div class="panel-body">
+		<span resource="{{.}}" context="r2h:AfterSameAs" 
+		 class="fetch">sameAs data should appear here</span>
+	      </div>
+	    </div>
+	  </div>
+	</div>
         {{/owl:sameAs}}
 '''
   ];
   r2h:before <catchall>.
 
+<caps> r2h:before <endSameAs>.
+<sameAs> r2h:before <endSameAs>.
+
+<endSameAs> a r2h:Matcher ;
+    r2h:triplePattern [        
+        r2h:subject r2h:this;
+        r2h:predicate rdf:type;
+    ];
+    r2h:template [ 
+        r2h:context r2h:AfterSameAs;
+        r2h:mustache '''
+        {{{:continue r2h:Default}}}
+        '''
+    ];
+    r2h:before <catchall>.
+
+r2hp:fallback r2h:before <catchall> .
 
 <catchall> a r2h:Matcher ;
   r2h:template [
@@ -241,6 +271,8 @@ r2h:before <title>.
            if (first > 0) {
                result += '<hr class="baffone">';
                result += '<div align="center">'+blankBack[first-1]+'</div>';
+               predicatesArray = [];
+               firstDash = -1;
            }
            result += '<div class="container" id="'+node+'"><table id="tt" width="100%">';
            first++;
@@ -317,115 +349,3 @@ r2h:before <title>.
         return result;
     }'''
   ].
-
-  <dbpediall> a r2h:Matcher ;
-    r2h:template [
-      r2h:context r2h:Dbpedia;
-      r2h:javaScript '''function(n) {
-
-          var prefixes = [{url: "http://schema.org/", shortcut: "s:"},
-                          {url: "http://www.w3.org/1999/02/22-rdf-syntax-ns#", shortcut: "rdf:"},
-                          {url: "https://gont.ch/", shortcut: "gont:"},
-                          {url: "http://www.w3.org/2004/02/skos/core#", shortcut: "skos:"},
-                          {url: "http://www.w3.org/2002/07/owl#", shortcut: "owl:"},
-                          {url: "http://dbpedia.org/resource/", shortcut: "dbr:"},
-                          {url: "http://dbpedia.org/class/yago/", shortcut: "yago:"},
-                          {url: "http://xmlns.com/foaf/0.1/", shortcut: "foaf:"},
-                          {url: "http://www.wikidata.org/entity/", shortcut: "wikidata:"},
-                          {url: "http://dbpedia.org/ontology/", shortcut: "dbo:"},
-                          {url: "http://purl.org/dc/terms/", shortcut: "dct:"},
-                          {url: "http://www.w3.org/2000/01/rdf-schema#", shortcut: "rdfs:"}];
-          var result = "";
-          var first = 0;
-          var firstDash = -1;
-          var predicatesArray = [];
-
-          var dbpediaGraph = [];
-
-          for (var i = n.graph["_graph"].length -1; i >= 0; i--) {
-              if (n.graph["_graph"][i]["subject"]["nominalValue"].match(/dbpedia.org/) !== null) {
-                  dbpediaGraph.push(n.graph["_graph"][i]);
-                  n.graph["_graph"].splice(i, 1);
-              }
-          }
-
-          if (dbpediaGraph.length > 0) {
-              var dbSubject = $('a[href*="http://dbpedia.org/resource/"]');
-              dbSubject = dbSubject[0].href;
-              result += '<div class="LOD">DBpedia LOD enrichment with <a href="' + dbSubject + '">dbr:' + dbSubject.replace("http://dbpedia.org/resource/","") + '</a></div>';
-              result += '<div class="container" id="dbpedia"><table id="tt-dbpedia" width="100%">';
-
-              for (var j = 0; j < dbpediaGraph.length; j++) {
-                  if (dbpediaGraph[j]["subject"]["nominalValue"] === dbSubject) {
-                      var dbPredicate = dbpediaGraph[j]["predicate"]["nominalValue"];
-                      var dbObject = dbpediaGraph[j]["object"]["nominalValue"];
-
-                      /* remove unwanted predicate */
-                      if (dbPredicate === "http://purl.org/voc/vrank#hasRank")
-                          continue;
-
-                      /* predicate compact URI */
-                      var prefix = "";
-                      var link = dbPredicate;
-                      prefixes.forEach(function(p) {
-                          var predicateHtml = dbPredicate.split(p.url);
-                          if (predicateHtml[0] === "") {
-                              prefix = p.shortcut;
-                              dbPredicate = predicateHtml[1];
-                          }
-                      });
-
-                      /* object compact URI */
-                      if (dbpediaGraph[j]["object"]["interfaceName"] !== "Literal") {
-                          var objectPrefix = "";
-                          var objectLink = dbObject;
-                          prefixes.forEach(function(p) {
-                              var objectSplit = dbObject.split(p.url);
-                              if (objectSplit[0] === "") {
-                                  objectPrefix = p.shortcut;
-                                  dbObject = objectSplit[1];
-                              }
-                          });
-                          if (objectPrefix === "") {
-                              objectHtml = '<a href="'+objectLink+'" title="'+objectLink+'">'+dbObject+'</a>';
-                          } else {
-                              objectHtml = '<a href="'+objectLink+'" title="'+objectLink+'" style="background-color:#FFFFFF;color:#000000;text-decoration:none">'+objectPrefix+'<b>'+dbObject+'</b></a>';
-                          }
-                      } else {
-                          objectHtml = dbObject;
-                      }
-
-                      /* predicate group by */
-                      var isNew = 1;
-                      for (var i = 0; i < predicatesArray.length; i++) {
-                          if (predicatesArray[i] === dbPredicate) {
-                              isNew = 0;
-                              break;
-                          }
-                      }
-                      predicatesArray.push(dbPredicate);
-
-                      /* writing table */
-                      if (isNew) {
-                          if (firstDash === 0) {
-                              result = result.substring(0, result.length - 24); //XXX
-                              result += '<hr /></td>';
-                          }
-                          result += '<tr><td width="35%" cellpadding=".1em" valign="top" id="sticky"><a href="'+link+'" title="'+link+'" style="background-color:#FFFFFF;color:#000000;text-decoration:none">'+prefix+'<b>'+dbPredicate+'</b></a></td><td width="65%" cellpadding=".1em">'+objectHtml+'<hr /></td>';
-                          firstDash = 1;
-                      } else {
-                          if (firstDash === 1) {
-                              result = result.substring(0, result.length - 11); //XXX
-                              result += '<hr class="dashed"></td>'
-                              firstDash = 0;
-                          }
-                          result += '<tr><td width="35%"></td><td width="65%" cellpadding=".1em">'+objectHtml+'<hr class="dashed"></td>';
-                      }
-                  }
-              }
-              result += '</table></div>';
-          }
-
-          return result;
-      }'''
-    ].
