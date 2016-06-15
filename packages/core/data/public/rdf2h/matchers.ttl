@@ -270,7 +270,12 @@ r2hp:fallback r2h:before <catchall> .
            renderedNodesToId[node.toString()] = true;
            if (first > 0) {
                result += '<hr class="baffone">';
-               result += '<div align="center">'+blankBack[first-1]+'</div>';
+               if (blankBack[first-1] !== undefined) {
+                   result += '<div align="center">'+blankBack[first-1]+'</div>';
+               } else {
+                   var newSub = s[0].subject.nominalValue;
+                   result += '<div align="center"><a href="'+newSub+'">'+newSub+'</a></div>';
+               }
                predicatesArray = [];
                firstDash = -1;
            }
