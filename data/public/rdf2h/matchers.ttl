@@ -35,6 +35,7 @@
     <head>
       <link rel="stylesheet" href="/css/bootstrap.css" />
       <link rel="stylesheet" href="/css/custom.css" />
+      <script src="/js/bootstrap.js"</script>
       <script src="/js/sticky.js"></script>
       <title>Resource {{.}}</title>
     </head>
@@ -201,9 +202,11 @@ r2h:before <title>.
 	<div class="panel-group">
 	  <div class="panel panel-default">
 	    <div class="panel-heading">
-              <h4 class="panel-title">sameAs with {{.}}</h4>
+              <h4 class="panel-title">
+                <a id="sameAsBoxA" name="{{.}}" aria-expanded="false" class="collapsed" href="#sameAsBox" data-toggle="collapse">sameAs with {{.}}</a>
+              </h4>
 	    </div>
-	    <div id="collapseHistory" class="panel-collapse">
+	    <div id="sameAsBox" class="panel-collapse collapse">
 	      <div class="panel-body">
 		<span resource="{{.}}" context="r2h:AfterSameAs" 
 		 class="fetch">sameAs data should appear here</span>
@@ -211,6 +214,18 @@ r2h:before <title>.
 	    </div>
 	  </div>
 	</div>
+        <script>
+          hashCode = function(s) {
+            return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+          }
+
+          var name = $("#sameAsBoxA").attr("name");
+          name = hashCode(name);
+          
+          $("#sameAsBox").attr("id",name);
+          $("#sameAsBoxA").attr("href","#"+name);
+          $("#sameAsBoxA").attr("id",name+"A");
+        </script>
         {{/owl:sameAs}}
 '''
   ];
