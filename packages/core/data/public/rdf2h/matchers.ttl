@@ -224,6 +224,7 @@ r2h:before <title>.
           
           $("#sameAsBox").attr("id",name);
           $("#sameAsBoxA").attr("href","#"+name);
+          $("#sameAsBoxA").attr("id",name+"A");
         </script>
         {{/owl:sameAs}}
 '''
