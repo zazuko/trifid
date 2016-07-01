@@ -202,7 +202,9 @@ r2h:before <title>.
 	<div class="panel-group">
 	  <div class="panel panel-default">
 	    <div class="panel-heading">
-              <h4 class="panel-title"><a aria-expanded="false" class="collapsed" href="#sameAsBox" data-toggle="collapse">sameAs with {{.}}</a></h4>
+              <h4 class="panel-title">
+                <a id="sameAsBoxA" name="{{.}}" aria-expanded="false" class="collapsed" href="#sameAsBox" data-toggle="collapse">sameAs with {{.}}</a>
+              </h4>
 	    </div>
 	    <div id="sameAsBox" class="panel-collapse collapse">
 	      <div class="panel-body">
@@ -212,6 +214,17 @@ r2h:before <title>.
 	    </div>
 	  </div>
 	</div>
+        <script>
+          hashCode = function(s) {
+            return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+          }
+
+          var name = $("#sameAsBoxA").attr("name");
+          name = hashCode(name);
+          
+          $("#sameAsBox").attr("id",name);
+          $("#sameAsBoxA").attr("href","#"+name);
+        </script>
         {{/owl:sameAs}}
 '''
   ];
