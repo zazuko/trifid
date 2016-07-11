@@ -11,165 +11,48 @@
 @prefix r2hp: <http://rdf2h.github.io/2015/rdf2h-points/> .
 
 <page> a r2h:Matcher ;
-  r2h:triplePattern [
-    r2h:subject r2h:this;
-    r2h:predicate s:headline;
-  ];
+  rdfs:comment "Renders a full page, delegating to matchers in the default 
+    context for the body, and to zzm:HtmlHead for things like the html title";
   r2h:template [
     r2h:context zzm:FullPage;
     r2h:mustache '''
-    <head>
-      <title>{{s:headline}}</title>
-    </head>
-    <body>
-        {{{:continue}}}
-    </body>
-'''
-  ];
-  r2h:before <genericFrame>.
-
-<genericFrame> a r2h:Matcher ;
-  r2h:template [
-    r2h:context zzm:FullPage;
-    r2h:mustache '''{{{@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#>}}}
+    {{{@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#>}}}
+    {{{@prefix zzm: <http://zz2h.zazukoians.org/modes/>}}}
     <head>
       <link rel="stylesheet" href="/css/bootstrap.css" />
       <link rel="stylesheet" href="/css/custom.css" />
       <script src="/js/bootstrap.js"</script>
       <script src="/js/sticky.js"></script>
-      <title>Resource {{.}}</title>
+      {{{:render . zzm:HtmlHead}}}
     </head>
     <body>
         {{{:render . r2h:Default}}}
     </body>
 '''
-  ];
-r2h:before <title>.
+  ].
 
-<title> a r2h:Matcher ;
-  r2h:triplePattern [
-    r2h:subject r2h:this;
-    r2h:predicate dc:title;
-  ];
-  r2h:template [
-    r2h:context r2h:Default;
-    r2h:mustache '''<h2>{{dc:title}}</h2>
-        {{{:continue}}}'''
-  ];
-  r2h:before <label>.
-
-<main> a r2h:Matcher ;
-  r2h:triplePattern [
-    r2h:subject r2h:this;
-    r2h:predicate rdf:type;
-  ];
-  r2h:template [
-    r2h:context r2h:Default;
-    r2h:mustache '''
-      <div id="sticky-anchor"></div>
-      <div id="sticky" class="list-group" style="width: 100%;">
-        <span class="list-group-item">
-          <h4 class="list-group-item-heading">Resource: {{.}}</h4>
-          <p class="list-group-item-text">a {{#rdf:type}}<a href="{{.}}">{{.}}</a> {{/rdf:type}}</p>
-        </span>
-      </div>
-         {{{:continue}}}'''
-  ];
-  r2h:before <matcherEdit>.
-
-<headline> a r2h:Matcher ;
+<headlineTitle> a r2h:Matcher ;
   r2h:triplePattern [
     r2h:subject r2h:this;
     r2h:predicate s:headline;
   ];
   r2h:template [
-    r2h:context r2h:Default;
-    r2h:mustache '''<h1>{{s:headline}}</h1>
-         {{{:continue}}}'''
+    r2h:context zzm:HtmlHead;
+    r2h:mustache '''
+      <title>{{s:headline}}</title>
+'''
   ];
-  r2h:before <matcherEdit>.
+  r2h:before <genericTitle>.
 
-<matcherEdit> a r2h:Matcher ;
-  r2h:triplePattern [
-    r2h:subject r2h:this;
-    r2h:predicate zz2h:matcherGraph;
-  ];
+<genericTitle> a r2h:Matcher ;
   r2h:template [
-    r2h:context r2h:Default;
-    r2h:mustache '''{{{@prefix zz2h: <http://zz2h.zazukoians.org/ontology/>}}}
-         <div id="matcherEditor"></div>
-         <script id="editorLoader">
-             var store = new rdf.LdpStore({parsers: {
-                            'text/turtle': rdf.parseTurtle }
-                        });
-             store.match("{{{zz2h:matcherGraph}}}",
-                                null,
-                                null,
-                                null,
-                                function (data, error) {
-                                    if (!data) {
-                                        console.warn("Couldn't get any triple. reason: "+error);
-                                        return;
-                                    }
-                                    console.log("Got graph of size "+data.length);
-                                    var editors = new Object();
-                                    editors["turtle"] = function() {
-                                        //debugger;
-                                        var html = '&lt;textarea id="matcherGraph">&lt;/textarea>';
-                                        $("#matcherEditor").html(html);
-                                        rdf.serializeTurtle(data, function(turtle) {
-                                            $("#matcherGraph").val(turtle);
-                                        });
-                                    };
-                                    editors["turtle"]();
-                                    //debugger;
-                                });
-             /*$.ajax({
-                url : "{{{zz2h:matcherGraph}}}",
-                dataType: "text",
-                success : function (data) {
-                    rdf.parseTurtle(data, function (data) {
-                        console.log(data.toString());
-                        callback(data);
-                    }, window.location.toString().split('#')[0]);
-                    $("#matcherGraph").val(data);
-                }
-            });*/
-         </script>
-         {{{:continue}}}
-    '''
-  ];
-  r2h:before <catchall>.
-
-<name> a r2h:Matcher ;
-  r2h:triplePattern [
-    r2h:subject r2h:this;
-    r2h:predicate foaf:name;
-  ];
-  r2h:template [
-    r2h:context r2h:Default;
-    r2h:mustache '''Name: {{foaf:name}}<br/>
-         {{{:continue}}}'''
-  ];
-  r2h:before <label>.
-
-<address> a r2h:Matcher ;
-  r2h:triplePattern [
-    r2h:subject r2h:this;
-    r2h:predicate s:address;
-  ];
-  r2h:template [
-    r2h:context r2h:Default;
-    r2h:mustache '''Address: {{{:render s:address}}}<br/>
-         {{{:continue}}}'''
-  ];
-  r2h:before <label>.
+    r2h:context zzm:HtmlHead;
+    r2h:mustache '''
+      <title>Resource {{.}}</title>
+'''
+  ].
 
 <caps> a r2h:Matcher ;
-  r2h:triplePattern [
-    r2h:subject r2h:this;
-    r2h:predicate rdf:type;
-  ];
   r2h:template [
     r2h:context r2h:Default;
     r2h:mustache '''<div id="header">trifid-ld</div>
@@ -187,7 +70,75 @@ r2h:before <title>.
             Code on <a href="https://github.com/zazukoians/trifid-ld" style="color:white"><b>github</b></a>
         </div>'''
   ];
-  r2h:before <sameAs>.
+  r2h:before r2hp:highly-specific.
+
+r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
+
+<title> a r2h:Matcher ;
+  r2h:triplePattern [
+    r2h:subject r2h:this;
+    r2h:predicate dc:title;
+  ];
+  r2h:template [
+    r2h:context r2h:Default;
+    r2h:mustache '''<h1>{{dc:title}}</h1>
+        {{{:continue}}}'''
+  ];
+  r2h:before <rdfTypes>.
+
+<headline> a r2h:Matcher ;
+  r2h:triplePattern [
+    r2h:subject r2h:this;
+    r2h:predicate s:headline;
+  ];
+  r2h:template [
+    r2h:context r2h:Default;
+    r2h:mustache '''<h1>{{s:headline}}</h1>
+         {{{:continue}}}'''
+  ];
+  r2h:before <rdfTypes>.
+
+<name> a r2h:Matcher ;
+  r2h:triplePattern [
+    r2h:subject r2h:this;
+    r2h:predicate foaf:name;
+  ];
+  r2h:template [
+    r2h:context r2h:Default;
+    r2h:mustache '''Name: {{foaf:name}}<br/>
+         {{{:continue}}}'''
+  ];
+  r2h:before <address>.
+
+<address> a r2h:Matcher ;
+  r2h:triplePattern [
+    r2h:subject r2h:this;
+    r2h:predicate s:address;
+  ];
+  r2h:template [
+    r2h:context r2h:Default;
+    r2h:mustache '''Address: {{{:render s:address}}}<br/>
+         {{{:continue}}}'''
+  ];
+  r2h:before <rdfTypes>.
+
+<rdfTypes> a r2h:Matcher ;
+  r2h:triplePattern [
+    r2h:subject r2h:this;
+    r2h:predicate rdf:type;
+  ];
+  r2h:template [
+    r2h:context r2h:Default;
+    r2h:mustache '''
+      <div id="sticky-anchor"></div>
+      <div id="sticky" class="list-group" style="width: 100%;">
+        <span class="list-group-item">
+          <h4 class="list-group-item-heading">Resource: {{.}}</h4>
+          <p class="list-group-item-text">a {{#rdf:type}}<a href="{{.}}">{{.}}</a> {{/rdf:type}}</p>
+        </span>
+      </div>
+         {{{:continue}}}'''
+  ].
 
 <sameAs> a r2h:Matcher ;
   r2h:triplePattern [
@@ -208,7 +159,7 @@ r2h:before <title>.
 	    </div>
 	    <div id="sameAsBox" class="panel-collapse collapse">
 	      <div class="panel-body">
-		<span resource="{{.}}" context="r2h:AfterSameAs" 
+		<span resource="{{.}}" context="r2h:SameAsBlock" 
 		 class="fetch">sameAs data should appear here</span>
 	      </div>
 	    </div>
@@ -229,23 +180,18 @@ r2h:before <title>.
         {{/owl:sameAs}}
 '''
   ];
-  r2h:before <catchall>.
-
-<caps> r2h:before <endSameAs>.
-<sameAs> r2h:before <endSameAs>.
+  r2h:before r2hp:highly-specific.
 
 <endSameAs> a r2h:Matcher ;
-    r2h:triplePattern [        
-        r2h:subject r2h:this;
-        r2h:predicate rdf:type;
-    ];
+    rdfs:comment "Renders the same as resource by using all matchers after r2hp:specific,
+    avoing infinite owl:sameAs expansions as well as the header and footer";
     r2h:template [ 
-        r2h:context r2h:AfterSameAs;
+        r2h:context r2h:SameAsBlock;
         r2h:mustache '''
         {{{:continue r2h:Default}}}
         '''
     ];
-    r2h:before <catchall>.
+    r2h:before r2hp:specific.
 
 r2hp:fallback r2h:before <catchall> .
 
