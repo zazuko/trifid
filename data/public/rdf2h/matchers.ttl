@@ -26,10 +26,11 @@
       {{{:render . zzm:HtmlHead}}}
     </head>
     <body>
-        {{{:render . r2h:Default}}}
+        {{{:continue}}}
     </body>
 '''
-  ].
+  ];
+  r2h:before <caps>.
 
 <headlineTitle> a r2h:Matcher ;
   r2h:triplePattern [
@@ -54,9 +55,9 @@
 
 <caps> a r2h:Matcher ;
   r2h:template [
-    r2h:context r2h:Default;
+    r2h:context zzm:FullPage;
     r2h:mustache '''<div id="header">trifid-ld</div>
-        {{{:continue}}}<div id="footer">
+        {{{:render . r2h:Default}}}<div id="footer">
             <table align="center" width="30%">
               <tr>
                 <td colspan="2">Powered by</td>
@@ -101,11 +102,14 @@ r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
 <name> a r2h:Matcher ;
   r2h:triplePattern [
     r2h:subject r2h:this;
-    r2h:predicate foaf:name;
+    r2h:predicate s:givenName;
+  ], [
+    r2h:subject r2h:this;
+    r2h:predicate s:familyName;
   ];
   r2h:template [
     r2h:context r2h:Default;
-    r2h:mustache '''Name: {{foaf:name}}<br/>
+    r2h:mustache '''Name: {{s:givenName}} {{s:familyName}}<br/>
          {{{:continue}}}'''
   ];
   r2h:before <address>.
@@ -138,7 +142,8 @@ r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
         </span>
       </div>
          {{{:continue}}}'''
-  ].
+  ];
+  r2h:before r2hp:fallback.
 
 <sameAs> a r2h:Matcher ;
   r2h:triplePattern [
@@ -178,9 +183,10 @@ r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
           $("#sameAsBoxA").attr("id",name+"A");
         </script>
         {{/owl:sameAs}}
-'''
-  ];
-  r2h:before r2hp:highly-specific.
+    ''']; 
+    r2h:before r2hp:specific.
+
+ r2hp:highly-specific r2h:before <sameAs>.
 
 <endSameAs> a r2h:Matcher ;
     rdfs:comment "Renders the same as resource by using all matchers after r2hp:specific,
@@ -192,6 +198,7 @@ r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
         '''
     ];
     r2h:before r2hp:specific.
+ <sameAs> r2h:before <endSameAs>.
 
 r2hp:fallback r2h:before <catchall> .
 
