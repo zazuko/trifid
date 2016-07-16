@@ -1,7 +1,7 @@
 {
   "name": "trifid-ld",
   "description": "Trifid-LD - Lightweight Linked Data Server and Proxy",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "homepage": "https://github.com/zazukoians/trifid-ld",
   "repository": {
     "type": "git",
