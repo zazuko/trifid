@@ -10,68 +10,19 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix r2hp: <http://rdf2h.github.io/2015/rdf2h-points/> .
 
-<page> a r2h:Matcher ;
-  rdfs:comment "Renders a full page, delegating to matchers in the default 
-    context for the body, and to zzm:HtmlHead for things like the html title";
-  r2h:template [
-    r2h:context zzm:FullPage;
-    r2h:mustache '''
-    {{{@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#>}}}
-    {{{@prefix zzm: <http://zz2h.zazukoians.org/modes/>}}}
-    <head>
-      <link rel="stylesheet" href="/css/bootstrap.css" />
-      <link rel="stylesheet" href="/css/custom.css" />
-      <script src="/js/bootstrap.js"</script>
-      <script src="/js/sticky.js"></script>
-      {{{:render . zzm:HtmlHead}}}
-    </head>
-    <body>
-        {{{:continue}}}
-    </body>
-'''
-  ];
-  r2h:before <caps>.
-
 <headlineTitle> a r2h:Matcher ;
   r2h:triplePattern [
     r2h:subject r2h:this;
     r2h:predicate s:headline;
   ];
   r2h:template [
-    r2h:context zzm:HtmlHead;
+    r2h:context zzm:HtmlTitle;
     r2h:mustache '''
       <title>{{s:headline}}</title>
 '''
   ];
-  r2h:before <genericTitle>.
+  r2h:before r2hp:generic.
 
-<genericTitle> a r2h:Matcher ;
-  r2h:template [
-    r2h:context zzm:HtmlHead;
-    r2h:mustache '''
-      <title>Resource {{.}}</title>
-'''
-  ].
-
-<caps> a r2h:Matcher ;
-  r2h:template [
-    r2h:context zzm:FullPage;
-    r2h:mustache '''<div id="header">trifid-ld</div>
-        {{{:render . r2h:Default}}}<div id="footer">
-            <table align="center" width="30%">
-              <tr>
-                <td colspan="2">Powered by</td>
-              </tr>
-              <tr>
-                <td><a href="http://zazuko.com"><img src="/img/zazuko-logo.png" width="150px"></a></td>
-                <td><a href="http://synapta.it"><img src="/img/synapta-logo.svg" width="150px"></a></td>
-              </tr>
-            </table>
-            <br>
-            Code on <a href="https://github.com/zazukoians/trifid-ld" style="color:white"><b>github</b></a>
-        </div>'''
-  ];
-  r2h:before r2hp:highly-specific.
 
 r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
 
@@ -145,6 +96,8 @@ r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
   ];
   r2h:before r2hp:fallback.
 
+r2hp:highly-specific r2h:before <sameAs>.
+
 <sameAs> a r2h:Matcher ;
   r2h:triplePattern [
     r2h:subject r2h:this;
@@ -184,13 +137,12 @@ r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
         </script>
         {{/owl:sameAs}}
     ''']; 
-    r2h:before r2hp:specific.
+    r2h:before <endSameAs>.
 
- r2hp:highly-specific r2h:before <sameAs>.
 
 <endSameAs> a r2h:Matcher ;
-    rdfs:comment "Renders the same as resource by using all matchers after r2hp:specific,
-    avoing infinite owl:sameAs expansions as well as the header and footer";
+    rdfs:comment '''Renders the same as resource by using all matchers after r2hp:specific,
+    avoiding infinite owl:sameAs expansions as well as the header and footer''';
     r2h:template [ 
         r2h:context r2h:SameAsBlock;
         r2h:mustache '''
@@ -198,11 +150,58 @@ r2hp:generic r2h:before <title>, <headline>, <name>, <address>.
         '''
     ];
     r2h:before r2hp:specific.
- <sameAs> r2h:before <endSameAs>.
 
 r2hp:fallback r2h:before <catchall> .
 
 <catchall> a r2h:Matcher ;
+  r2h:template [
+    rdfs:comment '''Renders a full page, delegating to matchers in the default 
+    context for the body, and to zzm:HtmlHead for things like the html title''';
+    r2h:context zzm:FullPage;
+    r2h:mustache '''
+    {{{@prefix r2h: <http://rdf2h.github.io/2015/rdf2h#>}}}
+    {{{@prefix zzm: <http://zz2h.zazukoians.org/modes/>}}}
+    <head>
+      {{{:render . zzm:HtmlHead}}}
+    </head>
+    <body>
+        {{{:render . zzm:HtmlBody}}}
+    </body>
+    '''
+  ];
+  r2h:template [
+    r2h:context zzm:HtmlBody;
+    r2h:mustache '''<div id="header">trifid-ld</div>
+        {{{:render . r2h:Default}}}<div id="footer">
+            <table align="center" width="30%">
+              <tr>
+                <td colspan="2">Powered by</td>
+              </tr>
+              <tr>
+                <td><a href="http://zazuko.com"><img src="/img/zazuko-logo.png" width="150px"></a></td>
+                <td><a href="http://synapta.it"><img src="/img/synapta-logo.svg" width="150px"></a></td>
+              </tr>
+            </table>
+            <br>
+            Code on <a href="https://github.com/zazukoians/trifid-ld" style="color:white"><b>github</b></a>
+        </div>'''
+  ];
+    r2h:template [
+        r2h:context zzm:HtmlHead;
+        r2h:mustache '''
+            <link rel="stylesheet" href="/css/bootstrap.css" />
+            <link rel="stylesheet" href="/css/custom.css" />
+            <script src="/js/bootstrap.js"</script>
+            <script src="/js/sticky.js"></script>
+            {{{:render . zzm:HtmlTitle}}}
+        '''
+   ];
+    r2h:template [
+        r2h:context zzm:HtmlTitle;
+        r2h:mustache '''
+          <title>Resource {{.}}</title>
+    '''
+  ];
   r2h:template [
     r2h:context r2h:Default;
     r2h:javaScript '''function(n) {
