@@ -1,6 +1,6 @@
 # Trifid-LD - Lightweight Linked Data Server and Proxy
 
-[![Join the chat at https://gitter.im/zazukoians/trifid-ld](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazukoians/trifid-ld?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![](https://imagelayers.io/badge/zazukoians/trifid-ld:latest.svg)](https://imagelayers.io/?images=zazukoians/trifid-ld:latest 'Get your own badge on imagelayers.io')
+[![Join the chat at https://gitter.im/zazukoians/trifid-ld](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazukoians/trifid-ld?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![](https://imagelayers.io/badge/zazukoians/trifid-ld:latest.svg)](https://imagelayers.io/?images=zazukoians/trifid-ld:latest 'Get your own badge on imagelayers.io')
 
 Trifid-LD provides a lightweight and easy way to access Linked Data URIs via HTTP. In the Linked Data world this is often called [dereferencing](http://en.wikipedia.org/wiki/Dereferenceable_Uniform_Resource_Identifier). Trifid-LD is inspired by [Pubby](http://wifo5-03.informatik.uni-mannheim.de/pubby/) and written in (server side) JavaScript.
 
@@ -15,6 +15,7 @@ Features:
 * Runs well behind HTTP reverse proxies like Varnish
 * Provides a SPARQL proxy and [YASGUI](http://about.yasgui.org/) as web frontend
 * Does not do 303 redirects because we don't like the extra round-trip
+* Official [Docker container](https://hub.docker.com/r/zazukoians/trifid-ld/) available (Example use see [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss))
 
 Requirements:
 
