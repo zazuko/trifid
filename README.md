@@ -26,14 +26,15 @@ Trifid-LD supports all content-types provided by the SPARQL endpoint and does no
 
 ## Installation
 
-Trifid-LD is a [Node.js](http://nodejs.org/) based application. To install and run it you either have to have [Node.js](http://nodejs.org/) or [IO.js](https://iojs.org/) installed or you can use [Docker](https://www.docker.com/) an build a docker image containing Trifid-LD and all its dependencies.
+Trifid-LD is a [Node.js](http://nodejs.org/) based application. To install and run it you will need to install [Node.js](http://nodejs.org/) on your system. You can also use our official [Docker container](https://hub.docker.com/r/zazukoians/trifid-ld/). See for example [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss)) about how to use this.
 
-### Installing with Node.js or IO.js
+### Installing with Node.js
 
-Make sure you have either [Node.js](http://nodejs.org/) or [IO.js](https://iojs.org/) installed. Once this is done clone the Github repository and run 
+Make sure you have [Node.js](http://nodejs.org/)installed. Once this is done clone the Github repository and run 
 
     npm install
     
+
 to install all module dependencies.
 
 Trifid-LD is using Bunyan for logging. To pretty print log output on the console you might want to install it globally using
