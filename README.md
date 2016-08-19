@@ -1,6 +1,6 @@
 # Trifid-LD - Lightweight Linked Data Server and Proxy
 
-[![Join the chat at https://gitter.im/zazukoians/trifid-ld](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazukoians/trifid-ld?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/zazukoians/trifid-ld](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazukoians/trifid-ld?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![](https://imagelayers.io/badge/zazukoians/trifid-ld:latest.svg)](https://imagelayers.io/?images=zazukoians/trifid-ld:latest 'Get your own badge on imagelayers.io')
 
 Trifid-LD provides a lightweight and easy way to access Linked Data URIs via HTTP. In the Linked Data world this is often called [dereferencing](http://en.wikipedia.org/wiki/Dereferenceable_Uniform_Resource_Identifier). Trifid-LD is inspired by [Pubby](http://wifo5-03.informatik.uni-mannheim.de/pubby/) and written in (server side) JavaScript.
 
@@ -112,7 +112,7 @@ We are aware that the [URI and the representation](http://en.wikipedia.org/wiki/
 
 ## License
 
-Copyright 2015 Zazuko GmbH
+Copyright 2015-2016 Zazuko GmbH
 
 Trifid-LD is licensed under the Apache License, Version 2.0. Please see LICENSE and NOTICE for details.
 
