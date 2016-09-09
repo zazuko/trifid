@@ -68,6 +68,10 @@ module.exports = {
   sparqlProxy: {
     path: '/sparql',
     options: {
+      /*authentication: {
+        user: 'user',
+        password: 'password'
+      },*/
       endpointUrl:'http://localhost:3030/tbbt/sparql'
     }
   },
