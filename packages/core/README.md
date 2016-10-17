@@ -1,4 +1,5 @@
 # Trifid-LD - Lightweight Linked Data Server and Proxy
+<img src="logo.svg" align="right" alt="Trifid-ld Logo"/>
 
 [![Join the chat at https://gitter.im/zazukoians/trifid-ld](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazukoians/trifid-ld?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![](https://imagelayers.io/badge/zazukoians/trifid-ld:latest.svg)](https://imagelayers.io/?images=zazukoians/trifid-ld:latest 'Get your own badge on imagelayers.io')
 
