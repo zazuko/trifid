@@ -13,7 +13,7 @@
 
   <script src="dist/yasgui.bundled.js"></script>
 	 <script type="text/javascript">
-		 YASGUI.YASQE.defaults.sparql.endpoint = 'http://localhost:8080/sparql';
+		 YASGUI.YASQE.defaults.sparql.endpoint = window.location.origin + '/sparql';
 
 		 var yasgui = YASGUI(document.getElementById('showcase'));
 

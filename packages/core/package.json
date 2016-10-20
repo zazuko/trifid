@@ -24,7 +24,7 @@
     "request": "2.47.*",
     "stream-buffers": "1.1.*",
     "tbbt-ld": "*",
-    "yasgui": "1.*"
+    "yasgui": "2.*"
   },
   "license": "MIT",
   "scripts": {
