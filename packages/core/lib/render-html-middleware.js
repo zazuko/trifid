@@ -12,7 +12,6 @@ require('express-negotiate');
 
 function fileContent (filename) {
   try {
-    console.log(filename)
     return fs.readFileSync(filename).toString()
   } catch (err) {
     return null
