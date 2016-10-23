@@ -45,7 +45,15 @@ module.exports = function (config) {
       app.use(patchHeadersMiddleware(config.patchHeaders));
       app.use(bodyParser.text());
       app.use(bodyParser.urlencoded({extended: false}));
+
+      // instance files
+      if (__dirname !== process.cwd()) {
+        app.use(express.static(path.join(process.cwd(), './data/public/')));
+      }
+
+      // trifid files
       app.use(express.static(path.join(__dirname, './data/public/')));
+
       app.use(expressUtils.absoluteUrl());
 
       if ('sparqlProxy' in config) {
