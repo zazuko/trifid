@@ -10,6 +10,9 @@
   "bugs": {
     "url": "https://github.com/zazukoians/trifid-ld/issues"
   },
+  "bin": {
+    "trifid-ld": "./server.js"
+  },
   "dependencies": {
     "body-parser": "1.10.*",
     "bunyan": "1.2.*",
@@ -26,8 +29,5 @@
     "tbbt-ld": "*",
     "yasgui": "2.*"
   },
-  "license": "MIT",
-  "scripts": {
-    "start": "node index.js"
-  }
+  "license": "MIT"
 }
