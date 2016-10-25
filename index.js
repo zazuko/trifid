@@ -54,6 +54,9 @@ module.exports = function (config) {
       // trifid files
       app.use(express.static(path.join(__dirname, './data/public/')));
 
+      // yasgui files
+      app.use('/sparql/dist/', express.static(path.resolve(require.resolve('yasgui'), '../../dist/')))
+
       app.use(expressUtils.absoluteUrl());
 
       if ('sparqlProxy' in config) {

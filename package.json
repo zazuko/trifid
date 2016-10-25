@@ -10,9 +10,6 @@
   "bugs": {
     "url": "https://github.com/zazukoians/trifid-ld/issues"
   },
-  "scripts": {
-    "install": "cp -r `npm root`/yasgui/dist data/public/sparql"
-  },
   "bin": {
     "trifid-ld": "./server.js"
   },

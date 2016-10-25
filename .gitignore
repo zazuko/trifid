@@ -1,5 +1,4 @@
 .idea
-data/public/sparql/dist
 node_modules
 npm-debug.log
 /nbproject/private/
