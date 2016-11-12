@@ -15,19 +15,18 @@
   },
   "dependencies": {
     "absolute-url": "^1.2.0",
-    "body-parser": "1.10.*",
-    "bunyan": "1.2.*",
-    "es6-promise": "1.0.*",
-    "express": "4.*",
-    "express-negotiate": "0.0.*",
-    "ldp": "0.1.*",
+    "body-parser": "^1.15.2",
+    "bunyan": "^1.8.4",
+    "express": "^4.14.0",
+    "express-negotiate": "^0.0.5",
+    "ldp": "^0.1.4",
     "lodash": "^4.16.4",
-    "morgan": "1.5.*",
-    "rdf-ext": "0.2.*",
-    "request": "2.47.*",
-    "stream-buffers": "1.1.*",
-    "tbbt-ld": "*",
-    "yasgui": "2.*"
+    "morgan": "^1.7.0",
+    "rdf-ext": "^0.2.6",
+    "request": "^2.78.0",
+    "stream-buffers": "^3.0.1",
+    "tbbt-ld": "latest",
+    "yasgui": "^2.4.4"
   },
   "license": "MIT"
 }

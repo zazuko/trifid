@@ -1,9 +1,6 @@
 'use strict';
 
 module.exports = function (config) {
-
-  global.Promise = require('es6-promise').Promise;
-
   var
     absoluteUrl = require('absolute-url'),
     bodyParser = require('body-parser'),
