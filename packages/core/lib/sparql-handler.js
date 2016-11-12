@@ -24,22 +24,6 @@ module.exports = function (options) {
     this.buildExistsQuery = options.buildExistsQuery;
   }
 
-  var mapIri = function (iri) {
-    var parsed = url.parse(iri);
-
-    if ('hostname' in options) {
-      parsed.hostname = options.hostname;
-    }
-
-    if ('port' in options) {
-      parsed.port = options.port;
-    }
-
-    delete parsed.host;
-
-    return url.format(parsed);
-  };
-
   var getSparqlUrl = function (query) {
     return options.endpointUrl + '?query=' + encodeURIComponent(query);
   };
@@ -50,7 +34,7 @@ module.exports = function (options) {
     log.info({script: __filename}, 'handle GET request for IRI <' + iri + '>');
 
     var runQuery = function () {
-      var query = self.buildQuery(mapIri(iri));
+      var query = self.buildQuery(iri);
 
       log.debug({script: __filename}, 'SPARQL query for IRI <' + iri + '> : ' + query);
 
@@ -66,7 +50,7 @@ module.exports = function (options) {
     };
 
     var runExistsQuery = function (callback) {
-      var query = self.buildExistsQuery(mapIri(iri));
+      var query = self.buildExistsQuery(iri);
 
       log.debug({script: __filename}, 'SPARQL exists query for IRI <' + iri + '> : ' + query);
 
