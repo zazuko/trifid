@@ -5,9 +5,9 @@ module.exports = function (config) {
   global.Promise = require('es6-promise').Promise;
 
   var
+    absoluteUrl = require('absolute-url'),
     bodyParser = require('body-parser'),
     express = require('express'),
-    expressUtils = require('express-utils'),
     handlerMiddleware = require('./lib/handler-middleware'),
     patchHeadersMiddleware = require('./lib/patch-headers-middleware'),
     morgan = require('morgan'),
@@ -57,7 +57,7 @@ module.exports = function (config) {
       // yasgui files
       app.use('/sparql/dist/', express.static(path.resolve(require.resolve('yasgui'), '../../dist/')))
 
-      app.use(expressUtils.absoluteUrl());
+      app.use(absoluteUrl());
 
       if ('sparqlProxy' in config) {
         app.use(config.sparqlProxy.path, sparqlProxy(config.sparqlProxy.options));
