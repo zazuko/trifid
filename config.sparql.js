@@ -1,5 +1,5 @@
-var baseConfig = require('./config.fuseki');
-var defaultsDeep = require('lodash/defaultsDeep');
+var baseConfig = require('./config.fuseki')
+var defaultsDeep = require('lodash/defaultsDeep')
 
 var config = {
   listener: {
@@ -8,6 +8,6 @@ var config = {
   handlerOptions: {
     endpointUrl: 'http://localhost:3030/tbbt/sparql'
   }
-};
+}
 
-module.exports = defaultsDeep(config, baseConfig);
+module.exports = defaultsDeep(config, baseConfig)

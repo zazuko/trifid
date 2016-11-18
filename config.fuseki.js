@@ -1,19 +1,15 @@
-/* global rdf:false */
+'use strict'
 
-'use strict';
-
-var
-  fs = require('fs'),
-  path = require('path');
-
+var fs = require('fs')
+var path = require('path')
 
 var buildQuery = function (iri) {
-  return 'DESCRIBE <' + iri + '>';
-};
+  return 'DESCRIBE <' + iri + '>'
+}
 
 var buildExistsQuery = function (iri) {
-  return 'ASK { <' + iri + '> ?p ?o }';
-};
+  return 'ASK { <' + iri + '> ?p ?o }'
+}
 
 var patchResponseHeaders = function (res, headers) {
   if (res.statusCode === 200) {
@@ -23,32 +19,33 @@ var patchResponseHeaders = function (res, headers) {
       'Cache-Control',
       'Fuseki-Request-ID',
       'Server',
-      'Vary'];
+      'Vary'
+    ]
 
     if (res._headers) {
       fieldList.forEach(function (field) {
         if (field in res._headers) {
-          delete res._headers[field];
+          delete res._headers[field]
         }
 
         if (field.toLowerCase() in res._headers) {
-          delete res._headers[field.toLowerCase()];
+          delete res._headers[field.toLowerCase()]
         }
-      });
+      })
     }
 
     // cors header
-    headers['Access-Control-Allow-Origin'] = '*';
+    headers['Access-Control-Allow-Origin'] = '*'
 
     // cache header
-    headers['Cache-Control'] = 'public, max-age=120';
+    headers['Cache-Control'] = 'public, max-age=120'
 
     // vary header
-    headers['Vary'] = 'Accept';
+    headers['Vary'] = 'Accept'
   }
 
-  return headers;
-};
+  return headers
+}
 
 module.exports = {
   app: 'trifid-ld',
@@ -68,17 +65,19 @@ module.exports = {
   sparqlProxy: {
     path: '/sparql',
     options: {
-      /*authentication: {
-       user: 'user',
-       password: 'password'
-       },*/
-      endpointUrl:'http://localhost:3030/tbbt/sparql'
+/*
+      authentication: {
+        user: 'user',
+        password: 'password'
+      },
+*/
+      endpointUrl: 'http://localhost:3030/tbbt/sparql'
     }
   },
   sparqlSearch: {
     path: '/query',
     options: {
-      endpointUrl:'http://localhost:3030/tbbt/sparql',
+      endpointUrl: 'http://localhost:3030/tbbt/sparql',
       resultsPerPage: 5,
       queryTemplate: fs.readFileSync(path.join(__dirname, 'data/sparql/search.sparql')).toString(),
       variables: {
@@ -95,4 +94,4 @@ module.exports = {
     buildQuery: buildQuery,
     buildExistsQuery: buildExistsQuery
   }
-};
+}

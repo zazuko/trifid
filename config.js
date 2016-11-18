@@ -1,56 +1,51 @@
-/* global rdf:false */
+/* global rdf */
 
-'use strict';
+'use strict'
 
+global.rdf = require('rdf-ext')(rdf)
 
-global.rdf = require('rdf-ext')(rdf);
-
-
-var
-  fs = require('fs'),
-  graphSplit = require('./lib/graph-split')(rdf),
-  url = require('url');
-
+var fs = require('fs')
+var graphSplit = require('./lib/graph-split')(rdf)
+var url = require('url')
 
 var init = function () {
-  var config = this;
+  var config = this
 
   var importGraph = function (filename) {
     return new Promise(function (resolve) {
       rdf.parseTurtle(fs.readFileSync(filename).toString(), function (graph) {
-        resolve(graph);
-      });
-    });
-  };
+        resolve(graph)
+      })
+    })
+  }
 
   return Promise.all([
     importGraph('./node_modules/tbbt-ld/dist/tbbt.nt')
   ]).then(function (graphs) {
-    var
-      mergedGraph = rdf.createGraph(),
-      searchNs = 'http://localhost:8080',
-      replaceNs = url.format({
-        protocol: 'http:',
-        hostname: config.hostname,
-        port: config.port || '',
-        pathname: config.path || ''
-      });
+    var mergedGraph = rdf.createGraph()
+    var searchNs = 'http://localhost:8080'
+    var replaceNs = url.format({
+      protocol: 'http:',
+      hostname: config.hostname,
+      port: config.port || '',
+      pathname: config.path || ''
+    })
 
     graphs.forEach(function (graph) {
       // map namespace to listener config
-      graph = rdf.utils.mapNamespaceGraph(graph, searchNs, replaceNs);
+      graph = rdf.utils.mapNamespaceGraph(graph, searchNs, replaceNs)
 
-      mergedGraph.addAll(graph);
-    });
+      mergedGraph.addAll(graph)
+    })
 
     config.handlerOptions.storeOptions = {
       graph: mergedGraph,
       split: rdf.utils.splitGraphByNamedNodeSubject
-    };
+    }
 
-    return Promise.resolve();
-  });
-};
+    return Promise.resolve()
+  })
+}
 
 var patchResponseHeaders = function (res, headers) {
   if (res.statusCode === 200) {
@@ -60,32 +55,33 @@ var patchResponseHeaders = function (res, headers) {
       'Cache-Control',
       'Fuseki-Request-ID',
       'Server',
-      'Vary'];
+      'Vary'
+    ]
 
     if (res._headers) {
       fieldList.forEach(function (field) {
         if (field in res._headers) {
-          delete res._headers[field];
+          delete res._headers[field]
         }
 
         if (field.toLowerCase() in res._headers) {
-          delete res._headers[field.toLowerCase()];
+          delete res._headers[field.toLowerCase()]
         }
-      });
+      })
     }
 
     // cors header
-    headers['Access-Control-Allow-Origin'] = '*';
+    headers['Access-Control-Allow-Origin'] = '*'
 
     // cache header
-    headers['Cache-Control'] = 'public, max-age=120';
+    headers['Cache-Control'] = 'public, max-age=120'
 
     // vary header
-    headers['Vary'] = 'Accept';
+    headers['Vary'] = 'Accept'
   }
 
-  return headers;
-};
+  return headers
+}
 
 module.exports = {
   app: 'trifid-ld',
@@ -114,4 +110,4 @@ module.exports = {
     rdf: rdf,
     StoreClass: graphSplit.SplitStore
   }
-};
+}

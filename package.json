@@ -2,6 +2,7 @@
   "name": "trifid-ld",
   "description": "Trifid-LD - Lightweight Linked Data Server and Proxy",
   "version": "0.9.1",
+  "license": "MIT",
   "homepage": "https://github.com/zazukoians/trifid-ld",
   "repository": {
     "type": "git",
@@ -9,6 +10,9 @@
   },
   "bugs": {
     "url": "https://github.com/zazukoians/trifid-ld/issues"
+  },
+  "scripts": {
+    "lint": "standard *.js && standard lib/*.js"
   },
   "bin": {
     "trifid-ld": "./server.js"
@@ -28,5 +32,9 @@
     "tbbt-ld": "latest",
     "yasgui": "^2.4.4"
   },
-  "license": "MIT"
+  "devDependencies": {
+    "standard": "^8.5.0"
+  }
+
+
 }
