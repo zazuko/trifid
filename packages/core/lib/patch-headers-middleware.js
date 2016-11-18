@@ -1,30 +1,23 @@
-'use strict';
-
+'use strict'
 
 module.exports = function (options) {
-  if (options == null) {
-    options = {};
-  }
+  options = options || {}
 
-  if (!('patchResponse' in options)) {
-    options.patchResponse = function (res, headers) { return headers; };
-  }
+  options.patchResponse = options.patchResponse || function (res, headers) { return headers }
 
   return function (req, res, next) {
     var writeHead = res.writeHead
 
     res.writeHead = function (statusCode, headers) {
-      this.statusCode = statusCode;
+      this.statusCode = statusCode
 
-      if (headers == null) {
-        headers = {};
-      }
+      headers = headers || {}
 
-      headers = options.patchResponse(this, headers);
+      headers = options.patchResponse(this, headers)
 
-      writeHead.bind(this)(statusCode, headers);
-    };
+      writeHead.bind(this)(statusCode, headers)
+    }
 
-    next();
-  };
-};
+    next()
+  }
+}
