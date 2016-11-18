@@ -3,14 +3,6 @@
 var fs = require('fs')
 var path = require('path')
 
-var buildQuery = function (iri) {
-  return 'DESCRIBE <' + iri + '>'
-}
-
-var buildExistsQuery = function (iri) {
-  return 'ASK { <' + iri + '> ?p ?o }'
-}
-
 var patchResponseHeaders = function (res, headers) {
   if (res.statusCode === 200) {
     // clean existings values
@@ -90,8 +82,6 @@ module.exports = {
   },
   HandlerClass: require('./lib/sparql-handler'),
   handlerOptions: {
-    endpointUrl: 'http://localhost:3030/tbbt/sparql',
-    buildQuery: buildQuery,
-    buildExistsQuery: buildExistsQuery
+    endpointUrl: 'http://localhost:3030/tbbt/sparql'
   }
 }
