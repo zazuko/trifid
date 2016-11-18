@@ -2,64 +2,87 @@
 
 'use strict'
 
-var request = require('request')
+var httpError = require('http-errors')
+var SparqlHttpClient = require('sparql-http-client')
 
-module.exports = function (options) {
-  options = options || {}
+SparqlHttpClient.fetch = require('node-fetch')
 
-  this.buildQuery = options.buildQuery || function (iri) {
-    return 'CONSTRUCT {?s ?p ?o} WHERE { GRAPH <' + iri + '> {?s ?p ?o}}'
-  }
-
-  this.buildExistsQuery = options.buildExistsQuery
-
-  var getSparqlUrl = function (query) {
-    return options.endpointUrl + '?query=' + encodeURIComponent(query)
-  }
-
-  this.get = function (req, res, next, iri) {
-    var self = this
-
-    log.info({script: __filename}, 'handle GET request for IRI <' + iri + '>')
-
-    var runQuery = function () {
-      var query = self.buildQuery(iri)
-
-      log.debug({script: __filename}, 'SPARQL query for IRI <' + iri + '> : ' + query)
-
-      request
-        .get(getSparqlUrl(query), {headers: {accept: req.headers.accept}})
-        .on('response', function (response) {
-          if (response.statusCode !== 200) {
-            res.writeHead(500)
-            res.end()
-          }
-        })
-        .pipe(res)
-    }
-
-    var runExistsQuery = function (callback) {
-      var query = self.buildExistsQuery(iri)
-
-      log.debug({script: __filename}, 'SPARQL exists query for IRI <' + iri + '> : ' + query)
-
-      request.get({
-        url: getSparqlUrl(query),
-        headers: {Accept: 'application/sparql-results+json'}
-      }, function (error, response, body) {
-        if (!error && response.statusCode === 200 && JSON.parse(body).boolean) {
-          callback()
-        } else {
-          res.writeHead(404)
-          res.end()
-        }
-      })
-    }
-
-    if (self.buildExistsQuery) {
-      runExistsQuery(runQuery)
-    } else {
-      runQuery()
-    }
-  }
+function SparqlHandler (options) {
+  this.existsQuery = options.existsQuery || SparqlHandler.defaults.existsQuery
+  this.graphQuery = options.graphQuery || SparqlHandler.defaults.graphQuery
+  this.client = new SparqlHttpClient({endpointUrl: options.endpointUrl})
 }
+
+SparqlHandler.prototype.buildExistsQuery = function (iri) {
+  return this.existsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+}
+
+SparqlHandler.prototype.buildGraphQuery = function (iri) {
+  return this.graphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+}
+
+SparqlHandler.prototype.exists = function (iri) {
+  var query = this.buildExistsQuery(iri)
+
+  log.debug({script: __filename}, 'SPARQL exists query for IRI <' + iri + '> : ' + query)
+
+  return this.client.selectQuery(query).then(function (res) {
+    if (res.status !== 200) {
+      throw new httpError.NotFound()
+    }
+
+    return res.json()
+  }).then(function (result) {
+    console.log(result)
+
+    if (!result || !result.boolean) {
+      throw new httpError.NotFound()
+    }
+  })
+}
+
+SparqlHandler.prototype.graphStream = function (iri, accept) {
+  var query = this.buildGraphQuery(iri)
+
+  log.debug({script: __filename}, 'SPARQL query for IRI <' + iri + '> : ' + query)
+
+  return this.client.constructQuery(query, {accept: accept}).then(function (res) {
+    if (res.status !== 200) {
+      throw httpError(res.status)
+    }
+
+    var headers = {}
+
+    res.headers.forEach(function (value, name) {
+      headers[name] = value
+    })
+
+    return {
+      headers: headers,
+      stream: res.body
+    }
+  })
+}
+
+SparqlHandler.prototype.get = function (req, res, next, iri) {
+  var self = this
+
+  log.info({script: __filename}, 'handle GET request for IRI <' + iri + '>')
+
+  this.exists(iri).then(function () {
+    return self.graphStream(iri, req.headers.accept)
+  }).then(function (result) {
+    Object.keys(result.headers).forEach(function (name) {
+      res.setHeader(name, result.headers[name])
+    })
+
+    result.stream.pipe(res)
+  }).catch(next)
+}
+
+SparqlHandler.defaults = {
+  existsQuery: 'ASK { <${iri}> ?p ?o }', // eslint-disable-line no-template-curly-in-string
+  graphQuery: 'DESCRIBE <${iri}>' // eslint-disable-line no-template-curly-in-string
+}
+
+module.exports = SparqlHandler
