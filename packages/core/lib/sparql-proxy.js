@@ -2,43 +2,27 @@
 
 'use strict'
 
-var request = require('request')
+var clone = require('lodash/clone')
+var defaults = require('lodash/defaults')
+var SparqlHttpClient = require('sparql-http-client')
 
-var directPost = function (req, res, endpointUrl, query, options) {
-  var headers = {
-    'Accept': req.headers.accept,
-    'Content-Type': 'application/sparql-query'
-  }
+SparqlHttpClient.fetch = require('node-fetch')
 
-  options = options || {}
-  options.headers = headers
-  options.body = query
-
-  request.post(endpointUrl, options).pipe(res)
+function authBasicHeader (user, password) {
+  return 'Basic ' + new Buffer(user + ':' + password).toString('base64')
 }
 
-var urlencodedPost = function (req, res, endpointUrl, query, options) {
-  var headers = {
-    'Accept': req.headers.accept,
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-
-  options = options || {}
-  options.headers = headers
-  options.form = {query: query}
-
-  request.post(endpointUrl, options).pipe(res)
-}
-
-var sparqlProxy = function (options) {
-  var reqOptions = {}
+function sparqlProxy (options) {
+  var queryOptions = {}
 
   if (options.authentication) {
-    reqOptions.auth = {
-      user: options.authentication.user,
-      pass: options.authentication.password
+    queryOptions.headers = {
+      Authorization: authBasicHeader(options.authentication.user, options.authentication.password)
     }
   }
+
+  var queryOperation = options.queryOperation || 'postQueryDirect'
+  var client = new SparqlHttpClient({endpointUrl: options.endpointUrl})
 
   return function (req, res, next) {
     var query
@@ -46,11 +30,7 @@ var sparqlProxy = function (options) {
     if (req.method === 'GET') {
       query = req.query.query
     } else if (req.method === 'POST') {
-      if ('query' in req.body) {
-        query = req.body.query
-      } else {
-        query = req.body
-      }
+      query = req.body.query || req.body
     } else {
       return next()
     }
@@ -58,13 +38,16 @@ var sparqlProxy = function (options) {
     log.info({script: __filename}, 'handle SPARQL request for endpoint: ' + options.endpointUrl)
     log.debug({script: __filename}, 'SPARQL query:' + query)
 
-    switch (options.queryOperation) {
-      case 'urlencoded':
-        return urlencodedPost(req, res, options.endpointUrl, query, reqOptions)
+    // merge configuration query options with request query options
+    var currentQueryOptions = defaults(clone(queryOptions), {accept: req.headers.accept})
 
-      default:
-        return directPost(req, res, options.endpointUrl, query, reqOptions)
-    }
+    return client[queryOperation](query, currentQueryOptions).then(function (result) {
+      result.headers.forEach(function (value, name) {
+        res.setHeader(name, value)
+      })
+
+      result.body.pipe(res)
+    }).catch(next)
   }
 }
 
