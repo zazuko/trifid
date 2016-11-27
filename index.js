@@ -11,7 +11,7 @@ module.exports = function (config) {
   var morgan = require('morgan')
   var path = require('path')
   var bunyan = require('bunyan')
-  var renderHtmlMiddleware = require('./lib/render-html-middleware')
+  var htmlRenderer = require('./lib/render-html-middleware')
   var sparqlProxy = require('./lib/sparql-proxy')
   var sparqlSearch = require('./lib/sparql-search')
 
@@ -60,7 +60,7 @@ module.exports = function (config) {
       app.use(config.sparqlSearch.path, sparqlSearch(config.sparqlSearch.options))
     }
 
-    app.use(renderHtmlMiddleware(handler))
+    app.use(htmlRenderer(config.htmlRenderer))
     app.use(handlerMiddleware(handler))
     app.listen(config.listener.port, config.listener.hostname)
 
