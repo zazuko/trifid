@@ -7,7 +7,7 @@ module.exports = function (config) {
   var bodyParser = require('body-parser')
   var express = require('express')
   var handlerMiddleware = require('./lib/handler-middleware')
-  var patchHeadersMiddleware = require('./lib/patch-headers-middleware')
+  var patchHeaders = require('patch-headers')
   var morgan = require('morgan')
   var path = require('path')
   var bunyan = require('bunyan')
@@ -35,7 +35,7 @@ module.exports = function (config) {
     }
 
     app.use(morgan('combined'))
-    app.use(patchHeadersMiddleware(config.patchHeaders))
+    app.use(patchHeaders(config.patchHeaders))
     app.use(bodyParser.text())
     app.use(bodyParser.urlencoded({extended: false}))
 
