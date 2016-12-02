@@ -1,94 +1,10 @@
-/* global rdf */
-
 'use strict'
-
-global.rdf = require('rdf-ext')(rdf)
-
-var fs = require('fs')
-var graphSplit = require('./lib/graph-split')(rdf)
-var url = require('url')
-
-var init = function () {
-  var config = this
-
-  var importGraph = function (filename) {
-    return new Promise(function (resolve) {
-      rdf.parseTurtle(fs.readFileSync(filename).toString(), function (graph) {
-        resolve(graph)
-      })
-    })
-  }
-
-  return Promise.all([
-    importGraph('./node_modules/tbbt-ld/dist/tbbt.nt')
-  ]).then(function (graphs) {
-    var mergedGraph = rdf.createGraph()
-    var searchNs = 'http://localhost:8080'
-    var replaceNs = url.format({
-      protocol: 'http:',
-      hostname: config.hostname,
-      port: config.port || '',
-      pathname: config.path || ''
-    })
-
-    graphs.forEach(function (graph) {
-      // map namespace to listener config
-      graph = rdf.utils.mapNamespaceGraph(graph, searchNs, replaceNs)
-
-      mergedGraph.addAll(graph)
-    })
-
-    config.handlerOptions.storeOptions = {
-      graph: mergedGraph,
-      split: rdf.utils.splitGraphByNamedNodeSubject
-    }
-
-    return Promise.resolve()
-  })
-}
-
-var patchResponseHeaders = function (res, headers) {
-  if (res.statusCode === 200) {
-    // clean existings values
-    var fieldList = [
-      'Access-Control-Allow-Origin',
-      'Cache-Control',
-      'Fuseki-Request-ID',
-      'Server',
-      'Vary'
-    ]
-
-    if (res._headers) {
-      fieldList.forEach(function (field) {
-        if (field in res._headers) {
-          delete res._headers[field]
-        }
-
-        if (field.toLowerCase() in res._headers) {
-          delete res._headers[field.toLowerCase()]
-        }
-      })
-    }
-
-    // cors header
-    headers['Access-Control-Allow-Origin'] = '*'
-
-    // cache header
-    headers['Cache-Control'] = 'public, max-age=120'
-
-    // vary header
-    headers['Vary'] = 'Accept'
-  }
-
-  return headers
-}
 
 module.exports = {
   app: 'trifid-ld',
   logger: {
     level: 'debug'
   },
-  // public interface visible after any reverse proxies
   hostname: 'localhost',
   port: 8080,
   path: '',
@@ -102,12 +18,14 @@ module.exports = {
     'x-powered-by': null
   },
   patchHeaders: {
-    patchResponse: patchResponseHeaders
+    static: {
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'public, max-age=120',
+      'Vary': 'Accept'
+    }
   },
-  init: init,
-  HandlerClass: require('./lib/ldp-module-handler'),
+  HandlerClass: require('./lib/trifid-handler-fs'),
   handlerOptions: {
-    rdf: rdf,
-    StoreClass: graphSplit.SplitStore
+    path: 'node_modules/tbbt-ld'
   }
 }
