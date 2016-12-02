@@ -21,6 +21,7 @@
     "absolute-url": "^1.2.0",
     "body-parser": "^1.15.2",
     "bunyan": "^1.8.4",
+    "camouflage-rewrite": "^1.0.0",
     "express": "^4.14.0",
     "express-negotiate": "^0.0.5",
     "http-errors": "^1.5.1",

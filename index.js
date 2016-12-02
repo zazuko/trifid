@@ -7,6 +7,7 @@ module.exports = function (config) {
   var bodyParser = require('body-parser')
   var express = require('express')
   var handlerMiddleware = require('./lib/handler-middleware')
+  var rewrite = require('camouflage-rewrite')
   var patchHeaders = require('patch-headers')
   var morgan = require('morgan')
   var path = require('path')
@@ -35,6 +36,8 @@ module.exports = function (config) {
     }
 
     app.use(morgan('combined'))
+    app.use(absoluteUrl())
+    app.use(rewrite(config.rewrite))
     app.use(patchHeaders(config.patchHeaders))
     app.use(bodyParser.text())
     app.use(bodyParser.urlencoded({extended: false}))
@@ -49,8 +52,6 @@ module.exports = function (config) {
 
     // yasgui files
     app.use('/sparql/dist/', express.static(path.resolve(require.resolve('yasgui'), '../../dist/')))
-
-    app.use(absoluteUrl())
 
     if (config.sparqlProxy) {
       app.use(config.sparqlProxy.path, sparqlProxy(config.sparqlProxy.options))
