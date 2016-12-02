@@ -4,6 +4,7 @@ var fs = require('fs')
 var hijackResponse = require('hijackresponse')
 var path = require('path')
 var streamBuffers = require('stream-buffers')
+var without = require('lodash/without')
 
 require('express-negotiate')
 
@@ -26,6 +27,12 @@ function firstFileContent (filenames) {
 function middleware (options, req, res, next) {
   req.negotiate({
     html: function () {
+      // remove all request header sent from the client which are not required
+      without(Object.keys(req.headers), 'host').forEach(function (name) {
+        delete req.headers[name]
+      })
+
+      // set html middleware request headers for the handler
       req.headers['accept'] = options.graphMediaType
 
       hijackResponse(res, function (err, res) {
@@ -40,6 +47,14 @@ function middleware (options, req, res, next) {
         graphBuffer.on('finish', function () {
           var graphString = graphBuffer.getContentsAsString('utf8')
           var body = options.templateContent.replace('%graph%', graphString)
+
+          // remove all response headers sent from handler
+          Object.keys(res._headers).forEach(function (name) {
+            res.removeHeader(name)
+          })
+
+          // set new response headers
+          res.setHeader('content-type', 'text/html')
 
           res.end(body)
         })
