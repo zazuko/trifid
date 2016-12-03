@@ -14,7 +14,6 @@ module.exports = function (config) {
   var bunyan = require('bunyan')
   var htmlRenderer = require('./lib/render-html-middleware')
   var sparqlProxy = require('./lib/sparql-proxy')
-  var sparqlSearch = require('./lib/sparql-search')
 
   global.log = bunyan.createLogger({
     name: config.app,
@@ -55,10 +54,6 @@ module.exports = function (config) {
 
     if (config.sparqlProxy) {
       app.use(config.sparqlProxy.path, sparqlProxy(config.sparqlProxy.options))
-    }
-
-    if (config.sparqlSearch) {
-      app.use(config.sparqlSearch.path, sparqlSearch(config.sparqlSearch.options))
     }
 
     app.use(htmlRenderer(config.htmlRenderer))

@@ -38,21 +38,7 @@ module.exports = {
       endpointUrl: 'http://localhost:3030/tbbt/sparql'
     }
   },
-  sparqlSearch: {
-    path: '/query',
-    options: {
-      endpointUrl: 'http://localhost:3030/tbbt/sparql',
-      resultsPerPage: 5,
-      queryTemplate: fs.readFileSync(path.join(__dirname, 'data/sparql/search.sparql')).toString(),
-      variables: {
-        'q': {
-          variable: '%searchstring%',
-          required: true
-        }
-      }
-    }
-  },
-  HandlerClass: require('./lib/sparql-handler'),
+  HandlerClass: require('./lib/trifid-handler-sparql'),
   handlerOptions: {
     endpointUrl: 'http://localhost:3030/tbbt/sparql'
   }
