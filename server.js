@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
+var configTools = require('./lib/config')
 var path = require('path')
+var program = require('commander')
 
-var config
+program
+  .option('-c, --config <path>', 'configuration file', 'config.json')
+  .parse(process.argv)
 
-try {
-  config = require(path.join(process.cwd(), 'config'))
-} catch (err) {
-  config = require('./config')
-}
-
-require('.')(config)
+configTools.fromFile(path.join(process.cwd(), program.config)).then(function (config) {
+  require('.')(config)
+}).catch(function (err) {
+  console.error(err.stack || err.message)
+})

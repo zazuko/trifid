@@ -1,0 +1,24 @@
+{
+  "baseConfig": "trifid:config.json",
+  "sparqlEndpointUrl": "http://localhost:3030/tbbt/sparql",
+  "patchHeaders": {
+    "remove": [
+      "Fuseki-Request-ID",
+      "Server"
+    ]
+  },
+  "sparqlProxy": {
+    "path": "/sparql",
+    "options": {
+/*
+      "authentication": {
+        "user": "user",
+        "password": "password"
+      },
+*/
+    }
+  },
+  "handler": {
+    "module": "./trifid-handler-sparql"
+  }
+}
