@@ -77,7 +77,7 @@ function trifid (config) {
 
     app.listen(config.listener.port, config.listener.host)
 
-    log.info('listening on hostname:port: ' + config.listener.hostname + ':' + config.listener.port)
+    log.info('listening on hostname:port: ' + config.listener.host + ':' + config.listener.port)
   })
 }
 
