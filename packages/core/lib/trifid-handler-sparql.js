@@ -8,8 +8,8 @@ var SparqlHttpClient = require('sparql-http-client')
 SparqlHttpClient.fetch = require('node-fetch')
 
 function SparqlHandler (options) {
-  this.existsQuery = options.existsQuery || SparqlHandler.defaults.existsQuery
-  this.graphQuery = options.graphQuery || SparqlHandler.defaults.graphQuery
+  this.existsQuery = options.existsQuery
+  this.graphQuery = options.graphQuery
   this.client = new SparqlHttpClient({endpointUrl: options.endpointUrl})
 }
 
@@ -76,11 +76,6 @@ SparqlHandler.prototype.get = function (req, res, next, iri) {
 
     result.stream.pipe(res)
   }).catch(next)
-}
-
-SparqlHandler.defaults = {
-  existsQuery: 'ASK { <${iri}> ?p ?o }', // eslint-disable-line no-template-curly-in-string
-  graphQuery: 'DESCRIBE <${iri}>' // eslint-disable-line no-template-curly-in-string
 }
 
 module.exports = SparqlHandler
