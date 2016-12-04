@@ -1,0 +1,30 @@
+{
+  "logger": {
+    "app": "trifid",
+    "level": "debug"
+  },
+  "listener": {
+    "port": 8080
+  },
+  "express": {
+    "trust proxy": "loopback",
+    "x-powered-by": null
+  },
+  "patchHeaders": {
+    "static": {
+      "Access-Control-Allow-Origin": "*",
+      "Cache-Control": "public, max-age=120",
+      "Vary": "Accept"
+    }
+  },
+  "rewrite": {
+    "mediaTypes": ["application/html", "text/turtle", "application/ld+json"],
+    "rewriteContent": true
+  },
+  "handler": {
+    "module": "./trifid-handler-fs",
+    "options": {
+      "path": "node_modules/tbbt-ld"
+    }
+  }
+}
