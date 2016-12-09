@@ -1,28 +1,10 @@
 'use strict'
 
-var fs = require('fs')
 var hijackResponse = require('hijackresponse')
-var path = require('path')
 var streamBuffers = require('stream-buffers')
 var without = require('lodash/without')
 
 require('express-negotiate')
-
-function fileContent (filename) {
-  try {
-    return fs.readFileSync(filename).toString()
-  } catch (err) {
-    return null
-  }
-}
-
-function firstFileContent (filenames) {
-  return filenames.filter(function (filename) {
-    return filename
-  }).reduce(function (content, filename) {
-    return content || fileContent(filename)
-  }, null)
-}
 
 function middleware (options, req, res, next) {
   req.negotiate({
@@ -33,7 +15,7 @@ function middleware (options, req, res, next) {
       })
 
       // set html middleware request headers for the handler
-      req.headers['accept'] = options.graphMediaType
+      req.headers['accept'] = options.render.accept
 
       hijackResponse(res, function (err, res) {
         if (err) {
@@ -46,7 +28,6 @@ function middleware (options, req, res, next) {
 
         graphBuffer.on('finish', function () {
           var graphString = graphBuffer.getContentsAsString('utf8')
-          var body = options.templateContent.replace('%graph%', graphString)
 
           // remove all response headers sent from handler
           Object.keys(res._headers).forEach(function (name) {
@@ -55,6 +36,9 @@ function middleware (options, req, res, next) {
 
           // set new response headers
           res.setHeader('content-type', 'text/html')
+
+          // use renderer to build body
+          var body = options.render({graph: graphString})
 
           res.end(body)
         })
@@ -73,15 +57,9 @@ function middleware (options, req, res, next) {
 
 function factory (options) {
   options = options || {}
-  options.graphMediaType = options.graphMediaType || 'text/turtle'
 
-  var templatePaths = [
-    options.template,
-    path.join(process.cwd(), 'data/templates/graph.html'),
-    path.join(__dirname, '../data/templates/graph.html')
-  ]
-
-  options.templateContent = firstFileContent(templatePaths)
+  // load render module and forward options to the factory
+  options.render = require(options.module)(options)
 
   return middleware.bind(null, options)
 }

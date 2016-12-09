@@ -12,7 +12,7 @@ var patchHeaders = require('patch-headers')
 var morgan = require('morgan')
 var path = require('path')
 var bunyan = require('bunyan')
-var htmlRenderer = require('./lib/render-html-middleware')
+var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('./lib/sparql-proxy')
 
 /**
@@ -46,7 +46,7 @@ function middleware (config) {
       router.use(config.sparqlProxy.path, sparqlProxy(config.sparqlProxy.options))
     }
 
-    router.use(htmlRenderer(config.htmlRenderer))
+    router.use(renderer(config.renderer))
     router.use(handlerMiddleware(config.handler))
 
     return router
