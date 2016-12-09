@@ -33,11 +33,11 @@ function middleware (config) {
 
     // instance files
     if (__dirname !== process.cwd()) {
-      router.use(express.static(path.join(process.cwd(), './data/public/')))
+      router.use(express.static(path.join(process.cwd(), './public/')))
     }
 
     // trifid files
-    router.use(express.static(path.join(__dirname, './data/public/')))
+    router.use(express.static(path.join(__dirname, './public/')))
 
     // yasgui files
     router.use('/sparql/dist/', express.static(path.resolve(require.resolve('yasgui'), '../../dist/')))
