@@ -26,5 +26,9 @@
     "options": {
       "path": "node_modules/tbbt-ld"
     }
+  },
+  "renderer": {
+    "module": "trifid:lib/trifid-renderer-rdf2h",
+    "template": "trifid:data/templates/graph.html"
   }
 }

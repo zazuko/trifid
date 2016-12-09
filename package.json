@@ -29,6 +29,7 @@
     "ldp": "^0.1.5",
     "lodash": "^4.16.4",
     "morgan": "^1.7.0",
+    "mustache": "^2.3.0",
     "node-fetch": "^1.6.3",
     "patch-headers": "^1.0.0",
     "rdf-ext": "^0.3.0",
