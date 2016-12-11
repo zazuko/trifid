@@ -38,14 +38,14 @@ function middleware (config) {
     }
 
     // SPARQL proxy
-    if (config.sparqlProxy) {
+    if (config.sparqlProxy && config.sparqlProxy.path) {
       router.use(bodyParser.text())
       router.use(bodyParser.urlencoded({extended: false}))
       router.use(config.sparqlProxy.path, sparqlProxy(config.sparqlProxy.options))
     }
 
     // yasgui
-    if (config.yasgui) {
+    if (config.yasgui && config.yasgui.path) {
       router.use(config.yasgui.path, yasgui(config.yasgui.options))
     }
 
