@@ -10,10 +10,10 @@ var handlerMiddleware = require('./lib/handler-middleware')
 var rewrite = require('camouflage-rewrite')
 var patchHeaders = require('patch-headers')
 var morgan = require('morgan')
-var path = require('path')
 var bunyan = require('bunyan')
 var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('./lib/sparql-proxy')
+var yasgui = require('./lib/yasgui')
 
 /**
  * Creates a Trifid middleware
@@ -26,10 +26,7 @@ function middleware (config) {
 
     router.use(morgan('combined'))
     router.use(absoluteUrl())
-    router.use(rewrite(config.rewrite))
     router.use(patchHeaders(config.patchHeaders))
-    router.use(bodyParser.text())
-    router.use(bodyParser.urlencoded({extended: false}))
 
     // static file hosting
     if (config.staticFiles) {
@@ -40,13 +37,19 @@ function middleware (config) {
       })
     }
 
-    // yasgui files
-    router.use('/sparql/dist/', express.static(path.resolve(require.resolve('yasgui'), '../../dist/')))
-
+    // SPARQL proxy
     if (config.sparqlProxy) {
+      router.use(bodyParser.text())
+      router.use(bodyParser.urlencoded({extended: false}))
       router.use(config.sparqlProxy.path, sparqlProxy(config.sparqlProxy.options))
     }
 
+    // yasgui
+    if (config.yasgui) {
+      router.use(config.yasgui.path, yasgui(config.yasgui.options))
+    }
+
+    router.use(rewrite(config.rewrite))
     router.use(renderer(config.renderer))
     router.use(handlerMiddleware(config.handler))
 

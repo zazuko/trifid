@@ -8,7 +8,7 @@
     ]
   },
   "sparqlProxy": {
-    "path": "/sparql",
+    "path": "/query",
     "options": {
 /*
       "authentication": {
@@ -23,6 +23,12 @@
     "options": {
       "existsQuery": "ASK { <${iri}> ?p ?o }",
       "graphQuery": "DESCRIBE <${iri}>"
+    }
+  },
+  "yasgui": {
+    "path": "/sparql",
+    "options": {
+      "template": "trifid:public/yasgui/index.html"
     }
   }
 }
