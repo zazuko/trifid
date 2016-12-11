@@ -28,7 +28,7 @@
     "rewriteContent": true
   },
   "handler": {
-    "module": "./trifid-handler-fs",
+    "module": "trifid-handler-fs",
     "options": {
       "path": "node_modules/tbbt-ld"
     }
