@@ -25,6 +25,7 @@
     "commander": "^2.9.0",
     "express": "^4.14.0",
     "express-negotiate": "^0.0.5",
+    "findup-sync": "^0.4.3",
     "http-errors": "^1.5.1",
     "ldp": "^0.1.5",
     "lodash": "^4.16.4",
@@ -40,6 +41,7 @@
     "sparql-http-client": "^1.0.1",
     "stream-buffers": "^3.0.1",
     "tbbt-ld": "latest",
+    "trifid-renderer-rdf2h": "git://github.com/zazukoians/trifid-renderer-rdf2h.git#master",
     "yasgui": "^2.4.4"
   },
   "devDependencies": {

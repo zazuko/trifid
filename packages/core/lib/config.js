@@ -1,3 +1,4 @@
+var findup = require('findup-sync')
 var get = require('lodash/get')
 var path = require('path')
 var merge = require('lodash/merge')
@@ -63,6 +64,18 @@ function fromFile (filename) {
 }
 
 /**
+ * Finds the module path of the given module
+ * @param module
+ */
+function findModulePath (module) {
+  // points to the js file defined in package.json:main
+  var modulePath = require.resolve(module)
+
+  // search for package.json and use the dirname of it
+  return path.dirname(findup('package.json', {cwd: path.dirname(modulePath)}))
+}
+
+/**
  * Shortstop handler to resolve pathes
  * @param base base path should be set using .bind(null, base)
  * @param value
@@ -86,6 +99,10 @@ function resolve (config) {
 
   resolver.use('cwd', resolvePath.bind(null, process.cwd()))
   resolver.use('trifid', resolvePath.bind(null, path.resolve(__dirname, '..')))
+
+  if (get(config, 'renderer.module')) {
+    resolver.use('renderer', resolvePath.bind(null, findModulePath(config.renderer.module)))
+  }
 
   return new Promise(function (resolve, reject) {
     resolver.resolve(config, function (err, resolved) {
