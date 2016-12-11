@@ -28,7 +28,6 @@
     "findup-sync": "^0.4.3",
     "lodash": "^4.16.4",
     "morgan": "^1.7.0",
-    "mustache": "^2.3.0",
     "patch-headers": "^1.0.0",
     "request": "^2.78.0",
     "shortstop": "^1.0.3",
@@ -39,7 +38,7 @@
     "trifid-handler-fs": "git://github.com/zazukoians/trifid-handler-fs.git#master",
     "trifid-handler-sparql": "git://github.com/zazukoians/trifid-handler-sparql.git#master",
     "trifid-renderer-rdf2h": "git://github.com/zazukoians/trifid-renderer-rdf2h.git#master",
-    "yasgui": "^2.4.4"
+    "trifid-yasgui": "git://github.com/zazukoians/trifid-yasgui.git#master"
   },
   "devDependencies": {
     "standard": "^8.5.0"

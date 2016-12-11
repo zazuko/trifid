@@ -13,7 +13,7 @@ var morgan = require('morgan')
 var bunyan = require('bunyan')
 var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('sparql-proxy')
-var yasgui = require('./lib/yasgui')
+var yasgui = require('trifid-yasgui')
 
 /**
  * Creates a Trifid middleware
