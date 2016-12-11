@@ -31,13 +31,14 @@ function middleware (config) {
     router.use(bodyParser.text())
     router.use(bodyParser.urlencoded({extended: false}))
 
-    // instance files
-    if (__dirname !== process.cwd()) {
-      router.use(express.static(path.join(process.cwd(), './public/')))
-    }
+    // static file hosting
+    if (config.staticFiles) {
+      Object.keys(config.staticFiles).forEach(function (key) {
+        var staticFolder = config.staticFiles[key]
 
-    // trifid files
-    router.use(express.static(path.join(__dirname, './public/')))
+        router.use(staticFolder.path, express.static(staticFolder.folder))
+      })
+    }
 
     // yasgui files
     router.use('/sparql/dist/', express.static(path.resolve(require.resolve('yasgui'), '../../dist/')))
