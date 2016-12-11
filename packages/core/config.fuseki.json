@@ -19,7 +19,7 @@
     }
   },
   "handler": {
-    "module": "./trifid-handler-sparql",
+    "module": "trifid-handler-sparql",
     "options": {
       "existsQuery": "ASK { <${iri}> ?p ?o }",
       "graphQuery": "DESCRIBE <${iri}>"
