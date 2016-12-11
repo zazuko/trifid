@@ -18,9 +18,9 @@
     }
   },
   "staticFiles": {
-    "templateFiles": {
+    "rendererFiles": {
       "path": "/",
-      "folder": "trifid:public"
+      "folder": "renderer:public"
     }
   },
   "rewrite": {
@@ -34,7 +34,7 @@
     }
   },
   "renderer": {
-    "module": "trifid:lib/trifid-renderer-rdf2h",
-    "template": "trifid:data/templates/graph.html"
+    "module": "trifid-renderer-rdf2h",
+    "template": "renderer:templates/index.html"
   }
 }
