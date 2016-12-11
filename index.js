@@ -12,7 +12,7 @@ var patchHeaders = require('patch-headers')
 var morgan = require('morgan')
 var bunyan = require('bunyan')
 var renderer = require('./lib/render-middleware')
-var sparqlProxy = require('./lib/sparql-proxy')
+var sparqlProxy = require('sparql-proxy')
 var yasgui = require('./lib/yasgui')
 
 /**
