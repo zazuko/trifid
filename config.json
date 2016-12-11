@@ -17,6 +17,12 @@
       "Vary": "Accept"
     }
   },
+  "staticFiles": {
+    "templateFiles": {
+      "path": "/",
+      "folder": "trifid:public"
+    }
+  },
   "rewrite": {
     "mediaTypes": ["application/html", "text/turtle", "application/ld+json"],
     "rewriteContent": true
