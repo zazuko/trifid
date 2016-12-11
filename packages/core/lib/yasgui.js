@@ -8,6 +8,11 @@ var url = require('url')
 
 function factory (options) {
   var router = express.Router()
+
+  if (!options || !options.endpointUrl) {
+    return router
+  }
+
   var template = fs.readFileSync(options.template).toString()
 
   // render index page
