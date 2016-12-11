@@ -11,6 +11,8 @@ var breakDownRules = {
   'handler.options.endpointUrl': 'sparqlEndpointUrl',
   'rewrite': {},
   'rewrite.url': 'datasetBaseUrl',
+  'sparqlProxy.options': {},
+  'sparqlProxy.options.endpointUrl': 'sparqlEndpointUrl',
   'yasgui.options': {},
   'yasgui.options.endpointUrl': [
     'sparqlProxy.path',
