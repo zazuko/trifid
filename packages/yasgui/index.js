@@ -13,7 +13,7 @@ function factory (options) {
     return router
   }
 
-  var template = fs.readFileSync(options.template).toString()
+  var template = fs.readFileSync(options.template || path.join(__dirname, 'templates/index.html')).toString()
 
   // render index page
   router.get('/', function (req, res) {
