@@ -26,9 +26,6 @@
     }
   },
   "yasgui": {
-    "path": "/sparql",
-    "options": {
-      "template": "trifid:public/yasgui/index.html"
-    }
+    "path": "/sparql"
   }
 }
