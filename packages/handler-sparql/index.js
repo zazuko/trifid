@@ -8,21 +8,37 @@ var SparqlHttpClient = require('sparql-http-client')
 SparqlHttpClient.fetch = require('node-fetch')
 
 function SparqlHandler (options) {
-  this.existsQuery = options.existsQuery
-  this.graphQuery = options.graphQuery
+  this.resourceExistsQuery = options.resourceExistsQuery
+  this.resourceGraphQuery = options.resourceGraphQuery
+  this.containerExistsQuery = options.containerExistsQuery
+  this.containerGraphQuery = options.containerGraphQuery
   this.client = new SparqlHttpClient({endpointUrl: options.endpointUrl})
 }
 
-SparqlHandler.prototype.buildExistsQuery = function (iri) {
-  return this.existsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+SparqlHandler.prototype.buildResourceExistsQuery = function (iri) {
+  return this.resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
 }
 
-SparqlHandler.prototype.buildGraphQuery = function (iri) {
-  return this.graphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+SparqlHandler.prototype.buildResourceGraphQuery = function (iri) {
+  return this.resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+}
+
+SparqlHandler.prototype.buildContainerExistsQuery = function (iri) {
+  return this.containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+}
+
+SparqlHandler.prototype.buildContainerGraphQuery = function (iri) {
+  return this.containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
 }
 
 SparqlHandler.prototype.exists = function (iri) {
-  var query = this.buildExistsQuery(iri)
+  var query
+
+  if (this.containerExistsQuery && iri.slice(-1) === '/') {
+    query = this.buildContainerExistsQuery(iri)
+  } else {
+    query = this.buildResourceExistsQuery(iri)
+  }
 
   log.debug({script: __filename}, 'SPARQL exists query for IRI <' + iri + '> : ' + query)
 
@@ -40,7 +56,13 @@ SparqlHandler.prototype.exists = function (iri) {
 }
 
 SparqlHandler.prototype.graphStream = function (iri, accept) {
-  var query = this.buildGraphQuery(iri)
+  var query
+
+  if (this.containerGraphQuery && iri.slice(-1) === '/') {
+    query = this.buildContainerGraphQuery(iri)
+  } else {
+    query = this.buildResourceGraphQuery(iri)
+  }
 
   log.debug({script: __filename}, 'SPARQL query for IRI <' + iri + '> : ' + query)
 
