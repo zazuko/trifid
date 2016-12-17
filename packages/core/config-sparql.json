@@ -21,8 +21,10 @@
   "handler": {
     "module": "trifid-handler-sparql",
     "options": {
-      "existsQuery": "ASK { <${iri}> ?p ?o }",
-      "graphQuery": "DESCRIBE <${iri}>"
+      "resourceExistsQuery": "ASK { <${iri}> ?p ?o }",
+      "resourceGraphQuery": "DESCRIBE <${iri}>",
+      "containerExistsQuery": "ASK { ?s a ?o. FILTER REGEX(STR(?s), \"^${iri}\") }",
+      "containerGraphQuery": "CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), \"^${iri}\") }"
     }
   },
   "yasgui": {
