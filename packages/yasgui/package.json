@@ -11,10 +11,16 @@
   "bugs": {
     "url": "https://github.com/zazukoians/trifid-yasgui/issues"
   },
+  "scripts": {
+    "lint": "standard",
+    "test": "npm run lint"
+  },
   "dependencies": {
     "express": "^4.14.0",
     "mustache": "^2.3.0",
     "yasgui": "^2.4.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "standard": "^8.6.0"
+  }
 }
