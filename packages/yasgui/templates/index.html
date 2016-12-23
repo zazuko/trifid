@@ -13,11 +13,13 @@
 
   <script src="dist/yasgui.bundled.js"></script>
 	 <script type="text/javascript">
-		 YASGUI.YASQE.defaults.sparql.endpoint = '{{{endpointUrl}}}';
+     // set SPARQL endpoint URL
+     YASGUI.defaults.yasqe.sparql.endpoint = '{{{endpointUrl}}}'
 
-		 var yasgui = YASGUI(document.getElementById('showcase'));
+     // disable Leaflet plugin
+     YASGUI.defaults.yasr.outputPlugins = ['error', 'boolean', 'rawResponse', 'table', 'pivot']
 
-		 console.log(yasgui);
+     var yasgui = YASGUI(document.getElementById('showcase'))
 	 </script>
  </body>
 </html>
