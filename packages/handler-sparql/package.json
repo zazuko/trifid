@@ -11,10 +11,16 @@
   "bugs": {
     "url": "https://github.com/zazukoians/trifid-handler-sparql/issues"
   },
+  "scripts": {
+    "lint": "standard",
+    "test": "npm run lint"
+  },
   "dependencies": {
     "http-errors": "^1.5.1",
     "node-fetch": "^1.6.3",
     "sparql-http-client": "^1.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "standard": "^8.6.0"
+  }
 }
