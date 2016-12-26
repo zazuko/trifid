@@ -35,10 +35,10 @@
     "sparql-proxy": "git://github.com/zazukoians/sparql-proxy.git#master",
     "stream-buffers": "^3.0.1",
     "tbbt-ld": "latest",
-    "trifid-handler-fs": "git://github.com/zazukoians/trifid-handler-fs.git#master",
-    "trifid-handler-sparql": "git://github.com/zazukoians/trifid-handler-sparql.git#master",
-    "trifid-renderer-rdf2h": "git://github.com/zazukoians/trifid-renderer-rdf2h.git#master",
-    "trifid-yasgui": "git://github.com/zazukoians/trifid-yasgui.git#master"
+    "trifid-handler-fs": "^1.0.0",
+    "trifid-handler-sparql": "^1.0.0",
+    "trifid-renderer-rdf2h": "^1.0.0",
+    "trifid-yasgui": "^1.0.0"
   },
   "devDependencies": {
     "standard": "^8.5.0"
