@@ -26,12 +26,8 @@ Trifid supports all content-types provided by the SPARQL endpoint and does not d
 
 Trifid is a [Node.js](http://nodejs.org/) based application.
 To install and run it you will need to install [Node.js](http://nodejs.org/) on your system.
-You can also use our official [Docker container](https://hub.docker.com/r/zazukoians/trifid-ld/).
-See for example [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss)) about how to use this.
 
-### Installing with Node.js
-
-Make sure you have [Node.js](http://nodejs.org/)installed. Once this is done clone the Github repository and run 
+Clone the Github repository and run 
 
     npm install
 
@@ -103,8 +99,8 @@ It's possible to use prefixes for specific paths in the property values.
 
 ### Static Files
 
-With the `staticFiles` property folders can be mapped into URL pathes for static file hosting.
-The key for a static file hosting can be used to replace values defined in a configuration which is used as baseConfig.
+With the `staticFiles` property, folders can be mapped into URL paths for static file hosting.
+The key for a static file hosting can be used to replace values defined in a configuration, which is used as `baseConfig`.
 The `path` is the URL path which will be used.
 It's possible to define the same path multiple times.
 If the first folder does not contain the requested file, the next folder will be used and so on.
@@ -113,7 +109,7 @@ It's possible to use prefixes in the folder value.
 
 Example:
 
-```
+```JSON
 "staticFiles": {
   "rendererFiles": {
     "path": "/",
@@ -168,12 +164,13 @@ Trifid can be installed using Docker. With this method you only need to have Doc
 Once Docker is installed clone the Github repository and run
 
     docker build -t trifid .
-    
+
 This creates an image named `trifid` that you can execute with
 
     docker run -p 8080:8080 trifid 
 
-Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper.
+Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper. An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss)).
+
 
 ### Reverse Proxy
 
