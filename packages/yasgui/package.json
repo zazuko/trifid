@@ -3,13 +3,13 @@
   "description": "YASGUI for Trifid",
   "version": "0.9.0",
   "license": "MIT",
-  "homepage": "https://github.com/zazukoians/trifid-yasgui",
+  "homepage": "https://github.com/zazuko/trifid-yasgui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazukoians/trifid-yasgui.git"
+    "url": "https://github.com/zazuko/trifid-yasgui.git"
   },
   "bugs": {
-    "url": "https://github.com/zazukoians/trifid-yasgui/issues"
+    "url": "https://github.com/zazuko/trifid-yasgui/issues"
   },
   "scripts": {
     "lint": "standard",
