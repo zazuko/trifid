@@ -17,6 +17,11 @@ function factory (options) {
 
   // render index page
   router.get('/', function (req, res) {
+    // redirect to trailing slash URL for relative pathes of JS and CSS files
+    if (req.originalUrl.slice(-1) !== '/') {
+      return res.redirect(req.originalUrl + '/')
+    }
+
     // read SPARQL endpoint URL from options and resolve with absoluteUrl
     var locals = {
       endpointUrl: url.resolve(req.absoluteUrl(), options.endpointUrl)
