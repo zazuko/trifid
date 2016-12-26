@@ -61,7 +61,7 @@ For production systems we recommend data access via the [SPARQL 1.1 Protocol](ht
 `config.sparql.json` can be used as base configuration.
 The following lines defines a configuration using a Fuseki SPARQL endpoint:
 
-```
+```JSON
 {
   "baseConfig": "trifid:config.sparql.json",
   "sparqlEndpointUrl": "http://localhost:3030/dataset/sparql"
@@ -169,7 +169,7 @@ This creates an image named `trifid` that you can execute with
 
     docker run -p 8080:8080 trifid 
 
-Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper. An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss)).
+Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper . An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
 
 
 ### Reverse Proxy
