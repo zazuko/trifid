@@ -3,13 +3,13 @@
   "description": "SPARQL handler for Trifid",
   "version": "0.9.0",
   "license": "MIT",
-  "homepage": "https://github.com/zazukoians/trifid-handler-sparql",
+  "homepage": "https://github.com/zazuko/trifid-handler-sparql",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazukoians/trifid-handler-sparql.git"
+    "url": "https://github.com/zazuko/trifid-handler-sparql.git"
   },
   "bugs": {
-    "url": "https://github.com/zazukoians/trifid-handler-sparql/issues"
+    "url": "https://github.com/zazuko/trifid-handler-sparql/issues"
   },
   "scripts": {
     "lint": "standard",
