@@ -98,7 +98,29 @@ The following properties are already defined in the default configurations:
 It's possible to use prefixes for specific paths in the property values.
 
 - `cwd`: Prepends the current working directory to the value.
+- `renderer`: Prepends the path to the configured renderer to the value.
 - `trifid`: Prepends the Trifid module path to the value.
+
+### Static Files
+
+With the `staticFiles` property folders can be mapped into URL pathes for static file hosting.
+The key for a static file hosting can be used to replace values defined in a configuration which is used as baseConfig.
+The `path` is the URL path which will be used.
+It's possible to define the same path multiple times.
+If the first folder does not contain the requested file, the next folder will be used and so on.
+The `folder` property points to the folder in the file system.
+It's possible to use prefixes in the folder value.
+
+Example:
+
+```
+"staticFiles": {
+  "rendererFiles": {
+    "path": "/",
+    "folder": "renderer:public"
+  }
+}
+```
 
 ### Handler
 
@@ -106,24 +128,12 @@ Properties for the handler configuration:
 
 - `module`: The handler JS file or module.
 - `options`: Handler specific options.
+ 
 
-#### File System
+More details about the handler specific options can be found in the documentation of the handlers: 
 
-Option supported by the file system handler:
-
-- `path`: Path to the graph files in Turtle/N-Triples format.
-
-#### SPARQL
-
-The SPARQL handler runs an ASK query to check if the requested resource exists.
-If the resource exists a DESCRIBE or CONSTRUCT query is used to fetch the triples. 
-The following options are supported:
-
-- `endpointUrl`: URL to the SPARQL HTTP query interface. (default: sparqlEndpointUrl)
-- `existsQuery`: Query template to test if the resource exits.
-- `graphQuery`: Query template to fetch the triples.
-
-`${iri}` in the query templates string will be replaced by the requested URL.
+- [File System](https://github.com/zazukoians/trifid-handler-fs)
+- [SPARQL](https://github.com/zazukoians/trifid-handler-sparql)
 
 ### SPARQL Proxy
 
