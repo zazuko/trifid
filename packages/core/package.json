@@ -1,21 +1,21 @@
 {
-  "name": "trifid-ld",
-  "description": "Trifid-LD - Lightweight Linked Data Server and Proxy",
+  "name": "trifid",
+  "description": "Trifid - Lightweight Linked Data Server and Proxy",
   "version": "0.9.1",
   "license": "MIT",
-  "homepage": "https://github.com/zazukoians/trifid-ld",
+  "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazukoians/trifid-ld.git"
+    "url": "https://github.com/zazuko/trifid.git"
   },
   "bugs": {
-    "url": "https://github.com/zazukoians/trifid-ld/issues"
+    "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
     "lint": "standard *.js && standard lib/*.js"
   },
   "bin": {
-    "trifid-ld": "./server.js"
+    "trifid": "./server.js"
   },
   "dependencies": {
     "absolute-url": "^1.2.0",
@@ -32,7 +32,7 @@
     "request": "^2.78.0",
     "shortstop": "^1.0.3",
     "shush": "^1.0.0",
-    "sparql-proxy": "git://github.com/zazukoians/sparql-proxy.git#master",
+    "sparql-proxy": "^1.0.0",
     "stream-buffers": "^3.0.1",
     "tbbt-ld": "latest",
     "trifid-handler-fs": "^1.0.0",
