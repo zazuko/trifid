@@ -10,7 +10,7 @@ function middleware (options, req, res, next) {
   req.negotiate({
     html: function () {
       // remove all request header sent from the client which are not required
-      without(Object.keys(req.headers), 'host').forEach(function (name) {
+      without(Object.keys(req.headers), 'host', 'x-forwarded-host', 'x-forwarded-proto').forEach(function (name) {
         delete req.headers[name]
       })
 
