@@ -1,2 +1,2 @@
-FROM node:6.7-onbuild
+FROM node:6.9-onbuild
 EXPOSE 8080
