@@ -171,6 +171,20 @@ This creates an image named `trifid` that you can execute with
 
 Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper . An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
 
+#### Trifid environment variables
+
+You can change its behavior by changing the following environment variable:
+
+    TRIFID_CONFIG config-sparql.json
+
+This overrides the default configuration `config.json`.
+
+#### Use the pre built image
+
+If you do not want to build your own Docker image, you can pull the official image from Dockerhub:
+
+    docker pull zazuko/trifid
+
 
 ### Reverse Proxy
 
