@@ -16,6 +16,9 @@ The following options are supported:
 - `resourceGraphQuery`: The query to fetch the actual triples of the resource
 - `containerExistsQuery`: The `ASK` query to check whether the container exists or not
 - `containerGraphQuery`: The query to fetch the actual triples of the container
+- `resourceNoSlash`: The handler will also check if there is a resource with a URL ending with a slash before running the container logic.
+  Set this option to true to disable the resource exists query.
+  Useful if you know there are no triples with container URLs.
 
 ## Examples
 
