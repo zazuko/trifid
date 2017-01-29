@@ -1,0 +1,8 @@
+{
+  "baseConfig": "trifid:config-sparql.json",
+  "sparqlProxy": {
+    "options": {
+      "queryOperation": "postQueryUrlencoded"
+    }
+  }
+}
