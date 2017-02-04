@@ -53,6 +53,12 @@ function middleware (config) {
     router.use(renderer(config.renderer))
     router.use(handlerMiddleware(config.handler))
 
+    // default error handler -> send no content
+    router.use(function(err, req, res, next) {
+      res.statusCode = err.statusCode || 500
+      res.end()
+    })
+
     return router
   })
 }
