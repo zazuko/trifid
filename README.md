@@ -1,4 +1,4 @@
-# Trifid - Lightweight Linked Data Server and Proxy
+# Zazuko Trifid - Lightweight Linked Data Server and Proxy
 <img src="https://cdn.rawgit.com/zazukoians/trifid-ld/master/logo.svg" width="140px" height="140px" align="right" alt="Trifid-ld Logo"/>
 
 [![Join the chat at https://gitter.im/zazukoians/trifid-ld](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazukoians/trifid-ld?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
