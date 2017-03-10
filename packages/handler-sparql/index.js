@@ -91,6 +91,11 @@ SparqlHandler.prototype.graphStream = function (iri, query, accept) {
     var headers = {}
 
     res.headers.forEach(function (value, name) {
+      // stream will be decoded by the client -> remove content-encoding header
+      if (name === 'content-encoding') {
+        return
+      }
+
       headers[name] = value
     })
 
