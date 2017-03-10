@@ -24,7 +24,14 @@
     }
   },
   "rewrite": {
-    "mediaTypes": ["application/html", "application/xhtml+xml", "text/html", "text/turtle", "application/ld+json"],
+    "mediaTypes": [
+      "application/html",
+      "application/ld+json",
+      "application/rdf+xml",
+      "application/xhtml+xml",
+      "text/html",
+      "text/turtle"
+    ],
     "rewriteContent": true
   },
   "handler": {
