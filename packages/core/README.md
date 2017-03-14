@@ -143,7 +143,9 @@ Options:
 - `endpointUrl`: URL to the SPARQL HTTP query interface. (default: sparqlEndpointUrl)
 - `authentication`: `user` and `password` for basic authentication.
 
-Note that SPARQL is currently not supported by the in-memory store.
+See `config-virtuoso.json` and `config-stardog.json` for default configuration in case you use either of these stores.
+
+Note that SPARQL is currently not supported by the in-memory store. 
 
 ### Patch Headers
 
@@ -152,6 +154,8 @@ See the [patch-headers](https://www.npmjs.com/package/patch-headers) module docu
 ### Rewrite
 
 See the [camouflage-rewrite](https://www.npmjs.com/package/camouflage-rewrite) module documentation for more details.
+
+Note that this module does _not_ work for most content-types, see the documentation for details. By default it should work for HTML and Turtle. It is merely for testing purposes and should not be active on production.
 
 ## Production Best Practices 
 
@@ -167,7 +171,7 @@ Once Docker is installed clone the Github repository and run
 
 This creates an image named `trifid` that you can execute with
 
-    docker run -p 8080:8080 trifid 
+    docker run -ti -p 8080:8080 trifid
 
 Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper . An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
 
@@ -181,7 +185,7 @@ This overrides the default configuration `config.json`.
 
 #### Use the pre built image
 
-If you do not want to build your own Docker image, you can pull the official image from Dockerhub:
+If you do not want to build your own Docker image, you can pull the official image from [Docker Hub](https://hub.docker.com/r/zazuko/trifid/):
 
     docker pull zazuko/trifid
 
