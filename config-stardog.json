@@ -1,0 +1,13 @@
+{
+  "baseConfig": "trifid:config-sparql.json",
+  "sparqlEndpointUrl": "http://example.org/dataset/sparql/query",
+  "sparqlProxy": {
+    "options": {
+      "queryOperation": "postQueryUrlencoded",
+      "authentication": {
+        "user": "username",
+        "password": "password"
+      }
+    }
+  }
+}
