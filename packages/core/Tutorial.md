@@ -61,9 +61,9 @@ We do not recommend to change the default configuration files from Trifid called
 
 ### datasetBaseUrl
 
-This enables the proxy-rewrite module of Trifid. With this functionality you can access URIs on whatever domain you are running, like `localhost`. This is super convenient for testing as you most probably won't be pointing the productive URI of the data to your development machine. In our sample setup, we rewrite the URIs to the DBpedia SPARQL endpoint so we can use the DBpedia dataset on our development machine.
+This enables the [camouflage-rewrite](https://www.npmjs.com/package/camouflage-rewrite) module of Trifid. With this functionality you can access URIs on whatever domain you are running, like `localhost`. This is super convenient for testing as you most probably won't be pointing the productive URI of the data to your development machine. In our sample setup, we rewrite the URIs to the DBpedia SPARQL endpoint so we can use the DBpedia dataset on our development machine.
 
-To test this simply enter a URI that exists on DBpedia and adjust it accordingly. In our example, the resource `http://dbpedia.org/resource/Switzerland` would become `http://localhost:3030/resource/Switzerland`. The `DESCRIBE` query will be re-written to the correct DBpedia URI.
+To test this simply enter a URI that exists on DBpedia and adjust it accordingly. In our example, the resource `http://dbpedia.org/resource/Switzerland` would become `http://localhost:3030/resource/Switzerland`. The `DESCRIBE` query will be rewritten to the correct DBpedia URI.
 
 ### listener & port
 
