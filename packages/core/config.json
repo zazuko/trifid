@@ -41,7 +41,8 @@
     }
   },
   "renderer": {
-    "module": "trifid-renderer-rdf2h",
-    "template": "renderer:templates/index.html"
+    "module": "trifid-renderer-simple",
+    "template": "renderer:templates/index.html",
+    "templateError": "renderer:templates/error.html"
   }
 }
