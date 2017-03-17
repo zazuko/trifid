@@ -37,7 +37,7 @@
     "tbbt-ld": "latest",
     "trifid-handler-fs": "^1.0.0",
     "trifid-handler-sparql": "^1.0.0",
-    "trifid-renderer-rdf2h": "^1.0.0",
+    "trifid-renderer-simple": "^1.0.1",
     "trifid-yasgui": "^1.0.0"
   },
   "devDependencies": {
