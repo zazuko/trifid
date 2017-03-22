@@ -58,12 +58,12 @@ In a production environment the SPARQL handler may be the better choice.
 #### SPARQL configuration
 
 For production systems we recommend data access via the [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/) interface.
-`config.sparql.json` can be used as base configuration.
+`config-sparql.json` can be used as base configuration.
 The following lines defines a configuration using a Fuseki SPARQL endpoint:
 
 ```JSON
 {
-  "baseConfig": "trifid:config.sparql.json",
+  "baseConfig": "trifid:config-sparql.json",
   "sparqlEndpointUrl": "http://localhost:3030/dataset/sparql"
 }
 ```
