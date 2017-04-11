@@ -9,5 +9,13 @@
         "password": "password"
       }
     }
+  },
+  "handler": {
+    "options": {
+      "authentication": {
+        "user": "username",
+        "password": "password"
+      }
+    }
   }
 }
