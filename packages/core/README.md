@@ -72,6 +72,10 @@ The `baseConfig` property defines which file should be used as base configuratio
 The `trifid:` prefix prepends the Trifid module path.
 The value of the `sparqlEndpointUrl` property is used in the handler and also the SPARQL proxy.
 
+Sometimes  SPARQL endpoints are running on TLS/SSL but provide an incomplete configuration or a self-signed certificate. In that case one can disable strict certificate checking by setting the environment variable `NODE_TLS_REJECT_UNAUTHORIZED`. For example:
+
+    $ export NODE_TLS_REJECT_UNAUTHORIZED=0
+
 ### Properties
 
 Usually only the following properties must be configured:
