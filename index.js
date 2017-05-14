@@ -13,6 +13,7 @@ var morgan = require('morgan')
 var bunyan = require('bunyan')
 var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('sparql-proxy')
+var vhost = require('vhost')
 var yasgui = require('trifid-yasgui')
 
 /**
@@ -33,7 +34,11 @@ function middleware (config) {
       Object.keys(config.staticFiles).forEach(function (key) {
         var staticFolder = config.staticFiles[key]
 
-        router.use(staticFolder.path, express.static(staticFolder.folder))
+        if (staticFolder.hostname) {
+          router.use(staticFolder.path, vhost(staticFolder.hostname, express.static(staticFolder.folder)))
+        } else {
+          router.use(staticFolder.path, express.static(staticFolder.folder))
+        }
       })
     }
 

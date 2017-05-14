@@ -110,12 +110,14 @@ It's possible to define the same path multiple times.
 If the first folder does not contain the requested file, the next folder will be used and so on.
 The `folder` property points to the folder in the file system.
 It's possible to use prefixes in the folder value.
+Optional a `hostname` property can be used to serve files only for a specific virtual host.
 
 Example:
 
 ```JSON
 "staticFiles": {
   "rendererFiles": {
+    "hostname": "example.org",
     "path": "/",
     "folder": "renderer:public"
   }
