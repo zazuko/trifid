@@ -6,6 +6,7 @@ var absoluteUrl = require('absolute-url')
 var bodyParser = require('body-parser')
 var configTools = require('./lib/config')
 var express = require('express')
+var formatToAccept = require('format-to-accept')
 var handlerMiddleware = require('./lib/handler-middleware')
 var rewrite = require('camouflage-rewrite')
 var patchHeaders = require('patch-headers')
@@ -42,6 +43,12 @@ function middleware (config) {
       })
     }
 
+    // add ?format= request support
+    router.use(formatToAccept({formats: {
+      jsonld: 'application/ld+json',
+      ttl: 'text/turtle'
+    }}))
+
     // SPARQL proxy
     if (config.sparqlProxy && config.sparqlProxy.path) {
       router.use(bodyParser.text())
@@ -59,7 +66,7 @@ function middleware (config) {
     router.use(handlerMiddleware(config.handler))
 
     // default error handler -> send no content
-    router.use(function(err, req, res, next) {
+    router.use(function (err, req, res, next) {
       res.statusCode = err.statusCode || 500
       res.end()
     })
