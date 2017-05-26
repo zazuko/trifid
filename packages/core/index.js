@@ -43,11 +43,8 @@ function middleware (config) {
       })
     }
 
-    // add ?format= request support
-    router.use(formatToAccept({formats: {
-      jsonld: 'application/ld+json',
-      ttl: 'text/turtle'
-    }}))
+    // add media type URL request support (?format=)
+    router.use(formatToAccept(config.mediaTypeUrl))
 
     // SPARQL proxy
     if (config.sparqlProxy && config.sparqlProxy.path) {
