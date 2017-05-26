@@ -90,6 +90,7 @@ The following properties are already defined in the default configurations:
 - `listener`: `port` and `host` of the listener.
 - `express`: Express settings as key vale pairs.
 - `patchHeaders`: Settings for the `patch-headers` middleware.
+- `mediaTypeUrl`: Settings for the `format-to-accept` middleware.
 - `rewrite`: Settings for the camouflage-rewrite middleware.
 - `handler`: Settings for the graph handler.
 
