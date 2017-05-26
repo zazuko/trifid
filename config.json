@@ -23,10 +23,19 @@
       "folder": "renderer:public"
     }
   },
+  "mediaTypeUrl": {
+    "formats": {
+      "jsonld": "application/ld+json",
+      "nt": "application/n-triples",
+      "ttl": "text/turtle",
+      "xml": "application/rdf+xml"
+    }
+  },
   "rewrite": {
     "mediaTypes": [
       "application/html",
       "application/ld+json",
+      "application/n-triples",
       "application/rdf+xml",
       "application/xhtml+xml",
       "text/html",
