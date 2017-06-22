@@ -7,17 +7,16 @@
   <title>YASGUI</title>
   <link href="dist/yasgui.css" rel="stylesheet" type="text/css" />
  </head>
-
  <body>
-	 <div id="showcase"></div>
+ <div id="showcase"></div>
 
-  <script src="dist/yasgui.bundled.js"></script>
-	 <script type="text/javascript">
+  <script src="dist/yasgui.min.js"></script>
+  <script type="text/javascript">
      // set SPARQL endpoint URL
      YASGUI.defaults.yasqe.sparql.endpoint = '{{{endpointUrl}}}'
 
      var yasgui = YASGUI(document.getElementById('showcase'))
-	 </script>
+  </script>
  </body>
 </html>
 
