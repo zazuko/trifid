@@ -8,6 +8,7 @@ var configTools = require('./lib/config')
 var express = require('express')
 var formatToAccept = require('format-to-accept')
 var handlerMiddleware = require('./lib/handler-middleware')
+var redirect = require('./lib/redirect')
 var rewrite = require('camouflage-rewrite')
 var patchHeaders = require('patch-headers')
 var morgan = require('morgan')
@@ -29,6 +30,9 @@ function middleware (config) {
     router.use(morgan('combined'))
     router.use(absoluteUrl())
     router.use(patchHeaders(config.patchHeaders))
+
+    // redirects
+    redirect(router, config.redirects)
 
     // static file hosting
     if (config.staticFiles) {
