@@ -2,12 +2,12 @@
 
 var assert = require('assert')
 var express = require('express')
-var redirect = require('../lib/redirect')
+var redirects = require('../lib/redirects')
 var request = require('supertest')
 
-describe('mount-middleware', function () {
+describe('redirects', function () {
   it('should be a function', function () {
-    assert.equal(typeof redirect, 'function')
+    assert.equal(typeof redirects, 'function')
   })
 
   it('should ignore request with different path', function () {
@@ -19,7 +19,7 @@ describe('mount-middleware', function () {
       }
     }
 
-    redirect(app, options)
+    redirects(app, options)
 
     return request(app)
       .get('/test')
@@ -36,7 +36,7 @@ describe('mount-middleware', function () {
       }
     }
 
-    redirect(app, options)
+    redirects(app, options)
 
     return request(app)
       .get('/')
@@ -53,7 +53,7 @@ describe('mount-middleware', function () {
       }
     }
 
-    redirect(app, options)
+    redirects(app, options)
 
     return request(app)
       .get('/')
@@ -70,7 +70,7 @@ describe('mount-middleware', function () {
       }
     }
 
-    redirect(app, options)
+    redirects(app, options)
 
     return request(app)
       .get('/')
