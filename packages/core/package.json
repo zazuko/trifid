@@ -43,6 +43,8 @@
     "vhost": "^3.0.2"
   },
   "devDependencies": {
-    "standard": "^8.5.0"
+    "mocha": "^3.4.2",
+    "standard": "^8.5.0",
+    "supertest": "^3.0.0"
   }
 }
