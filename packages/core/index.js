@@ -15,7 +15,7 @@ var morgan = require('morgan')
 var bunyan = require('bunyan')
 var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('sparql-proxy')
-var vhost = require('vhost')
+var staticFiles = require('./lib/static-files')
 var yasgui = require('trifid-yasgui')
 
 /**
@@ -35,17 +35,7 @@ function middleware (config) {
     redirect(router, config.redirects)
 
     // static file hosting
-    if (config.staticFiles) {
-      Object.keys(config.staticFiles).forEach(function (key) {
-        var staticFolder = config.staticFiles[key]
-
-        if (staticFolder.hostname) {
-          router.use(staticFolder.path, vhost(staticFolder.hostname, express.static(staticFolder.folder)))
-        } else {
-          router.use(staticFolder.path, express.static(staticFolder.folder))
-        }
-      })
-    }
+    staticFiles(router, config.staticFiles)
 
     // add media type URL request support (?format=)
     router.use(formatToAccept(config.mediaTypeUrl))
