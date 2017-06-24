@@ -56,6 +56,13 @@ function middleware (config) {
     router.use(renderer(config.renderer))
     router.use(handlerMiddleware(config.handler))
 
+    // workaround for missing headers after hijack
+    router.use(function (err, req, res, next) {
+      res._headers = res._headers || {}
+
+      next()
+    })
+
     // default error handler -> send no content
     router.use(function (err, req, res, next) {
       res.statusCode = err.statusCode || 500
