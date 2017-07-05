@@ -18,7 +18,7 @@
   "dependencies": {
     "express": "^4.15.3",
     "mustache": "^2.3.0",
-    "yasgui": "^2.6.7"
+    "yasgui": "^2.6.11"
   },
   "devDependencies": {
     "standard": "^8.6.0"
