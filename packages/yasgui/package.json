@@ -1,7 +1,7 @@
 {
   "name": "trifid-yasgui",
   "description": "YASGUI for Trifid",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "license": "MIT",
   "homepage": "https://github.com/zazukoians/trifid-yasgui",
   "repository": {
