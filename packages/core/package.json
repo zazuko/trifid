@@ -39,7 +39,7 @@
     "trifid-handler-fs": "^1.0.0",
     "trifid-handler-sparql": "^1.0.0",
     "trifid-renderer-simple": "^2.0.2",
-    "trifid-yasgui": "^1.0.0",
+    "trifid-yasgui": "^1.2.1",
     "vhost": "^3.0.2"
   },
   "devDependencies": {
