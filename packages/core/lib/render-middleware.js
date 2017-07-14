@@ -6,14 +6,6 @@ var without = require('lodash/without')
 
 require('express-negotiate')
 
-function render (res, locals, callback) {
-  return Promise.resolve().then(function () {
-    return callback(locals)
-  }).then(function (output) {
-    res.end(output)
-  })
-}
-
 function middleware (options, req, res, next) {
   req.negotiate({
     html: function () {
@@ -32,16 +24,20 @@ function middleware (options, req, res, next) {
           return next(err)
         }
 
+        // add missing next in hijacked req
+        req.next = function (err) {
+          res.unhijack()
+
+          next(err)
+        }
+
         var graphBuffer = new streamBuffers.WritableStreamBuffer()
 
         graphBuffer.on('finish', function () {
           var graphString = graphBuffer.getContentsAsString('utf8')
 
-          var locals = {
-            iri: req.absoluteUrl(),
-            statusCode: res.statusCode,
-            graph: graphString
-          }
+          res.locals.iri = req.absoluteUrl()
+          res.locals.graph = graphString
 
           // remove all response headers sent from handler
           if (res._headers) {
@@ -55,13 +51,13 @@ function middleware (options, req, res, next) {
 
           // use renderer to build body
           if (res.statusCode === 200) {
-            render(res, locals, options.render)
+            options.render(req, res)
           } else {
             // use .error method if renderer has one
             if (options.render.error) {
-              render(res, locals, options.render.error)
+              options.render.error(req, res)
             } else {
-              render(res, locals, options.render)
+              options.render(req, res)
             }
           }
         })
