@@ -11,7 +11,7 @@ function factory (options) {
     return router
   }
 
-  options.template = options.template || path.join(__dirname, 'templates/index.html')
+  options.template = options.template || path.join(__dirname, 'views/index.html')
 
   // render index page
   router.get('/', function (req, res) {
