@@ -40,6 +40,9 @@ function middleware (config) {
     // redirects
     redirects(router, config.redirects)
 
+    // static views
+    templateEngine.staticViews(router, config.staticViews)
+
     // static file hosting
     staticFiles(router, config.staticFiles)
 
