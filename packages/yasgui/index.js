@@ -1,8 +1,6 @@
 'use strict'
 
 var express = require('express')
-var fs = require('fs')
-var mustache = require('mustache')
 var path = require('path')
 var url = require('url')
 
@@ -13,7 +11,7 @@ function factory (options) {
     return router
   }
 
-  var template = fs.readFileSync(options.template || path.join(__dirname, 'templates/index.html')).toString()
+  options.template = options.template || path.join(__dirname, 'templates/index.html')
 
   // render index page
   router.get('/', function (req, res) {
@@ -23,12 +21,9 @@ function factory (options) {
     }
 
     // read SPARQL endpoint URL from options and resolve with absoluteUrl
-    var locals = {
-      endpointUrl: url.resolve(req.absoluteUrl(), options.endpointUrl)
-    }
+    res.locals.endpointUrl = url.resolve(req.absoluteUrl(), options.endpointUrl)
 
-    res.setHeader('content-type', 'text/html')
-    res.end(mustache.render(template, locals))
+    res.render(options.template)
   })
 
   // static files from yasgui dist folder
