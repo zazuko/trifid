@@ -16,6 +16,7 @@ var bunyan = require('bunyan')
 var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('sparql-proxy')
 var staticFiles = require('./lib/static-files')
+var templateEngine = require('./lib/template-engine')
 var yasgui = require('trifid-yasgui')
 
 /**
@@ -26,6 +27,8 @@ var yasgui = require('trifid-yasgui')
 function middleware (config) {
   return configTools.breakDown(config).then(function (config) {
     var router = express.Router()
+
+    router.config = config
 
     router.use(morgan('combined'))
     router.use(absoluteUrl())
@@ -60,11 +63,13 @@ function middleware (config) {
     router.use(function (err, req, res, next) {
       res._headers = res._headers || {}
 
-      next()
+      next(err)
     })
 
     // default error handler -> send no content
     router.use(function (err, req, res, next) {
+      console.error(err.stack || err.message)
+
       res.statusCode = err.statusCode || 500
       res.end()
     })
@@ -93,6 +98,8 @@ function trifid (config) {
   }
 
   return middleware(config).then(function (router) {
+    templateEngine(app, router.config)
+
     app.use(router)
 
     app.listen(config.listener.port, config.listener.host)
