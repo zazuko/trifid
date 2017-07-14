@@ -11,6 +11,7 @@ var handlerMiddleware = require('./lib/handler-middleware')
 var redirects = require('./lib/redirects')
 var rewrite = require('camouflage-rewrite')
 var patchHeaders = require('patch-headers')
+var merge = require('lodash/merge')
 var morgan = require('morgan')
 var bunyan = require('bunyan')
 var renderer = require('./lib/render-middleware')
@@ -28,7 +29,9 @@ function middleware (config) {
   return configTools.breakDown(config).then(function (config) {
     var router = express.Router()
 
-    router.config = config
+    router.locals = {
+      config: config
+    }
 
     router.use(morgan('combined'))
     router.use(absoluteUrl())
@@ -98,7 +101,9 @@ function trifid (config) {
   }
 
   return middleware(config).then(function (router) {
-    templateEngine(app, router.config)
+    merge(app.locals, router.locals)
+
+    templateEngine(app)
 
     app.use(router)
 
