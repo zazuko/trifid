@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "absolute-url": "^1.2.0",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.15.2",
     "bunyan": "^1.8.4",
     "camouflage-rewrite": "^1.0.0",
