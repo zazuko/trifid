@@ -51,7 +51,7 @@
   },
   "renderer": {
     "module": "trifid-renderer-simple",
-    "template": "renderer:templates/index.html",
-    "templateError": "renderer:templates/error.html"
+    "template": "renderer:views/index.html",
+    "templateError": "renderer:views/error.html"
   }
 }
