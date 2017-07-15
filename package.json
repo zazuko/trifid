@@ -40,8 +40,8 @@
     "tbbt-ld": "latest",
     "trifid-handler-fs": "^1.0.0",
     "trifid-handler-sparql": "^1.0.0",
-    "trifid-renderer-simple": "^3.0.1",
-    "trifid-yasgui": "^2.0.2",
+    "trifid-renderer-simple": "^3.0.2",
+    "trifid-yasgui": "^2.0.3",
     "vhost": "^3.0.2"
   },
   "devDependencies": {
