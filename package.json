@@ -24,7 +24,7 @@
     "bunyan": "^1.8.4",
     "camouflage-rewrite": "^1.0.0",
     "commander": "^2.9.0",
-    "cotton-candy": "1.1.0",
+    "cotton-candy": "^1.1.0",
     "express": "^4.14.0",
     "express-negotiate": "^0.0.5",
     "findup-sync": "^0.4.3",
@@ -41,7 +41,7 @@
     "trifid-handler-fs": "^1.0.0",
     "trifid-handler-sparql": "^1.0.0",
     "trifid-renderer-simple": "^2.0.3",
-    "trifid-yasgui": "^1.2.2",
+    "trifid-yasgui": "^1.2.4",
     "vhost": "^3.0.2"
   },
   "devDependencies": {
