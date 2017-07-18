@@ -12,7 +12,6 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "start": "trifid --config config.json || ./server.js --config config.json",
     "lint": "standard *.js && standard lib/*.js"
   },
   "bin": {
