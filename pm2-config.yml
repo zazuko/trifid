@@ -1,4 +1,0 @@
-apps:
-  - script   : ./node_modules/.bin/trifid
-    name     : 'Trifid'
-    args     : '--config config.json'
