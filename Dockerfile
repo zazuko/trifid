@@ -1,6 +1,8 @@
-FROM node:6.10-onbuild
+FROM node:6.10
 
 RUN npm install pm2 -g
-CMD pm2-docker start npm -- start
+RUN npm install trifid -g
+
+CMD pm2-docker start npm -- docker
 
 EXPOSE 8080

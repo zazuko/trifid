@@ -12,6 +12,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
+    "docker": "trifid --config config.json",
     "lint": "standard *.js && standard lib/*.js"
   },
   "bin": {
