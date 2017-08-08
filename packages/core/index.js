@@ -7,8 +7,6 @@ var bodyParser = require('body-parser')
 var configTools = require('./lib/config')
 var i18next = require('i18next')
 var i18nextMiddleware = require('i18next-express-middleware')
-//var i18nextBackend = require('i18next-node-fs-backend')
-var i18nextBackend = require('i18next-node-locize-backend')
 var express = require('express')
 var formatToAccept = require('format-to-accept')
 var handlerMiddleware = require('./lib/handler-middleware')
@@ -22,6 +20,7 @@ var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('sparql-proxy')
 var staticFiles = require('./lib/static-files')
 var templateEngine = require('./lib/template-engine')
+var marked = require('marked')
 var yasgui = require('trifid-yasgui')
 
 /**
@@ -34,12 +33,16 @@ function middleware (config) {
     var router = express.Router()
 
     router.locals = {
-      config: config
+      config: config,
+      m: marked
     }
 
     // i18n
-    i18next.use(i18nextMiddleware.LanguageDetector).use(i18nextBackend).init(config.i18next)
-    router.use(i18nextMiddleware.handle(i18next))
+    if (config.i18n) {
+      var i18nextBackend = require(config.i18n.backend.module || 'i18next-node-fs-backend')
+      i18next.use(i18nextMiddleware.LanguageDetector).use(i18nextBackend).init(config.i18n)
+      router.use(i18nextMiddleware.handle(i18next))
+    }
 
     router.use(morgan('combined'))
     router.use(absoluteUrl())
