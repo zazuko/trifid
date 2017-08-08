@@ -10,6 +10,28 @@
     "trust proxy": "loopback",
     "x-powered-by": null
   },
+  "i18next": {
+    "debug": true,
+    "detection": {
+      "caches": ["cookie"],
+      "cookieDomain": "trifid"
+    },
+    "saveMissing": true,
+    "load": "unspecific",
+    "whitelist": [ "de", "fr", "it", "en" ],
+    "fallbackLng": [ "de", "fr", "it", "en" ],
+    "preload": [ "de", "fr", "it", "en" ],
+    "backend": {
+      "projectId": "051613d6-9953-4e08-949b-b460fe483dbd",
+      "apiKey": "c1b8521d-b2ec-4edc-9dad-fdb3e142ad59",
+      "referenceLng": "en"
+    },
+    "_backend": {
+      "loadPath": "locales/{{lng}}/{{ns}}.json",
+      "addPath": "locales/{{lng}}/{{ns}}.missing.json",
+      "jsonIndent": 2
+    }
+  },
   "patchHeaders": {
     "static": {
       "Access-Control-Allow-Origin": "*",

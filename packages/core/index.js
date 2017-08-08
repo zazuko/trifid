@@ -5,6 +5,10 @@
 var absoluteUrl = require('absolute-url')
 var bodyParser = require('body-parser')
 var configTools = require('./lib/config')
+var i18next = require('i18next')
+var i18nextMiddleware = require('i18next-express-middleware')
+//var i18nextBackend = require('i18next-node-fs-backend')
+var i18nextBackend = require('i18next-node-locize-backend')
 var express = require('express')
 var formatToAccept = require('format-to-accept')
 var handlerMiddleware = require('./lib/handler-middleware')
@@ -32,6 +36,10 @@ function middleware (config) {
     router.locals = {
       config: config
     }
+
+    // i18n
+    i18next.use(i18nextMiddleware.LanguageDetector).use(i18nextBackend).init(config.i18next)
+    router.use(i18nextMiddleware.handle(i18next))
 
     router.use(morgan('combined'))
     router.use(absoluteUrl())
