@@ -25,8 +25,8 @@ ${include('cwd:views/footer.html')}
 <script type="text/javascript">
    // set SPARQL endpoint URL
    YASGUI.defaults.yasqe.sparql.endpoint = '${endpointUrl}'
-
-   var yasgui = YASGUI(document.getElementById('yasgui'))
+   var config = {"api":{"urlShortener":"http://yasgui.org/shorten"}}
+   var yasgui = YASGUI(document.getElementById('yasgui'), config)
 </script>
 
 </body>

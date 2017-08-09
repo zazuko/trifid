@@ -16,7 +16,7 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    "express": "^4.15.3",
+    "express": "^4.15.4",
     "yasgui": "^2.6.14"
   },
   "devDependencies": {
