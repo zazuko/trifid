@@ -17,16 +17,16 @@
     },
     "saveMissing": true,
     "load": "unspecific",
-    "whitelist": [ "de", "fr", "it", "en" ],
-    "fallbackLng": [ "en", "de", "fr", "it" ],
-    "preload": [ "de", "fr", "it", "en" ],
-    "backend": {
+    "whitelist": [ "de", "fr", "en" ],
+    "fallbackLng": [ "en", "de", "fr" ],
+    "preload": [ "de", "fr", "en" ],
+    "_backend": {
       "module": "i18next-node-locize-backend",
       "projectId": "051613d6-9953-4e08-949b-b460fe483dbd",
       "apiKey": "c1b8521d-b2ec-4edc-9dad-fdb3e142ad59",
       "referenceLng": "en"
     },
-    "_backend": {
+    "backend": {
       "module": "i18next-node-fs-backend",
       "loadPath": "locales/{{lng}}/{{ns}}.json",
       "addPath": "locales/{{lng}}/{{ns}}.missing.json",
