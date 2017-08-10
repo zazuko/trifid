@@ -41,9 +41,6 @@ function middleware (config) {
     // redirects
     redirects(router, config.redirects)
 
-    // static file hosting
-    staticFiles(router, config.staticFiles)
-
     // i18n
     i18n(router, config.i18n)
 
@@ -53,7 +50,10 @@ function middleware (config) {
     // static views
     templateEngine.staticViews(router, config.staticViews)
 
-    // add media type URL request support (?format=)
+    // static file hosting
+    staticFiles(router, config.staticFiles)
+
+   // add media type URL request support (?format=)
     router.use(formatToAccept(config.mediaTypeUrl))
 
     // SPARQL proxy
