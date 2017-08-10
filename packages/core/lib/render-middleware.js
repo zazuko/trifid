@@ -36,7 +36,6 @@ function middleware (options, req, res, next) {
         graphBuffer.on('finish', function () {
           var graphString = graphBuffer.getContentsAsString('utf8')
 
-          res.locals.iri = req.absoluteUrl()
           res.locals.graph = graphString
 
           // remove all response headers sent from handler

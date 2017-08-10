@@ -19,7 +19,6 @@ var renderer = require('./lib/render-middleware')
 var sparqlProxy = require('sparql-proxy')
 var staticFiles = require('./lib/static-files')
 var templateEngine = require('./lib/template-engine')
-var marked = require('marked')
 var yasgui = require('trifid-yasgui')
 
 /**
@@ -33,7 +32,6 @@ function middleware (config) {
 
     router.locals = {
       config: config,
-      m: marked
     }
 
     router.use(morgan('combined'))
@@ -48,6 +46,9 @@ function middleware (config) {
 
     // i18n
     i18n(router, config.i18n)
+
+    // locals
+    templateEngine.locals(router)
 
     // static views
     templateEngine.staticViews(router, config.staticViews)
