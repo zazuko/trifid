@@ -5,11 +5,10 @@
 var absoluteUrl = require('absolute-url')
 var bodyParser = require('body-parser')
 var configTools = require('./lib/config')
-var i18next = require('i18next')
-var i18nextMiddleware = require('i18next-express-middleware')
 var express = require('express')
 var formatToAccept = require('format-to-accept')
 var handlerMiddleware = require('./lib/handler-middleware')
+var i18n = require('./lib/i18n')
 var redirects = require('./lib/redirects')
 var rewrite = require('camouflage-rewrite')
 var patchHeaders = require('patch-headers')
@@ -37,13 +36,6 @@ function middleware (config) {
       m: marked
     }
 
-    // i18n
-    if (config.i18n) {
-      var i18nextBackend = require(config.i18n.backend.module || 'i18next-node-fs-backend')
-      i18next.use(i18nextMiddleware.LanguageDetector).use(i18nextBackend).init(config.i18n)
-      router.use(i18nextMiddleware.handle(i18next))
-    }
-
     router.use(morgan('combined'))
     router.use(absoluteUrl())
     router.use(patchHeaders(config.patchHeaders))
@@ -51,11 +43,14 @@ function middleware (config) {
     // redirects
     redirects(router, config.redirects)
 
-    // static views
-    templateEngine.staticViews(router, config.staticViews)
-
     // static file hosting
     staticFiles(router, config.staticFiles)
+
+    // i18n
+    i18n(router, config.i18n)
+
+    // static views
+    templateEngine.staticViews(router, config.staticViews)
 
     // add media type URL request support (?format=)
     router.use(formatToAccept(config.mediaTypeUrl))
