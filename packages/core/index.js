@@ -31,7 +31,7 @@ function middleware (config) {
     var router = express.Router()
 
     router.locals = {
-      config: config,
+      config: config
     }
 
     router.use(morgan('combined'))
