@@ -54,9 +54,6 @@ function middleware (config) {
       name: 'redirects',
       func: redirects
     }, {
-      name: 'staticFiles',
-      func: staticFiles
-    }, {
       name: 'sparqlProxy',
       func: sparqlProxy
     }, {
@@ -68,6 +65,9 @@ function middleware (config) {
     }, {
       name: 'staticViews',
       func: templateEngine.staticViews
+    }, {
+      name: 'staticFiles',
+      func: staticFiles
     }, {
       name: 'mediaTypeUrl',
       func: plugins.middleware,
