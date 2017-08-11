@@ -13,6 +13,7 @@ var requestHeaderWhitelist = [
 ]
 
 var responseHeaderWhitelist = [
+  'link',
   'set-cookie'
 ]
 
