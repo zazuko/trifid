@@ -29,6 +29,7 @@
     "express-negotiate": "^0.0.5",
     "findup-sync": "^0.4.3",
     "format-to-accept": "^1.0.0",
+    "hydra-view": "git+ssh://git@github.com:zazuko/hydra-view.git#develop",
     "i18next": "^8.4.3",
     "i18next-express-middleware": "^1.0.5",
     "i18next-node-fs-backend": "^1.0.0",

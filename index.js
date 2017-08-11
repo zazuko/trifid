@@ -10,6 +10,7 @@ var express = require('express')
 var formatToAccept = require('format-to-accept')
 var handlerMiddleware = require('./lib/handler')
 var headersFix = require('./lib/headers-fix')
+var hydraViews = require('./lib/hydra-views')
 var i18n = require('./lib/i18n')
 var redirects = require('./lib/redirects')
 var rewrite = require('camouflage-rewrite')
@@ -82,6 +83,9 @@ function middleware (config) {
       name: 'renderer',
       func: plugins.middleware,
       middleware: renderer
+    }, {
+      name: 'hydraViews',
+      func: hydraViews
     }, {
       name: 'handler',
       func: plugins.middleware,
