@@ -80,9 +80,11 @@ function middleware (config) {
       func: plugins.middleware,
       middleware: rewrite
     }, {
+      name: 'renderers',
+      func: renderer.all
+    }, {
       name: 'renderer',
-      func: plugins.middleware,
-      middleware: renderer
+      func: renderer
     }, {
       name: 'hydraViews',
       func: hydraViews
