@@ -1,3 +1,4 @@
+var clone = require('lodash/clone')
 var findup = require('findup-sync')
 var get = require('lodash/get')
 var path = require('path')
@@ -31,7 +32,7 @@ function breakDownRule (config, property, value) {
       return actual || get(config, value)
     }, null))
   } else if (typeof value === 'object') {
-    set(config, property, value)
+    set(config, property, clone(value))
   } else if (typeof value === 'string') {
     set(config, property, get(config, value))
   }
@@ -75,7 +76,9 @@ function fromJson (config) {
     return Promise.resolve(config)
   }
 
-  return fromFile(config.baseConfig).then(function (baseConfig) {
+  return resolve(clone(config)).then((resolved) => {
+    return fromFile(resolved.baseConfig)
+  }).then(function (baseConfig) {
     return merge(baseConfig, config)
   })
 }
