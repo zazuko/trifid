@@ -13,11 +13,15 @@ plugins.load = function (list, router, config) {
 }
 
 plugins.middleware = function (router, config, plugin) {
+  var middleware
+
   if (plugin.params) {
-    router.use(plugin.middleware.apply(null, plugin.params))
+    middleware = plugin.middleware.apply(null, plugin.params)
   } else {
-    router.use(plugin.middleware.call(null, config))
+    middleware = plugin.middleware.call(null, config)
   }
+
+  router.use(middleware)
 }
 
 module.exports = plugins
