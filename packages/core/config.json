@@ -41,13 +41,13 @@
     }
   },
   "staticFiles": {
-    "rendererFiles": {
-      "path": "/",
-      "folder": "renderer:public"
-    },
     "trifidFiles": {
       "path": "/",
       "folder": "cwd:public"
+    },
+    "rendererFiles": {
+      "path": "/",
+      "folder": "renderer:public"
     }
   },
   "mediaTypeUrl": {
