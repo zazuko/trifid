@@ -44,6 +44,10 @@
     "rendererFiles": {
       "path": "/",
       "folder": "renderer:public"
+    },
+    "trifidFiles": {
+      "path": "/",
+      "folder": "cwd:public"
     }
   },
   "mediaTypeUrl": {
