@@ -12,7 +12,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "lint": "standard *.js && standard lib/*.js"
+    "test": "standard && mocha"
   },
   "bin": {
     "trifid": "./server.js"
