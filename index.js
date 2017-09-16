@@ -3,23 +3,25 @@
 'use strict'
 
 var absoluteUrl = require('absolute-url')
-var bodyParser = require('body-parser')
+var bunyan = require('bunyan')
 var configTools = require('./lib/config')
+var errorHandler = require('./lib/error-handler')
 var express = require('express')
 var formatToAccept = require('format-to-accept')
-var handlerMiddleware = require('./lib/handler-middleware')
+var handlerMiddleware = require('./lib/handler')
+var headersFix = require('./lib/headers-fix')
 var i18n = require('./lib/i18n')
 var redirects = require('./lib/redirects')
 var rewrite = require('camouflage-rewrite')
 var patchHeaders = require('patch-headers')
 var merge = require('lodash/merge')
 var morgan = require('morgan')
-var bunyan = require('bunyan')
-var renderer = require('./lib/render-middleware')
-var sparqlProxy = require('sparql-proxy')
+var plugins = require('./lib/plugins')
+var renderer = require('./lib/renderer')
+var sparqlProxy = require('./lib/sparql-proxy')
 var staticFiles = require('./lib/static-files')
 var templateEngine = require('./lib/template-engine')
-var yasgui = require('trifid-yasgui')
+var yasgui = require('./lib/yasgui')
 
 /**
  * Creates a Trifid middleware
@@ -31,64 +33,75 @@ function middleware (config) {
     var router = express.Router()
 
     router.locals = {
-      config: config,
+      config: config
       t: function (x) {return x.substring(x.indexOf(':')+1)}
     }
 
-    router.use(morgan('combined'))
-    router.use(absoluteUrl())
-    router.use(patchHeaders(config.patchHeaders))
-
-    // redirects
-    redirects(router, config.redirects)
-
-    // i18n
-    i18n(router, config.i18n)
-
-    // locals
-    templateEngine.locals(router)
-
-    // static views
-    templateEngine.staticViews(router, config.staticViews)
-
-    // static file hosting
-    staticFiles(router, config.staticFiles)
-
-   // add media type URL request support (?format=)
-    router.use(formatToAccept(config.mediaTypeUrl))
-
-    // SPARQL proxy
-    if (config.sparqlProxy && config.sparqlProxy.path) {
-      router.use(bodyParser.text())
-      router.use(bodyParser.urlencoded({extended: false}))
-      router.use(config.sparqlProxy.path, sparqlProxy(config.sparqlProxy.options))
     }
 
-    // yasgui
-    if (config.yasgui && config.yasgui.path) {
-      router.use(config.yasgui.path, yasgui(config.yasgui.options))
-    }
+    var pluginList = [{
+      name: 'core:logger',
+      func: plugins.middleware,
+      middleware: morgan,
+      params: ['combined']
+    }, {
+      name: 'core:absoluteUrl',
+      func: plugins.middleware,
+      middleware: absoluteUrl
+    }, {
+      name: 'patchHeaders',
+      func: plugins.middleware,
+      middleware: patchHeaders
+    }, {
+      name: 'redirects',
+      func: redirects
+    }, {
+      name: 'sparqlProxy',
+      func: sparqlProxy
+    }, {
+      name: 'i18n',
+      func: i18n
+    }, {
+      name: 'locals',
+      func: templateEngine.locals
+    }, {
+      name: 'staticViews',
+      func: templateEngine.staticViews
+    }, {
+      name: 'staticFiles',
+      func: staticFiles
+    }, {
+      name: 'mediaTypeUrl',
+      func: plugins.middleware,
+      middleware: formatToAccept
+    }, {
+      name: 'yasgui',
+      func: yasgui
+    }, {
+      name: 'rewrite',
+      func: plugins.middleware,
+      middleware: rewrite
+    }, {
+      name: 'renderers',
+      func: renderer.all
+    }, {
+      name: 'renderer',
+      func: renderer
+    }, {
+      name: 'handler',
+      func: plugins.middleware,
+      middleware: handlerMiddleware
+    }, {
+      name: 'headers-fix',
+      func: headersFix
+    }, {
+      name: 'error-handler',
+      func: errorHandler
+    }]
 
-    router.use(rewrite(config.rewrite))
-    router.use(renderer(config.renderer))
-    router.use(handlerMiddleware(config.handler))
-
-    // workaround for missing headers after hijack
-    router.use(function (err, req, res, next) {
-      res._headers = res._headers || {}
-
-      next(err)
+    return plugins.load(pluginList, router, config).then(function () {
+      return router
     })
-
-    // default error handler -> send no content
-    router.use(function (err, req, res, next) {
-      console.error(err.stack || err.message)
-
-      res.statusCode = err.statusCode || 500
-      res.end()
-    })
-
-    return router
   })
 }
 
