@@ -2,7 +2,7 @@ var express = require('express')
 var mount = require('./mount-middleware')
 
 function mountStaticFiles (router, options) {
-  mount(router, options, function (config) {
+  return mount.all(router, options, function (config) {
     return express.static(config.folder)
   })
 }

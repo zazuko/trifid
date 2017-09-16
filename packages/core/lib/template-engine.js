@@ -32,6 +32,9 @@ init.locals = function (router) {
   router.use(function (req, res, next) {
     res.locals.iri = req.absoluteUrl()
     res.locals.url = url.parse(res.locals.iri)
+    res.locals.t = res.locals.t || function (x) {
+      return x.substring(x.indexOf(':') + 1)
+    }
 
     next()
   })

@@ -10,7 +10,7 @@
     "trust proxy": "loopback",
     "x-powered-by": null
   },
-  "i18n": {
+  "_i18n": {
     "debug": false,
     "detection": {
       "caches": []

@@ -64,7 +64,7 @@ describe('mount-middleware', function () {
       }
     }
 
-    mount(app, configs, function (configs) {
+    mount.all(app, configs, function (configs) {
       return function (req, res, next) {
         processed.push(req.originalUrl)
 

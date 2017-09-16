@@ -1,7 +1,7 @@
 {
   "name": "trifid",
   "description": "Trifid - Lightweight Linked Data Server and Proxy",
-  "version": "1.8.3",
+  "version": "1.9.0-beta.4",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
@@ -12,7 +12,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "lint": "standard *.js && standard lib/*.js"
+    "test": "standard && mocha"
   },
   "bin": {
     "trifid": "./server.js"
@@ -29,6 +29,7 @@
     "express-negotiate": "^0.0.5",
     "findup-sync": "^0.4.3",
     "format-to-accept": "^1.0.0",
+    "hijackresponse": "^2.0.1",
     "i18next": "^8.4.3",
     "i18next-express-middleware": "^1.0.5",
     "i18next-node-fs-backend": "^1.0.0",
@@ -40,7 +41,7 @@
     "request": "^2.78.0",
     "shortstop": "^1.0.3",
     "shush": "^1.0.0",
-    "sparql-proxy": "^1.0.0",
+    "sparql-proxy": "^2.0.0",
     "stream-buffers": "^3.0.1",
     "tbbt-ld": "latest",
     "trifid-handler-fs": "^1.0.0",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "mocha": "^3.4.2",
+    "nock": "^9.0.14",
     "standard": "^8.5.0",
     "supertest": "^3.0.0"
   }
