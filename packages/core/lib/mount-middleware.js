@@ -1,7 +1,7 @@
 var vhost = require('vhost')
 
 function mount (router, config, callback) {
-  if (!router || !config || !callback) {
+  if (!config || !callback) {
     return Promise.resolve()
   }
 
