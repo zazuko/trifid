@@ -34,7 +34,7 @@ function middleware (config) {
 
     router.locals = {
       config: config,
-      t: function (x) {return x.substring(x.indexOf(':')+1)}
+      t: function (x) { return x.substring(x.indexOf(':') + 1) }
     }
 
     var pluginList = [{
