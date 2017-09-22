@@ -1,7 +1,7 @@
 {
   "name": "trifid",
   "description": "Trifid - Lightweight Linked Data Server and Proxy",
-  "version": "1.9.4",
+  "version": "1.10.0",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
@@ -22,7 +22,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.18.1",
     "bunyan": "^1.8.12",
-    "camouflage-rewrite": "^1.0.6",
+    "camouflage-rewrite": "^1.1.0",
     "commander": "^2.9.0",
     "cotton-candy": "^1.1.0",
     "express": "^4.15.4",

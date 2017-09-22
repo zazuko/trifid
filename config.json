@@ -68,7 +68,8 @@
       "text/html",
       "text/turtle"
     ],
-    "rewriteContent": true
+    "rewriteContent": true,
+    "rewriteHeaders": true
   },
   "handler": {
     "module": "trifid-handler-fs",
