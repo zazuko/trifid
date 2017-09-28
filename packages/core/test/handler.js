@@ -83,4 +83,26 @@ describe('handler', () => {
       }, null, null, exampleIri)
     })
   })
+
+  it('should handle encoded IRIs', () => {
+    const exampleIri = 'http://example.org/%C3%BCmlaut'
+
+    return new Promise((resolve) => {
+      const obj = handler({
+        module: dummyHandlerPath,
+        options: {
+          callback: (req, res, next, iri) => {
+            assert.equal(iri, decodeURI(exampleIri))
+
+            resolve()
+          }
+        }
+      })
+
+      obj({
+        method: 'GET',
+        absoluteUrl: () => exampleIri
+      }, null, null, exampleIri)
+    })
+  })
 })
