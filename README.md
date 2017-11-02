@@ -7,7 +7,7 @@ Trifid provides a lightweight and easy way to access Linked Data URIs via HTTP.
 In the Linked Data world this is often called [dereferencing](http://en.wikipedia.org/wiki/Dereferenceable_Uniform_Resource_Identifier).
 Trifid is inspired by [Pubby](http://wifo5-03.informatik.uni-mannheim.de/pubby/) and written in (server side) JavaScript.
 
-Features:
+### Features
 
 * Provides a Linked Data interface to SPARQL protocol servers
 * Provides a file based interface for testing
@@ -15,12 +15,19 @@ Features:
 * Takes care of content-negotiation
 * Provides a SPARQL proxy and [YASGUI](http://about.yasgui.org/) as web frontend
 
-Requirements:
+### Requirements
 
 * A SPARQL endpoint
 * Or for development some triples in a local file.
 
 Trifid supports all content-types provided by the SPARQL endpoint and does not do additional format conversion.
+
+### Trifid in the wild
+
+Trifid can be completely themed according to your needs. Example resources using Trifid:
+
+* Default view: http://lod.opentransportdata.swiss/didok/8500011
+* Customized for one gov entity in Switzerland: https://ld.geo.admin.ch/boundaries/municipality/296
 
 ## Installation
 
