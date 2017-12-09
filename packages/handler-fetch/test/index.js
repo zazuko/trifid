@@ -154,6 +154,28 @@ describe('trifid-handler-fetch', () => {
     })
   })
 
+  it('should load a dataset via http and use the given content type', () => {
+    const content = fs.readFileSync(url.parse(fileUrlDataset).path)
+
+    nock('http://example.org').get('/dataset-content-type').reply(200, content)
+
+    const handler = new Handler({
+      url: 'http://example.org/dataset-content-type',
+      contentType: 'application/n-quads'
+    })
+
+    return handler.load().then(() => {
+      const graphs = handler.dataset.toArray().reduce((graphs, quad) => {
+        graphs[quad.graph.value] = true
+
+        return graphs
+      }, {})
+
+      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
+      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
+    })
+  })
+
   it('should compact JSON-LD responses', () => {
     const app = express()
 

@@ -22,7 +22,8 @@ This example config uses [The Big Bang Theory dataset](https://www.npmjs.com/pac
   "handler": {
     "module": "trifid-handler-fetch",
       "options": {
-        "url": "https://cdn.rawgit.com/zazuko/tbbt-ld/master/dist/tbbt.nt",
+        "url": "https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt",
+        "contentType": "application/n-triples",
         "split": "true",
         "cache": "true"
     }

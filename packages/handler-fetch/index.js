@@ -31,6 +31,7 @@ class FetchHandler {
     this.options = options.options || {}
     this.options.fetch = fetch
     this.cache = options.cache
+    this.contentType = options.contentType
     this.split = options.split
 
     this.handle = this._handle.bind(this)
@@ -67,7 +68,13 @@ class FetchHandler {
       return Promise.resolve()
     }
 
-    return rdfFetch(this.url, this.options).then(res => res.dataset()).then((input) => {
+    return rdfFetch(this.url, this.options).then((res) => {
+      if (this.contentType) {
+        res.headers.set('content-type', this.contentType)
+      }
+
+      return res
+    }).then(res => res.dataset()).then((input) => {
       if (this.split) {
         this.dataset = resourcesToGraph(input)
       } else {
