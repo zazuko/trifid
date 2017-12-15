@@ -3,14 +3,12 @@
 const assert = require('assert')
 const express = require('express')
 const fs = require('fs')
-const nock = require('nock')
 const path = require('path')
 const request = require('supertest')
 const url = require('url')
 const Handler = require('..')
 
 describe('trifid-handler-fetch', () => {
-  const fileUrlGraph = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nt')
   const fileUrlDataset = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nq')
 
   const attachIri = (req, res, next) => {
@@ -33,51 +31,6 @@ describe('trifid-handler-fetch', () => {
     const handler = new Handler({url: fileUrlDataset})
 
     assert.equal(typeof handler.get, 'function')
-  })
-
-  it('should load a dataset input file', () => {
-    const handler = new Handler({
-      url: fileUrlDataset,
-      options: {
-        contentTypeLookup: () => {
-          return 'application/n-quads'
-        }
-      }
-    })
-
-    return handler.load().then(() => {
-      const graphs = handler.dataset.toArray().reduce((graphs, quad) => {
-        graphs[quad.graph.value] = true
-
-        return graphs
-      }, {})
-
-      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-    })
-  })
-
-  it('should load and split a graph input file', () => {
-    const handler = new Handler({
-      url: fileUrlGraph,
-      options: {
-        contentTypeLookup: () => {
-          return 'application/n-triples'
-        }
-      },
-      split: true
-    })
-
-    return handler.load().then(() => {
-      const graphs = handler.dataset.toArray().reduce((graphs, quad) => {
-        graphs[quad.graph.value] = true
-
-        return graphs
-      }, {})
-
-      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-    })
   })
 
   it('should send a response', () => {
@@ -107,73 +60,6 @@ describe('trifid-handler-fetch', () => {
         assert.notEqual(text.indexOf(includeNt), -1)
         assert.equal(text.indexOf(excludeNt), -1)
       })
-  })
-
-  it('should load a graph via http', () => {
-    const content = fs.readFileSync(url.parse(fileUrlGraph).path)
-
-    nock('http://example.org').get('/graph').reply(200, content, {
-      'content-type': 'application/n-triples'
-    })
-
-    const handler = new Handler({
-      url: 'http://example.org/graph',
-      split: true
-    })
-
-    return handler.load().then(() => {
-      const graphs = handler.dataset.toArray().reduce((graphs, quad) => {
-        graphs[quad.graph.value] = true
-
-        return graphs
-      }, {})
-
-      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-    })
-  })
-
-  it('should load a dataset via http', () => {
-    const content = fs.readFileSync(url.parse(fileUrlDataset).path)
-
-    nock('http://example.org').get('/dataset').reply(200, content, {
-      'content-type': 'application/n-quads'
-    })
-
-    const handler = new Handler({url: 'http://example.org/dataset'})
-
-    return handler.load().then(() => {
-      const graphs = handler.dataset.toArray().reduce((graphs, quad) => {
-        graphs[quad.graph.value] = true
-
-        return graphs
-      }, {})
-
-      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-    })
-  })
-
-  it('should load a dataset via http and use the given content type', () => {
-    const content = fs.readFileSync(url.parse(fileUrlDataset).path)
-
-    nock('http://example.org').get('/dataset-content-type').reply(200, content)
-
-    const handler = new Handler({
-      url: 'http://example.org/dataset-content-type',
-      contentType: 'application/n-quads'
-    })
-
-    return handler.load().then(() => {
-      const graphs = handler.dataset.toArray().reduce((graphs, quad) => {
-        graphs[quad.graph.value] = true
-
-        return graphs
-      }, {})
-
-      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-    })
   })
 
   it('should compact JSON-LD responses', () => {
@@ -304,6 +190,8 @@ describe('trifid-handler-fetch', () => {
           .get('/subject1')
           .set('accept', 'text/turtle')
           .expect(404)
+      }).then(() => {
+        fs.unlinkSync(url.parse(fileUrl).path)
       })
   })
 
