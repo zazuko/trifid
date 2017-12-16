@@ -34,5 +34,7 @@ This example config uses [The Big Bang Theory dataset](https://www.npmjs.com/pac
 ## Options
 
 - `url`: URL to the resource which contains the dataset
+- `contentType`: If set, parse the content with a parser for the given media type
+- `resource`: If set, the dataset will be loaded into the given Named Graph
 - `split`: If true, the dataset will be split into subgraphs for each Named Node
 - `cache`: Reads the resource only once at the first request and caches the dataset for other request
