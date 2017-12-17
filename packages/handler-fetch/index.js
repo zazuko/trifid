@@ -19,9 +19,10 @@ class FetchHandler {
   constructor (options) {
     this.dataset = rdf.dataset()
     this.url = options.url
-    this.options = options.options || {}
     this.cache = options.cache
     this.contentType = options.contentType
+    this.options = options.options || {}
+    this.resource = options.resource
     this.split = options.split
 
     this.handle = this._handle.bind(this)

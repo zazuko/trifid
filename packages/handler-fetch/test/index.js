@@ -21,6 +21,42 @@ describe('trifid-handler-fetch', () => {
     assert.equal(typeof Handler, 'function')
   })
 
+  it('should assign url option', () => {
+    const handler = new Handler({url: 'test'})
+
+    assert.equal(handler.url, 'test')
+  })
+
+  it('should assign cache option', () => {
+    const handler = new Handler({cache: 'test'})
+
+    assert.equal(handler.cache, 'test')
+  })
+
+  it('should assign contentType option', () => {
+    const handler = new Handler({contentType: 'test'})
+
+    assert.equal(handler.contentType, 'test')
+  })
+
+  it('should assign options option', () => {
+    const handler = new Handler({options: 'test'})
+
+    assert.equal(handler.options, 'test')
+  })
+
+  it('should assign resource option', () => {
+    const handler = new Handler({resource: 'test'})
+
+    assert.equal(handler.resource, 'test')
+  })
+
+  it('should assign split option', () => {
+    const handler = new Handler({split: 'test'})
+
+    assert.equal(handler.split, 'test')
+  })
+
   it('should implement the handler interface', () => {
     const handler = new Handler({url: fileUrlDataset})
 
