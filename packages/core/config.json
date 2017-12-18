@@ -1,4 +1,5 @@
 {
+  "baseConfig": "trifid-core:config.plugins.json",
   "logger": {
     "app": "trifid",
     "level": "debug"
@@ -10,79 +11,38 @@
     "trust proxy": "loopback",
     "x-powered-by": null
   },
-  "_i18n": {
-    "debug": false,
-    "detection": {
-      "caches": []
-    },
-    "saveMissing": true,
-    "load": "unspecific",
-    "whitelist": [ "de", "fr", "en" ],
-    "fallbackLng": [ "en", "de", "fr" ],
-    "preload": [ "de", "fr", "en" ],
-    "_backend": {
-      "module": "i18next-node-locize-backend",
-      "projectId": "051613d6-9953-4e08-949b-b460fe483dbd",
-      "apiKey": "c1b8521d-b2ec-4edc-9dad-fdb3e142ad59",
-      "referenceLng": "en"
-    },
-    "backend": {
-      "module": "i18next-node-fs-backend",
-      "loadPath": "locales/{{lng}}/{{ns}}.json",
-      "addPath": "locales/{{lng}}/{{ns}}.missing.json",
-      "jsonIndent": 2
-    }
-  },
   "patchHeaders": {
-    "static": {
-      "Access-Control-Allow-Origin": "*",
-      "Cache-Control": "public, max-age=120",
-      "Vary": "Accept"
-    }
-  },
-  "staticFiles": {
-    "trifidFiles": {
-      "path": "/",
-      "folder": "cwd:public"
-    },
-    "rendererFiles": {
-      "path": "/",
-      "folder": "renderer:public"
+    "root": {
+      "static": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=120",
+        "Vary": "Accept"
+      }
     }
   },
   "mediaTypeUrl": {
-    "formats": {
-      "jsonld": "application/ld+json",
-      "nt": "application/n-triples",
-      "ttl": "text/turtle",
-      "xml": "application/rdf+xml"
+    "root": {
+      "formats": {
+        "jsonld": "application/ld+json",
+        "nt": "application/n-triples",
+        "ttl": "text/turtle",
+        "xml": "application/rdf+xml"
+      }
     }
   },
   "rewrite": {
-    "mediaTypes": [
-      "application/html",
-      "application/ld+json",
-      "application/n-triples",
-      "application/rdf+xml",
-      "application/xhtml+xml",
-      "text/html",
-      "text/turtle"
-    ],
-    "rewriteContent": true,
-    "rewriteHeaders": true
-  },
-  "handler": {
-    "module": "trifid-handler-fs",
-    "options": {
-      "path": "node_modules/tbbt-ld"
+    "root": {
+      "mediaTypes": [
+        "application/html",
+        "application/ld+json",
+        "application/n-triples",
+        "application/rdf+xml",
+        "application/xhtml+xml",
+        "text/html",
+        "text/turtle"
+      ],
+      "rewriteContent": true,
+      "rewriteHeaders": true
     }
-  },
-  "renderer": {
-    "module": "trifid-renderer-simple",
-    "template": "renderer:views/index.html",
-    "templateError": "renderer:views/error.html"
-  },
-  "staticViews": {
-    "/": "cwd:views/home.html"
   }
 }

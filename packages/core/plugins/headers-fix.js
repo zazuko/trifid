@@ -3,7 +3,7 @@
  * @param router
  */
 function init (router) {
-  router.use(function (err, req, res, next) {
+  router.use((err, req, res, next) => {
     res._headers = res._headers || {}
 
     next(err)

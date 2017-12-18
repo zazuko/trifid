@@ -1,140 +1,72 @@
-/* global log */
+const express = require('express')
+const middleware = require('./lib/middleware')
+const moduleLoader = require('./lib/module-loader')
+const plugins = require('./lib/plugins')
+const ConfigHandler = require('./lib/ConfigHandler')
 
-'use strict'
+class Trifid {
+  constructor () {
+    this.configHandler = new ConfigHandler()
 
-var absoluteUrl = require('absolute-url')
-var bunyan = require('bunyan')
-var configTools = require('./lib/config')
-var errorHandler = require('./lib/error-handler')
-var express = require('express')
-var formatToAccept = require('format-to-accept')
-var handlerMiddleware = require('./lib/handler')
-var headersFix = require('./lib/headers-fix')
-var i18n = require('./lib/i18n')
-var redirects = require('./lib/redirects')
-var rewrite = require('camouflage-rewrite')
-var patchHeaders = require('patch-headers')
-var merge = require('lodash/merge')
-var morgan = require('morgan')
-var plugins = require('./lib/plugins')
-var renderer = require('./lib/renderer')
-var sparqlProxy = require('./lib/sparql-proxy')
-var staticFiles = require('./lib/static-files')
-var templateEngine = require('./lib/template-engine')
-var yasgui = require('./lib/yasgui')
+    this.configHandler.resolver.use('cwd', ConfigHandler.pathResolver(process.cwd()))
+    this.configHandler.resolver.use('trifid-core', ConfigHandler.pathResolver(__dirname))
 
-/**
- * Creates a Trifid middleware
- * @param config
- * @returns Promise
- */
-function middleware (config) {
-  return configTools.breakDown(config).then(function (config) {
-    var router = express.Router()
+    this.config = this.configHandler.config
 
-    router.locals = {
-      config: config,
-      t: function (x) { return x.substring(x.indexOf(':') + 1) }
+    this.context = {
+      config: this.config,
+      configHandler: this.configHandler,
+      middleware,
+      moduleLoader
     }
+  }
 
-    var pluginList = [{
-      name: 'core:logger',
-      func: plugins.middleware,
-      middleware: morgan,
-      params: ['combined']
-    }, {
-      name: 'core:absoluteUrl',
-      func: plugins.middleware,
-      middleware: absoluteUrl
-    }, {
-      name: 'patchHeaders',
-      func: plugins.middleware,
-      middleware: patchHeaders
-    }, {
-      name: 'redirects',
-      func: redirects
-    }, {
-      name: 'sparqlProxy',
-      func: sparqlProxy
-    }, {
-      name: 'i18n',
-      func: i18n
-    }, {
-      name: 'locals',
-      func: templateEngine.locals
-    }, {
-      name: 'staticViews',
-      func: templateEngine.staticViews
-    }, {
-      name: 'staticFiles',
-      func: staticFiles
-    }, {
-      name: 'mediaTypeUrl',
-      func: plugins.middleware,
-      middleware: formatToAccept
-    }, {
-      name: 'yasgui',
-      func: yasgui
-    }, {
-      name: 'rewrite',
-      func: plugins.middleware,
-      middleware: rewrite
-    }, {
-      name: 'renderers',
-      func: renderer.all
-    }, {
-      name: 'renderer',
-      func: renderer
-    }, {
-      name: 'handler',
-      func: plugins.middleware,
-      middleware: handlerMiddleware
-    }, {
-      name: 'headers-fix',
-      func: headersFix
-    }, {
-      name: 'error-handler',
-      func: errorHandler
-    }]
-
-    return plugins.load(pluginList, router, config).then(function () {
-      return router
-    })
-  })
-}
-
-/**
- * Starts a Trifid instance
- * @param config
- * @returns Promise
- */
-function trifid (config) {
-  global.log = bunyan.createLogger({
-    name: config.logger.app,
-    level: config.logger.level
-  })
-
-  var app = express()
-
-  if (config.express) {
-    Object.keys(config.express).forEach(function (key) {
-      app.set(key, config.express[key])
+  init (config) {
+    return Promise.resolve().then(() => {
+      if (typeof config === 'string') {
+        return this.context.configHandler.fromFile(config)
+      } else {
+        return this.context.configHandler.fromJson(config)
+      }
+    }).then(() => {
+      // TODO: breakdown rules
+      return this
     })
   }
 
-  return middleware(config).then(function (router) {
-    merge(app.locals, router.locals)
+  middleware (router) {
+    router = router || express.Router()
 
-    templateEngine(app)
+    router.locals = {
+      config: this.config
+    }
 
-    app.use(router)
+    return plugins.load(this.config.plugins, router, this.config, this.context).then(() => {
+      return router
+    })
+  }
 
-    app.listen(config.listener.port, config.listener.host)
+  app () {
+    const app = express()
 
-    log.info('listening on hostname:port: ' + config.listener.host + ':' + config.listener.port)
-  })
+    if (this.config.express) {
+      Object.keys(this.config.express).forEach((key) => {
+        app.set(key, this.config.express[key])
+      })
+    }
+
+    return this.middleware(app).then(() => {
+      app.listen(this.config.listener.port, this.config.listener.host)
+
+      console.log('listening on: ' + (this.config.listener.host || '*') + ':' + this.config.listener.port)
+
+      return app
+    })
+  }
+
+  static app (config) {
+    return (new Trifid()).init(config).then(trifid => trifid.app())
+  }
 }
 
-trifid.middleware = middleware
-
-module.exports = trifid
+module.exports = Trifid

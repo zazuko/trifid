@@ -1,27 +1,36 @@
-var Promise = require('bluebird')
+const moduleLoader = require('./module-loader')
+const sortBy = require('lodash/sortBy')
+const Promise = require('bluebird')
 
-var plugins = {}
+function prepare (list) {
+  // key values -> array with name property
+  const array = Object.keys(list).reduce((array, key) => {
+    const plugin = list[key]
 
-plugins.load = function (list, router, config) {
-  return Promise.mapSeries(list, function (plugin) {
+    plugin.name = key
+
+    array.push(plugin)
+
+    return array
+  }, [])
+
+  return sortBy(array, 'priority')
+}
+
+function load (list, router, config, context) {
+  list = prepare(list)
+
+  return Promise.mapSeries(list, (plugin) => {
     console.log('loading: ' + plugin.name)
 
-    var params = config[plugin.name]
+    const params = config[plugin.name]
+    const func = moduleLoader.require(plugin.module)
 
-    return plugin.func(router, params, plugin)
+    return func.call(context, router, params, plugin)
   })
 }
 
-plugins.middleware = function (router, config, plugin) {
-  var middleware
-
-  if (plugin.params) {
-    middleware = plugin.middleware.apply(null, plugin.params)
-  } else {
-    middleware = plugin.middleware.call(null, config)
-  }
-
-  router.use(middleware)
+module.exports = {
+  prepare: prepare,
+  load: load
 }
-
-module.exports = plugins

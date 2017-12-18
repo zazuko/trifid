@@ -1,15 +1,15 @@
 {
-  "name": "trifid",
-  "description": "Trifid - Lightweight Linked Data Server and Proxy",
-  "version": "1.11.1",
+  "name": "trifid-core",
+  "description": "Trifid Core",
+  "version": "0.0.0",
   "license": "MIT",
-  "homepage": "https://github.com/zazuko/trifid",
+  "homepage": "https://github.com/zazuko/trifid-core",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid.git"
+    "url": "https://github.com/zazuko/trifid-core.git"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid/issues"
+    "url": "https://github.com/zazuko/trifid-core/issues"
   },
   "scripts": {
     "test": "standard && mocha"
@@ -27,27 +27,15 @@
     "cotton-candy": "^1.1.0",
     "express": "^4.16.2",
     "express-negotiate": "^0.0.5",
-    "findup-sync": "^0.4.3",
     "format-to-accept": "^1.0.0",
     "hijackresponse": "^2.0.1",
-    "i18next": "^8.4.3",
-    "i18next-express-middleware": "^1.0.7",
-    "i18next-node-fs-backend": "^1.0.0",
-    "i18next-node-locize-backend": "^2.0.0",
     "lodash": "^4.16.4",
-    "marked": "^0.3.6",
     "morgan": "^1.9.0",
     "patch-headers": "^1.0.0",
     "request": "^2.82.0",
     "shortstop": "^1.0.3",
     "shush": "^1.0.0",
-    "sparql-proxy": "^2.0.0",
     "stream-buffers": "^3.0.1",
-    "tbbt-ld": "latest",
-    "trifid-handler-fs": "^1.0.0",
-    "trifid-handler-sparql": "^1.0.0",
-    "trifid-renderer-simple": "^3.2.0",
-    "trifid-yasgui": "^2.0.5",
     "vhost": "^3.0.2"
   },
   "devDependencies": {

@@ -1,34 +1,33 @@
-var difference = require('lodash/difference')
-var hijackResponse = require('hijackresponse')
-var mount = require('./mount-middleware')
-var streamBuffers = require('stream-buffers')
+const difference = require('lodash/difference')
+const hijackResponse = require('hijackresponse')
+const streamBuffers = require('stream-buffers')
 
 require('express-negotiate')
 
-var requestHeaderWhitelist = [
+const requestHeaderWhitelist = [
   'host',
   'x-forwarded-host',
   'x-forwarded-proto'
 ]
 
-var responseHeaderWhitelist = [
+const responseHeaderWhitelist = [
   'link',
   'set-cookie'
 ]
 
 function middleware (options) {
-  return function (req, res, next) {
+  return (req, res, next) => {
     req.negotiate({
-      html: function () {
+      html: () => {
         // remove all request header sent from the client which are not required
-        difference(Object.keys(req.headers), requestHeaderWhitelist).forEach(function (name) {
+        difference(Object.keys(req.headers), requestHeaderWhitelist).forEach((name) => {
           delete req.headers[name]
         })
 
         // set html middleware request headers for the handler
         req.headers['accept'] = options.render.accept
 
-        hijackResponse(res, function (err, res) {
+        hijackResponse(res, (err, res) => {
           if (err) {
             res.unhijack()
 
@@ -36,16 +35,16 @@ function middleware (options) {
           }
 
           // add missing next in hijacked req
-          req.next = function (err) {
+          req.next = (err) => {
             res.unhijack()
 
             next(err)
           }
 
-          var graphBuffer = new streamBuffers.WritableStreamBuffer()
+          const graphBuffer = new streamBuffers.WritableStreamBuffer()
 
-          graphBuffer.on('finish', function () {
-            var graphString = graphBuffer.getContentsAsString('utf8')
+          graphBuffer.on('finish', () => {
+            const graphString = graphBuffer.getContentsAsString('utf8')
 
             // don't process graph if it's bigger than graphSizeLimit
             if (options.graphSizeLimit && (graphString || '').length > options.graphSizeLimit) {
@@ -58,7 +57,7 @@ function middleware (options) {
 
             // remove all response headers sent from handler
             if (res._headers) {
-              difference(Object.keys(res._headers), responseHeaderWhitelist).forEach(function (name) {
+              difference(Object.keys(res._headers), responseHeaderWhitelist).forEach((name) => {
                 res.removeHeader(name)
               })
             }
@@ -85,22 +84,15 @@ function middleware (options) {
         next()
       },
 
-      default: function () {
+      default: () => {
         next()
       }
     })
   }
 }
 
-function factory (router, options) {
-  // load render module and forward options to the factory
-  options.render = require(options.module)(options)
-
-  router.use(middleware(options))
-}
-
-factory.all = function (router, options) {
-  return mount.all(router, options, function (options) {
+function renderer (router, options) {
+  return this.middleware.mountAll(router, options, (options) => {
     // load render module and forward options to the factory
     options.render = require(options.module)(options)
 
@@ -108,6 +100,4 @@ factory.all = function (router, options) {
   })
 }
 
-factory.middleware = middleware
-
-module.exports = factory
+module.exports = renderer

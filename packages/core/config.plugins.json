@@ -1,0 +1,72 @@
+{
+  "plugins": {
+    "logger": {
+      "priority": 1,
+      "module": "trifid-core:./plugins/bunyan"
+    },
+    "templateEngine": {
+      "priority": 5,
+      "module": "trifid-core:./plugins/cotton-candy"
+    },
+    "requestLogger": {
+      "priority": 10,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "morgan",
+      "params": ["combined"]
+    },
+    "absoluteUrl": {
+      "priority": 20,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "absolute-url",
+      "params": ["combined"]
+    },
+    "patchHeaders": {
+      "priority": 30,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "patch-headers"
+    },
+    "redirects": {
+      "priority": 40,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "camouflage-rewrite"
+    },
+    "locals": {
+      "priority": 50,
+      "module": "trifid-core:./plugins/locals"
+    },
+    "staticViews": {
+      "priority": 60,
+      "module": "trifid-core:./plugins/static-views"
+    },
+    "staticFiles": {
+      "priority": 70,
+      "module": "trifid-core:./plugins/static-files"
+    },
+    "mediaTypeUrl": {
+      "priority": 80,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "format-to-accept"
+    },
+    "rewrite": {
+      "priority": 90,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "camouflage-rewrite"
+    },
+    "renderer": {
+      "priority": 100,
+      "module": "trifid-core:./plugins/renderer"
+    },
+    "handler": {
+      "priority": 110,
+      "module": "trifid-core:./plugins/handler"
+    },
+    "headers-fix": {
+      "priority": 120,
+      "module": "trifid-core:./plugins/headers-fix"
+    },
+    "error-handler": {
+      "priority": 130,
+      "module": "trifid-core:./plugins/error-handler"
+    }
+  }
+}

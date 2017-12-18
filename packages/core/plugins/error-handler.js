@@ -3,7 +3,7 @@
  * @param router
  */
 function init (router) {
-  router.use(function (err, req, res, next) {
+  router.use((err, req, res, next) => {
     console.error(err.stack || err.message)
 
     res.statusCode = err.statusCode || 500
