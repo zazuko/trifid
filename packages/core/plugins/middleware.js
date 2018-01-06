@@ -1,15 +1,15 @@
-function middleware (router, config, plugin) {
-  const factory = this.moduleLoader.require(plugin.middleware)
+function middleware (router, options, plugin) {
+  options = options || {root: {}}
 
-  let middleware
+  return this.middleware.mountAll(router, options, (config) => {
+    const factory = this.moduleLoader.require(plugin.middleware)
 
-  if (plugin.params) {
-    middleware = factory.apply(null, plugin.params)
-  } else {
-    middleware = factory(config)
-  }
-
-  router.use(middleware)
+    if (plugin.params) {
+      return factory.apply(null, plugin.params)
+    } else {
+      return factory(config)
+    }
+  })
 }
 
 module.exports = middleware
