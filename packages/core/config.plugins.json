@@ -13,8 +13,7 @@
     "absoluteUrl": {
       "priority": 20,
       "module": "trifid-core:./plugins/middleware",
-      "middleware": "absolute-url",
-      "params": ["combined"]
+      "middleware": "absolute-url"
     },
     "patchHeaders": {
       "priority": 30,
