@@ -1,6 +1,8 @@
 const clone = require('lodash/clone')
+const get = require('lodash/get')
 const merge = require('lodash/merge')
 const path = require('path')
+const set = require('lodash/set')
 const shortstop = require('shortstop')
 const shush = require('shush')
 const Promise = require('bluebird')
@@ -20,6 +22,45 @@ class ConfigHandler {
     return this.resolve({a: patname}).then((result) => {
       return result.a
     })
+  }
+
+  breakDownRule (config, property, value) {
+    const currentValue = get(config, property)
+
+    // don't overwrite existing values
+    if (currentValue !== undefined && currentValue !== null) {
+      return
+    }
+
+    if (Array.isArray(value)) {
+      // find first value for the given strings which is not undefined and assign it
+      set(config, property, value.reduce((actual, value) => {
+        if (actual !== undefined) {
+          return actual
+        }
+
+        return get(config, value)
+      }, undefined))
+    } else if (typeof value === 'object') {
+      // assigned clone of the object
+      set(config, property, clone(value))
+    } else if (typeof value === 'string') {
+      // find the value for the given string and assign it
+      set(config, property, get(config, value))
+    }
+  }
+
+  breakDown () {
+    if (!this.config.breakDown) {
+      return Promise.resolve(this.config)
+    }
+
+    // read and process all rules from config.breakDown
+    Object.keys(this.config.breakDown).forEach((property) => {
+      this.breakDownRule(this.config, property, this.config.breakDown[property])
+    })
+
+    return Promise.resolve(this.config)
   }
 
   configFromFile (filename) {

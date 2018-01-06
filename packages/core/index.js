@@ -29,8 +29,7 @@ class Trifid {
         return this.context.configHandler.fromJson(config)
       }
     }).then(() => {
-      // TODO: breakdown rules
-      return this
+      return this.context.configHandler.breakDown()
     })
   }
 
