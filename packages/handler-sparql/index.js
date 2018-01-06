@@ -1,14 +1,10 @@
-/* global log */
-
-'use strict'
-
 var httpError = require('http-errors')
 var SparqlHttpClient = require('sparql-http-client')
 
 SparqlHttpClient.fetch = require('node-fetch')
 
 function authBasicHeader (user, password) {
-  return 'Basic ' + new Buffer(user + ':' + password).toString('base64')
+  return 'Basic ' + Buffer.from(user + ':' + password).toString('base64')
 }
 
 function SparqlHandler (options) {
@@ -50,7 +46,7 @@ SparqlHandler.prototype.buildContainerGraphQuery = function (iri) {
 }
 
 SparqlHandler.prototype.exists = function (iri, query) {
-  log.debug({script: __filename}, 'SPARQL exists query for IRI <' + iri + '> : ' + query)
+  console.log('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
   return this.client.selectQuery(query, this.buildQueryOptions()).then(function (res) {
     if (res.status !== 200) {
@@ -77,7 +73,7 @@ SparqlHandler.prototype.containerExists = function (iri) {
 }
 
 SparqlHandler.prototype.graphStream = function (iri, query, accept) {
-  log.debug({script: __filename}, 'SPARQL query for IRI <' + iri + '> : ' + query)
+  console.log('SPARQL query for IRI <' + iri + '> : ' + query)
 
   var queryOptions = this.buildQueryOptions()
 
@@ -114,10 +110,18 @@ SparqlHandler.prototype.containerGraphStream = function (iri, accept) {
   return this.graphStream(iri, this.buildContainerGraphQuery(iri), accept)
 }
 
+SparqlHandler.prototype.handle = function (req, res, next) {
+  if (req.method === 'GET') {
+    this.get(req, res, next, req.iri)
+  } else {
+    next()
+  }
+}
+
 SparqlHandler.prototype.get = function (req, res, next, iri) {
   var self = this
 
-  log.info({script: __filename}, 'handle GET request for IRI <' + iri + '>')
+  console.log('handle GET request for IRI <' + iri + '>')
 
   this.resourceExists(iri).then(function (exists) {
     if (exists) {
