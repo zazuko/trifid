@@ -1,9 +1,5 @@
 {
   "plugins": {
-    "logger": {
-      "priority": 1,
-      "module": "trifid-core:./plugins/bunyan"
-    },
     "templateEngine": {
       "priority": 5,
       "module": "trifid-core:./plugins/cotton-candy"

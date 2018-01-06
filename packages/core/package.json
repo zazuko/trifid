@@ -21,7 +21,6 @@
     "absolute-url": "^1.2.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.1",
-    "bunyan": "^1.8.12",
     "camouflage-rewrite": "^1.1.0",
     "commander": "^2.9.0",
     "cotton-candy": "^1.1.0",
