@@ -3,10 +3,6 @@ const values = require('lodash/values')
 const vhost = require('vhost')
 
 function mount (router, config, callback) {
-  if (!config || !callback) {
-    return Promise.resolve()
-  }
-
   return Promise.resolve().then(() => {
     return callback(config)
   }).then((middleware) => {
