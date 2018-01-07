@@ -1,12 +1,76 @@
 /* global describe, it */
 
 const assert = require('assert')
+const path = require('path')
 const plugins = require('../lib/plugins')
-const Promise = require('bluebird')
 
 describe('plugins', () => {
   it('should be an object', () => {
     assert.equal(typeof plugins, 'object')
+  })
+
+  describe('.prepare', () => {
+    it('should be a function', () => {
+      assert.equal(typeof plugins.prepare, 'function')
+    })
+
+    it('should convert an object to an array with key as .name property', () => {
+      const list = {
+        test0: {
+          property0: '0'
+        },
+        test1: {
+          property1: '1'
+        }
+      }
+
+      const expected = [{
+        name: 'test0',
+        property0: '0'
+      }, {
+        name: 'test1',
+        property1: '1'
+      }]
+
+      const actual = plugins.prepare(list)
+
+      assert.deepEqual(actual, expected)
+    })
+
+    it('should sort the results by the value of the .priority property', () => {
+      const list = {
+        test0: {
+          property0: '0',
+          priority: 30
+        },
+        test1: {
+          property1: '1',
+          priority: 10
+        },
+        test2: {
+          property2: '2',
+          priority: 20
+        }
+      }
+
+      const expected = [{
+        name: 'test1',
+        property1: '1',
+        priority: 10
+      }, {
+        name: 'test2',
+        property2: '2',
+        priority: 20
+      }, {
+        name: 'test0',
+        property0: '0',
+        priority: 30
+      }]
+
+      const actual = plugins.prepare(list)
+
+      assert.deepEqual(actual, expected)
+    })
   })
 
   describe('.load', () => {
@@ -14,165 +78,136 @@ describe('plugins', () => {
       assert.equal(typeof plugins.load, 'function')
     })
 
-    it('should load plugin', () => {
+    it('should load the given plugin', () => {
       let touched = false
 
-      const plugin = {
-        name: 'dummy',
-        func: () => {
+      const list = {
+        dummy: {
+          module: path.join(__dirname, 'support/dummy-plugin')
+        }
+      }
+
+      const router = {
+        callback: () => {
           touched = true
         }
       }
 
-      const config = {
-        dummy: {}
-      }
-
-      return plugins.load([plugin], null, config).then(() => {
+      return plugins.load(list, router, {}).then(() => {
         assert(touched)
       })
     })
 
-    it('should forward router', () => {
-      let given
+    it('should forward the router', () => {
+      let forwardedRouter
 
-      const plugin = {
-        name: 'dummy',
-        func: (router) => {
-          given = router
+      const list = {
+        dummy: {
+          module: path.join(__dirname, 'support/dummy-plugin')
         }
       }
 
-      const router = {}
+      const router = {
+        callback: (args) => {
+          forwardedRouter = args[0]
+        }
+      }
+
+      return plugins.load(list, router, {}).then(() => {
+        assert.equal(forwardedRouter, router)
+      })
+    })
+
+    it('should forward the params', () => {
+      let forwardedParams
+
+      const list = {
+        dummy: {
+          module: path.join(__dirname, 'support/dummy-plugin')
+        }
+      }
+
+      const router = {
+        callback: (args) => {
+          forwardedParams = args[1]
+        }
+      }
 
       const config = {
         dummy: {}
       }
 
-      return plugins.load([plugin], router, config).then(() => {
-        assert.equal(given, router)
+      return plugins.load(list, router, config).then(() => {
+        assert.equal(forwardedParams, config.dummy)
       })
     })
 
-    it('should forward config', () => {
-      let given
+    it('should forward the plugin config', () => {
+      let forwardedPluginConfig
 
-      const plugin = {
-        name: 'dummy',
-        func: (router, config) => {
-          given = config
-        }
-      }
-
-      const config = {
+      const list = {
         dummy: {
-          test: true
+          module: path.join(__dirname, 'support/dummy-plugin')
         }
       }
 
-      return plugins.load([plugin], null, config).then(() => {
-        assert(given, config.dummy)
+      const router = {
+        callback: (args) => {
+          forwardedPluginConfig = args[2]
+        }
+      }
+
+      return plugins.load(list, router, {}).then(() => {
+        assert.equal(forwardedPluginConfig, list.dummy)
       })
     })
 
-    it('should forward plugin', () => {
-      let given
+    it('should forward the context', () => {
+      let forwardedContext
 
-      const plugin = {
-        name: 'dummy',
-        func: (router, config, plugin) => {
-          given = plugin
-        }
-      }
-
-      const config = {
+      const list = {
         dummy: {
-          test: true
+          module: path.join(__dirname, 'support/dummy-plugin')
         }
       }
 
-      return plugins.load([plugin], null, config).then(() => {
-        assert(given, plugin)
+      const router = {
+        callback: (args, context) => {
+          forwardedContext = context
+        }
+      }
+
+      const context = {}
+
+      return plugins.load(list, router, {}, context).then(() => {
+        assert.equal(forwardedContext, context)
       })
     })
 
     it('should load plugins in serial sequence', () => {
       const sequence = []
 
-      const plugin0 = {
-        name: 'dummy0',
-        func: () => {
-          return Promise.delay(200).then(() => {
-            sequence.push(0)
-          })
-        }
-      }
-
-      const plugin1 = {
-        name: 'dummy1',
-        func: () => {
-          return Promise.delay(100).then(() => {
-            sequence.push(1)
-          })
-        }
-      }
-
-      const config = {
-        dummy0: {},
-        dummy1: {}
-      }
-
-      return plugins.load([plugin0, plugin1], null, config).then(() => {
-        assert.deepEqual(sequence, [0, 1])
-      })
-    })
-  })
-
-  describe('.middleware', () => {
-    it('should be a function', () => {
-      assert.equal(typeof plugins.middleware, 'function')
-    })
-
-    it('should create middleware with .apply if params are given', () => {
-      let params
-
-      const plugin = {
-        middleware: (a, b) => {
-          params = [a, b]
+      const list = {
+        dummy0: {
+          module: path.join(__dirname, 'support/dummy-plugin')
         },
-        params: [0, 1]
-      }
-
-      const router = {
-        use: () => {}
-      }
-
-      plugins.middleware(router, null, plugin)
-
-      assert.deepEqual(params, [0, 1])
-    })
-
-    it('should create middleware with .call and forward config if no params are given', () => {
-      let params
-
-      const plugin = {
-        middleware: (config) => {
-          params = config
+        dummy1: {
+          module: path.join(__dirname, 'support/dummy-plugin')
+        },
+        dummy2: {
+          module: path.join(__dirname, 'support/dummy-plugin')
         }
       }
 
-      const config = {
-        a: 0,
-        b: 1
-      }
-
       const router = {
-        use: () => {}
+        callback: (args) => {
+          sequence.push(args[2].name)
+        }
       }
 
-      plugins.middleware(router, config, plugin)
-
-      assert.equal(params, config)
+      return plugins.load(list, router, {}).then(() => {
+        assert.deepEqual(sequence, ['dummy0', 'dummy1', 'dummy2'])
+      })
     })
   })
 })

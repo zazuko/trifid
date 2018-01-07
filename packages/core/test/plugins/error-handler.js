@@ -1,7 +1,7 @@
 /* global describe, it */
 
 const assert = require('assert')
-const errorHandler = require('../lib/error-handler')
+const errorHandler = require('../../plugins/error-handler')
 const express = require('express')
 const request = require('supertest')
 

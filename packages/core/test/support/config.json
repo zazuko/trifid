@@ -1,4 +1,4 @@
 {
-  "baseConfig": "trifid:test/support/base-config.json",
+  "baseConfig": "trifid-core:support/base-config.json",
   "configProperty": true
 }
