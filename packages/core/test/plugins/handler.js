@@ -6,6 +6,7 @@ const express = require('express')
 const handler = require('../../plugins/handler')
 const path = require('path')
 const request = require('supertest')
+const url = require('url')
 
 describe('handler', () => {
   const dummyHandlerPath = path.join(__dirname, '../support/dummy-handler')
@@ -28,13 +29,13 @@ describe('handler', () => {
   it('should use .absoluteUrl to generate the IRI', () => {
     let iri
 
-    const exampleIri = 'http://example.org/'
+    const exampleIriString = 'http://example.org/'
 
     const app = express()
 
     app.use((req, res, next) => {
       req.absoluteUrl = () => {
-        return exampleIri
+        return exampleIriString
       }
 
       next()
@@ -50,26 +51,17 @@ describe('handler', () => {
 
     return request(app)
       .get('/')
-      .expect(404)
       .then(() => {
-        assert.equal(iri, exampleIri)
+        assert.equal(iri, exampleIriString)
       })
   })
 
   it('should remove the search part of the IRI', () => {
     let iri
 
-    const exampleIri = 'http://example.org/'
+    const exampleIri = url.parse('http://example.org/')
 
     const app = express()
-
-    app.use((req, res, next) => {
-      req.absoluteUrl = () => {
-        return exampleIri + '?test=test'
-      }
-
-      next()
-    })
 
     const configs = createHandlerConfigs((req, res, next) => {
       iri = req.iri
@@ -80,27 +72,19 @@ describe('handler', () => {
     handler.call(context, app, configs)
 
     return request(app)
-      .get('/')
-      .expect(404)
+      .get('/?test=test')
+      .set('host', exampleIri.host)
       .then(() => {
-        assert.equal(iri, exampleIri)
+        assert.equal(iri, url.format(exampleIri))
       })
   })
 
   it('should handle encoded IRIs', () => {
     let iri
 
-    const exampleIri = 'http://example.org/%C3%BCmlaut'
+    const exampleIri = url.parse('http://example.org/%C3%BCmlaut')
 
     const app = express()
-
-    app.use((req, res, next) => {
-      req.absoluteUrl = () => {
-        return exampleIri + '?test=test'
-      }
-
-      next()
-    })
 
     const configs = createHandlerConfigs((req, res, next) => {
       iri = req.iri
@@ -111,10 +95,10 @@ describe('handler', () => {
     handler.call(context, app, configs)
 
     return request(app)
-      .get('/')
-      .expect(404)
+      .get(exampleIri.path)
+      .set('host', exampleIri.host)
       .then(() => {
-        assert.equal(iri, decodeURI(exampleIri))
+        assert.equal(iri, decodeURI(url.format(exampleIri)))
       })
   })
 })
