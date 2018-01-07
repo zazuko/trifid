@@ -1,3 +1,4 @@
+const absoluteUrl = require('absolute-url')
 const url = require('url')
 
 /**
@@ -6,8 +7,15 @@ const url = require('url')
  */
 function locals (router) {
   router.use((req, res, next) => {
-    res.locals.iri = req.absoluteUrl()
+    absoluteUrl.attach(req)
+
+    // requested resource
+    res.locals.iri = req.iri
+
+    // requested resource parsed into URL object
     res.locals.url = url.parse(res.locals.iri)
+
+    // dummy translation
     res.locals.t = res.locals.t || ((x) => {
       return x.substring(x.indexOf(':') + 1)
     })
