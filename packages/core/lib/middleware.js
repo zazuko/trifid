@@ -19,7 +19,7 @@ function mount (router, config, callback) {
 function mountAll (router, configs, callback) {
   configs = configs || {}
 
-  return Promise.all(sortBy(values(configs), 'priority').map((config) => {
+  return Promise.all(sortBy(values(configs), 'priority').filter(config => config).map((config) => {
     return mount(router, config, callback)
   }))
 }
