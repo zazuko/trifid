@@ -1,4 +1,4 @@
-const clone = require('lodash/clone')
+const cloneDeep = require('lodash/cloneDeep')
 const get = require('lodash/get')
 const merge = require('lodash/merge')
 const path = require('path')
@@ -43,7 +43,7 @@ class ConfigHandler {
       }, undefined))
     } else if (typeof value === 'object') {
       // assigned clone of the object
-      set(config, property, clone(value))
+      set(config, property, cloneDeep(value))
     } else if (typeof value === 'string') {
       // find the value for the given string and assign it
       set(config, property, get(config, value))
@@ -69,7 +69,7 @@ class ConfigHandler {
         return config
       }
 
-      return this.fromFile(config.baseConfig).then((baseConfig) => {
+      return this.configFromFile(config.baseConfig).then((baseConfig) => {
         return merge(baseConfig, config)
       })
     })
@@ -77,19 +77,21 @@ class ConfigHandler {
 
   fromFile (filename) {
     return this.configFromFile(filename).then((config) => {
-      merge(this.config, config)
+      return merge(this.config, config)
     })
   }
 
   fromJson (config) {
-    if (!config.baseConfig) {
-      return Promise.resolve(config)
-    }
+    return this.resolve(cloneDeep(config)).then((resolved) => {
+      if (!resolved.baseConfig) {
+        return resolved
+      }
 
-    return this.resolve(clone(config)).then((resolved) => {
-      return this.configFromFile(resolved.baseConfig)
-    }).then((baseConfig) => {
-      return merge(this.config, merge(baseConfig, config))
+      return this.configFromFile(resolved.baseConfig).then((baseConfig) => {
+        return merge(baseConfig, config)
+      })
+    }).then((processed) => {
+      return merge(this.config, processed)
     })
   }
 
