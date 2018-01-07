@@ -20,27 +20,17 @@
   "dependencies": {
     "absolute-url": "^1.2.0",
     "bluebird": "^3.5.1",
-    "body-parser": "^1.18.1",
-    "camouflage-rewrite": "^1.1.0",
     "commander": "^2.9.0",
-    "cotton-candy": "^1.1.0",
     "express": "^4.16.2",
-    "express-negotiate": "^0.0.5",
-    "format-to-accept": "^1.0.0",
-    "hijackresponse": "^2.0.1",
     "lodash": "^4.16.4",
-    "morgan": "^1.9.0",
-    "patch-headers": "^1.0.0",
-    "request": "^2.82.0",
     "shortstop": "^1.0.3",
     "shush": "^1.0.0",
-    "stream-buffers": "^3.0.1",
     "vhost": "^3.0.2"
   },
   "devDependencies": {
-    "mocha": "^3.5.3",
-    "nock": "^9.0.27",
-    "standard": "^8.5.0",
+    "mocha": "^4.1.0",
+    "nock": "^9.1.5",
+    "standard": "^10.0.3",
     "supertest": "^3.0.0"
   }
 }
