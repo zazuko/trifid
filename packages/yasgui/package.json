@@ -12,14 +12,14 @@
     "url": "https://github.com/zazuko/trifid-yasgui/issues"
   },
   "scripts": {
-    "lint": "standard",
-    "test": "npm run lint"
+    "test": "standard"
   },
   "dependencies": {
+    "absolute-url": "^1.2.2",
     "express": "^4.15.4",
     "yasgui": "^2.6.14"
   },
   "devDependencies": {
-    "standard": "^8.6.0"
+    "standard": "^10.0.3"
   }
 }
