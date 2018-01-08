@@ -1,0 +1,29 @@
+${set('moduleFoot','<li><a href="?format=jsonld">json-ld</a> | <a href="?format=ttl">turtle</a> | <a href="?format=nt">n3</a></li>')}
+<!DOCTYPE html>
+<html>
+<head>
+
+${include('cwd:views/header.html')}
+
+</head>
+<body>
+
+${include('cwd:views/navigation.html')}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div id="title"></div>
+      <div id="subtitle"></div>
+      <div id="graph"></div>
+    </div>
+  </div>
+
+${include('cwd:views/footer.html')}
+
+</div>
+
+<script src="/js/render-ld.js"></script>
+
+</body>
+</html>

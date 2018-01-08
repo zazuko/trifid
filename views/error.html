@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+${include('cwd:views/header.html')}
+
+</head>
+<body>
+
+${include('cwd:views/navigation.html')}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div id="title"></div>
+      <div id="subtitle"></div>
+      <div id="graph">
+        <h1 id="status-code">${statusCode}</h1>
+      </div>
+    </div>
+  </div>
+
+${include('cwd:views/footer.html')}
+
+</div>
+
+<script>
+  var statusCodeElement = document.getElementById('status-code')
+
+  if (statusCodeElement) {
+    var statusCode = parseInt(statusCodeElement.innerHTML)
+
+    if (statusCode === 404) {
+      statusCodeElement.innerHTML = '404 Not Found'
+    } else if (statusCode === 413) {
+      statusCodeElement.innerHTML = '413 Request Entity Too Large'
+    }
+  }
+</script>
+
+</body>
+</html>
