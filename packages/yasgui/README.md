@@ -1,4 +1,4 @@
-# trifid-yasgui
+# trifid-plugin-yasgui
 
 YASGUI for Trifid.
 This middleware does the static file hosting for all YASGUI files and renders a index page that points to the given endpoint URL.

@@ -1,15 +1,15 @@
 {
-  "name": "trifid-yasgui",
+  "name": "trifid-plugin-yasgui",
   "description": "YASGUI for Trifid",
   "version": "2.0.5",
   "license": "MIT",
-  "homepage": "https://github.com/zazuko/trifid-yasgui",
+  "homepage": "https://github.com/zazuko/trifid-plugin-yasgui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-yasgui.git"
+    "url": "https://github.com/zazuko/trifid-plugin-yasgui.git"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-yasgui/issues"
+    "url": "https://github.com/zazuko/trifid-plugin-yasgui/issues"
   },
   "scripts": {
     "test": "standard"
