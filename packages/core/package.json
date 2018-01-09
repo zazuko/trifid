@@ -15,7 +15,7 @@
     "test": "standard && mocha"
   },
   "bin": {
-    "trifid": "./server.js"
+    "trifid-core": "./server.js"
   },
   "dependencies": {
     "absolute-url": "^1.2.0",
