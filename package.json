@@ -18,10 +18,11 @@
     "trifid": "./server.js"
   },
   "dependencies": {
-    "camouflage-rewrite": "^1.1.0",
+    "camouflage-rewrite": "^1.1.1",
     "format-to-accept": "^1.0.0",
     "morgan": "^1.9.0",
     "patch-headers": "^1.0.1",
+    "sparql-proxy": "^2.0.0",
     "tbbt-ld": "^1.0.0",
     "trifid-core": "github:zazuko/trifid-core",
     "trifid-handler-fs": "^1.1.0",
@@ -29,7 +30,9 @@
     "trifid-plugin-cotton-candy": "github:zazuko/trifid-plugin-cotton-candy",
     "trifid-plugin-hydra-box": "github:zazuko/trifid-plugin-hydra-box",
     "trifid-plugin-renderer": "github:zazuko/trifid-plugin-renderer",
-    "trifid-renderer-simple": "github:zazuko/trifid-renderer-simple#develop"
+    "trifid-plugin-yasgui": "github:zazuko/trifid-plugin-yasgui",
+    "trifid-renderer-simple": "github:zazuko/trifid-renderer-simple#develop",
+    "trifid-yasgui": "^2.0.5"
   },
   "devDependencies": {
     "standard": "^10.0.3"

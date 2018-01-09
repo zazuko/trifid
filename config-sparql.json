@@ -10,13 +10,7 @@
   },
   "sparqlProxy": {
     "default": {
-      "path": "/query",
-      "options": {
-        /*"authentication": {
-          "user": "user",
-          "password": "password"
-        }*/
-      }
+      "path": "/query"
     }
   },
   "handler": {
@@ -40,16 +34,27 @@
     "handler.root": {},
     "handler.root.options": {},
     "handler.root.options.endpointUrl": "sparqlEndpointUrl",
+    "handler.root.options.authentication": "sparqlEndpointAuthentication",
     "sparqlProxy": {},
-    "sparqlProxy.root": {},
-    "sparqlProxy.root.options": {},
-    "sparqlProxy.root.options.endpointUrl": "sparqlEndpointUrl",
+    "sparqlProxy.default": {},
+    "sparqlProxy.default.endpointUrl": "sparqlEndpointUrl",
+    "sparqlProxy.default.authentication": "sparqlEndpointAuthentication",
     "yasgui": {},
-    "yasgui.root": {},
-    "yasgui.root.options": {},
-    "yasgui.root.options.endpointUrl": [
-      "sparqlProxy.path",
+    "yasgui.default": {},
+    "yasgui.default.endpointUrl": [
+      "sparqlProxy.default.path",
       "sparqlEndpointUrl"
     ]
+  },
+  "plugins": {
+    "sparqlProxy": {
+      "priority": 105,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "sparql-proxy"
+    },
+    "yasgui": {
+      "priority": 105,
+      "module": "trifid-plugin-yasgui"
+    }
   }
 }
