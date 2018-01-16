@@ -28,6 +28,7 @@
   "mediaTypeUrl": {
     "root": {
       "formats": {
+        "json": "application/json",
         "jsonld": "application/ld+json",
         "nt": "application/n-triples",
         "ttl": "text/turtle",
