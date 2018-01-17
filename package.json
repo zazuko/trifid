@@ -29,6 +29,7 @@
     "trifid-handler-sparql": "^1.2.0",
     "trifid-plugin-cotton-candy": "^1.0.0",
     "trifid-plugin-hydra-box": "^1.0.0",
+    "trifid-plugin-markdown": "^1.0.0",
     "trifid-plugin-renderer": "^1.0.0",
     "trifid-plugin-yasgui": "^1.0.0",
     "trifid-renderer-simple": "^5.0.0",

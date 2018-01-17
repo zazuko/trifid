@@ -114,28 +114,32 @@
       "priority": 100,
       "module": "trifid-core:./plugins/locals"
     },
-    "staticViews": {
+    "markdown": {
       "priority": 110,
+      "module": "trifid-plugin-markdown"
+    },
+    "staticViews": {
+      "priority": 120,
       "module": "trifid-core:./plugins/static-views"
     },
     "renderer": {
-      "priority": 120,
+      "priority": 130,
       "module": "trifid-plugin-renderer"
     },
     "hydraBox": {
-      "priority": 130,
+      "priority": 140,
       "module": "trifid-plugin-hydra-box"
     },
     "handler": {
-      "priority": 140,
+      "priority": 150,
       "module": "trifid-core:./plugins/handler"
     },
     "headers-fix": {
-      "priority": 150,
+      "priority": 160,
       "module": "trifid-core:./plugins/headers-fix"
     },
     "error-handler": {
-      "priority": 160,
+      "priority": 170,
       "module": "trifid-core:./plugins/error-handler"
     }
   }
