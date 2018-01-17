@@ -48,12 +48,12 @@
   },
   "plugins": {
     "sparqlProxy": {
-      "priority": 105,
+      "priority": 115,
       "module": "trifid-core:./plugins/middleware",
       "middleware": "sparql-proxy"
     },
     "yasgui": {
-      "priority": 105,
+      "priority": 115,
       "module": "trifid-plugin-yasgui"
     }
   }
