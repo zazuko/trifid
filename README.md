@@ -40,9 +40,9 @@ Clone the Github repository and run
 
 to install all module dependencies.
 
-To start the server execute the following command, optionally followed by [bunyan](https://github.com/trentm/node-bunyan#installation) if you want to pretty print the output.
+To start the server execute the following command:
 
-    npm start | bunyan
+    npm start
 
 ## Configuration
 
@@ -79,7 +79,7 @@ The `baseConfig` property defines which file should be used as base configuratio
 The `trifid:` prefix prepends the Trifid module path.
 The value of the `sparqlEndpointUrl` property is used in the handler and also the SPARQL proxy.
 
-Sometimes  SPARQL endpoints are running on TLS/SSL but provide an incomplete configuration or a self-signed certificate. In that case one can disable strict certificate checking by setting the environment variable `NODE_TLS_REJECT_UNAUTHORIZED`. For example:
+Sometimes SPARQL endpoints are running on TLS/SSL but provide an incomplete configuration or a self-signed certificate. In that case one can disable strict certificate checking by setting the environment variable `NODE_TLS_REJECT_UNAUTHORIZED`. For example:
 
     $ export NODE_TLS_REJECT_UNAUTHORIZED=0
 
@@ -93,7 +93,6 @@ Usually only the following properties must be configured:
 
 The following properties are already defined in the default configurations:
 
-- `logger`: Settings for the `bunyan` logger.
 - `listener`: `port` and `host` of the listener.
 - `express`: Express settings as key vale pairs.
 - `patchHeaders`: Settings for the `patch-headers` middleware.
@@ -106,19 +105,45 @@ The following properties are already defined in the default configurations:
 It's possible to use prefixes for specific paths in the property values.
 
 - `cwd`: Prepends the current working directory to the value.
-- `renderer`: Prepends the path to the configured renderer to the value.
 - `trifid`: Prepends the Trifid module path to the value.
+
+### Multiple Configurations
+
+Most plugins support multiple configurations to support path or hostname specific configurations.
+These plugins have an additional level in the config with the config name as key and the actual configuration as value.
+Each config can have a `path` property.
+If it's not defined, `/` will be used.
+Also a `hostname` can be specified to use the config only for matching host names.
+The `priority` may be required if multiple configs could match to an URL. 
+
+Example:
+```JSON
+"pluginName": {
+  "root": {
+    // "path": "/" will be automatically added if path is not given
+    "priority": 200
+    ...
+  },
+  "otherPath": {
+    "path": "/other/",
+    "priority": 100
+    ...
+  },
+  "otherHostname": {
+    "hostname": "example.org"
+    "priority": 150
+  }
+}
+```
 
 ### Static Files
 
 With the `staticFiles` property, folders can be mapped into URL paths for static file hosting.
+This plugin supports multiple configurations.
 The key for a static file hosting can be used to replace values defined in a configuration, which is used as `baseConfig`.
-The `path` is the URL path which will be used.
-It's possible to define the same path multiple times.
 If the first folder does not contain the requested file, the next folder will be used and so on.
 The `folder` property points to the folder in the file system.
 It's possible to use prefixes in the folder value.
-Optional a `hostname` property can be used to serve files only for a specific virtual host.
 
 Example:
 
@@ -134,11 +159,11 @@ Example:
 
 ### Handler
 
+The handler plugin supports multiple configurations.
 Properties for the handler configuration:
 
 - `module`: The handler JS file or module.
 - `options`: Handler specific options.
- 
 
 More details about the handler specific options can be found in the documentation of the handlers: 
 
@@ -147,9 +172,9 @@ More details about the handler specific options can be found in the documentatio
 
 ### SPARQL Proxy
 
+The SPARQL proxy plugin supports multiple configurations.
 Properties:
 
-- `path`: The URL path where the SPARQL proxy will be mounted.
 - `options`: Options for the SPARQL proxy.
 
 Options:
@@ -163,10 +188,12 @@ Note that SPARQL is currently not supported by the in-memory store.
 
 ### Patch Headers
 
+The patch headers plugin supports multiple configurations.
 See the [patch-headers](https://www.npmjs.com/package/patch-headers) module documentation for more details.
 
 ### Rewrite
 
+The rewrite plugin supports multiple configurations.
 See the [camouflage-rewrite](https://www.npmjs.com/package/camouflage-rewrite) module documentation for more details.
 
 Note that this module does _not_ work for most content-types, see the documentation for details. By default it should work for HTML and Turtle. It is merely for testing purposes and should not be active on production.
