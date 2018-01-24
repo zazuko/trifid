@@ -1,4 +1,3 @@
-var httpError = require('http-errors')
 var SparqlHttpClient = require('sparql-http-client')
 
 SparqlHttpClient.fetch = require('node-fetch')
@@ -81,7 +80,7 @@ SparqlHandler.prototype.graphStream = function (iri, query, accept) {
 
   return this.client.constructQuery(query, queryOptions).then(function (res) {
     if (res.status !== 200) {
-      throw httpError(res.status)
+      return null
     }
 
     var headers = {}
@@ -131,13 +130,17 @@ SparqlHandler.prototype.get = function (req, res, next, iri) {
         if (exists) {
           return self.containerGraphStream(iri, req.headers.accept)
         } else {
-          throw new httpError.NotFound()
+          return null
         }
       })
     } else {
-      throw new httpError.NotFound()
+      return null
     }
   }).then(function (result) {
+    if (!result) {
+      return next()
+    }
+
     Object.keys(result.headers).forEach(function (name) {
       res.setHeader(name, result.headers[name])
     })
