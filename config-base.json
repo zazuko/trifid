@@ -40,6 +40,7 @@
     "root": {
       "mediaTypes": [
         "application/html",
+        "application/json",
         "application/ld+json",
         "application/n-triples",
         "application/rdf+xml",
