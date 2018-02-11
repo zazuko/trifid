@@ -9,6 +9,9 @@ class Trifid {
     this.configHandler = new ConfigHandler()
 
     this.configHandler.resolver.use('cwd', ConfigHandler.pathResolver(process.cwd()))
+    this.configHandler.resolver.use('env', (variable) => {
+      return process.env[variable] || ''
+    })
     this.configHandler.resolver.use('trifid-core', ConfigHandler.pathResolver(__dirname))
 
     this.config = this.configHandler.config
