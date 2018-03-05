@@ -22,9 +22,17 @@ describe('trifid-handler-fetch', () => {
   })
 
   it('should assign url option', () => {
+    const iri = 'http://example.org/dataset'
+
+    const handler = new Handler({url: iri})
+
+    assert.equal(handler.url, iri)
+  })
+
+  it('should use file:// and resolve to cwd if no protocol was given', () => {
     const handler = new Handler({url: 'test'})
 
-    assert.equal(handler.url, 'test')
+    assert.equal(handler.url, 'file://' + path.resolve('test'))
   })
 
   it('should assign cache option', () => {
@@ -63,7 +71,7 @@ describe('trifid-handler-fetch', () => {
     assert.equal(typeof handler.handle, 'function')
   })
 
-  it('should implement the legazy handler interface', () => {
+  it('should implement the legacy handler interface', () => {
     const handler = new Handler({url: fileUrlDataset})
 
     assert.equal(typeof handler.get, 'function')

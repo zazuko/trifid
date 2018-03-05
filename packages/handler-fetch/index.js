@@ -1,6 +1,8 @@
 const formats = require('rdf-formats-common')()
+const path = require('path')
 const rdf = require('rdf-ext')
 const rdfBodyParser = require('rdf-body-parser')
+const url = require('url')
 const Fetcher = require('./lib/Fetcher')
 const JsonLdSerializer = require('rdf-serializer-jsonld-ext')
 
@@ -24,6 +26,11 @@ class FetchHandler {
     this.options = options.options || {}
     this.resource = options.resource
     this.split = options.split
+
+    // add file:// and resolve with cwd if no protocol was given
+    if (this.url && !url.parse(this.url).protocol) {
+      this.url = 'file://' + path.resolve(this.url)
+    }
 
     this.handle = this._handle.bind(this)
 
