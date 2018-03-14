@@ -18,7 +18,7 @@
     "trifid": "./server.js"
   },
   "dependencies": {
-    "camouflage-rewrite": "^1.1.1",
+    "camouflage-rewrite": "^1.2.0",
     "format-to-accept": "^1.0.0",
     "morgan": "^1.9.0",
     "patch-headers": "^1.0.1",
