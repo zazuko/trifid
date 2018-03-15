@@ -1,7 +1,7 @@
 {
   "name": "trifid",
   "description": "Trifid - Lightweight Linked Data Server and Proxy",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
