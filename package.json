@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "camouflage-rewrite": "^1.2.0",
+    "compression": "^1.7.2",
     "format-to-accept": "^1.0.0",
     "morgan": "^1.9.0",
     "patch-headers": "^1.0.1",
@@ -30,7 +31,7 @@
     "trifid-plugin-cotton-candy": "^1.0.0",
     "trifid-plugin-hydra-box": "^1.0.0",
     "trifid-plugin-markdown": "^1.0.0",
-    "trifid-plugin-renderer": "^1.0.0",
+    "trifid-plugin-renderer": "^1.0.1",
     "trifid-plugin-yasgui": "^1.0.0",
     "trifid-renderer-simple": "^5.0.0",
     "trifid-yasgui": "^2.0.5"
