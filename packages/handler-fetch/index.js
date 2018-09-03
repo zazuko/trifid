@@ -50,7 +50,7 @@ class FetchHandler {
 
       const graph = rdf.graph(dataset)
 
-      res.graph(graph)
+      return res.graph(graph)
     }).catch(next)
   }
 
