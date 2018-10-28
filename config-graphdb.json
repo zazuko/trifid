@@ -1,0 +1,4 @@
+{
+  "baseConfig": "trifid:config-sparql.json",
+  "sparqlEndpointUrl": "https://linkeddata.aleth.io/sparql"
+}
