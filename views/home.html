@@ -13,7 +13,21 @@ ${include('cwd:views/navigation.html')}
   <div class="row">
     <div class="col-xs-12">
       <h1>${url.hostname}</h1>
-      ${m(`## Trifid Linked Data Services`)}
+      ${m(`## Ethereum Linked Data Browser
+This is an Ethereum Linked Data Browser. It can be used as a block explorer because EthOn based Ethereum data forms a graph with all of the data contained in the Ethereum Blockchain.
+
+### Starting points
+  - Start at a block: [Block 6,575,377](Block_6575377)
+  - See the details of a transaction: [Tx with hash 0x3670360d3c3f20b1aea4c952faaa79e2e41b8e31e69797f91da0d82d1d79c69a](Tx_0x3670360d3c3f20b1aea4c952faaa79e2e41b8e31e69797f91da0d82d1d79c69a)
+  - Look at a [log which is also a token transfer](LogEntry_0x3670360d3c3f20b1aea4c952faaa79e2e41b8e31e69797f91da0d82d1d79c69a_0)
+
+### Direct navigation
+You can directly navigation to Ethereum ressources.
+  - Blocks: Block_ + block number
+  - Tx: Tx_ + Tx hash
+
+All Ethereum artifacts have such predictable URIs. Just browse a bit to get to know them.
+      `)}
     </div>
   </div>
 
