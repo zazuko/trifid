@@ -1,5 +1,6 @@
 {
-  "baseConfig": "trifid:config-fs.json",
+  "baseConfig": "trifid:config-graphdb.json",
+  "datasetBaseUrl": "http://ethereum.ethstats.io/",
   "handler": {
     "root": {
       "options": {
