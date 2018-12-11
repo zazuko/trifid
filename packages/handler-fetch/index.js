@@ -45,13 +45,13 @@ class FetchHandler {
       const dataset = this.dataset.match(null, null, null, rdf.namedNode(req.iri))
 
       if (dataset.length === 0) {
-        return next()
+        return
       }
 
       const graph = rdf.graph(dataset)
 
       return res.graph(graph)
-    }).catch(next)
+    }).asCallback(next)
   }
 
   // legacy interface
