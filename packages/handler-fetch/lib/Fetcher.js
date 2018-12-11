@@ -34,9 +34,6 @@ class Fetcher {
       if (options.contentType) {
         res.headers.set('content-type', options.contentType)
       }
-
-      return res
-    }).then((res) => {
       options.fetched = new Date()
 
       return res.dataset()
