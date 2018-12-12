@@ -7,6 +7,7 @@ const path = require('path')
 const request = require('supertest')
 const url = require('url')
 const Handler = require('..')
+const Promise = require('bluebird')
 
 describe('trifid-handler-fetch', () => {
   const fileUrlDataset = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nq')
@@ -103,6 +104,32 @@ describe('trifid-handler-fetch', () => {
 
         assert.notEqual(text.indexOf(includeNt), -1)
         assert.equal(text.indexOf(excludeNt), -1)
+      })
+  })
+
+  it('should not process next middleware after sending content', () => {
+    const app = express()
+
+    const handler = new Handler({
+      url: fileUrlDataset,
+      options: {
+        contentTypeLookup: () => 'application/n-quads'
+      }
+    })
+
+    let touched = false
+
+    app.use(attachIri)
+    app.use(handler.handle)
+    app.use(() => {
+      touched = true
+    })
+
+    return request(app)
+      .get('/data/person/amy-farrah-fowler')
+      .set('accept', 'text/turtle')
+      .then(() => Promise.delay(500)).then(() => {
+        assert(!touched)
       })
   })
 
