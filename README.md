@@ -40,9 +40,29 @@ Clone the Github repository and run
 
 to install all module dependencies.
 
+## Usage
+
 To start the server execute the following command:
 
     npm start
+
+The server script is also a command line program which can be called like this:
+
+    trifid --config=my-trifid-config.json
+
+If you want to run Trifid using a SPARQL endpoint and default settings, you can run it even without a config file:
+
+    trifid --sparql-endpoint-url=http://localhost:3030/sparql     
+
+### Parameters
+
+The following parameters are available:
+
+- `-v` or `--verbose`: Verbose output, will show the actual config after expanding
+- `-c` or `--config`: Expects a path to a config as value, which will be used by Trifid
+- `-p` or `--port`: Expects a port number as value, which will be used by the HTTP listener of Trifid
+- `--sparql-endpoint-url`: Expects a SPARQL HTTP query interface URL value, which will be used by the Trifid SPARQL handler
+- `--dataset-base-url`: Expects a Base URL value, which will be used to translate the request URLs
 
 ## Configuration
 
@@ -102,9 +122,10 @@ The following properties are already defined in the default configurations:
 
 ### Prefixes
 
-It's possible to use prefixes for specific paths in the property values.
+It's possible to use prefixes in the property values which will be translated to specific paths or environment variable values.
 
 - `cwd`: Prepends the current working directory to the value.
+- `env`: Uses the value of the environment variable with the name matching the value after the prefix.
 - `trifid`: Prepends the Trifid module path to the value.
 
 ### Multiple Configurations
