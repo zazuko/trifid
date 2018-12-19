@@ -122,10 +122,12 @@ The following properties are already defined in the default configurations:
 
 ### Prefixes
 
-It's possible to use prefixes in the property values which will be translated to specific paths or environment variable values.
+It is possible to use prefixes in the property values of the configuration.
+These prefixes will be translated to specific paths or environment variable values.
 
 - `cwd`: Prepends the current working directory to the value.
 - `env`: Uses the value of the environment variable with the name matching the value after the prefix.
+  (e.g. `"env:SPARQL_ENDPOINT_URL"` will be replaced with the environment variable value of `$SPARQL_ENDPOINT_URL`) 
 - `trifid`: Prepends the Trifid module path to the value.
 
 ### Multiple Configurations
