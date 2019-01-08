@@ -2,7 +2,7 @@
   "baseConfig": "trifid:config-base.json",
   "handler": {
     "root": {
-      "module": "trifid-handler-fs"
+      "module": "trifid-handler-fetch"
     }
   }
 }

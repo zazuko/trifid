@@ -34,7 +34,7 @@ Trifid can be completely themed according to your needs. Example resources using
 Trifid is a [Node.js](http://nodejs.org/) based application.
 To install and run it you will need to install [Node.js](http://nodejs.org/) on your system.
 
-Clone the Github repository and run 
+Clone the Github repository and run
 
     npm install
 
@@ -78,7 +78,9 @@ Values of the base file will be overwritten.
 The default configuration `config.json` uses the file system handler and a [sample dataset](https://github.com/zazukoians/tbbt-ld) with characters from _The Big Bang Theory_.
 The following command will run it:
 
-    npm run
+    npm start
+
+You will then be able to access its content, e.g. <http://localhost:8080/data/person/amy-farrah-fowler>.
 
 In a production environment the SPARQL handler may be the better choice.
 
@@ -127,7 +129,7 @@ These prefixes will be translated to specific paths or environment variable valu
 
 - `cwd`: Prepends the current working directory to the value.
 - `env`: Uses the value of the environment variable with the name matching the value after the prefix.
-  (e.g. `"env:SPARQL_ENDPOINT_URL"` will be replaced with the environment variable value of `$SPARQL_ENDPOINT_URL`) 
+  (e.g. `"env:SPARQL_ENDPOINT_URL"` will be replaced with the environment variable value of `$SPARQL_ENDPOINT_URL`)
 - `trifid`: Prepends the Trifid module path to the value.
 
 ### Multiple Configurations
@@ -137,7 +139,7 @@ These plugins have an additional level in the config with the config name as key
 Each config can have a `path` property.
 If it's not defined, `/` will be used.
 Also a `hostname` can be specified to use the config only for matching host names.
-The `priority` may be required if multiple configs could match to an URL. 
+The `priority` may be required if multiple configs could match to an URL.
 
 Example:
 ```JSON
@@ -188,9 +190,9 @@ Properties for the handler configuration:
 - `module`: The handler JS file or module.
 - `options`: Handler specific options.
 
-More details about the handler specific options can be found in the documentation of the handlers: 
+More details about the handler specific options can be found in the documentation of the handlers:
 
-- [File System](https://github.com/zazukoians/trifid-handler-fs)
+- [Fetch files](https://github.com/zazukoians/trifid-handler-fetch)
 - [SPARQL](https://github.com/zazukoians/trifid-handler-sparql)
 
 ### SPARQL Proxy
@@ -207,7 +209,7 @@ Options:
 
 See `config-virtuoso.json` and `config-stardog.json` for default configuration in case you use either of these stores.
 
-Note that SPARQL is currently not supported by the in-memory store. 
+Note that SPARQL is currently not supported by the in-memory store.
 
 ### Patch Headers
 
@@ -221,7 +223,7 @@ See the [camouflage-rewrite](https://www.npmjs.com/package/camouflage-rewrite) m
 
 Note that this module does _not_ work for most content-types, see the documentation for details. By default it should work for HTML and Turtle. It is merely for testing purposes and should not be active on production.
 
-## Production Best Practices 
+## Production Best Practices
 
 Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024). You should use a reverse proxy like [Varnish](https://www.varnish-cache.org/) instead.
 
@@ -269,4 +271,3 @@ Pull requests are very welcome.
 Copyright 2015-2017 Zazuko GmbH
 
 Trifid is licensed under the Apache License, Version 2.0. Please see LICENSE and NOTICE for details.
-
