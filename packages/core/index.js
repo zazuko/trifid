@@ -15,6 +15,9 @@ class Trifid {
     this.configHandler.resolver.use('trifid-core', ConfigHandler.pathResolver(__dirname))
 
     this.config = this.configHandler.config
+    if (!this.config.hasOwnProperty('debug')) {
+      this.config.debug = true
+    }
 
     this.context = {
       config: this.config,
@@ -59,8 +62,9 @@ class Trifid {
 
     return this.middleware(app).then(() => {
       app.listen(this.config.listener.port, this.config.listener.host)
-
-      console.log('listening on: ' + (this.config.listener.host || '*') + ':' + this.config.listener.port)
+      if (this.config.debug) {
+        console.log('listening on: ' + (this.config.listener.host || '*') + ':' + this.config.listener.port)
+      }
 
       return app
     })
