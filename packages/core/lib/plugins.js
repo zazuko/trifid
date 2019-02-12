@@ -21,7 +21,9 @@ function load (list, router, config, context) {
   list = prepare(list)
 
   return Promise.mapSeries(list, (plugin) => {
-    console.log('loading: ' + plugin.name)
+    if (config.debug) {
+      console.log('loading: ' + plugin.name)
+    }
 
     const params = config[plugin.name]
     const func = moduleLoader.require(plugin.module)
