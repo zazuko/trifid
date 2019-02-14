@@ -1,6 +1,7 @@
-const moduleLoader = require('./module-loader')
-const sortBy = require('lodash/sortBy')
 const Promise = require('bluebird')
+const sortBy = require('lodash/sortBy')
+const debug = require('debug')('trifid')
+const moduleLoader = require('./module-loader')
 
 function prepare (list) {
   // key values -> array with name property
@@ -21,9 +22,7 @@ function load (list, router, config, context) {
   list = prepare(list)
 
   return Promise.mapSeries(list, (plugin) => {
-    if (config.debug) {
-      console.log('loading: ' + plugin.name)
-    }
+    debug('loading: %s', plugin.name)
 
     const params = config[plugin.name]
     const func = moduleLoader.require(plugin.module)
