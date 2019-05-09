@@ -1,5 +1,5 @@
+var debug = require('debug')('trifid:handler-sparql')
 var SparqlHttpClient = require('sparql-http-client')
-
 SparqlHttpClient.fetch = require('node-fetch')
 
 function authBasicHeader (user, password) {
@@ -13,7 +13,7 @@ function SparqlHandler (options) {
   this.resourceGraphQuery = options.resourceGraphQuery
   this.containerExistsQuery = options.containerExistsQuery
   this.containerGraphQuery = options.containerGraphQuery
-  this.client = new SparqlHttpClient({endpointUrl: options.endpointUrl})
+  this.client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
 }
 
 SparqlHandler.prototype.buildQueryOptions = function () {
@@ -45,7 +45,7 @@ SparqlHandler.prototype.buildContainerGraphQuery = function (iri) {
 }
 
 SparqlHandler.prototype.exists = function (iri, query) {
-  console.log('SPARQL exists query for IRI <' + iri + '> : ' + query)
+  debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
   return this.client.selectQuery(query, this.buildQueryOptions()).then(function (res) {
     if (res.status !== 200) {
@@ -59,7 +59,7 @@ SparqlHandler.prototype.exists = function (iri, query) {
 }
 
 SparqlHandler.prototype.resourceExists = function (iri) {
-  // if resources with trailing slashes are disabled don't even run the query
+  // if resources with trailing slashes are disabled, don't run the query
   if (this.resourceNoSlash && iri.slice(-1) === '/') {
     return Promise.resolve(false)
   }
@@ -72,7 +72,7 @@ SparqlHandler.prototype.containerExists = function (iri) {
 }
 
 SparqlHandler.prototype.graphStream = function (iri, query, accept) {
-  console.log('SPARQL query for IRI <' + iri + '> : ' + query)
+  debug('SPARQL query for IRI <' + iri + '> : ' + query)
 
   var queryOptions = this.buildQueryOptions()
 
@@ -120,22 +120,21 @@ SparqlHandler.prototype.handle = function (req, res, next) {
 SparqlHandler.prototype.get = function (req, res, next, iri) {
   var self = this
 
-  console.log('handle GET request for IRI <' + iri + '>')
+  debug('handle GET request for IRI <' + iri + '>')
 
   this.resourceExists(iri).then(function (exists) {
     if (exists) {
       return self.resourceGraphStream(iri, req.headers.accept)
-    } else if (iri.slice(-1) === '/') {
+    }
+    if (iri.slice(-1) === '/') {
       return self.containerExists(iri).then(function (exists) {
         if (exists) {
           return self.containerGraphStream(iri, req.headers.accept)
-        } else {
-          return null
         }
+        return null
       })
-    } else {
-      return null
     }
+    return null
   }).then(function (result) {
     if (!result) {
       return next()
