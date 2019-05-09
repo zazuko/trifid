@@ -9,6 +9,6 @@ If you want a out of the box solution check [trifid](https://www.npmjs.com/packa
 
 ## Debugging / Logging Output
 
-This package uses [`debug`](https://www.npmjs.com/package/debug) under the `trifid` namespace.
+This package uses [`debug`](https://www.npmjs.com/package/debug) under the `trifid:core` namespace.
 
-Debugging information is printed when the string `trifid` is present in the space or comma-separated `DEBUG` environment variable, for instance `DEBUG=http,trifid,somethingelse npm start` in a package depending on `trifid-core`.
+Debugging information is printed when the string `trifid:core` or `trifid:*` is present in the space or comma-separated `DEBUG` environment variable, for instance `DEBUG=http,trifid:*,somethingelse npm start` in a package depending on `trifid-core`.

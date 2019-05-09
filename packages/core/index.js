@@ -1,5 +1,5 @@
 const express = require('express')
-const debug = require('debug')('trifid')
+const debug = require('debug')('trifid:core')
 const middleware = require('./lib/middleware')
 const moduleLoader = require('./lib/module-loader')
 const plugins = require('./lib/plugins')

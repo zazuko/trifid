@@ -1,6 +1,6 @@
 const Promise = require('bluebird')
 const sortBy = require('lodash/sortBy')
-const debug = require('debug')('trifid')
+const debug = require('debug')('trifid:core')
 const moduleLoader = require('./module-loader')
 
 function prepare (list) {
