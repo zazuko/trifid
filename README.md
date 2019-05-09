@@ -225,7 +225,7 @@ Note that this module does _not_ work for most content-types, see the documentat
 
 ## Production Best Practices
 
-Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024). You should use a reverse proxy like [Varnish](https://www.varnish-cache.org/) instead.
+Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024). You should use a reverse proxy instead.
 
 ### Installing/Using with Docker
 
@@ -260,6 +260,12 @@ If you do not want to build your own Docker image, you can pull the official ima
 
 If you run Trifid behind a reverse proxy, the proxy must set the `X-Forwarded-Host` header field.
 
+## Debugging
+
+This package uses [`debug`](https://www.npmjs.com/package/debug), you can get debug logging via: `DEBUG=trifid:`.
+Trifid plugins should also implement `debug` under the `trifid:` prefix, enabling logging from all packages
+implementing it can be done this way: `DEBUG=trifid:*`.
+
 ## Support
 
 Issues & feature requests should be reported on Github.
@@ -268,6 +274,6 @@ Pull requests are very welcome.
 
 ## License
 
-Copyright 2015-2017 Zazuko GmbH
+Copyright 2015-2019 Zazuko GmbH
 
 Trifid is licensed under the Apache License, Version 2.0. Please see LICENSE and NOTICE for details.
