@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const debug = require('debug')('trifid:')
 const path = require('path')
 const program = require('commander')
 const ConfigHandler = require('trifid-core/lib/ConfigHandler')
@@ -47,11 +48,11 @@ trifid.configHandler.resolver.use('trifid', ConfigHandler.pathResolver(__dirname
 
 trifid.init(config).then(() => {
   if (program.verbose) {
-    console.log('expanded config:')
-    console.log(JSON.stringify(trifid.config, null, ' '))
+    debug('expanded config:')
+    debug(JSON.stringify(trifid.config, null, ' '))
   }
 
   return trifid.app()
 }).catch((err) => {
-  console.error(err.stack || err.message)
+  debug(err)
 })
