@@ -1,5 +1,5 @@
 const path = require('path')
-const debug = require('debug')('trifid')
+const debug = require('debug')('trifid:core')
 
 function handler (router, config) {
   this.middleware.mountAll(router, config, (options) => {
