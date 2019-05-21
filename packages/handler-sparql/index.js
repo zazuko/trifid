@@ -6,146 +6,148 @@ function authBasicHeader (user, password) {
   return 'Basic ' + Buffer.from(user + ':' + password).toString('base64')
 }
 
-function SparqlHandler (options) {
-  this.authentication = options.authentication
-  this.resourceNoSlash = options.resourceNoSlash
-  this.resourceExistsQuery = options.resourceExistsQuery
-  this.resourceGraphQuery = options.resourceGraphQuery
-  this.containerExistsQuery = options.containerExistsQuery
-  this.containerGraphQuery = options.containerGraphQuery
-  this.client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
-}
-
-SparqlHandler.prototype.buildQueryOptions = function () {
-  var queryOptions = {}
-
-  if (this.authentication) {
-    queryOptions.headers = {
-      Authorization: authBasicHeader(this.authentication.user, this.authentication.password)
-    }
+class SparqlHandler {
+  constructor (options) {
+    this.authentication = options.authentication
+    this.resourceNoSlash = options.resourceNoSlash
+    this.resourceExistsQuery = options.resourceExistsQuery
+    this.resourceGraphQuery = options.resourceGraphQuery
+    this.containerExistsQuery = options.containerExistsQuery
+    this.containerGraphQuery = options.containerGraphQuery
+    this.client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
   }
 
-  return queryOptions
-}
+  buildQueryOptions () {
+    var queryOptions = {}
 
-SparqlHandler.prototype.buildResourceExistsQuery = function (iri) {
-  return this.resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
-}
-
-SparqlHandler.prototype.buildResourceGraphQuery = function (iri) {
-  return this.resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
-}
-
-SparqlHandler.prototype.buildContainerExistsQuery = function (iri) {
-  return this.containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
-}
-
-SparqlHandler.prototype.buildContainerGraphQuery = function (iri) {
-  return this.containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
-}
-
-SparqlHandler.prototype.exists = function (iri, query) {
-  debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
-
-  return this.client.selectQuery(query, this.buildQueryOptions()).then(function (res) {
-    if (res.status !== 200) {
-      return false
+    if (this.authentication) {
+      queryOptions.headers = {
+        Authorization: authBasicHeader(this.authentication.user, this.authentication.password)
+      }
     }
 
-    return res.json()
-  }).then(function (result) {
-    return result && result.boolean
-  })
-}
-
-SparqlHandler.prototype.resourceExists = function (iri) {
-  // if resources with trailing slashes are disabled, don't run the query
-  if (this.resourceNoSlash && iri.slice(-1) === '/') {
-    return Promise.resolve(false)
+    return queryOptions
   }
 
-  return this.exists(iri, this.buildResourceExistsQuery(iri))
-}
+  buildResourceExistsQuery (iri) {
+    return this.resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  }
 
-SparqlHandler.prototype.containerExists = function (iri) {
-  return this.exists(iri, this.buildContainerExistsQuery(iri))
-}
+  buildResourceGraphQuery (iri) {
+    return this.resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  }
 
-SparqlHandler.prototype.graphStream = function (iri, query, accept) {
-  debug('SPARQL query for IRI <' + iri + '> : ' + query)
+  buildContainerExistsQuery (iri) {
+    return this.containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  }
 
-  var queryOptions = this.buildQueryOptions()
+  buildContainerGraphQuery (iri) {
+    return this.containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  }
 
-  queryOptions.accept = accept
+  exists (iri, query) {
+    debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
-  return this.client.constructQuery(query, queryOptions).then(function (res) {
-    if (res.status !== 200) {
-      return null
-    }
-
-    var headers = {}
-
-    res.headers.forEach(function (value, name) {
-      // stream will be decoded by the client -> remove content-encoding header
-      if (name === 'content-encoding') {
-        return
+    return this.client.selectQuery(query, this.buildQueryOptions()).then(function (res) {
+      if (res.status !== 200) {
+        return false
       }
 
-      headers[name] = value
+      return res.json()
+    }).then(function (result) {
+      return result && result.boolean
     })
-
-    return {
-      headers: headers,
-      stream: res.body
-    }
-  })
-}
-
-SparqlHandler.prototype.resourceGraphStream = function (iri, accept) {
-  return this.graphStream(iri, this.buildResourceGraphQuery(iri), accept)
-}
-
-SparqlHandler.prototype.containerGraphStream = function (iri, accept) {
-  return this.graphStream(iri, this.buildContainerGraphQuery(iri), accept)
-}
-
-SparqlHandler.prototype.handle = function (req, res, next) {
-  if (req.method === 'GET') {
-    this.get(req, res, next, req.iri)
-  } else {
-    next()
   }
-}
 
-SparqlHandler.prototype.get = function (req, res, next, iri) {
-  var self = this
-
-  debug('handle GET request for IRI <' + iri + '>')
-
-  this.resourceExists(iri).then(function (exists) {
-    if (exists) {
-      return self.resourceGraphStream(iri, req.headers.accept)
+  resourceExists (iri) {
+    // if resources with trailing slashes are disabled, don't run the query
+    if (this.resourceNoSlash && iri.slice(-1) === '/') {
+      return Promise.resolve(false)
     }
-    if (iri.slice(-1) === '/') {
-      return self.containerExists(iri).then(function (exists) {
-        if (exists) {
-          return self.containerGraphStream(iri, req.headers.accept)
-        }
+
+    return this.exists(iri, this.buildResourceExistsQuery(iri))
+  }
+
+  containerExists (iri) {
+    return this.exists(iri, this.buildContainerExistsQuery(iri))
+  }
+
+  graphStream (iri, query, accept) {
+    debug('SPARQL query for IRI <' + iri + '> : ' + query)
+
+    var queryOptions = this.buildQueryOptions()
+
+    queryOptions.accept = accept
+
+    return this.client.constructQuery(query, queryOptions).then(function (res) {
+      if (res.status !== 200) {
         return null
+      }
+
+      var headers = {}
+
+      res.headers.forEach(function (value, name) {
+        // stream will be decoded by the client -> remove content-encoding header
+        if (name === 'content-encoding') {
+          return
+        }
+
+        headers[name] = value
       })
-    }
-    return null
-  }).then(function (result) {
-    if (!result) {
-      return next()
-    }
 
-    Object.keys(result.headers).forEach(function (name) {
-      res.setHeader(name, result.headers[name])
+      return {
+        headers: headers,
+        stream: res.body
+      }
     })
+  }
 
-    result.stream.pipe(res)
-  }).catch(next)
+  resourceGraphStream (iri, accept) {
+    return this.graphStream(iri, this.buildResourceGraphQuery(iri), accept)
+  }
+
+  containerGraphStream (iri, accept) {
+    return this.graphStream(iri, this.buildContainerGraphQuery(iri), accept)
+  }
+
+  handle (req, res, next) {
+    if (req.method === 'GET') {
+      this.get(req, res, next, req.iri)
+    } else {
+      next()
+    }
+  }
+
+  get (req, res, next, iri) {
+    var self = this
+
+    debug('handle GET request for IRI <' + iri + '>')
+
+    this.resourceExists(iri).then(function (exists) {
+      if (exists) {
+        return self.resourceGraphStream(iri, req.headers.accept)
+      }
+      if (iri.slice(-1) === '/') {
+        return self.containerExists(iri).then(function (exists) {
+          if (exists) {
+            return self.containerGraphStream(iri, req.headers.accept)
+          }
+          return null
+        })
+      }
+      return null
+    }).then(function (result) {
+      if (!result) {
+        return next()
+      }
+
+      Object.keys(result.headers).forEach(function (name) {
+        res.setHeader(name, result.headers[name])
+      })
+
+      result.stream.pipe(res)
+    }).catch(next)
+  }
 }
 
 module.exports = SparqlHandler
