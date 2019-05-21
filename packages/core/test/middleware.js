@@ -106,5 +106,27 @@ describe('middleware', () => {
           assert.equal(count, 2)
         })
     })
+
+    it('should mount each config entry by priority', async () => {
+      const order = []
+
+      const app = express()
+
+      const configs = {
+        a: { priority: 20 },
+        b: { priority: 30 },
+        c: { priority: 10 }
+      }
+
+      await middleware.mountAll(app, configs, async config => {
+        await new Promise(resolve => setTimeout(resolve, 100 - config.priority))
+
+        order.push(config.priority)
+
+        return (req, res, next) => next()
+      })
+
+      assert.deepStrictEqual(order, [10, 20, 30])
+    })
   })
 })
