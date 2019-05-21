@@ -1,5 +1,5 @@
-var debug = require('debug')('trifid:handler-sparql')
-var SparqlHttpClient = require('sparql-http-client')
+const debug = require('debug')('trifid:handler-sparql')
+const SparqlHttpClient = require('sparql-http-client')
 SparqlHttpClient.fetch = require('node-fetch')
 
 function authBasicHeader (user, password) {
@@ -18,7 +18,7 @@ class SparqlHandler {
   }
 
   buildQueryOptions () {
-    var queryOptions = {}
+    const queryOptions = {}
 
     if (this.authentication) {
       queryOptions.headers = {
@@ -48,13 +48,13 @@ class SparqlHandler {
   exists (iri, query) {
     debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
-    return this.client.selectQuery(query, this.buildQueryOptions()).then(function (res) {
+    return this.client.selectQuery(query, this.buildQueryOptions()).then((res) => {
       if (res.status !== 200) {
         return false
       }
 
       return res.json()
-    }).then(function (result) {
+    }).then((result) => {
       return result && result.boolean
     })
   }
@@ -75,18 +75,18 @@ class SparqlHandler {
   graphStream (iri, query, accept) {
     debug('SPARQL query for IRI <' + iri + '> : ' + query)
 
-    var queryOptions = this.buildQueryOptions()
+    const queryOptions = this.buildQueryOptions()
 
     queryOptions.accept = accept
 
-    return this.client.constructQuery(query, queryOptions).then(function (res) {
+    return this.client.constructQuery(query, queryOptions).then((res) => {
       if (res.status !== 200) {
         return null
       }
 
-      var headers = {}
+      const headers = {}
 
-      res.headers.forEach(function (value, name) {
+      res.headers.forEach((value, name) => {
         // stream will be decoded by the client -> remove content-encoding header
         if (name === 'content-encoding') {
           return
@@ -119,29 +119,27 @@ class SparqlHandler {
   }
 
   get (req, res, next, iri) {
-    var self = this
-
     debug('handle GET request for IRI <' + iri + '>')
 
-    this.resourceExists(iri).then(function (exists) {
+    this.resourceExists(iri).then((exists) => {
       if (exists) {
-        return self.resourceGraphStream(iri, req.headers.accept)
+        return this.resourceGraphStream(iri, req.headers.accept)
       }
       if (iri.slice(-1) === '/') {
-        return self.containerExists(iri).then(function (exists) {
+        return this.containerExists(iri).then((exists) => {
           if (exists) {
-            return self.containerGraphStream(iri, req.headers.accept)
+            return this.containerGraphStream(iri, req.headers.accept)
           }
           return null
         })
       }
       return null
-    }).then(function (result) {
+    }).then((result) => {
       if (!result) {
         return next()
       }
 
-      Object.keys(result.headers).forEach(function (name) {
+      Object.keys(result.headers).forEach((name) => {
         res.setHeader(name, result.headers[name])
       })
 
