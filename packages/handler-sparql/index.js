@@ -61,7 +61,7 @@ class SparqlHandler {
 
   resourceExists (iri) {
     // if resources with trailing slashes are disabled, don't run the query
-    if (this.resourceNoSlash && iri.slice(-1) === '/') {
+    if (this.resourceNoSlash && iri.endsWith('/')) {
       return Promise.resolve(false)
     }
 
@@ -125,7 +125,7 @@ class SparqlHandler {
       if (exists) {
         return this.resourceGraphStream(iri, req.headers.accept)
       }
-      if (iri.slice(-1) === '/') {
+      if (iri.endsWith('/')) {
         return this.containerExists(iri).then((exists) => {
           if (exists) {
             return this.containerGraphStream(iri, req.headers.accept)
