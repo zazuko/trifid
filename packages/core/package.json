@@ -17,6 +17,10 @@
   "bin": {
     "trifid-core": "./server.js"
   },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=6"
+  },
   "dependencies": {
     "absolute-url": "^1.2.0",
     "bluebird": "^3.5.1",
