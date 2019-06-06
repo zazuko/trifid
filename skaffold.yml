@@ -1,0 +1,20 @@
+apiVersion: skaffold/v1beta11
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: sandhose/trifid
+    docker:
+      buildArgs:
+        BUILD_DATE: "{{ .BUILD_DATE }}"
+        COMMIT: "{{ .COMMIT }}"
+        VERSION: "{{ .VERSION }}"
+
+deploy:
+  helm:
+    releases:
+    - name: trifid
+      chartPath: charts/trifid
+      values:
+        image: sandhose/trifid
