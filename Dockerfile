@@ -1,23 +1,31 @@
-FROM node:carbon
+FROM node:lts-alpine
 
-# install pm2 process manager
-RUN npm install pm2 -g
+# dumb-init is needed as an entrypoint to fix signal handling
+RUN apk add --no-cache dumb-init
 
-# install trifid globaly accessible
-RUN mkdir -p /opt/trifid
-WORKDIR /opt/trifid
-COPY . /opt/trifid
-RUN npm install -g --only=production
+WORKDIR /app
 
-# create application directory
-RUN mkdir -p /usr/src/app
-RUN ln -s /opt/trifid/node_modules /usr/src/app
-WORKDIR /usr/src/app
-# copy necessary files, overwrite for your instance
-COPY config.json ./
-COPY views ./views
-COPY public ./public
+# Copy the package.json and install the dependencies
+COPY package.json ./
+RUN npm install --only=production
+COPY . .
+RUN ln -s /app/server.js /usr/local/bin/trifid
 
-CMD ["pm2-docker", "trifid"]
+ARG BUILD_DATE
+ARG COMMIT
+ARG VERSION
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Trifid" \
+      org.label-schema.description="Lightweight Linked Data Server and Proxy" \
+      org.label-schema.url="https://github.com/zazuko/trifid" \
+      org.label-schema.vcs-url="https://github.com/zazuko/trifid" \
+      org.label-schema.vcs-ref=$COMMIT \
+      org.label-schema.vendor="Zazuko" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["trifid"]
 
 EXPOSE 8080
