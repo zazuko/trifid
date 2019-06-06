@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "trifid.fullname" . }}
+  labels:
+{{ include "trifid.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "trifid.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "trifid.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+          - name: config
+            mountPath: "/config"
+            readOnly: true
+          env:
+          - name: TRIFID_CONFIG
+          {{- if .Values.customConfig }}
+            value: "/config/customConfig.json"
+          {{- else }}
+            value: "/config/config.json"
+          {{- end }}
+          - name: SPARQL_ENDPOINT_URL
+            value: {{ quote .Values.sparql.endpoint }}
+          {{- if or (and .Values.sparql.username .Values.sparql.password) .Values.sparql.existingSecret }}
+          - name: SPARQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: {{ .Values.sparql.existingSecret | default (include "trifid.fullname" .) }}
+          - name: SPARQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: {{ .Values.sparql.existingSecret | default (include "trifid.fullname" .) }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "trifid.fullname" . }}
