@@ -11,6 +11,8 @@ RUN npm install --only=production
 COPY . .
 RUN ln -s /app/server.js /usr/local/bin/trifid
 
+USER nobody:nobody
+
 ARG BUILD_DATE
 ARG COMMIT
 ARG VERSION
