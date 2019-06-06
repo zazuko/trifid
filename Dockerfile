@@ -29,3 +29,4 @@ ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["trifid"]
 
 EXPOSE 8080
+HEALTHCHECK CMD wget -q -O- http://localhost:8080/health
