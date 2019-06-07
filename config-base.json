@@ -66,7 +66,8 @@
     }
   },
   "staticViews": {
-    "/": "trifid:views/home.html"
+    "/": "trifid:views/home.html",
+    "/health": "trifid:views/health.html"
   },
   "breakDown": {
     "rewrite": {},
