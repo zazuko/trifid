@@ -1,0 +1,20 @@
+apiVersion: skaffold/v1beta11
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: docker.io/zazuko/trifid
+    docker:
+      buildArgs:
+        # Set build args from env
+        # See Dockerfile for details
+        BUILD_DATE: '{{ .BUILD_DATE }}'
+        COMMIT: '{{ .COMMIT }}'
+        VERSION: '{{ .VERSION }}'
+  local:
+    # See https://github.com/GoogleContainerTools/skaffold/issues/2234
+    useDockerCLI: true
+deploy:
+  kustomize:
+    path: "k8s/"
