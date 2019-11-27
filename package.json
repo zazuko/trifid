@@ -34,8 +34,7 @@
     "trifid-plugin-markdown": "^1.0.0",
     "trifid-plugin-renderer": "^1.0.1",
     "trifid-plugin-yasgui": "^1.0.0",
-    "trifid-renderer-simple": "^5.0.0",
-    "trifid-yasgui": "^2.0.5"
+    "trifid-renderer-simple": "^5.0.0"
   },
   "devDependencies": {
     "standard": "^12.0.1"
