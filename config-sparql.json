@@ -26,7 +26,8 @@
   },
   "yasgui": {
     "default": {
-      "path": "/sparql"
+      "path": "/sparql",
+      "urlShortener": "https://s.zazuko.com/api/v1/shorten"
     }
   },
   "breakDown": {
