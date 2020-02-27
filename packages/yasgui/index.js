@@ -25,6 +25,7 @@ function middleware (options) {
 
     // read SPARQL endpoint URL from options and resolve with absoluteUrl
     res.locals.endpointUrl = url.resolve(req.absoluteUrl(), options.endpointUrl)
+    res.locals.urlShortener = options.urlShortener
 
     res.render(options.template)
   })
