@@ -1,7 +1,7 @@
 {
   "name": "trifid-plugin-yasgui",
   "description": "Trifid YASGUI plugin",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid-plugin-yasgui",
   "repository": {
