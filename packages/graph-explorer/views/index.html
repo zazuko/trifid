@@ -1,0 +1,57 @@
+${set('moduleAbout','<a href="http://about.yasgui.org/" target="_blank">YASGUI</a>')}
+<!DOCTYPE html>
+<html>
+<head>
+
+${include('cwd:views/header.html')}
+
+  <script type="text/javascript" src="dist/ontodia-full.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.2/react.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+
+  <style type="text/css">
+    html, body, #container {
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+
+  <script type="text/javascript">
+  //<![CDATA[
+  window.onload = function () {
+      function onWorkspaceMounted(workspace) {
+        if (!workspace) { return; }
+        workspace.getModel().importLayout({
+          dataProvider: new Ontodia.SparqlDataProvider({
+            endpointUrl: '${endpointUrl}',
+            imagePropertyUris: [
+              'http://xmlns.com/foaf/0.1/img',
+            ],
+            queryMethod: Ontodia.SparqlQueryMethod.GET
+          }, Ontodia.OWLStatsSettings),
+        });
+      }
+
+    ReactDOM.render(
+      React.createElement(Ontodia.Workspace, {ref: onWorkspaceMounted}),
+      document.getElementById('container')
+    );
+  }
+  //]]>
+  </script>
+</head>
+<body>
+
+${include('cwd:views/navigation.html')}
+
+<div id="container"></div>
+
+${include('cwd:views/footer.html')}
+
+</div>
+
+</body>
+</html>
