@@ -8,15 +8,17 @@ const Trifid = require('trifid-core')
 
 program
   .option('-v, --verbose', 'verbose output', () => true)
-  .option('-c, --config <path>', 'configuration file', 'config.json')
+  .option('-c, --config <path>', 'configuration file', process.env.TRIFID_CONFIG)
   .option('-p, --port <port>', 'listener port', parseInt)
   .option('--sparql-endpoint-url <url>', 'URL of the SPARQL HTTP query interface')
   .option('--dataset-base-url <url>', 'Base URL of the dataset')
   .parse(process.argv)
 
 // automatically switch to config-sparql if a SPARQL endpoint URL is given and no config file was defined
-if (program.sparqlEndpointUrl && program.config === 'config.json') {
+if (program.sparqlEndpointUrl && !program.config) {
   program.config = 'config-sparql.json'
+} else if (!program.config) {
+  program.config = 'config.json'
 }
 
 // create a minimal configuration with a baseConfig pointing to the given config file
