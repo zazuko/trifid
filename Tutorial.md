@@ -16,7 +16,7 @@ If you just want to execute Trifid without much tweaking, the easiest way is to 
 
 The default configuration won't do much so you need to specify a different configuration file, as described below. Once you have an adjusted config file run the image:
 
-     docker run -ti -e TRIFID_CONFIG=config-custom.json -v $(pwd)/config-custom.json:/usr/src/app/config-custom.json -p 8080:8080 zazuko/trifid
+     docker run -ti -e TRIFID_CONFIG=config-custom.json -v $(pwd)/config-custom.json:/app/config-custom.json -p 8080:8080 zazuko/trifid
 
 With `-e TRIFID_CONFIG=config-custom.json` we override the configuration file, `-v` mounts the local config file into the container. The `$(pwd)` is necessary as `-v` does not support relative paths.
 
@@ -27,7 +27,7 @@ In case you want to do the same with `docker-compose, a YAML file should contain
     container_name: myfancyname
     image: zazuko/trifid
     volumes:
-      - ./config-custom.json:/usr/src/app/config-custom.json
+      - ./config-custom.json:/app/config-custom.json
     environment:
       - TRIFID_CONFIG=config-custom.json
 ```

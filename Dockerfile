@@ -2,6 +2,10 @@ FROM node:lts-alpine
 
 WORKDIR /app
 
+# Use tini for PID1
+# https://github.com/krallin/tini
+RUN apk add --no-cache tini
+
 # Copy the package.json and install the dependencies
 COPY package.json ./
 COPY .npmrc ./
@@ -18,12 +22,9 @@ LABEL org.label-schema.name="Trifid" \
       org.label-schema.vendor="Zazuko" \
       org.label-schema.schema-version="1.0"
 
-ENTRYPOINT []
+ENTRYPOINT ["tini", "--", "/app/server.js"]
 
-# Using npm scripts for running the app allows two things:
-#  - Handle signals correctly (Node does not like to be PID1)
-#  - Let Skaffold detect it's a node app so it can attach the Node debugger
-CMD ["npm", "run", "start"]
+ENV TRIFID_CONFIG config.json
 
 EXPOSE 8080
 HEALTHCHECK CMD wget -q -O- http://localhost:8080/health
