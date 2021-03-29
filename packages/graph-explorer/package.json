@@ -1,15 +1,15 @@
 {
-  "name": "trifid-plugin-ontodia",
-  "description": "Trifid Ontodia plugin",
+  "name": "trifid-plugin-graph-explorer",
+  "description": "Trifid Graph Explorer plugin",
   "version": "0.1.1",
   "license": "MIT",
-  "homepage": "https://github.com/zazuko/trifid-plugin-ontodia",
+  "homepage": "https://github.com/zazuko/trifid-plugin-graph-explorer",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-plugin-ontodia.git"
+    "url": "https://github.com/zazuko/trifid-plugin-graph-explorer.git"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-plugin-ontodia/issues"
+    "url": "https://github.com/zazuko/trifid-plugin-graph-explorer/issues"
   },
   "scripts": {
     "test": "standard"
@@ -17,7 +17,7 @@
   "dependencies": {
     "absolute-url": "^1.2.2",
     "express": "^4.15.4",
-    "ontodia": "^0.12.0"
+    "graph-explorer": "^1.0.0"
   },
   "devDependencies": {
     "standard": "^10.0.3"

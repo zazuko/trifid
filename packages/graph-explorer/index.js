@@ -30,7 +30,7 @@ function middleware (options) {
   })
 
   // static files from yasgui dist folder
-  router.use('/dist/', express.static(path.resolve(require.resolve('ontodia'), '../../dist/')))
+  router.use('/dist/', express.static(path.resolve(require.resolve('graph-explorer'), '../../dist/')))
 
   return router
 }

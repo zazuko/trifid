@@ -1,7 +1,7 @@
-# trifid-plugin-ontodia
+# trifid-plugin-graph-explorer
 
-Ontodia for Trifid.
-This middleware does the static file hosting for all Ontodia files and renders an index page that points to the given endpoint URL.
+[Graph Explorer](https://github.com/zazuko/graph-explorer) for Trifid.
+This middleware does the static file hosting for all Graph Explorer files and renders an index page that points to the given endpoint URL.
  
 # Usage
 
@@ -10,10 +10,10 @@ The following options are supported:
 - `endpointUrl`: URL to the SPARQL endpoint which will be used in the YASGUI interface
 - `template`: Path to an alternative template (default: `views/index.html`)
 
-Configuring Trifid to use `trifid-plugin-ontodia` is done the same way as `trifid-plugin-yasgui`.
+Configuring Trifid to use `trifid-plugin-graph-explorer` is done the same way as `trifid-plugin-yasgui`.
 Since Trifid provides an example config using `trifid-plugin-yasgui`:
 [`config-sparql.json`](https://github.com/zazuko/trifid/blob/1946e324c5a8340b6de5526fae5344e79aa024f2/config-sparql.json),
-here is how to configure `trifid-plugin-ontodia` by simply duplicating the YASGUI config parts:
+here is how to configure `trifid-plugin-graph-explorer` by simply duplicating the YASGUI config parts:
 
 ```diff
   "yasgui": {
@@ -21,9 +21,9 @@ here is how to configure `trifid-plugin-ontodia` by simply duplicating the YASGU
       "path": "/sparql"
     }
   },
-+ "ontodia": {
++ "graphexplorer": {
 +   "default": {
-+     "path": "/ontodia"
++     "path": "/graph-explorer"
 +   }
 + },
   "breakDown": {
@@ -42,9 +42,9 @@ here is how to configure `trifid-plugin-ontodia` by simply duplicating the YASGU
       "sparqlProxy.default.path",
       "sparqlEndpointUrl"
     ],
-+   "ontodia": {},
-+   "ontodia.default": {},
-+   "ontodia.default.endpointUrl": [
++   "graphexplorer": {},
++   "graphexplorer.default": {},
++   "graphexplorer.default.endpointUrl": [
 +     "sparqlProxy.default.path",
 +     "sparqlEndpointUrl"
 +   ]
@@ -59,9 +59,9 @@ here is how to configure `trifid-plugin-ontodia` by simply duplicating the YASGU
       "priority": 115,
       "module": "trifid-plugin-yasgui"
     },
-+   "ontodia": {
++   "graphexplorer": {
 +     "priority": 115,
-+     "module": "trifid-plugin-ontodia"
++     "module": "trifid-plugin-graph-explorer"
 +   }
   }
 }

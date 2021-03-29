@@ -5,10 +5,12 @@ ${set('moduleAbout','<a href="http://about.yasgui.org/" target="_blank">YASGUI</
 
 ${include('cwd:views/header.html')}
 
-  <script type="text/javascript" src="dist/ontodia-full.min.js"></script>
+  <script type="text/javascript" src="dist/graph-explorer-full.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.2/react.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/react/16.14.0/umd/react.production.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.14.0/umd/react-dom.production.min.js"></script>
 
   <style type="text/css">
     html, body {
@@ -28,18 +30,18 @@ ${include('cwd:views/header.html')}
       function onWorkspaceMounted(workspace) {
         if (!workspace) { return; }
         workspace.getModel().importLayout({
-          dataProvider: new Ontodia.SparqlDataProvider({
+          dataProvider: new GraphExplorer.SparqlDataProvider({
             endpointUrl: '${endpointUrl}',
             imagePropertyUris: [
               'http://xmlns.com/foaf/0.1/img',
             ],
-            queryMethod: Ontodia.SparqlQueryMethod.GET
-          }, Ontodia.OWLStatsSettings),
+            queryMethod: GraphExplorer.SparqlQueryMethod.GET
+          }, GraphExplorer.OWLStatsSettings),
         });
       }
 
     ReactDOM.render(
-      React.createElement(Ontodia.Workspace, {ref: onWorkspaceMounted}),
+      React.createElement(GraphExplorer.Workspace, {ref: onWorkspaceMounted}),
       document.getElementById('container')
     );
   }
