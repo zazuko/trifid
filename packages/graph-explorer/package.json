@@ -1,7 +1,7 @@
 {
   "name": "trifid-plugin-graph-explorer",
   "description": "Trifid Graph Explorer plugin",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid-plugin-graph-explorer",
   "repository": {
