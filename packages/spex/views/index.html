@@ -1,0 +1,54 @@
+${set('moduleAbout','<a href="https://github.com/zazuko/spex" target="_blank">SPEX</a>')}
+<!DOCTYPE html>
+<html>
+<head>
+
+${include('cwd:views/header.html')}
+</head>
+<body>
+
+${include('cwd:views/navigation.html')}
+
+<div id="container">
+  <div id="spex"></div>
+</div>
+
+<script type="text/javascript" src="dist/spex.umd.min.js"></script>
+<link rel="stylesheet" type="text/css" href="dist/spex.css">
+<style type="text/css">
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #container {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  #container > * {
+    flex-grow: 1;
+  }
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
+window.onload = function () {
+  const options = JSON.parse('${options}')
+  window.spex.render('#spex', options)
+}
+//]]>
+</script>
+
+${include('cwd:views/footer.html')}
+
+</div>
+
+</body>
+</html>
