@@ -15,7 +15,7 @@
     "test": "standard"
   },
   "dependencies": {
-    "@zazuko/spex": "^0.1.2",
+    "@zazuko/spex": "^0.1.4",
     "absolute-url": "^1.2.2",
     "express": "^4.15.4"
   },
