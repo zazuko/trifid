@@ -20,6 +20,6 @@
     "express": "^4.15.4"
   },
   "devDependencies": {
-    "standard": "^10.0.3"
+    "standard": "^16.0.0"
   }
 }

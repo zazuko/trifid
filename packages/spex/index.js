@@ -27,7 +27,7 @@ function middleware (config) {
     absoluteUrl.attach(req)
 
     // Create an absolute URL if a relative URL is provided
-    options.url = url.resolve(req.absoluteUrl(), options.url)
+    options.url = (new url.URL(options.url, req.absoluteUrl())).toString()
 
     res.locals.options = JSON.stringify(options)
 
