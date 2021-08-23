@@ -35,7 +35,7 @@ function middleware (config) {
   })
 
   // static files from spex dist folder
-  router.use('/dist/', express.static(path.resolve(require.resolve('@zazuko/spex'), '../../dist/')))
+  router.use('/static/', express.static(path.resolve(require.resolve('@zazuko/spex'), '../../dist/')))
 
   return router
 }
