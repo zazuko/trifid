@@ -31,9 +31,9 @@ here is how to configure `trifid-plugin-spex` by simply duplicating the YASGUI c
 +   "default": {
 +     "path": "/spex",
 +     "options": {
-+       "prefixes": {
-+         "ex": "http://example.org/"
-+       }
++       "prefixes": [
++         {"prefix": "ex", "url": "http://example.org/"}
++       ]
 +     }
 +   }
 + },
