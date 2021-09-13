@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import express from 'express'
+import process from 'process'
 import rdf from 'rdf-ext'
 import { getOrganizationDatasets } from './datasets.js'
 
@@ -7,6 +8,7 @@ dotenv.config()
 
 const app = express()
 const port = 8080
+const host = '0.0.0.0'
 
 app.get('/', async (req, res) => {
   const graph = req.query.graph
@@ -26,6 +28,11 @@ app.get('/', async (req, res) => {
   }
 })
 
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
+app.listen(port, host, () => {
+  console.log(`Listening at http://${host}:${port}`)
+})
+
+process.on('SIGINT', () => {
+  console.info('Application stopped')
+  process.exit(0)
 })
