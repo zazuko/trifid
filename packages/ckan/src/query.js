@@ -6,8 +6,8 @@ const prepareClient = () => {
   const env = process.env
   const clientConfig = {
     endpointUrl: env.STORE_QUERY_ENDPOINT,
-    user: env.STORE_ENDPOINTS_USERNAME,
-    password: env.STORE_ENDPOINTS_PASSWORD,
+    user: env.STORE_ENDPOINT_USERNAME,
+    password: env.STORE_ENDPOINT_PASSWORD,
   }
   return new ParsingClient(clientConfig)
 }
