@@ -1,0 +1,25 @@
+{
+  "name": "ckan-datasets",
+  "version": "0.1.0",
+  "description": "Endpoint for opendata.swiss CKAN harvester",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zazuko",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@rdfjs/namespace": "^1.1.0",
+    "@rdfjs/term-set": "^1.1.0",
+    "@tpluscode/rdf-string": "^0.2.24",
+    "@zazuko/rdf-vocabularies": "^2021.6.10",
+    "clownface": "^1.4.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "rdf-ext": "^1.3.5",
+    "sparql-http-client": "^2.4.0",
+    "xmlbuilder2": "^3.0.2"
+  }
+}
