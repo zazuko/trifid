@@ -28,6 +28,10 @@ app.get('/', async (req, res) => {
   }
 })
 
+app.get('/healthz', async (req, res) => {
+  return res.status(200).send('OK')
+})
+
 app.listen(port, host, () => {
   console.log(`Listening at http://${host}:${port}`)
 })
