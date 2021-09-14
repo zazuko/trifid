@@ -10,7 +10,7 @@ const app = express()
 const port = 8080
 const host = '0.0.0.0'
 
-app.get('/', async (req, res) => {
+app.get('/ckan', async (req, res) => {
   const graph = req.query.graph
   if (!graph) {
     return res.status(400).send('Missing `graph` query param')
