@@ -29,30 +29,42 @@ export async function getOrganizationDatasets(organizationId) {
         'xmlns:dcterms': ns.dctermsURL,
       },
       'dcat:Catalog': {
-        'dcat:dataset': datasetsPointer.map((dataset) => ({
-          'dcat:Dataset': {
-            '@': { 'rdf:about': dataset.value },
-            'dcterms:identifier': serializeTerm(dataset.out(ns.dcterms.identifier)),
-            'dcterms:title': serializeTerm(dataset.out(ns.dcterms.title)),
-            'dcterms:description': serializeTerm(dataset.out(ns.dcterms.description)),
-            'dcterms:license': serializeTerm(dataset.out(ns.dcterms.license)),
-            'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
-            'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
-            'dcterms:publisher': serializeTerm(dataset.out(ns.dcterms.publisher)),
-            'dcterms:creator': serializeTerm(dataset.out(ns.dcterms.creator)),
-            'dcat:contactPoint': serializeTerm(dataset.out(ns.dcat.contactPoint)),
-            'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
-            'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
-            'dcterms:relation': serializeTerm(dataset.out(ns.dcterms.relation)),
-            'dcat:keyword': serializeTerm(dataset.out(ns.dcat.keyword)),
-            'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
-            'dcterms:spacial': serializeTerm(dataset.out(ns.dcterms.spacial)),
-            'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
-            'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
-            'dcat:distribution': serializeTerm(dataset.out(ns.dcterms.distribution)),
-            'dcterms:accrualPeriodicity': serializeTerm(dataset.out(ns.dcterms.accrualPeriodicity)),
-          },
-        })),
+        'dcat:dataset': datasetsPointer.map((dataset) => {
+          // Verify that identifiers is CKAN-valid, ignore the dataset otherwise
+          const identifiers = dataset.out(ns.dcterms.identifier)
+          if (!identifiers.term || !identifiers.value.includes('@')) {
+            console.error(`Ignoring dataset ${dataset.value} because its identifier is not valid`)
+            return null
+          }
+
+          // Ignore keywords without a language specified because CKAN rejects them
+          const keywords = dataset.out(ns.dcat.keyword).filter(({ language }) => !!language)
+
+          return {
+            'dcat:Dataset': {
+              '@': { 'rdf:about': dataset.value },
+              'dcterms:identifier': serializeTerm(identifiers),
+              'dcterms:title': serializeTerm(dataset.out(ns.dcterms.title)),
+              'dcterms:description': serializeTerm(dataset.out(ns.dcterms.description)),
+              'dcterms:license': serializeTerm(dataset.out(ns.dcterms.license)),
+              'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
+              'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
+              'dcterms:publisher': serializeTerm(dataset.out(ns.dcterms.publisher)),
+              'dcterms:creator': serializeTerm(dataset.out(ns.dcterms.creator)),
+              'dcat:contactPoint': serializeTerm(dataset.out(ns.dcat.contactPoint)),
+              'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
+              'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
+              'dcterms:relation': serializeTerm(dataset.out(ns.dcterms.relation)),
+              'dcat:keyword': serializeTerm(keywords),
+              'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
+              'dcterms:spacial': serializeTerm(dataset.out(ns.dcterms.spacial)),
+              'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
+              'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
+              'dcat:distribution': serializeTerm(dataset.out(ns.dcterms.distribution)),
+              'dcterms:accrualPeriodicity': serializeTerm(dataset.out(ns.dcterms.accrualPeriodicity)),
+            },
+          }
+        }).filter(Boolean),
       },
     },
   }).doc()
