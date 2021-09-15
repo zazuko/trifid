@@ -11,13 +11,13 @@ const port = 8080
 const host = '0.0.0.0'
 
 app.get('/ckan', async (req, res) => {
-  const graph = req.query.graph
-  if (!graph) {
-    return res.status(400).send('Missing `graph` query param')
+  const organization = req.query.organization
+  if (!organization) {
+    return res.status(400).send('Missing `organization` query param')
   }
 
   try {
-    const content = await getOrganizationDatasets(rdf.namedNode(graph))
+    const content = await getOrganizationDatasets(rdf.namedNode(organization))
 
     const format = 'application/rdf+xml'
     res.setHeader('Content-Type', format)

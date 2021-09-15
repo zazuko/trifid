@@ -12,14 +12,16 @@ const prepareClient = () => {
   return new ParsingClient(clientConfig)
 }
 
-export function fetchDatasets(graph) {
+export function fetchDatasets(organizationId) {
   const query = sparql`
     CONSTRUCT {
       ?s ?p ?o .
     }
     WHERE {
-      GRAPH ${graph} {
+      GRAPH ?graph {
         ?s ?p ?o .
+
+        ?s ${ns.dcterms.creator} ${organizationId} .
         ?s ${ns.schema.workExample} <https://ld.admin.ch/application/opendataswiss> .
         ?s ${ns.schema.creativeWorkStatus} <https://ld.admin.ch/definedTerm/CreativeWorkStatus/Published> .
 

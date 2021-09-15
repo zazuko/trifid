@@ -7,8 +7,8 @@ import TermSet from '@rdfjs/term-set'
 import { fetchDatasets } from './query.js'
 import * as ns from './namespace.js'
 
-export async function getOrganizationDatasets(organizationGraph) {
-  const quads = await fetchDatasets(organizationGraph)
+export async function getOrganizationDatasets(organizationId) {
+  const quads = await fetchDatasets(organizationId)
   const pointer = clownface({ dataset: rdf.dataset(quads) })
 
   const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
