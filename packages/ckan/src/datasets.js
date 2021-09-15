@@ -26,6 +26,7 @@ export async function getOrganizationDatasets(organizationGraph) {
       '@': {
         'xmlns:rdf': ns.rdfURL,
         'xmlns:dcat': ns.dcatURL,
+        'xmlns:dcterms': ns.dctermsURL,
       },
       'dcat:Catalog': {
         'dcat:dataset': datasetsPointer.map((dataset) => ({
