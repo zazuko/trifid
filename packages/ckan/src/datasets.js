@@ -32,10 +32,17 @@ export async function getOrganizationDatasets(organizationId) {
         'dcat:dataset': datasetsPointer.map((dataset) => {
           // Verify that identifiers is CKAN-valid, ignore the dataset otherwise
           const identifiers = dataset.out(ns.dcterms.identifier)
-          if (!identifiers.term || !identifiers.value.includes('@')) {
-            console.error(`Ignoring dataset ${dataset.value} because its identifier is not valid`)
+          if (!identifiers.value) {
+            console.error(`Ignoring dataset ${dataset.value} because it has no or multiple identifiers`)
             return null
           }
+
+          // The initial query ensures that there is a creator
+          const creators = dataset.out(ns.dcterms.creator)
+          const creatorSlug = creators.values[0].split('/').slice(-1)[0]
+          const identifier = identifiers.value.includes('@')
+            ? identifiers.value
+            : `${identifiers.value}@${creatorSlug}`
 
           // Ignore keywords without a language specified because CKAN rejects them
           const keywords = dataset.out(ns.dcat.keyword).filter(({ language }) => !!language)
@@ -43,14 +50,14 @@ export async function getOrganizationDatasets(organizationId) {
           return {
             'dcat:Dataset': {
               '@': { 'rdf:about': dataset.value },
-              'dcterms:identifier': serializeTerm(identifiers),
+              'dcterms:identifier': { '#': identifier },
               'dcterms:title': serializeTerm(dataset.out(ns.dcterms.title)),
               'dcterms:description': serializeTerm(dataset.out(ns.dcterms.description)),
               'dcterms:license': serializeTerm(dataset.out(ns.dcterms.license)),
               'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
               'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
               'dcterms:publisher': serializeTerm(dataset.out(ns.dcterms.publisher)),
-              'dcterms:creator': serializeTerm(dataset.out(ns.dcterms.creator)),
+              'dcterms:creator': serializeTerm(creators),
               'dcat:contactPoint': serializeTerm(dataset.out(ns.dcat.contactPoint)),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
               'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
