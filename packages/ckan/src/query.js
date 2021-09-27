@@ -15,18 +15,23 @@ const prepareClient = () => {
 export function fetchDatasets(organizationId) {
   const query = sparql`
     CONSTRUCT {
-      ?s ?p ?o .
+      ?dataset ?p ?o .
+      ?o ?nestedP ?nestedO .
     }
     WHERE {
       GRAPH ?graph {
-        ?s ?p ?o .
+        ?dataset ?p ?o .
 
-        ?s ${ns.dcterms.creator} ${organizationId} .
-        ?s ${ns.schema.workExample} <https://ld.admin.ch/application/opendataswiss> .
-        ?s ${ns.schema.creativeWorkStatus} <https://ld.admin.ch/definedTerm/CreativeWorkStatus/Published> .
+        ?dataset ${ns.dcterms.creator} ${organizationId} .
+        ?dataset ${ns.schema.workExample} <https://ld.admin.ch/application/opendataswiss> .
+        ?dataset ${ns.schema.creativeWorkStatus} <https://ld.admin.ch/definedTerm/CreativeWorkStatus/Published> .
 
-        FILTER ( NOT EXISTS { ?s ${ns.schema.validThrough} ?expiration1 . } )
-        FILTER ( NOT EXISTS { ?s ${ns.schema.expires} ?expiration2 . } )
+        FILTER ( NOT EXISTS { ?dataset ${ns.schema.validThrough} ?expiration1 . } )
+        FILTER ( NOT EXISTS { ?dataset ${ns.schema.expires} ?expiration2 . } )
+
+        OPTIONAL {
+          ?o ?nestedP ?nestedO .
+        }
       }
     }
   `

@@ -129,13 +129,13 @@ function serializeNamedNode({ value }) {
 }
 
 function serializeBlankNode(pointer) {
-  const type = pointer.out(rdf.type).value
+  const type = pointer.out(ns.rdf.type).value
 
   if (!type) return {}
 
   const properties = new TermSet([...pointer.dataset.match(pointer.term)]
     .map(({ predicate }) => predicate)
-    .filter((term) => !term.equals(rdf.type)))
+    .filter((term) => !term.equals(ns.rdf.type)))
 
   const resource = [...properties].reduce((acc, property) =>
     ({ ...acc, [shrink(property.value)]: serializeTerm(pointer.out(property)) }), {})
