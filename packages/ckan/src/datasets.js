@@ -47,6 +47,19 @@ export async function getOrganizationDatasets(organizationId) {
           // Ignore keywords without a language specified because CKAN rejects them
           const keywords = dataset.out(ns.dcat.keyword).filter(({ language }) => !!language)
 
+          const distributions = dataset.out(ns.schema.workExample)
+            .filter(workExample => workExample.out(ns.schema.encodingFormat).terms.length > 0)
+            .map(workExample => ({
+              'dcat:Distribution': {
+                'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
+                'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
+                'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
+                'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
+                // 'dcterms:rights': 'TODO',
+                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
+              }
+            }))
+
           return {
             'dcat:Dataset': {
               '@': { 'rdf:about': dataset.value },
@@ -69,6 +82,7 @@ export async function getOrganizationDatasets(organizationId) {
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
               'dcat:distribution': serializeTerm(dataset.out(ns.dcterms.distribution)),
               'dcterms:accrualPeriodicity': serializeTerm(dataset.out(ns.dcterms.accrualPeriodicity)),
+              'dcat:distribution': distributions,
             },
           }
         }).filter(Boolean),
@@ -142,5 +156,21 @@ function serializeBlankNode(pointer) {
 
   return {
     [shrink(type)]: resource,
+  }
+}
+
+function distributionFormatFromEncoding(encodingPointer) {
+  const encoding = encodingPointer.values[0] || ''
+
+  switch (encoding) {
+    case 'text/html': {
+      return 'HTML'
+    }
+    case 'Application/Sparql-query': {
+      return 'SERVICE'
+    }
+    default: {
+      return 'UNKNOWN'
+    }
   }
 }
