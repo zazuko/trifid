@@ -168,7 +168,7 @@ function distributionFormatFromEncoding(encodingPointer) {
     case 'text/html': {
       return 'HTML'
     }
-    case 'Application/Sparql-query': {
+    case 'application/sparql-query': {
       return 'SERVICE'
     }
     default: {
