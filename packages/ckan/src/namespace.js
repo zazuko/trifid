@@ -1,11 +1,7 @@
 import namespace from '@rdfjs/namespace'
+import { prefixes } from '@zazuko/rdf-vocabularies'
 
-export const dcatURL = 'http://www.w3.org/ns/dcat#'
-export const dctermsURL = 'http://purl.org/dc/terms/'
-export const rdfURL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-export const schemaURL = 'http://schema.org/'
-
-export const dcat = namespace(dcatURL)
-export const dcterms = namespace(dctermsURL)
-export const rdf = namespace(rdfURL)
-export const schema = namespace(schemaURL)
+export const dcat = namespace(prefixes.dcat)
+export const dcterms = namespace(prefixes.dcterms)
+export const rdf = namespace(prefixes.rdf)
+export const schema = namespace(prefixes.schema)

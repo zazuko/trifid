@@ -1,7 +1,7 @@
 import clownface from 'clownface'
 import rdf from 'rdf-ext'
 import { create as createXml } from 'xmlbuilder2'
-import { shrink } from '@zazuko/rdf-vocabularies'
+import { prefixes, shrink } from '@zazuko/rdf-vocabularies'
 import TermSet from '@rdfjs/term-set'
 
 import { fetchDatasets } from './query.js'
@@ -17,16 +17,18 @@ export async function getOrganizationDatasets(organizationId) {
     version: '1.0',
     encoding: 'utf-8',
     namespaceAlias: {
-      rdf: ns.rdfURL,
-      dcat: ns.dcatURL,
-      dcterms: ns.dctermsURL,
+      rdf: prefixes.rdf,
+      dcat: prefixes.dcat,
+      dcterms: prefixes.dcterms,
+      vcard: prefixes.vcard,
     },
   }, {
     'rdf:RDF': {
       '@': {
-        'xmlns:rdf': ns.rdfURL,
-        'xmlns:dcat': ns.dcatURL,
-        'xmlns:dcterms': ns.dctermsURL,
+        'xmlns:rdf': prefixes.rdf,
+        'xmlns:dcat': prefixes.dcat,
+        'xmlns:dcterms': prefixes.dcterms,
+        'xmlns:vcard': prefixes.vcard,
       },
       'dcat:Catalog': {
         'dcat:dataset': datasetsPointer.map((dataset) => {
