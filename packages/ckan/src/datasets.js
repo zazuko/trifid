@@ -28,6 +28,7 @@ export async function getOrganizationDatasets(organizationId) {
         'xmlns:rdf': prefixes.rdf,
         'xmlns:dcat': prefixes.dcat,
         'xmlns:dcterms': prefixes.dcterms,
+        'xmlns:schema': prefixes.schema,
         'xmlns:vcard': prefixes.vcard,
       },
       'dcat:Catalog': {
