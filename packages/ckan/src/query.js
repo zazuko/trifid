@@ -24,7 +24,7 @@ export function fetchDatasets(organizationId) {
 
         ?dataset ${ns.dcterms.creator} ${organizationId} .
         ?dataset ${ns.schema.workExample} <https://ld.admin.ch/application/opendataswiss> .
-        ?dataset ${ns.schema.creativeWorkStatus} <https://ld.admin.ch/definedTerm/CreativeWorkStatus/Published> .
+        ?dataset ${ns.schema.creativeWorkStatus} <https://ld.admin.ch/vocabulary/CreativeWorkStatus/Published> .
 
         FILTER ( NOT EXISTS { ?dataset ${ns.schema.validThrough} ?expiration1 . } )
         FILTER ( NOT EXISTS { ?dataset ${ns.schema.expires} ?expiration2 . } )
