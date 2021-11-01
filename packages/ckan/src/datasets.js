@@ -60,6 +60,13 @@ export async function getOrganizationDatasets(organizationId) {
               }
             }))
 
+          const publishers = dataset.out(ns.dcterms.publisher)
+            .map(publisher => ({
+              'rdf:Description': {
+                'rdfs:label': publisher.value,
+              },
+            }))
+
           return {
             'dcat:Dataset': {
               '@': { 'rdf:about': dataset.value },
@@ -70,6 +77,7 @@ export async function getOrganizationDatasets(organizationId) {
               'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
               'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
               'dcterms:publisher': serializeTerm(dataset.out(ns.dcterms.publisher)),
+              'dcterms:publisher': publishers,
               'dcterms:creator': serializeTerm(creators),
               'dcat:contactPoint': serializeTerm(dataset.out(ns.dcat.contactPoint)),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
