@@ -17,6 +17,7 @@ export function fetchDatasets(organizationId) {
     CONSTRUCT {
       ?dataset ?p ?o .
       ?o ?nestedP ?nestedO .
+      ?license ${ns.schema.identifier} ?licenseIdentifier .
     }
     WHERE {
       GRAPH ?graph {
@@ -32,6 +33,13 @@ export function fetchDatasets(organizationId) {
         OPTIONAL {
           ?o ?nestedP ?nestedO .
           FILTER( ?nestedP != <https://cube.link/observation> )
+        }
+
+        OPTIONAL {
+          ?dataset ${ns.dcterms.license} ?license .
+          GRAPH ?licensesGraph {
+            ?license ${ns.schema.identifier} ?licenseIdentifier .
+          }
         }
       }
     }

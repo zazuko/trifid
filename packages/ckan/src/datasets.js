@@ -55,7 +55,8 @@ export async function getOrganizationDatasets(organizationId) {
                 'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
                 'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
-                // 'dcterms:rights': 'TODO',
+                'dcterms:license': serializeTerm(dataset.out(ns.dcterms.license)),
+                'dcterms:rights': serializeTerm(dataset.out(ns.dcterms.license).out(ns.schema.identifier)),
                 'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
               }
             }))
@@ -73,7 +74,6 @@ export async function getOrganizationDatasets(organizationId) {
               'dcterms:identifier': { '#': identifier },
               'dcterms:title': serializeTerm(dataset.out(ns.dcterms.title)),
               'dcterms:description': serializeTerm(dataset.out(ns.dcterms.description)),
-              'dcterms:license': serializeTerm(dataset.out(ns.dcterms.license)),
               'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
               'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
               'dcterms:publisher': serializeTerm(dataset.out(ns.dcterms.publisher)),
