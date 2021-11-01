@@ -31,6 +31,7 @@ export function fetchDatasets(organizationId) {
 
         OPTIONAL {
           ?o ?nestedP ?nestedO .
+          FILTER( ?nestedP != <https://cube.link/observation> )
         }
       }
     }
