@@ -13,6 +13,9 @@ export async function getOrganizationDatasets(organizationId) {
 
   const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
 
+  const pf = Object.entries(prefixes).reduce((acc, [prefix, url]) =>
+    ({ ...acc, [`xmlns:${prefix}`]: url }), {})
+
   const xml = createXml({
     version: '1.0',
     encoding: 'utf-8',
@@ -24,13 +27,7 @@ export async function getOrganizationDatasets(organizationId) {
     },
   }, {
     'rdf:RDF': {
-      '@': {
-        'xmlns:rdf': prefixes.rdf,
-        'xmlns:dcat': prefixes.dcat,
-        'xmlns:dcterms': prefixes.dcterms,
-        'xmlns:schema': prefixes.schema,
-        'xmlns:vcard': prefixes.vcard,
-      },
+      '@': pf,
       'dcat:Catalog': {
         'dcat:dataset': datasetsPointer.map((dataset) => {
           // Verify that identifiers is CKAN-valid, ignore the dataset otherwise
