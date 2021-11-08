@@ -47,6 +47,18 @@ export async function getOrganizationDatasets(organizationId) {
           // Ignore keywords without a language specified because CKAN rejects them
           const keywords = dataset.out(ns.dcat.keyword).filter(({ language }) => !!language)
 
+          const copyright = dataset.out(ns.dcterms.rights).out(ns.schema.identifier)
+
+          const legalBasisPointer = dataset.out(ns.dcterms.license)
+          const legalBasis = legalBasisPointer.term
+            ? {
+              'rdf:Description': {
+                '@': { 'rdf:about': legalBasisPointer.value },
+                'rdfs:label': 'legal_basis',
+              },
+            }
+            : null
+
           const distributions = dataset.out(ns.schema.workExample)
             .filter(workExample => workExample.out(ns.schema.encodingFormat).terms.length > 0)
             .map(workExample => ({
@@ -55,8 +67,7 @@ export async function getOrganizationDatasets(organizationId) {
                 'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
                 'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
-                'dcterms:license': serializeTerm(dataset.out(ns.dcterms.license)),
-                'dcterms:rights': serializeTerm(dataset.out(ns.dcterms.license).out(ns.schema.identifier)),
+                'dcterms:rights': serializeTerm(copyright),
                 'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
               }
             }))
@@ -82,7 +93,7 @@ export async function getOrganizationDatasets(organizationId) {
               'dcat:contactPoint': serializeTerm(dataset.out(ns.dcat.contactPoint)),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
               'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
-              'dcterms:relation': serializeTerm(dataset.out(ns.dcterms.relation)),
+              'dcterms:relation': legalBasis,
               'dcat:keyword': serializeTerm(keywords),
               'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
               'dcterms:spacial': serializeTerm(dataset.out(ns.dcterms.spacial)),

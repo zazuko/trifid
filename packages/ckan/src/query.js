@@ -17,7 +17,7 @@ export function fetchDatasets(organizationId) {
     CONSTRUCT {
       ?dataset ?p ?o .
       ?o ?nestedP ?nestedO .
-      ?license ${ns.schema.identifier} ?licenseIdentifier .
+      ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
     }
     WHERE {
       GRAPH ?graph {
@@ -36,9 +36,9 @@ export function fetchDatasets(organizationId) {
         }
 
         OPTIONAL {
-          ?dataset ${ns.dcterms.license} ?license .
-          GRAPH ?licensesGraph {
-            ?license ${ns.schema.identifier} ?licenseIdentifier .
+          ?dataset ${ns.dcterms.rights} ?copyright .
+          GRAPH ?copyrightGraph {
+            ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
           }
         }
       }
