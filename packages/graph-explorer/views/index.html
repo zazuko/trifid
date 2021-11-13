@@ -38,6 +38,19 @@ ${include('cwd:views/header.html')}
             queryMethod: GraphExplorer.SparqlQueryMethod.GET
           }, GraphExplorer.OWLStatsSettings),
         });
+        /**
+        * get the '?resource' search param and load that resource.
+        */
+        let url = new URL(window.location.href);
+        let resource = url.searchParams.get("resource");
+        if(resource != null)
+        {
+    	    let elm = workspace.getModel().dataProvider.elementInfo({elementIds: [resource]});
+           elm.then(function(arg){
+            workspace.getModel().createElement(arg[resource])
+            workspace.forceLayout();
+          });
+        }
       }
 
     ReactDOM.render(
