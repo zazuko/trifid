@@ -24,6 +24,11 @@ function middleware (config) {
 
   // render index page
   router.get('/', (req, res) => {
+    // Enforce trailing slash to ensure that static files are served from the correct URL
+    if (!req.originalUrl.endsWith('/')) {
+      return res.redirect(req.originalUrl + '/')
+    }
+
     absoluteUrl.attach(req)
 
     // Create an absolute URL if a relative URL is provided
