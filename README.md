@@ -5,7 +5,7 @@
 
 Trifid provides a lightweight and easy way to access Linked Data URIs via HTTP.
 In the Linked Data world this is often called [dereferencing](http://en.wikipedia.org/wiki/Dereferenceable_Uniform_Resource_Identifier).
-Trifid is inspired by [Pubby](http://wifo5-03.informatik.uni-mannheim.de/pubby/) and written in (server side) JavaScript.
+Trifid is inspired by [Pubby](https://www.w3.org/2001/sw/wiki/Pubby) and written in (server side) JavaScript.
 
 ### Features
 
