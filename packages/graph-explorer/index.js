@@ -1,7 +1,6 @@
 const absoluteUrl = require('absolute-url')
 const express = require('express')
 const path = require('path')
-const url = require('url')
 
 function middleware (options) {
   const router = express.Router()
@@ -16,7 +15,7 @@ function middleware (options) {
   router.get('/', (req, res) => {
     absoluteUrl.attach(req)
 
-    const urlPathname = url.parse(req.originalUrl).pathname
+    const urlPathname = new URL(req.originalUrl).pathname
 
     // redirect to trailing slash URL for relative pathes of JS and CSS files
     if (urlPathname.slice(-1) !== '/') {
@@ -24,7 +23,7 @@ function middleware (options) {
     }
 
     // read SPARQL endpoint URL from options and resolve with absoluteUrl
-    res.locals.endpointUrl = url.resolve(req.absoluteUrl(), options.endpointUrl)
+    res.locals.endpointUrl = new URL(options.endpointUrl, req.absoluteUrl()).href
 
     res.render(options.template)
   })

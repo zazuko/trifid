@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "absolute-url": "^1.2.2",
-    "express": "^4.15.4",
-    "graph-explorer": "^1.0.0"
+    "express": "^4.17.1",
+    "graph-explorer": "^1.1.0"
   },
   "devDependencies": {
-    "standard": "^10.0.3"
+    "standard": "^16.0.4"
   }
 }
