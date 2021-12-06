@@ -17,7 +17,7 @@
   "dependencies": {
     "absolute-url": "^1.2.2",
     "express": "^4.17.1",
-    "graph-explorer": "^1.1.0"
+    "graph-explorer": "^1.1.1"
   },
   "devDependencies": {
     "standard": "^16.0.4"
