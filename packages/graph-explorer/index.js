@@ -15,7 +15,7 @@ function middleware (options) {
   router.get('/', (req, res) => {
     absoluteUrl.attach(req)
 
-    const urlPathname = new URL(req.originalUrl).pathname
+    const urlPathname = new URL(req.originalUrl, req.absoluteUrl()).pathname
 
     // redirect to trailing slash URL for relative pathes of JS and CSS files
     if (urlPathname.slice(-1) !== '/') {
