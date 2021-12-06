@@ -25,8 +25,8 @@ ${include('cwd:views/header.html')}
   </style>
 
   <script type="text/javascript">
-  //<![CDATA[
-  window.onload = function () {
+    //<![CDATA[
+    window.onload = function () {
       function onWorkspaceMounted(workspace) {
         if (!workspace) { return; }
         workspace.getModel().importLayout({
@@ -38,27 +38,27 @@ ${include('cwd:views/header.html')}
             queryMethod: GraphExplorer.SparqlQueryMethod.GET
           }, GraphExplorer.OWLStatsSettings),
         });
+
         /**
         * get the '?resource' search param and load that resource.
         */
         let url = new URL(window.location.href);
         let resource = url.searchParams.get("resource");
-        if(resource != null)
-        {
-    	    let elm = workspace.getModel().dataProvider.elementInfo({elementIds: [resource]});
-           elm.then(function(arg){
+        if (resource != null) {
+          let elm = workspace.getModel().dataProvider.elementInfo({elementIds: [resource]});
+            elm.then(function(arg) {
             workspace.getModel().createElement(arg[resource])
             workspace.forceLayout();
           });
         }
       }
 
-    ReactDOM.render(
-      React.createElement(GraphExplorer.Workspace, {ref: onWorkspaceMounted}),
-      document.getElementById('container')
-    );
-  }
-  //]]>
+      ReactDOM.render(
+        React.createElement(GraphExplorer.Workspace, {ref: onWorkspaceMounted}),
+        document.getElementById('container')
+      );
+    }
+    //]]>
   </script>
 </head>
 <body>
