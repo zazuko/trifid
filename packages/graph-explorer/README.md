@@ -1,6 +1,6 @@
 # trifid-plugin-graph-explorer
 
-[Graph Explorer](https://github.com/zazuko/graph-explorer) for Trifid.
+[Graph Explorer](https://github.com/zazuko/graph-explorer) for [Trifid](https://github.com/zazuko/trifid).
 This middleware does the static file hosting for all Graph Explorer files and renders an index page that points to the given endpoint URL.
  
 # Usage
