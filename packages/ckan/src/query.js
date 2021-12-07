@@ -18,6 +18,7 @@ export function fetchDatasets(organizationId) {
       ?dataset ?p ?o .
       ?o ?nestedP ?nestedO .
       ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
+      ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicityExactMatch .
     }
     WHERE {
       GRAPH ?graph {
@@ -39,6 +40,13 @@ export function fetchDatasets(organizationId) {
           ?dataset ${ns.dcterms.rights} ?copyright .
           GRAPH ?copyrightGraph {
             ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
+          }
+        }
+
+        OPTIONAL {
+          ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
+          GRAPH ?frequencyGraph {
+            ?accrualPeriodicity ${ns.skos.exactMatch} ?accrualPeriodicityExactMatch .
           }
         }
       }

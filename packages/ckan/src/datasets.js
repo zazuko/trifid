@@ -79,6 +79,13 @@ export async function getOrganizationDatasets(organizationId) {
               },
             }))
 
+          // Datasets contain a mix of legacy (DC) frequencies and new (EU) frequencies.
+          // The query makes sure we get both legacy and new ones, we only
+          // provide the legacy ones to CKAN.
+          const legacyFreqPrefix = 'http://purl.org/cld/freq/'
+          const accrualPeriodicity = dataset.out(ns.dcterms.accrualPeriodicity)
+            .filter(({ term }) => term.value.startsWith(legacyFreqPrefix))
+
           return {
             'dcat:Dataset': {
               '@': { 'rdf:about': dataset.value },
@@ -100,7 +107,7 @@ export async function getOrganizationDatasets(organizationId) {
               'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
               'dcat:distribution': serializeTerm(dataset.out(ns.dcterms.distribution)),
-              'dcterms:accrualPeriodicity': serializeTerm(dataset.out(ns.dcterms.accrualPeriodicity)),
+              'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
               'dcat:distribution': distributions,
             },
           }
