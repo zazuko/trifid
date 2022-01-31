@@ -1,7 +1,7 @@
 {
   "name": "trifid-handler-sparql",
   "description": "SPARQL handler for Trifid",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid-handler-sparql",
   "repository": {
