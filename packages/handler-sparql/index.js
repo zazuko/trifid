@@ -48,13 +48,13 @@ class SparqlHandler {
   exists (iri, query) {
     debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
-    return this.client.selectQuery(query, this.buildQueryOptions()).then((res) => {
+    return this.client.selectQuery(query, this.buildQueryOptions()).then(res => {
       if (res.status !== 200) {
         return false
       }
 
       return res.json()
-    }).then((result) => {
+    }).then(result => {
       return result && result.boolean
     })
   }
@@ -79,7 +79,7 @@ class SparqlHandler {
 
     queryOptions.accept = accept
 
-    return this.client.constructQuery(query, queryOptions).then((res) => {
+    return this.client.constructQuery(query, queryOptions).then(res => {
       if (res.status !== 200) {
         return null
       }
@@ -119,14 +119,16 @@ class SparqlHandler {
   }
 
   get (req, res, next, iri) {
+    iri = encodeURI(iri)
+
     debug('handle GET request for IRI <' + iri + '>')
 
-    this.resourceExists(iri).then((exists) => {
+    this.resourceExists(iri).then(exists => {
       if (exists) {
         return this.resourceGraphStream(iri, req.headers.accept)
       }
       if (iri.endsWith('/')) {
-        return this.containerExists(iri).then((exists) => {
+        return this.containerExists(iri).then(exists => {
           if (exists) {
             return this.containerGraphStream(iri, req.headers.accept)
           }
@@ -134,12 +136,12 @@ class SparqlHandler {
         })
       }
       return null
-    }).then((result) => {
+    }).then(result => {
       if (!result) {
         return next()
       }
 
-      Object.keys(result.headers).forEach((name) => {
+      Object.keys(result.headers).forEach(name => {
         res.setHeader(name, result.headers[name])
       })
 
