@@ -25,7 +25,9 @@ here is how to configure `trifid-plugin-graph-explorer` by simply duplicating th
 + "graphexplorer": {
 +   "default": {
 +     "path": "/graph-explorer",
-+     "acceptBlankNodes": false
++     "options": {
++       "acceptBlankNodes": false
++     }
 +   }
 + },
   "breakDown": {
