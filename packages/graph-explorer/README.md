@@ -2,13 +2,14 @@
 
 [Graph Explorer](https://github.com/zazuko/graph-explorer) for [Trifid](https://github.com/zazuko/trifid).
 This middleware does the static file hosting for all Graph Explorer files and renders an index page that points to the given endpoint URL.
- 
+
 # Usage
 
 The following options are supported:
 
 - `endpointUrl`: URL to the SPARQL endpoint which will be used in the YASGUI interface
 - `template`: Path to an alternative template (default: `views/index.html`)
+- `acceptBlankNodes`: Show blank nodes
 
 Configuring Trifid to use `trifid-plugin-graph-explorer` is done the same way as `trifid-plugin-yasgui`.
 Since Trifid provides an example config using `trifid-plugin-yasgui`:
@@ -23,7 +24,8 @@ here is how to configure `trifid-plugin-graph-explorer` by simply duplicating th
   },
 + "graphexplorer": {
 +   "default": {
-+     "path": "/graph-explorer"
++     "path": "/graph-explorer",
++     "acceptBlankNodes": false
 +   }
 + },
   "breakDown": {

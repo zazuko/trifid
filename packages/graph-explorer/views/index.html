@@ -32,6 +32,7 @@ ${include('cwd:views/header.html')}
         workspace.getModel().importLayout({
           dataProvider: new GraphExplorer.SparqlDataProvider({
             endpointUrl: '${endpointUrl}',
+            acceptBlankNodes: ${acceptBlankNodes},
             imagePropertyUris: [
               'http://xmlns.com/foaf/0.1/img',
             ],

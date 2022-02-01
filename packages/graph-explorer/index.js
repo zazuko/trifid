@@ -10,6 +10,7 @@ function middleware (options) {
   }
 
   options.template = options.template || path.join(__dirname, 'views/index.html')
+  options.acceptBlankNodes = !!options.acceptBlankNodes
 
   // render index page
   router.get('/', (req, res) => {
@@ -24,6 +25,7 @@ function middleware (options) {
 
     // read SPARQL endpoint URL from options and resolve with absoluteUrl
     res.locals.endpointUrl = new URL(options.endpointUrl, req.absoluteUrl()).href
+    res.locals.acceptBlankNodes = options.acceptBlankNodes
 
     res.render(options.template)
   })
