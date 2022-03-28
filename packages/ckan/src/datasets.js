@@ -43,7 +43,7 @@ export async function getOrganizationDatasets(organizationId) {
             : `${identifiers.value}@${creatorSlug}`
 
           // Ignore keywords without a language specified because CKAN rejects them
-          const keywords = dataset.out(ns.dcat.keyword).filter(({ language }) => !!language)
+          const keywords = dataset.out(ns.dcat.keyword).filter(({ term: { language } }) => !!language)
 
           const copyright = dataset.out(ns.dcterms.rights).out(ns.schema.identifier)
 
