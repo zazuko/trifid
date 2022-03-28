@@ -1,15 +1,13 @@
-import clownface from 'clownface'
 import rdf from 'rdf-ext'
 import { create as createXml } from 'xmlbuilder2'
 import { prefixes, shrink } from '@zazuko/rdf-vocabularies'
-import TermSet from '@rdfjs/term-set'
 
 import { fetchDatasets } from './query.js'
 import * as ns from './namespace.js'
 
 export async function getOrganizationDatasets(organizationId) {
   const quads = await fetchDatasets(organizationId)
-  const pointer = clownface({ dataset: rdf.dataset(quads) })
+  const pointer = rdf.clownface({ dataset: rdf.dataset(quads) })
 
   const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
 
@@ -171,7 +169,7 @@ function serializeBlankNode(pointer) {
 
   if (!type) return {}
 
-  const properties = new TermSet([...pointer.dataset.match(pointer.term)]
+  const properties = rdf.termSet([...pointer.dataset.match(pointer.term)]
     .map(({ predicate }) => predicate)
     .filter((term) => !term.equals(ns.rdf.type)))
 
