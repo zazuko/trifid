@@ -11,8 +11,10 @@ export async function getOrganizationDatasets(organizationId) {
 
   const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
 
-  const pf = Object.entries(prefixes).reduce((acc, [prefix, url]) =>
-    ({ ...acc, [`xmlns:${prefix}`]: url }), {})
+  const pf = Object.entries(prefixes)
+    // `xml` prefix is reserved and must not be re-declared
+    .filter(([prefix,]) => prefix !== 'xml')
+    .reduce((acc, [prefix, url]) => ({ ...acc, [`xmlns:${prefix}`]: url }), {})
 
   const xml = createXml({
     version: '1.0',
