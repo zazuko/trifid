@@ -28,8 +28,6 @@ const config = {
   baseConfig: path.join(process.cwd(), opts.config)
 }
 
-console.log('config', config)
-
 // add optional arguments to the configuration
 
 if (opts.port) {
