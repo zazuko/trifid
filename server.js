@@ -14,32 +14,36 @@ program
   .option('--dataset-base-url <url>', 'Base URL of the dataset')
   .parse(process.argv)
 
+const opts = program.opts()
+
 // automatically switch to config-sparql if a SPARQL endpoint URL is given and no config file was defined
-if (program.sparqlEndpointUrl && !program.config) {
-  program.config = 'config-sparql.json'
-} else if (!program.config) {
-  program.config = 'config.json'
+if (opts.sparqlEndpointUrl && !opts.config) {
+  opts.config = 'config-sparql.json'
+} else if (!opts.config) {
+  opts.config = 'config.json'
 }
 
 // create a minimal configuration with a baseConfig pointing to the given config file
 const config = {
-  baseConfig: path.join(process.cwd(), program.config)
+  baseConfig: path.join(process.cwd(), opts.config)
 }
+
+console.log('config', config)
 
 // add optional arguments to the configuration
 
-if (program.port) {
+if (opts.port) {
   config.listener = {
-    port: program.port
+    port: opts.port
   }
 }
 
-if (program.sparqlEndpointUrl) {
-  config.sparqlEndpointUrl = program.sparqlEndpointUrl
+if (opts.sparqlEndpointUrl) {
+  config.sparqlEndpointUrl = opts.sparqlEndpointUrl
 }
 
-if (program.datasetBaseUrl) {
-  config.datasetBaseUrl = program.datasetBaseUrl
+if (opts.datasetBaseUrl) {
+  config.datasetBaseUrl = opts.datasetBaseUrl
 }
 
 // load the configuration and start the server
@@ -49,7 +53,7 @@ const trifid = new Trifid()
 trifid.configHandler.resolver.use('trifid', ConfigHandler.pathResolver(__dirname))
 
 trifid.init(config).then(() => {
-  if (program.verbose) {
+  if (opts.verbose) {
     debug('expanded config:')
     debug(JSON.stringify(trifid.config, null, ' '))
   }
