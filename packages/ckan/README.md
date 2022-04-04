@@ -10,6 +10,7 @@ https://handbook.opendata.swiss/fr/content/glossar/bibliothek/dcat-ap-ch.html (f
 
 In order to be considered as a "publishable" dataset by this endpoint, a
 dataset must follow the following conditions:
+- it **has** the `dcat:Dataset` type
 - it **has one and only one** `dcterms:identifier`
 - it **has** a `dcterms:creator`
 - it **has** `schema:workExample` with value `<https://ld.admin.ch/application/opendataswiss>`
