@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "camouflage-rewrite": "^1.2.0",
-    "commander": "^2.20.3",
+    "commander": "^9.1.0",
     "compression": "^1.7.4",
     "debug": "^4.1.1",
     "format-to-accept": "^1.0.0",
