@@ -1,0 +1,16 @@
+{
+  "baseConfig": "trifid:config-sparql.json",
+  "sparqlEndpointUrl": "env:SPARQL_ENDPOINT_URL",
+  "datasetBaseUrl": "env:DATASET_BASE_URL",
+  "sparqlEndpointAuthentication": {
+    "user": "env:SPARQL_USER",
+    "password": "env:SPARQL_PASSWORD"
+  },
+  "sparqlProxy": {
+    "default": {
+      "options": {
+        "queryOperation": "postQueryUrlencoded"
+      }
+    }
+  }
+}

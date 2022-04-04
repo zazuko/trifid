@@ -2,7 +2,7 @@ FROM docker.io/library/node:16-alpine
 
 EXPOSE 8080
 
-ENV TRIFID_CONFIG="config.json"
+ENV TRIFID_CONFIG="config-docker.json"
 
 WORKDIR /app
 
