@@ -33,7 +33,7 @@
     "trifid-plugin-cotton-candy": "^1.0.0",
     "trifid-plugin-hydra-box": "^1.2.0",
     "trifid-plugin-markdown": "^1.0.0",
-    "trifid-plugin-renderer": "^1.1.1",
+    "trifid-plugin-renderer": "^1.2.0",
     "trifid-plugin-yasgui": "^1.3.0",
     "trifid-renderer-simple": "^5.0.1"
   },
