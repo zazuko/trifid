@@ -27,6 +27,10 @@ ${include('cwd:views/header.html')}
   <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
+      let SparqlDialect = GraphExplorer.OWLStatsSettings
+      /* this could be configurable */
+      SparqlDialect.schemaLabelProperty =  'rdfs:label | shema:name'
+      
       function onWorkspaceMounted(workspace) {
         if (!workspace) { return; }
         workspace.getModel().importLayout({
@@ -37,7 +41,7 @@ ${include('cwd:views/header.html')}
               'http://xmlns.com/foaf/0.1/img',
             ],
             queryMethod: GraphExplorer.SparqlQueryMethod.GET
-          }, GraphExplorer.OWLStatsSettings),
+          }, SparqlDialect),
         });
 
         /**
@@ -52,10 +56,44 @@ ${include('cwd:views/header.html')}
             workspace.forceLayout();
           });
         }
+        let resources = url.searchParams.get("resources");
+        if(resources != null)
+        {
+            let elm = model.dataProvider.elementInfo({elementIds: resources.split(';')});
+            elm.then(function(arg){
+                let elmIds = []
+        				resources.split(';').forEach( function(item) {
+               	  let node = model.createElement(arg[item])
+                  elmIds[item] = node.id;
+               	  workspace.forceLayout();
+				        })
+                return elmIds
+            }).then(function(elmIds) {
+                /* now that we have the resources, add the links */
+                let lnk = model.dataProvider.linksInfo({elementIds: resources.split(';')})
+                lnk.then(function(arg){
+                    arg.forEach(function(link) {
+                      let newLink = new GraphExplorer.Link({ typeId : link.linkTypeId,sourceId : elmIds[link.sourceId],targetId : elmIds[link.targetId]})
+                      model.addLink(newLink)
+                      workspace.forceLayout();
+                    })
+                })
+            });
+        }
       }
-
+      const props = {
+          ref: onWorkspaceMounted,
+          /* this could be configurable */
+          languages: [
+            {code: 'de', label: 'German'},
+            {code: 'fr', label: 'French'},
+            {code: 'it', label: 'Italian'},
+          ],
+          language: 'de'
+      }; 
+    
       ReactDOM.render(
-        React.createElement(GraphExplorer.Workspace, {ref: onWorkspaceMounted}),
+        React.createElement(GraphExplorer.Workspace, props),
         document.getElementById('container')
       );
     }
