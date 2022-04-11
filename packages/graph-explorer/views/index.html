@@ -29,8 +29,8 @@ ${include('cwd:views/header.html')}
     window.onload = function () {
       let SparqlDialect = GraphExplorer.OWLStatsSettings
       /* this could be configurable */
-      SparqlDialect.schemaLabelProperty =  'rdfs:label | shema:name'
-      
+      SparqlDialect.schemaLabelProperty = '${schemaLabelProperty}'
+
       function onWorkspaceMounted(workspace) {
         if (!workspace) { return; }
         workspace.getModel().importLayout({
@@ -90,8 +90,8 @@ ${include('cwd:views/header.html')}
             {code: 'it', label: 'Italian'},
           ],
           language: 'de'
-      }; 
-    
+      };
+
       ReactDOM.render(
         React.createElement(GraphExplorer.Workspace, props),
         document.getElementById('container')
