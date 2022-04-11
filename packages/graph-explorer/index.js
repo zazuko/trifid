@@ -12,6 +12,7 @@ function middleware (options) {
   options.template = options.template || path.join(__dirname, 'views/index.html')
   options.acceptBlankNodes = !!options.acceptBlankNodes
   options.schemaLabelProperty = options.schemaLabelProperty || 'rdfs:label | <https://schema.org/name>'
+  options.language = options.language || 'en'
 
   // render index page
   router.get('/', (req, res) => {
@@ -28,6 +29,7 @@ function middleware (options) {
     res.locals.endpointUrl = new URL(options.endpointUrl, req.absoluteUrl()).href
     res.locals.acceptBlankNodes = options.acceptBlankNodes
     res.locals.schemaLabelProperty = options.schemaLabelProperty
+    res.locals.language = options.language
 
     res.render(options.template)
   })
