@@ -13,6 +13,12 @@ function middleware (options) {
   options.acceptBlankNodes = !!options.acceptBlankNodes
   options.schemaLabelProperty = options.schemaLabelProperty || 'rdfs:label | <https://schema.org/name>'
   options.language = options.language || 'en'
+  options.languages = options.languages || [
+    {code: 'en', label: 'English'},
+    {code: 'de', label: 'German'},
+    {code: 'fr', label: 'French'},
+    {code: 'it', label: 'Italian'},
+  ]
 
   // render index page
   router.get('/', (req, res) => {
@@ -30,6 +36,7 @@ function middleware (options) {
     res.locals.acceptBlankNodes = options.acceptBlankNodes
     res.locals.schemaLabelProperty = options.schemaLabelProperty
     res.locals.language = options.language
+    res.locals.languages = JSON.stringify(options.languages)
 
     res.render(options.template)
   })

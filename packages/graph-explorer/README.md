@@ -27,7 +27,25 @@ here is how to configure `trifid-plugin-graph-explorer` by simply duplicating th
 +     "path": "/graph-explorer",
 +     "acceptBlankNodes": false,
 +     "schemaLabelProperty": "rdfs:label | <https://schema.org/name>",
-+     "language": "en"
++     "language": "en",
++     "languages": [
++       {
++         "code": "en",
++         "label": "English"
++       },
++       {
++         "code": "de",
++         "label": "German"
++       },
++       {
++         "code": "fr",
++         "label": "French"
++       },
++       {
++         "code": "it",
++         "label": "Italian"
++       }
++     ]
 +   }
 + },
   "breakDown": {

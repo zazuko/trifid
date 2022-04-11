@@ -82,12 +82,7 @@ ${include('cwd:views/header.html')}
       }
       const props = {
           ref: onWorkspaceMounted,
-          /* this could be configurable */
-          languages: [
-            {code: 'de', label: 'German'},
-            {code: 'fr', label: 'French'},
-            {code: 'it', label: 'Italian'},
-          ],
+          languages: JSON.parse('${languages}'),
           language: '${language}'
       };
 
