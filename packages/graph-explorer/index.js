@@ -14,10 +14,10 @@ function middleware (options) {
   options.schemaLabelProperty = options.schemaLabelProperty || 'rdfs:label | <https://schema.org/name>'
   options.language = options.language || 'en'
   options.languages = options.languages || [
-    {code: 'en', label: 'English'},
-    {code: 'de', label: 'German'},
-    {code: 'fr', label: 'French'},
-    {code: 'it', label: 'Italian'},
+    { code: 'en', label: 'English' },
+    { code: 'de', label: 'German' },
+    { code: 'fr', label: 'French' },
+    { code: 'it', label: 'Italian' }
   ]
 
   // render index page
