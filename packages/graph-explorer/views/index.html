@@ -16,6 +16,7 @@ ${include('cwd:views/header.html')}
     html, body {
       height: 100%;
     }
+
     #container {
       height: calc(100% - 168px);
       overflow: hidden;
@@ -27,11 +28,14 @@ ${include('cwd:views/header.html')}
   <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
-      let SparqlDialect = GraphExplorer.OWLStatsSettings
-      SparqlDialect.schemaLabelProperty = '${schemaLabelProperty}'
+      const SparqlDialect = GraphExplorer.OWLStatsSettings;
+      SparqlDialect.schemaLabelProperty = '${schemaLabelProperty}';
 
       function onWorkspaceMounted(workspace) {
-        if (!workspace) { return; }
+        if (!workspace) {
+          return;
+        }
+
         workspace.getModel().importLayout({
           dataProvider: new GraphExplorer.SparqlDataProvider({
             endpointUrl: '${endpointUrl}',
@@ -46,44 +50,49 @@ ${include('cwd:views/header.html')}
         /**
         * get the '?resource' search param and load that resource.
         */
-        let url = new URL(window.location.href);
-        let resource = url.searchParams.get("resource");
+        const url = new URL(window.location.href);
+        const resource = url.searchParams.get("resource");
         if (resource != null) {
-          let elm = workspace.getModel().dataProvider.elementInfo({elementIds: [resource]});
+          const elm = workspace.getModel().dataProvider.elementInfo({ elementIds: [resource] });
             elm.then(function(arg) {
             workspace.getModel().createElement(arg[resource])
             workspace.forceLayout();
           });
         }
-        let resources = url.searchParams.get("resources");
-        if(resources != null)
-        {
-            let elm = model.dataProvider.elementInfo({elementIds: resources.split(';')});
-            elm.then(function(arg){
-                let elmIds = []
-        				resources.split(';').forEach( function(item) {
-               	  let node = model.createElement(arg[item])
-                  elmIds[item] = node.id;
-               	  workspace.forceLayout();
-				        })
-                return elmIds
-            }).then(function(elmIds) {
-                /* now that we have the resources, add the links */
-                let lnk = model.dataProvider.linksInfo({elementIds: resources.split(';')})
-                lnk.then(function(arg){
-                    arg.forEach(function(link) {
-                      let newLink = new GraphExplorer.Link({ typeId : link.linkTypeId,sourceId : elmIds[link.sourceId],targetId : elmIds[link.targetId]})
-                      model.addLink(newLink)
-                      workspace.forceLayout();
-                    })
-                })
+
+        const resources = url.searchParams.get("resources");
+        if (resources != null) {
+          const elm = model.dataProvider.elementInfo({ elementIds: resources.split(';') });
+          elm.then(function(arg) {
+            const elmIds = []
+            resources.split(';').forEach(function(item) {
+              const node = model.createElement(arg[item])
+              elmIds[item] = node.id;
+              workspace.forceLayout();
+            })
+            return elmIds;
+          }).then(function(elmIds) {
+            /* now that we have the resources, add the links */
+            const lnk = model.dataProvider.linksInfo({ elementIds: resources.split(';') })
+            lnk.then(function(arg){
+              arg.forEach(function(link) {
+                const newLink = new GraphExplorer.Link({
+                  typeId: link.linkTypeId,
+                  sourceId: elmIds[link.sourceId],
+                  targetId: elmIds[link.targetId],
+                });
+                model.addLink(newLink);
+                workspace.forceLayout();
+              });
             });
+          });
         }
       }
+
       const props = {
-          ref: onWorkspaceMounted,
-          languages: JSON.parse('${languages}'),
-          language: '${language}'
+        ref: onWorkspaceMounted,
+        languages: JSON.parse('${languages}'),
+        language: '${language}'
       };
 
       ReactDOM.render(
