@@ -48,25 +48,18 @@ ${include('cwd:views/header.html')}
         });
 
         /**
-        * get the '?resource' search param and load that resource.
+        * get the '?resources' search param and load those resources
         */
         const url = new URL(window.location.href);
-        const resource = url.searchParams.get("resource");
-        if (resource != null) {
-          const elm = workspace.getModel().dataProvider.elementInfo({ elementIds: [resource] });
-            elm.then(function(arg) {
-            workspace.getModel().createElement(arg[resource])
-            workspace.forceLayout();
-          });
-        }
-
         const resources = url.searchParams.get("resources");
+        const model = workspace.getModel();
+
         if (resources != null) {
           const elm = model.dataProvider.elementInfo({ elementIds: resources.split(';') });
           elm.then(function(arg) {
             const elmIds = []
             resources.split(';').forEach(function(item) {
-              const node = model.createElement(arg[item])
+              const node = model.createElement(arg[item]);
               elmIds[item] = node.id;
               workspace.forceLayout();
             })
