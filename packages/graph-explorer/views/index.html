@@ -36,7 +36,9 @@ ${include('cwd:views/header.html')}
           return;
         }
 
-        workspace.getModel().importLayout({
+        const model = workspace.getModel();
+
+        model.importLayout({
           dataProvider: new GraphExplorer.SparqlDataProvider({
             endpointUrl: '${endpointUrl}',
             acceptBlankNodes: ${acceptBlankNodes},
@@ -51,18 +53,20 @@ ${include('cwd:views/header.html')}
         * get the '?resources' search param and load those resources
         */
         const url = new URL(window.location.href);
-        const resources = url.searchParams.get("resources");
-        const model = workspace.getModel();
+        const resources = url.searchParams.get('resources');
 
-        if (resources != null) {
-          const elm = model.dataProvider.elementInfo({ elementIds: resources.split(';') });
+        if (resources) {
+          const elm = model.dataProvider.elementInfo({
+            elementIds: resources.split(';'),
+          });
+
           elm.then(function(arg) {
-            const elmIds = []
+            const elmIds = [];
             resources.split(';').forEach(function(item) {
               const node = model.createElement(arg[item]);
               elmIds[item] = node.id;
               workspace.forceLayout();
-            })
+            });
             return elmIds;
           }).then(function(elmIds) {
             /* now that we have the resources, add the links */
