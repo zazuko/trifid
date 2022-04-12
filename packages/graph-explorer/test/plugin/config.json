@@ -36,7 +36,8 @@
     "default": {
       "path": "/graph-explorer",
       "acceptBlankNodes": false,
-      "schemaLabelProperty": "rdfs:label | <https://schema.org/name>",
+      "schemaLabelProperty": "rdfs:label | <http://schema.org/name>",
+      "dataLabelProperty": "rdfs:label | <http://schema.org/name>",
       "language": "fr",
       "languages": [
         {

@@ -2,6 +2,8 @@
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/additionalName> "Farrah" .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/familyName> "Fowler" .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/givenName> "Amy" .
+<http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/name> "Amy Fowler FR"@fr .
+<http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/name> "Amy Fowler DE"@de .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/jobTitle> "neurobiologist" .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:8080/data/person/bernadette-rostenkowski> .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:8080/data/person/howard-wolowitz> .

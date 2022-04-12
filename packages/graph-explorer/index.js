@@ -11,7 +11,8 @@ function middleware (options) {
 
   options.template = options.template || path.join(__dirname, 'views/index.html')
   options.acceptBlankNodes = !!options.acceptBlankNodes
-  options.schemaLabelProperty = options.schemaLabelProperty || 'rdfs:label | <https://schema.org/name>'
+  options.dataLabelProperty = options.dataLabelProperty || 'rdfs:label'
+  options.schemaLabelProperty = options.schemaLabelProperty || 'rdfs:label'
   options.language = options.language || 'en'
   options.languages = options.languages || [
     { code: 'en', label: 'English' },
@@ -34,6 +35,7 @@ function middleware (options) {
     // read SPARQL endpoint URL from options and resolve with absoluteUrl
     res.locals.endpointUrl = new URL(options.endpointUrl, req.absoluteUrl()).href
     res.locals.acceptBlankNodes = options.acceptBlankNodes
+    res.locals.dataLabelProperty = options.dataLabelProperty
     res.locals.schemaLabelProperty = options.schemaLabelProperty
     res.locals.language = options.language
     res.locals.languages = JSON.stringify(options.languages)

@@ -29,6 +29,7 @@ ${include('cwd:views/header.html')}
     //<![CDATA[
     window.onload = function () {
       const SparqlDialect = GraphExplorer.OWLStatsSettings;
+      SparqlDialect.dataLabelProperty = '${dataLabelProperty}';
       SparqlDialect.schemaLabelProperty = '${schemaLabelProperty}';
 
       function onWorkspaceMounted(workspace) {
