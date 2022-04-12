@@ -1,0 +1,103 @@
+{
+  "baseConfig": "trifid:config-base.json",
+  "sparqlEndpointUrl": "env:SPARQL_ENDPOINT_URL",
+  "datasetBaseUrl": "env:DATASET_BASE_URL",
+  "patchHeaders": {
+    "root": {
+      "remove": [
+        "Fuseki-Request-ID",
+        "Server"
+      ]
+    }
+  },
+  "sparqlProxy": {
+    "default": {
+      "path": "/query"
+    }
+  },
+  "handler": {
+    "root": {
+      "module": "trifid-handler-sparql",
+      "options": {
+        "resourceExistsQuery": "ASK { <${iri}> ?p ?o }",
+        "resourceGraphQuery": "DESCRIBE <${iri}>",
+        "containerExistsQuery": "ASK { ?s a ?o. FILTER REGEX(STR(?s), \"^${iri}\") }",
+        "containerGraphQuery": "CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), \"^${iri}\") }"
+      }
+    }
+  },
+  "yasgui": {
+    "default": {
+      "path": "/sparql",
+      "urlShortener": "https://s.zazuko.com/api/v1/shorten"
+    }
+  },
+  "graphexplorer": {
+    "default": {
+      "path": "/graph-explorer",
+      "acceptBlankNodes": false,
+      "schemaLabelProperty": "rdfs:label | <https://schema.org/name>",
+      "language": "fr",
+      "languages": [
+        {
+          "code": "en",
+          "label": "English"
+        },
+        {
+          "code": "de",
+          "label": "German"
+        },
+        {
+          "code": "fr",
+          "label": "French"
+        },
+        {
+          "code": "it",
+          "label": "Italian"
+        },
+        {
+          "code": "ru",
+          "label": "Russian"
+        }
+      ]
+    }
+  },
+  "breakDown": {
+    "handler": {},
+    "handler.root": {},
+    "handler.root.options": {},
+    "handler.root.options.endpointUrl": "sparqlEndpointUrl",
+    "handler.root.options.authentication": "sparqlEndpointAuthentication",
+    "sparqlProxy": {},
+    "sparqlProxy.default": {},
+    "sparqlProxy.default.endpointUrl": "sparqlEndpointUrl",
+    "sparqlProxy.default.authentication": "sparqlEndpointAuthentication",
+    "yasgui": {},
+    "yasgui.default": {},
+    "yasgui.default.endpointUrl": [
+      "sparqlProxy.default.path",
+      "sparqlEndpointUrl"
+    ],
+    "graphexplorer": {},
+    "graphexplorer.default": {},
+    "graphexplorer.default.endpointUrl": [
+      "sparqlProxy.default.path",
+      "sparqlEndpointUrl"
+    ]
+  },
+  "plugins": {
+    "sparqlProxy": {
+      "priority": 115,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "sparql-proxy"
+    },
+    "yasgui": {
+      "priority": 115,
+      "module": "trifid-plugin-yasgui"
+    },
+    "graphexplorer": {
+      "priority": 115,
+      "module": "/trifid-plugin"
+    }
+  }
+}
