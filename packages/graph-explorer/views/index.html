@@ -16,6 +16,7 @@ ${include('cwd:views/header.html')}
     html, body {
       height: 100%;
     }
+
     #container {
       height: calc(100% - 168px);
       overflow: hidden;
@@ -27,9 +28,18 @@ ${include('cwd:views/header.html')}
   <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
+      const SparqlDialect = GraphExplorer.OWLStatsSettings;
+      SparqlDialect.dataLabelProperty = '${dataLabelProperty}';
+      SparqlDialect.schemaLabelProperty = '${schemaLabelProperty}';
+
       function onWorkspaceMounted(workspace) {
-        if (!workspace) { return; }
-        workspace.getModel().importLayout({
+        if (!workspace) {
+          return;
+        }
+
+        const model = workspace.getModel();
+
+        model.importLayout({
           dataProvider: new GraphExplorer.SparqlDataProvider({
             endpointUrl: '${endpointUrl}',
             acceptBlankNodes: ${acceptBlankNodes},
@@ -37,25 +47,54 @@ ${include('cwd:views/header.html')}
               'http://xmlns.com/foaf/0.1/img',
             ],
             queryMethod: GraphExplorer.SparqlQueryMethod.GET
-          }, GraphExplorer.OWLStatsSettings),
+          }, SparqlDialect),
         });
 
         /**
-        * get the '?resource' search param and load that resource.
+        * get the '?resources' search param and load those resources
         */
-        let url = new URL(window.location.href);
-        let resource = url.searchParams.get("resource");
-        if (resource != null) {
-          let elm = workspace.getModel().dataProvider.elementInfo({elementIds: [resource]});
-            elm.then(function(arg) {
-            workspace.getModel().createElement(arg[resource])
-            workspace.forceLayout();
+        const url = new URL(window.location.href);
+        const resources = url.searchParams.get('resources');
+
+        if (resources) {
+          const elm = model.dataProvider.elementInfo({
+            elementIds: resources.split(';'),
+          });
+
+          elm.then(function(arg) {
+            const elmIds = [];
+            resources.split(';').forEach(function(item) {
+              const node = model.createElement(arg[item]);
+              elmIds[item] = node.id;
+              workspace.forceLayout();
+            });
+            return elmIds;
+          }).then(function(elmIds) {
+            /* now that we have the resources, add the links */
+            const lnk = model.dataProvider.linksInfo({ elementIds: resources.split(';') })
+            lnk.then(function(arg){
+              arg.forEach(function(link) {
+                const newLink = new GraphExplorer.Link({
+                  typeId: link.linkTypeId,
+                  sourceId: elmIds[link.sourceId],
+                  targetId: elmIds[link.targetId],
+                });
+                model.addLink(newLink);
+                workspace.forceLayout();
+              });
+            });
           });
         }
       }
 
+      const props = {
+        ref: onWorkspaceMounted,
+        languages: JSON.parse('${languages}'),
+        language: '${language}'
+      };
+
       ReactDOM.render(
-        React.createElement(GraphExplorer.Workspace, {ref: onWorkspaceMounted}),
+        React.createElement(GraphExplorer.Workspace, props),
         document.getElementById('container')
       );
     }
