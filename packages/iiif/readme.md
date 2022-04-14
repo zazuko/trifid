@@ -7,21 +7,30 @@ It provides data using the [schema](https://iiif.io/api/presentation/3/context.j
 
 ## Example
 
-Mounting the plugin in the path `/iiif`
+Mounting the plugin
 
 ```json
 {
-  "ckan": {
-    "path": "/iiif",
-    "endpointUrl": "http://endpoint/query",
+  "iiif": {
+    "path": "/*",
+    "uriPrefix": "https://website",
+    "endpointUrl": "https://website/query",
     "user": "optional",
     "password": "optional"
   },
   "plugins": {
-    "ckan": {
+    "iiif": {
       "priority": 100,
       "module": "trifid-plugin-iiif"
     }
   }
 }
 ```
+
+Then, 
+
+http://localhost:8080/data/1
+
+Will be resolved to:
+
+https://website/data/1

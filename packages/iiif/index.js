@@ -6,22 +6,18 @@ const rdf = require('rdf-ext')
 const jsonld = require('jsonld')
 const frame = require('./src/frame.js')
 
-function middleware (api) {
+function middleware (api, uriPrefix) {
 
   return async (req, res, next) => {
-    // @TODO discuss interface, should it be a parameter?
-    // const uri = req.query.organization
-    // if (!uri) {
-    //   return res.status(400).send('Missing `uri` query param')
-    // }
     const url = req.url
     if (req.method !== 'GET') return next()
     
-    const iri = rdf.namedNode(url)
+    const iri = rdf.namedNode(`${uriPrefix}${url}`)
     if (!await api.exists(iri)) {
       debug(`iri: ${iri} not found`)
       return next()
     }
+    debug(`fetching iri: ${iri}`)
 
     const dataset = await api.getBasicDataset(iri)
     const augmented = await api.augmentDataset(dataset)
@@ -50,8 +46,9 @@ async function iiif (path, options) {
     operation: 'postUrlencoded',
   }
   const api = createApi(client, clientOptions)
+  const uriPrefix = options.uriPrefix?options.uriPrefix:''
 
-  router.get(path, middleware(api))
+  router.get(path, middleware(api,uriPrefix))
   return router
 }
 
