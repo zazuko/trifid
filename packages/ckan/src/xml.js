@@ -99,7 +99,7 @@ function toXML (dataset) {
               'dcterms:relation': legalBasis,
               'dcat:keyword': serializeTerm(keywords),
               'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
-              'dcterms:spacial': serializeTerm(dataset.out(ns.dcterms.spacial)),
+              'dcterms:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
               'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
