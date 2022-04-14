@@ -31,5 +31,5 @@ Then,
 
 http://localhost:8080/data/1
 
-Will use the uri: <https://website/data/1> to fetch all the related data.
+Will use the uri: <https://website/data/1> to fetch all the related data from the https://website/query SPARQL endpoint
 
