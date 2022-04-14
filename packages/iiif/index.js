@@ -1,10 +1,10 @@
 const SparqlHttpClient = require('sparql-http-client')
 const express = require('express')
 const debug = require('debug')('iiif:')
-const createApi = require ('./iiif.js')
+const createApi = require ('./src/iiif.js')
 const rdf = require('rdf-ext')
 const jsonld = require('jsonld')
-const frame = require('./frame.js')
+const frame = require('./src/frame.js')
 
 async function iiif (path, configs) {
 
