@@ -3,12 +3,7 @@
   "name": "trifid-plugin-iiif",
   "version": "0.1.0",
   "description": "",
-  "main": "playground/index.js",
-  "scripts": {
-    "start": "node -r dotenv/config playground/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run build && npm run start"
-  },
+  "main": "src/index.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
