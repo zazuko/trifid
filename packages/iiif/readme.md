@@ -5,7 +5,9 @@ A trifid plugin to provide data about image and audio/visual files.
 It provides data using the [schema](https://iiif.io/api/presentation/3/context.json) defined by the [International Image Interoperability Framework](https://iiif.io)
 
 
-Example, mounting the plugin in the path `/iiif`
+## Examnple
+
+Mounting the plugin in the path `/iiif`
 
 ```json
 {
