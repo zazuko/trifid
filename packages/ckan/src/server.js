@@ -26,16 +26,19 @@ app.get('/ckan', async (req, res) => {
 
   try {
     const uri = rdf.namedNode(organization)
+
     const dataset = await fetchDatasets(uri)
     const xml = await toXML(dataset)
 
     const format = 'application/rdf+xml'
     res.setHeader('Content-Type', format)
 
-    return res.send(xml)
+    return res.send(xml.toString())
   } catch (e) {
-    return res.status(500).send(e.toString())
+    console.error(e)
+    return res.status(500).send('Error')
   }
+
 })
 
 app.get('/healthz', async (req, res) => {

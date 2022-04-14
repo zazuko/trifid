@@ -13,7 +13,7 @@ function toXML (dataset) {
     .filter(([prefix,]) => prefix !== 'xml')
     .reduce((acc, [prefix, url]) => ({ ...acc, [`xmlns:${prefix}`]: url }), {})
 
-  const xml = createXml({
+  return createXml({
     version: '1.0',
     encoding: 'utf-8',
     namespaceAlias: {
@@ -109,9 +109,7 @@ function toXML (dataset) {
         }).filter(Boolean),
       },
     },
-  }).doc()
-  xml.end({ prettyPrint: true })
-  return xml
+  }).doc().end({ prettyPrint: true })
 }
 
 function serializeTerm (pointer) {
