@@ -7,6 +7,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "debug": "^4.1.1",
     "@rdfjs/express-handler": "^1.2.2",
     "@rdfjs/namespace": "^1.1.0",
     "@tpluscode/rdf-string": "^0.2.24",
