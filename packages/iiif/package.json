@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "trifid-plugin-iiif",
+  "version": "0.1.0",
+  "description": "",
+  "main": "playground/index.js",
+  "scripts": {
+    "start": "node -r dotenv/config playground/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npm run build && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rdfjs/express-handler": "^1.2.2",
+    "@rdfjs/namespace": "^1.1.0",
+    "@tpluscode/rdf-string": "^0.2.24",
+    "express": "^4.17.1",
+    "jsonld": "^5.2.0",
+    "rdf-ext": "^1.3.5",
+    "clownface": "^1.5.1",
+    "sparql-http-client": "^2.4.0",
+    "through2": "^3.0.2"
+  },
+  "devDependencies": {
+  }
+}
