@@ -31,6 +31,5 @@ Then,
 
 http://localhost:8080/data/1
 
-Will be resolved to:
+Will use the uri: <https://website/data/1> to fetch all the related data.
 
-https://website/data/1
