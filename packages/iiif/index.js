@@ -15,7 +15,6 @@ function middleware (api) {
     //   return res.status(400).send('Missing `uri` query param')
     // }
     const url = req.url
-    debug(`url: ${url}`)
     if (req.method !== 'GET') return next()
     
     const iri = rdf.namedNode(url)
@@ -34,24 +33,23 @@ function middleware (api) {
 
 }
 
-async function iiif (path, configs) {
+async function iiif (path, options) {
 
   const router = express.Router()
-  if (!configs || !configs.endpointUrl) {
+  if (!options || !options.endpointUrl) {
     debug('Warning: no endpoint configured, module not mounted')
     return router
   }
   const client = new SparqlHttpClient({
-    endpointUrl: configs.endpointUrl,
-    user: configs.endpointUser,
-    password: configs.endpointPassword,
+    endpointUrl: options.endpointUrl,
+    user: options.endpointUser,
+    password: options.endpointPassword,
   })
 
   const clientOptions = {
     operation: 'postUrlencoded',
   }
   const api = createApi(client, clientOptions)
-  debug('Created API')
 
   router.get(path, middleware(api))
   return router
