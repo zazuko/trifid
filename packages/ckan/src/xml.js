@@ -1,14 +1,11 @@
 import rdf from 'rdf-ext'
-import { create as createXml } from 'xmlbuilder2'
-import { prefixes, shrink } from '@zazuko/rdf-vocabularies'
-
-import { fetchDatasets } from './query.js'
 import * as ns from './namespace.js'
+import { prefixes, shrink } from '@zazuko/rdf-vocabularies'
+import { create as createXml } from 'xmlbuilder2'
 
-export async function getOrganizationDatasets(organizationId) {
-  const quads = await fetchDatasets(organizationId)
-  const pointer = rdf.clownface({ dataset: rdf.dataset(quads) })
+function toXML (dataset) {
 
+  const pointer = rdf.clownface({ dataset: rdf.dataset(dataset) })
   const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
 
   const pf = Object.entries(prefixes)
@@ -113,11 +110,11 @@ export async function getOrganizationDatasets(organizationId) {
       },
     },
   }).doc()
-
-  return xml.end({ prettyPrint: true })
+  xml.end({ prettyPrint: true })
+  return xml
 }
 
-function serializeTerm(pointer) {
+function serializeTerm (pointer) {
   return pointer.map((value) => {
     if (isLiteral(value)) {
       return serializeLiteral(value)
@@ -131,19 +128,19 @@ function serializeTerm(pointer) {
   })
 }
 
-function isLiteral(pointer) {
+function isLiteral (pointer) {
   return pointer.term.termType === 'Literal'
 }
 
-function isNamedNode(pointer) {
+function isNamedNode (pointer) {
   return pointer.term.termType === 'NamedNode'
 }
 
-function isBlankNode(pointer) {
+function isBlankNode (pointer) {
   return pointer.term.termType === 'BlankNode'
 }
 
-function serializeLiteral({ term }) {
+function serializeLiteral ({ term }) {
   const attrs = {}
 
   if (term.language) {
@@ -160,13 +157,13 @@ function serializeLiteral({ term }) {
   }
 }
 
-function serializeNamedNode({ value }) {
+function serializeNamedNode ({ value }) {
   return {
     '@': { 'rdf:resource': value },
   }
 }
 
-function serializeBlankNode(pointer) {
+function serializeBlankNode (pointer) {
   const type = pointer.out(ns.rdf.type).value
 
   if (!type) return {}
@@ -183,7 +180,7 @@ function serializeBlankNode(pointer) {
   }
 }
 
-function distributionFormatFromEncoding(encodingPointer) {
+function distributionFormatFromEncoding (encodingPointer) {
   const encoding = encodingPointer.values[0] || ''
 
   switch (encoding) {
@@ -198,3 +195,5 @@ function distributionFormatFromEncoding(encodingPointer) {
     }
   }
 }
+
+export { toXML }

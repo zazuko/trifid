@@ -1,6 +1,6 @@
 {
   "name": "ckan-datasets",
-  "version": "0.1.14",
+  "version": "0.2.0",
   "description": "Endpoint for opendata.swiss CKAN harvester",
   "main": "src/server.js",
   "type": "module",
