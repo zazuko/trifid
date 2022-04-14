@@ -11,15 +11,21 @@ function middleware (api, uriPrefix) {
   return async (req, res, next) => {
     const url = req.url
     if (req.method !== 'GET') return next()
-    
-    const iri = rdf.namedNode(`${uriPrefix}${url}`)
-    if (!await api.exists(iri)) {
-      debug(`iri: ${iri} not found`)
+
+    if (!(uriPrefix || req.query.uri)){
+      debug(`No uri query parameter`)
       return next()
     }
-    debug(`fetching iri: ${iri}`)
 
-    const dataset = await api.getBasicDataset(iri)
+    const uri = uriPrefix?rdf.namedNode(`${uriPrefix}${url}`):rdf.namedNode(req.query.uri)
+
+    if (!await api.exists(uri)) {
+      debug(`uri: ${uri} not found`)
+      return next()
+    }
+    debug(`fetching uri: ${uri}`)
+
+    const dataset = await api.getBasicDataset(uri)
     const augmented = await api.augmentDataset(dataset)
     const doc = await jsonld.fromRDF(augmented, {})
     const framed = await frame(doc)
