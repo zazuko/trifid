@@ -1,5 +1,5 @@
 import rdf from 'rdf-ext'
-import * as ns from './namespace.js'
+import * as ns from './namespace.mjs'
 import { prefixes, shrink } from '@zazuko/rdf-vocabularies'
 import { create as createXml } from 'xmlbuilder2'
 

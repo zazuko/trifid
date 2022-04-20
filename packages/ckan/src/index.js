@@ -1,34 +1,39 @@
 const express = require('express')
-const rdf = require('rdf-ext')
+const rdf = import('rdf-ext')
 const debug = require('debug')('ckan:')
+const url = require('url')
 
 async function importAPI (clientConfig) {
-  const { createAPI } = await import('ckan.js')
+  const { createAPI } = await import('./ckan.mjs')
   return createAPI(clientConfig)
 }
 
-async function ckan (path, configs) {
+function middleware (options) {
   const router = express.Router()
 
-  if (!configs || !configs.endpointUrl) {
+  if (!options || !options.endpointUrl) {
     debug('Warning: no endpoint configured, module not mounted')
     return router
   }
 
-  const { fetchDatasets, toXML } = await importAPI({
-    endpointUrl: configs.endpointUrl,
-    user: configs.user,
-    password: configs.password
-  })
+  router.get('/', async (req, res) => {
+    // Create an absolute URL if a relative URL is provided
+    options.endpointUrl = (new url.URL(options.endpointUrl, req.absoluteUrl())).toString()
 
-  router.get(path, async (req, res) => {
+    const { fetchDatasets, toXML } = await importAPI({
+      endpointUrl: options.endpointUrl,
+      user: options.user,
+      password: options.password
+    })
+
     const organization = req.query.organization
     if (!organization) {
       return res.status(400).send('Missing `organization` query param')
     }
 
     try {
-      const uri = rdf.namedNode(organization)
+      const rdfResolved = await rdf
+      const uri = rdfResolved.default.namedNode(organization)
 
       const dataset = await fetchDatasets(uri)
       const xml = await toXML(dataset)
@@ -47,8 +52,8 @@ async function ckan (path, configs) {
 }
 
 function factory (router, configs) {
-  return this.middleware.mountAll(router, configs, async (path) => {
-    return await ckan(path, configs)
+  return this.middleware.mountAll(router, configs, (config) => {
+    return middleware(config)
   })
 }
 

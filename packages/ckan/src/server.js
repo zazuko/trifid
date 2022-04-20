@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import process from 'process'
 import rdf from 'rdf-ext'
-import { createAPI } from './ckan.js'
+import { createAPI } from './ckan.mjs'
 
 dotenv.config()
 
