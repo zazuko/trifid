@@ -4,13 +4,12 @@ import { prefixes, shrink } from '@zazuko/rdf-vocabularies'
 import { create as createXml } from 'xmlbuilder2'
 
 function toXML (dataset) {
-
   const pointer = rdf.clownface({ dataset: rdf.dataset(dataset) })
   const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
 
   const pf = Object.entries(prefixes)
     // `xml` prefix is reserved and must not be re-declared
-    .filter(([prefix,]) => prefix !== 'xml')
+    .filter(([prefix]) => prefix !== 'xml')
     .reduce((acc, [prefix, url]) => ({ ...acc, [`xmlns:${prefix}`]: url }), {})
 
   return createXml({
@@ -20,8 +19,8 @@ function toXML (dataset) {
       rdf: prefixes.rdf,
       dcat: prefixes.dcat,
       dcterms: prefixes.dcterms,
-      vcard: prefixes.vcard,
-    },
+      vcard: prefixes.vcard
+    }
   }, {
     'rdf:RDF': {
       '@': pf,
@@ -49,11 +48,11 @@ function toXML (dataset) {
           const legalBasisPointer = dataset.out(ns.dcterms.license)
           const legalBasis = legalBasisPointer.term
             ? {
-              'rdf:Description': {
-                '@': { 'rdf:about': legalBasisPointer.value },
-                'rdfs:label': 'legal_basis',
-              },
-            }
+                'rdf:Description': {
+                  '@': { 'rdf:about': legalBasisPointer.value },
+                  'rdfs:label': 'legal_basis'
+                }
+              }
             : null
 
           const distributions = dataset.out(ns.schema.workExample)
@@ -65,15 +64,15 @@ function toXML (dataset) {
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
                 'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
                 'dcterms:rights': serializeTerm(copyright),
-                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
+                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) }
               }
             }))
 
           const publishers = dataset.out(ns.dcterms.publisher)
             .map(publisher => ({
               'rdf:Description': {
-                'rdfs:label': publisher.value,
-              },
+                'rdfs:label': publisher.value
+              }
             }))
 
           // Datasets contain a mix of legacy (DC) frequencies and new (EU) frequencies.
@@ -103,12 +102,12 @@ function toXML (dataset) {
               'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
-              'dcat:distribution': distributions,
-            },
+              'dcat:distribution': distributions
+            }
           }
-        }).filter(Boolean),
-      },
-    },
+        }).filter(Boolean)
+      }
+    }
   }).doc().end({ prettyPrint: true })
 }
 
@@ -151,13 +150,13 @@ function serializeLiteral ({ term }) {
 
   return {
     '@': attrs,
-    '#': term.value,
+    '#': term.value
   }
 }
 
 function serializeNamedNode ({ value }) {
   return {
-    '@': { 'rdf:resource': value },
+    '@': { 'rdf:resource': value }
   }
 }
 
@@ -174,7 +173,7 @@ function serializeBlankNode (pointer) {
     ({ ...acc, [shrink(property.value)]: serializeTerm(pointer.out(property)) }), {})
 
   return {
-    [shrink(type)]: resource,
+    [shrink(type)]: resource
   }
 }
 

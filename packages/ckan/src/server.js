@@ -15,7 +15,7 @@ const env = process.env
 const { fetchDatasets, toXML } = createAPI({
   endpointUrl: env.STORE_QUERY_ENDPOINT,
   user: env.STORE_ENDPOINT_USERNAME,
-  password: env.STORE_ENDPOINT_PASSWORD,
+  password: env.STORE_ENDPOINT_PASSWORD
 })
 
 app.get('/ckan', async (req, res) => {
@@ -38,7 +38,6 @@ app.get('/ckan', async (req, res) => {
     console.error(e)
     return res.status(500).send('Error')
   }
-
 })
 
 app.get('/healthz', async (req, res) => {
