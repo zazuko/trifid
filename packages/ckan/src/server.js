@@ -2,13 +2,21 @@ import dotenv from 'dotenv'
 import express from 'express'
 import process from 'process'
 import rdf from 'rdf-ext'
-import { getOrganizationDatasets } from './datasets.js'
+import { createAPI } from './ckan.js'
 
 dotenv.config()
 
 const app = express()
 const port = 8080
 const host = '0.0.0.0'
+
+const env = process.env
+
+const { fetchDatasets, toXML } = createAPI({
+  endpointUrl: env.STORE_QUERY_ENDPOINT,
+  user: env.STORE_ENDPOINT_USERNAME,
+  password: env.STORE_ENDPOINT_PASSWORD,
+})
 
 app.get('/ckan', async (req, res) => {
   const organization = req.query.organization
@@ -17,15 +25,20 @@ app.get('/ckan', async (req, res) => {
   }
 
   try {
-    const content = await getOrganizationDatasets(rdf.namedNode(organization))
+    const uri = rdf.namedNode(organization)
+
+    const dataset = await fetchDatasets(uri)
+    const xml = await toXML(dataset)
 
     const format = 'application/rdf+xml'
     res.setHeader('Content-Type', format)
 
-    return res.send(content)
+    return res.send(xml.toString())
   } catch (e) {
-    return res.status(500).send(e.toString())
+    console.error(e)
+    return res.status(500).send('Error')
   }
+
 })
 
 app.get('/healthz', async (req, res) => {

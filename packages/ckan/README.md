@@ -28,7 +28,7 @@ Make sure they follow [the CKAN spec](https://handbook.opendata.swiss/fr/content
 - `dcat:theme`
 - `dcterms:language`
 - `dcat:landingPage`
-- `dcterms:spacial`
+- `dcterms:spatial`
 - `dcterms:coverage`
 - `dcterms:temporal`
 - `dcterms:keyword` (literals without a language are ignored)

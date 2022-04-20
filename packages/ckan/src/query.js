@@ -1,19 +1,8 @@
 import { sparql } from '@tpluscode/rdf-string'
-import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import * as ns from './namespace.js'
 
-const prepareClient = () => {
-  const env = process.env
-  const clientConfig = {
-    endpointUrl: env.STORE_QUERY_ENDPOINT,
-    user: env.STORE_ENDPOINT_USERNAME,
-    password: env.STORE_ENDPOINT_PASSWORD,
-  }
-  return new ParsingClient(clientConfig)
-}
-
-export function fetchDatasets(organizationId) {
-  const query = sparql`
+function datasetsQuery (organizationId) {
+  return sparql`
     CONSTRUCT {
       ?dataset ?p ?o .
       ?o ?nestedP ?nestedO .
@@ -52,7 +41,6 @@ export function fetchDatasets(organizationId) {
       }
     }
   `
-  const client = prepareClient()
-
-  return client.query.construct(query)
 }
+
+export { datasetsQuery }
