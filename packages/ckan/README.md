@@ -1,4 +1,3 @@
-
 # CKAN harvester endpoint
 
 This is a small HTTP endpoint that gathers datasets that are publishable to
@@ -10,6 +9,7 @@ https://handbook.opendata.swiss/fr/content/glossar/bibliothek/dcat-ap-ch.html (f
 
 In order to be considered as a "publishable" dataset by this endpoint, a
 dataset must follow the following conditions:
+
 - it **has** the `dcat:Dataset` type
 - it **has one and only one** `dcterms:identifier`
 - it **has** a `dcterms:creator`
@@ -20,6 +20,7 @@ dataset must follow the following conditions:
 
 The endpoint copies the following properties with their original value.
 Make sure they follow [the CKAN spec](https://handbook.opendata.swiss/fr/content/glossar/bibliothek/dcat-ap-ch.html).
+
 - `dcterms:title`
 - `dcterms:description`
 - `dcterms:issued`
@@ -53,7 +54,6 @@ The following properties are populated by the endpoint:
 
   TODO: define valid values for license
 
-
 - `dcterms:accrualPeriodicity`
 
   Supports both DC (http://purl.org/cld/freq/) and EU
@@ -65,6 +65,7 @@ The following properties are populated by the endpoint:
   Populated from `schema:workExample`.
   Only takes work examples with a `schema:encodingFormat` into account.
   Each distribution is built in the following way, from the properties of the work example:
+
   - `dcterms:issued` is copied as-is
   - `dcat:mediaType` populated from `schema:encodingFormat`
   - `dcat:accessURL` populated from `schema:url`
@@ -74,3 +75,74 @@ The following properties are populated by the endpoint:
     - `text/html` -> `HTML`
     - `application/sparql-query` -> `SERVICE`
     - other -> `UNKNOWN`
+
+## Usage
+
+This should be used as a Trifid plugin.
+
+The following options are supported:
+
+- `endpointUrl`: URL to the SPARQL endpoint
+- `user`: User to connect to the SPARQL endpoint
+- `password`: Password to connect to the SPARQL endpoint
+
+Configuring Trifid to use `trifid-plugin-ckan` is done the same way as `trifid-plugin-yasgui`.
+Since Trifid provides an example config using `trifid-plugin-yasgui`:
+[`config-sparql.json`](https://github.com/zazuko/trifid/blob/1946e324c5a8340b6de5526fae5344e79aa024f2/config-sparql.json),
+here is how to configure `trifid-plugin-ckan` by simply duplicating the YASGUI config parts:
+
+```diff
+  "yasgui": {
+    "default": {
+      "path": "/sparql"
+    }
+  },
++ "ckan": {
++   "default": {
++     "path": "/ckan"
++   }
++ },
+  "breakDown": {
+    "handler": {},
+    "handler.root": {},
+    "handler.root.options": {},
+    "handler.root.options.endpointUrl": "sparqlEndpointUrl",
+    "handler.root.options.authentication": "sparqlEndpointAuthentication",
+    "sparqlProxy": {},
+    "sparqlProxy.default": {},
+    "sparqlProxy.default.endpointUrl": "sparqlEndpointUrl",
+    "sparqlProxy.default.authentication": "sparqlEndpointAuthentication",
+    "yasgui": {},
+    "yasgui.default": {},
+    "yasgui.default.endpointUrl": [
+      "sparqlProxy.default.path",
+      "sparqlEndpointUrl"
+    ],
++   "ckan": {},
++   "ckan.default": {},
++   "ckan.default.endpointUrl": [
++     "sparqlProxy.default.path",
++     "sparqlEndpointUrl"
++   ]
+  },
+  "plugins": {
+    "sparqlProxy": {
+      "priority": 115,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "sparql-proxy"
+    },
+    "yasgui": {
+      "priority": 115,
+      "module": "trifid-plugin-yasgui"
+    },
++   "ckan": {
++     "priority": 115,
++     "module": "@zazuko/trifid-plugin-ckan"
++   }
+  }
+}
+```
+
+With this configuration, the service will be exposed at `/ckan` and will require the `organization` query parameter, like this: `/ckan?organization=…`.
+
+This will trigger the download of a XML file.
