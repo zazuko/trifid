@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard"
   },
   "author": "Zazuko",
   "license": "UNLICENSED",
@@ -18,5 +18,8 @@
     "rdf-ext": "^2.0.0",
     "sparql-http-client": "^2.4.0",
     "xmlbuilder2": "^3.0.2"
+  },
+  "devDependencies": {
+    "standard": "^16.0.4"
   }
 }
