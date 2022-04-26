@@ -1,9 +1,9 @@
 /* global describe, it */
 
 const assert = require('assert')
+const path = require('path')
 const cloneDeep = require('lodash/cloneDeep')
 const merge = require('lodash/merge')
-const path = require('path')
 const ConfigHandler = require('../lib/ConfigHandler')
 
 describe('ConfigHandler', () => {
@@ -27,7 +27,7 @@ describe('ConfigHandler', () => {
         test: 'trifid-core:test'
       }
 
-      return c.resolve(config).then((resolved) => {
+      return c.resolve(config).then(resolved => {
         assert.equal(resolved.test, path.join(__dirname, 'test'))
       })
     })
@@ -45,7 +45,7 @@ describe('ConfigHandler', () => {
 
       c.resolver.use('trifid-core', ConfigHandler.pathResolver(__dirname))
 
-      return c.resolvePath('trifid-core:test').then((resolved) => {
+      return c.resolvePath('trifid-core:test').then(resolved => {
         assert.equal(resolved, path.join(__dirname, 'test'))
       })
     })
@@ -179,7 +179,7 @@ describe('ConfigHandler', () => {
     it('should read a config from a file', () => {
       const c = new ConfigHandler()
 
-      return c.configFromFile(path.join(__dirname, 'support/base-config.json')).then((config) => {
+      return c.configFromFile(path.join(__dirname, 'support/base-config.json')).then(config => {
         assert(config.baseConfigProperty)
       })
     })
@@ -189,7 +189,7 @@ describe('ConfigHandler', () => {
 
       c.resolver.use('trifid-core', ConfigHandler.pathResolver(__dirname))
 
-      return c.configFromFile(path.join(__dirname, 'support/config.json')).then((config) => {
+      return c.configFromFile(path.join(__dirname, 'support/config.json')).then(config => {
         assert(config.baseConfigProperty)
       })
     })

@@ -1,16 +1,16 @@
 const express = require('express')
 const debug = require('debug')('trifid:core')
+const ConfigHandler = require('./lib/ConfigHandler')
 const middleware = require('./lib/middleware')
 const moduleLoader = require('./lib/module-loader')
 const plugins = require('./lib/plugins')
-const ConfigHandler = require('./lib/ConfigHandler')
 
 class Trifid {
   constructor () {
     this.configHandler = new ConfigHandler()
 
     this.configHandler.resolver.use('cwd', ConfigHandler.pathResolver(process.cwd()))
-    this.configHandler.resolver.use('env', (variable) => {
+    this.configHandler.resolver.use('env', variable => {
       return process.env[variable] || ''
     })
     this.configHandler.resolver.use('trifid-core', ConfigHandler.pathResolver(__dirname))
@@ -53,7 +53,7 @@ class Trifid {
     const app = express()
 
     if (this.config.express) {
-      Object.keys(this.config.express).forEach((key) => {
+      Object.keys(this.config.express).forEach(key => {
         app.set(key, this.config.express[key])
       })
     }

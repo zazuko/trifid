@@ -1,9 +1,9 @@
 /* global describe, it */
 
 const assert = require('assert')
-const errorHandler = require('../../plugins/error-handler')
 const express = require('express')
 const request = require('supertest')
+const errorHandler = require('../../plugins/error-handler')
 
 describe('error-handler', () => {
   it('should be a function', () => {
@@ -67,7 +67,7 @@ describe('error-handler', () => {
 
     return request(app)
       .get('/')
-      .then((res) => {
+      .then(res => {
         assert.equal(res.text, '')
       })
   })

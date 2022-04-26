@@ -1,10 +1,10 @@
 /* global describe, it */
 
 const assert = require('assert')
-const context = require('../support/context')
 const express = require('express')
-const redirects = require('../../plugins/redirects')
 const request = require('supertest')
+const redirects = require('../../plugins/redirects')
+const context = require('../support/context')
 
 describe('redirects', () => {
   it('should be a function', () => {

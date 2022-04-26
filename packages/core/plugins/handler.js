@@ -2,7 +2,7 @@ const path = require('path')
 const debug = require('debug')('trifid:core')
 
 function handler (router, config) {
-  this.middleware.mountAll(router, config, (options) => {
+  this.middleware.mountAll(router, config, options => {
     debug(' mount handler: %s %o', path.basename(options.module), JSON.stringify(options.options))
     const Handler = this.moduleLoader.require(options.module)
     const instance = new Handler(options.options)

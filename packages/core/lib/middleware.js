@@ -6,7 +6,7 @@ const vhost = require('vhost')
 function mount (router, config, callback) {
   return Promise.resolve().then(() => {
     return callback(config)
-  }).then((middleware) => {
+  }).then(middleware => {
     const urlPath = config.path || '/'
 
     if (config.hostname) {

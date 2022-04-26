@@ -8,7 +8,7 @@ function staticViews (router, options) {
     return
   }
 
-  Object.keys(options).filter(urlPath => options[urlPath]).forEach((urlPath) => {
+  Object.keys(options).filter(urlPath => options[urlPath]).forEach(urlPath => {
     const filePath = options[urlPath]
 
     router.get(urlPath, (req, res) => {

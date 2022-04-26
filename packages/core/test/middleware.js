@@ -2,8 +2,8 @@
 
 const assert = require('assert')
 const express = require('express')
-const middleware = require('../lib/middleware')
 const request = require('supertest')
+const middleware = require('../lib/middleware')
 
 describe('middleware', () => {
   describe('.mount', () => {
@@ -36,7 +36,7 @@ describe('middleware', () => {
 
       const app = express()
 
-      middleware.mount(app, {path: '/a'}, () => {
+      middleware.mount(app, { path: '/a' }, () => {
         return (req, res, next) => {
           touched = true
 
@@ -56,7 +56,7 @@ describe('middleware', () => {
 
       const app = express()
 
-      middleware.mount(app, {hostname: 'example.org'}, () => {
+      middleware.mount(app, { hostname: 'example.org' }, () => {
         return (req, res, next) => {
           count++
 

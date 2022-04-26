@@ -1,11 +1,11 @@
 /* global describe, it */
 
 const assert = require('assert')
-const context = require('../support/context')
-const express = require('express')
 const path = require('path')
+const express = require('express')
 const request = require('supertest')
 const staticFiles = require('../../plugins/static-files')
+const context = require('../support/context')
 
 describe('static-files', () => {
   it('should be a function', () => {
@@ -44,7 +44,7 @@ describe('static-files', () => {
     return request(app)
       .get('/test.txt')
       .expect(200)
-      .then((res) => {
+      .then(res => {
         assert.equal(res.text, 'test')
       })
   })

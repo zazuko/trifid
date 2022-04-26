@@ -1,5 +1,5 @@
-const absoluteUrl = require('absolute-url')
 const url = require('url')
+const absoluteUrl = require('absolute-url')
 
 /**
  * Adds router and request locals variables
@@ -13,10 +13,10 @@ function locals (router) {
     res.locals.iri = req.iri
 
     // requested resource parsed into URL object
-    res.locals.url = url.parse(res.locals.iri)
+    res.locals.url = new url.URL(res.locals.iri)
 
     // dummy translation
-    res.locals.t = res.locals.t || ((x) => {
+    res.locals.t = res.locals.t || (x => {
       return x.substring(x.indexOf(':') + 1)
     })
 

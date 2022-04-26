@@ -1,19 +1,18 @@
-const absoluteUrl = require('absolute-url')
 const url = require('url')
+const absoluteUrl = require('absolute-url')
 
-function removeUrlPart (originalUrl, part) {
-  const parts = url.parse(originalUrl)
-
-  parts[part] = null
-
+const removeSearchParams = (originalUrl) => {
+  const parts = new url.URL(originalUrl)
+  parts.searchParams = new URLSearchParams()
+  parts.search = ''
   return url.format(parts)
 }
 
-function iri (router) {
+const iri = (router) => {
   router.use((req, res, next) => {
     absoluteUrl.attach(req)
 
-    req.iri = decodeURI(removeUrlPart(req.absoluteUrl(), 'search'))
+    req.iri = decodeURI(removeSearchParams(req.absoluteUrl()))
 
     next()
   })

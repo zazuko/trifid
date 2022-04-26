@@ -1,11 +1,11 @@
 /* global describe, it */
 
 const assert = require('assert')
-const context = require('../support/context')
-const express = require('express')
-const middleware = require('../../plugins/middleware')
 const path = require('path')
+const express = require('express')
 const request = require('supertest')
+const middleware = require('../../plugins/middleware')
+const context = require('../support/context')
 
 describe('middleware', () => {
   const dummyMiddlewarePath = path.join(__dirname, '../support/dummy-middleware')
@@ -25,8 +25,8 @@ describe('middleware', () => {
 
     return request(app)
       .get('/')
-      .then((res) => {
-        assert.deepEqual(res.body, {0: {}})
+      .then(res => {
+        assert.deepEqual(res.body, { 0: {} })
       })
   })
 
@@ -42,8 +42,8 @@ describe('middleware', () => {
 
     return request(app)
       .get('/')
-      .then((res) => {
-        assert.deepEqual(res.body, {0: 0, 1: 1})
+      .then(res => {
+        assert.deepEqual(res.body, { 0: 0, 1: 1 })
       })
   })
 
@@ -54,12 +54,12 @@ describe('middleware', () => {
       middleware: dummyMiddlewarePath
     }
 
-    middleware.call(context, app, {a: {b: 'c'}}, plugin)
+    middleware.call(context, app, { a: { b: 'c' } }, plugin)
 
     return request(app)
       .get('/')
-      .then((res) => {
-        assert.deepEqual(res.body, {0: {b: 'c'}})
+      .then(res => {
+        assert.deepEqual(res.body, { 0: { b: 'c' } })
       })
   })
 })

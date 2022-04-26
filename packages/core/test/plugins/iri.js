@@ -1,11 +1,11 @@
 /* global describe, it */
 
 const assert = require('assert')
-const context = require('../support/context')
-const express = require('express')
-const iriPlugin = require('../../plugins/iri')
-const request = require('supertest')
 const url = require('url')
+const express = require('express')
+const request = require('supertest')
+const iriPlugin = require('../../plugins/iri')
+const context = require('../support/context')
 
 describe('iri', () => {
   it('should be a function', () => {
@@ -45,7 +45,7 @@ describe('iri', () => {
   it('should remove the search part of the IRI', () => {
     let iri
 
-    const exampleIri = url.parse('http://example.org/')
+    const exampleIri = new url.URL('http://example.org/')
 
     const app = express()
 
@@ -68,7 +68,7 @@ describe('iri', () => {
   it('should handle encoded IRIs', () => {
     let iri
 
-    const exampleIri = url.parse('http://example.org/%C3%BCmlaut')
+    const exampleIri = new url.URL('http://example.org/%C3%BCmlaut')
 
     const app = express()
 
@@ -81,7 +81,7 @@ describe('iri', () => {
     })
 
     return request(app)
-      .get(exampleIri.path)
+      .get(exampleIri.pathname)
       .set('host', exampleIri.host)
       .then(() => {
         assert.equal(iri, decodeURI(url.format(exampleIri)))

@@ -1,7 +1,7 @@
 function middleware (router, options, plugin) {
-  options = options || {root: {}}
+  options = options || { root: {} }
 
-  return this.middleware.mountAll(router, options, (config) => {
+  return this.middleware.mountAll(router, options, config => {
     const factory = this.moduleLoader.require(plugin.middleware)
 
     if (plugin.params) {

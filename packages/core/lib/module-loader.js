@@ -1,6 +1,6 @@
 const path = require('path')
 
-function resolve (modulePath) {
+const resolve = (modulePath) => {
   if (modulePath.slice(0, 1) === '.') {
     return path.resolve(modulePath)
   } else {
@@ -8,11 +8,11 @@ function resolve (modulePath) {
   }
 }
 
-function customRequire (modulePath) {
+const customRequire = (modulePath) => {
   return require(resolve(modulePath))
 }
 
 module.exports = {
-  resolve: resolve,
+  resolve,
   require: customRequire
 }

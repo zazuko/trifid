@@ -23,6 +23,6 @@ if (program.port) {
 }
 
 // load the configuration and start the server
-Trifid.app(config).catch((err) => {
+Trifid.app(config).catch(err => {
   console.error(err.stack || err.message)
 })

@@ -108,7 +108,7 @@ describe('plugins', () => {
       }
 
       const router = {
-        callback: (args) => {
+        callback: args => {
           forwardedRouter = args[0]
         }
       }
@@ -128,7 +128,7 @@ describe('plugins', () => {
       }
 
       const router = {
-        callback: (args) => {
+        callback: args => {
           forwardedParams = args[1]
         }
       }
@@ -152,7 +152,7 @@ describe('plugins', () => {
       }
 
       const router = {
-        callback: (args) => {
+        callback: args => {
           forwardedPluginConfig = args[2]
         }
       }
@@ -200,7 +200,7 @@ describe('plugins', () => {
       }
 
       const router = {
-        callback: (args) => {
+        callback: args => {
           sequence.push(args[2].name)
         }
       }

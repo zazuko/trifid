@@ -3,7 +3,7 @@ const sortBy = require('lodash/sortBy')
 const debug = require('debug')('trifid:core')
 const moduleLoader = require('./module-loader')
 
-function prepare (list) {
+const prepare = (list) => {
   // key values -> array with name property
   const array = Object.keys(list).reduce((array, key) => {
     const plugin = list[key]
@@ -18,10 +18,10 @@ function prepare (list) {
   return sortBy(array, 'priority')
 }
 
-function load (list, router, config, context) {
+const load = (list, router, config, context) => {
   list = prepare(list)
 
-  return Promise.mapSeries(list, (plugin) => {
+  return Promise.mapSeries(list, plugin => {
     debug('loading: %s', plugin.name)
 
     const params = config[plugin.name]
@@ -32,6 +32,6 @@ function load (list, router, config, context) {
 }
 
 module.exports = {
-  prepare: prepare,
-  load: load
+  prepare,
+  load
 }

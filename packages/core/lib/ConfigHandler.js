@@ -1,11 +1,11 @@
+const path = require('path')
+const Promise = require('bluebird')
 const cloneDeep = require('lodash/cloneDeep')
 const get = require('lodash/get')
 const merge = require('lodash/merge')
-const path = require('path')
 const set = require('lodash/set')
 const shortstop = require('shortstop')
 const shush = require('shush')
-const Promise = require('bluebird')
 
 class ConfigHandler {
   constructor () {
@@ -19,7 +19,7 @@ class ConfigHandler {
   }
 
   resolvePath (patname) {
-    return this.resolve({a: patname}).then((result) => {
+    return this.resolve({ a: patname }).then(result => {
       return result.a
     })
   }
@@ -56,7 +56,7 @@ class ConfigHandler {
     }
 
     // read and process all rules from config.breakDown
-    Object.keys(this.config.breakDown).forEach((property) => {
+    Object.keys(this.config.breakDown).forEach(property => {
       this.breakDownRule(this.config, property, this.config.breakDown[property])
     })
 
@@ -64,39 +64,39 @@ class ConfigHandler {
   }
 
   configFromFile (filename) {
-    return this.resolve(shush(filename)).then((config) => {
+    return this.resolve(shush(filename)).then(config => {
       if (!config.baseConfig) {
         return config
       }
 
-      return this.configFromFile(config.baseConfig).then((baseConfig) => {
+      return this.configFromFile(config.baseConfig).then(baseConfig => {
         return merge(baseConfig, config)
       })
     })
   }
 
   fromFile (filename) {
-    return this.configFromFile(filename).then((config) => {
+    return this.configFromFile(filename).then(config => {
       return merge(this.config, config)
     })
   }
 
   fromJson (config) {
-    return this.resolve(cloneDeep(config)).then((resolved) => {
+    return this.resolve(cloneDeep(config)).then(resolved => {
       if (!resolved.baseConfig) {
         return resolved
       }
 
-      return this.configFromFile(resolved.baseConfig).then((baseConfig) => {
+      return this.configFromFile(resolved.baseConfig).then(baseConfig => {
         return merge(baseConfig, config)
       })
-    }).then((processed) => {
+    }).then(processed => {
       return merge(this.config, processed)
     })
   }
 
   static pathResolver (base) {
-    return (value) => {
+    return value => {
       if (path.resolve(value) === value) {
         return value
       }

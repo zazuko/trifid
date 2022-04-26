@@ -1,12 +1,12 @@
 /* global describe, it */
 
-const absoluteUrl = require('absolute-url')
 const assert = require('assert')
-const context = require('../support/context')
-const express = require('express')
-const handler = require('../../plugins/handler')
 const path = require('path')
+const absoluteUrl = require('absolute-url')
+const express = require('express')
 const request = require('supertest')
+const handler = require('../../plugins/handler')
+const context = require('../support/context')
 
 describe('handler', () => {
   it('should be a function', () => {
@@ -41,7 +41,7 @@ describe('handler', () => {
     return request(app)
       .get('/')
       .expect('content-type', 'application/ld+json')
-      .then((res) => {
+      .then(res => {
         assert.deepEqual(res.body, {})
       })
   })
