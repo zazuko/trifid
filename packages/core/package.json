@@ -22,20 +22,20 @@
     "npm": ">=6"
   },
   "dependencies": {
-    "absolute-url": "^1.2.0",
-    "bluebird": "^3.5.1",
+    "absolute-url": "^1.2.2",
+    "bluebird": "^3.7.2",
     "commander": "^2.9.0",
-    "debug": "^4.1.1",
-    "express": "^4.16.2",
-    "lodash": "^4.16.4",
+    "debug": "^4.3.4",
+    "express": "^4.18.0",
+    "lodash": "^4.17.21",
     "shortstop": "^1.0.3",
-    "shush": "^1.0.0",
+    "shush": "^1.0.1",
     "vhost": "^3.0.2"
   },
   "devDependencies": {
-    "mocha": "^4.1.0",
-    "nock": "^9.1.5",
+    "mocha": "^9.2.2",
+    "nock": "^13.2.4",
     "standard": "^10.0.3",
-    "supertest": "^3.0.0"
+    "supertest": "^6.2.2"
   }
 }
