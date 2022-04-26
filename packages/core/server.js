@@ -9,16 +9,18 @@ program
   .option('-p, --port <port>', 'listener port', parseInt)
   .parse(process.argv)
 
+const opts = program.opts()
+
 // create a minimal configuration with a baseConfig pointing to the given config file
 const config = {
-  baseConfig: path.join(process.cwd(), program.config)
+  baseConfig: path.join(process.cwd(), opts.config)
 }
 
 // add optional arguments to the configuration
 
-if (program.port) {
+if (opts.port) {
   config.listener = {
-    port: program.port
+    port: opts.port
   }
 }
 
