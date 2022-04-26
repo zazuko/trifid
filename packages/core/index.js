@@ -11,7 +11,11 @@ class Trifid {
 
     this.configHandler.resolver.use('cwd', ConfigHandler.pathResolver(process.cwd()))
     this.configHandler.resolver.use('env', variable => {
-      return process.env[variable] || ''
+      if (!process.env[variable]) {
+        console.warn(`WARNING: '${variable}' environment variable is not set`)
+        return ''
+      }
+      return process.env[variable]
     })
     this.configHandler.resolver.use('trifid-core', ConfigHandler.pathResolver(__dirname))
 
