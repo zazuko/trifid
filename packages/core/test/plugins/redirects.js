@@ -1,10 +1,10 @@
 /* global describe, it */
 
-const assert = require('assert')
-const express = require('express')
-const request = require('supertest')
-const redirects = require('../../plugins/redirects')
-const context = require('../support/context')
+import assert from 'assert'
+import express from 'express'
+import request from 'supertest'
+import redirects from '../../plugins/redirects.js'
+import context from '../support/context.js'
 
 describe('redirects', () => {
   it('should be a function', () => {

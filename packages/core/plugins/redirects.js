@@ -6,4 +6,4 @@ function redirect (router, options) {
   })
 }
 
-module.exports = redirect
+export default redirect

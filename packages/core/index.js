@@ -1,9 +1,15 @@
-const express = require('express')
-const debug = require('debug')('trifid:core')
-const ConfigHandler = require('./lib/ConfigHandler')
-const middleware = require('./lib/middleware')
-const moduleLoader = require('./lib/module-loader')
-const plugins = require('./lib/plugins')
+import express from 'express'
+import debugLib from 'debug'
+import ConfigHandler from './lib/ConfigHandler.js'
+import middleware from './lib/middleware.js'
+import moduleLoader from './lib/module-loader.js'
+import plugins from './lib/plugins.js'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+const debug = debugLib('trifid:core')
 
 class Trifid {
   constructor () {
@@ -27,6 +33,10 @@ class Trifid {
       middleware,
       moduleLoader
     }
+  }
+
+  static app (config) {
+    return (new Trifid()).init(config).then(trifid => trifid.app())
   }
 
   init (config) {
@@ -69,10 +79,6 @@ class Trifid {
       return app
     })
   }
-
-  static app (config) {
-    return (new Trifid()).init(config).then(trifid => trifid.app())
-  }
 }
 
-module.exports = Trifid
+export default Trifid

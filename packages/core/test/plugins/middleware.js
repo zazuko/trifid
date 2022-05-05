@@ -1,27 +1,30 @@
 /* global describe, it */
 
-const assert = require('assert')
-const path = require('path')
-const express = require('express')
-const request = require('supertest')
-const middleware = require('../../plugins/middleware')
-const context = require('../support/context')
+import assert from 'assert'
+import path, { dirname } from 'path'
+import express from 'express'
+import request from 'supertest'
+import middleware from '../../plugins/middleware.js'
+import context from '../support/context.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('middleware', () => {
-  const dummyMiddlewarePath = path.join(__dirname, '../support/dummy-middleware')
+  const dummyMiddlewarePath = path.join(__dirname, '../support/dummy-middleware.js')
 
   it('should be a function', () => {
     assert.equal(typeof middleware, 'function')
   })
 
-  it('should create a single instance of the middleware and add it to the router', () => {
+  it('should create a single instance of the middleware and add it to the router', async () => {
     const app = express()
 
     const plugin = {
       middleware: dummyMiddlewarePath
     }
 
-    middleware.call(context, app, null, plugin)
+    await middleware.call(context, app, null, plugin)
 
     return request(app)
       .get('/')
@@ -30,7 +33,7 @@ describe('middleware', () => {
       })
   })
 
-  it('should create middleware with .apply if params are given', () => {
+  it('should create middleware with .apply if params are given', async () => {
     const app = express()
 
     const plugin = {
@@ -38,7 +41,7 @@ describe('middleware', () => {
       params: [0, 1]
     }
 
-    middleware.call(context, app, null, plugin)
+    await middleware.call(context, app, null, plugin)
 
     return request(app)
       .get('/')
@@ -47,14 +50,14 @@ describe('middleware', () => {
       })
   })
 
-  it('should create middleware with .call and forward config if no params are given', () => {
+  it('should create middleware with .call and forward config if no params are given', async () => {
     const app = express()
 
     const plugin = {
       middleware: dummyMiddlewarePath
     }
 
-    middleware.call(context, app, { a: { b: 'c' } }, plugin)
+    await middleware.call(context, app, { a: { b: 'c' } }, plugin)
 
     return request(app)
       .get('/')

@@ -1,6 +1,6 @@
-const path = require('path')
+import path from 'path'
 
-const resolve = (modulePath) => {
+function resolve (modulePath) {
   if (modulePath.slice(0, 1) === '.') {
     return path.resolve(modulePath)
   } else {
@@ -8,11 +8,12 @@ const resolve = (modulePath) => {
   }
 }
 
-const customRequire = (modulePath) => {
-  return require(resolve(modulePath))
+async function customImport (modulePath) {
+  if (!modulePath.endsWith('.js')) {
+    console.log(`Warning: declared ${modulePath} . Did you mean ${modulePath}.js ?`)
+  }
+  const { default: func } = await import(resolve(modulePath))
+  return func
 }
 
-module.exports = {
-  resolve,
-  require: customRequire
-}
+export default customImport

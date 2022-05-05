@@ -1,8 +1,8 @@
-function middleware (router, options, plugin) {
+async function middleware (router, options, plugin) {
   options = options || { root: {} }
 
-  return this.middleware.mountAll(router, options, config => {
-    const factory = this.moduleLoader.require(plugin.middleware)
+  return await this.middleware.mountAll(router, options, async config => {
+    const factory = await this.moduleLoader(plugin.middleware)
 
     if (plugin.params) {
       return factory.apply(null, plugin.params)
@@ -12,4 +12,4 @@ function middleware (router, options, plugin) {
   })
 }
 
-module.exports = middleware
+export default middleware

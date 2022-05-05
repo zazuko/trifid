@@ -1,8 +1,11 @@
 /* global describe, it */
 
-const assert = require('assert')
-const path = require('path')
-const plugins = require('../lib/plugins')
+import assert from 'assert'
+import path, { dirname } from 'path'
+import plugins from '../lib/plugins.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('plugins', () => {
   it('should be an object', () => {
@@ -83,7 +86,7 @@ describe('plugins', () => {
 
       const list = {
         dummy: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         }
       }
 
@@ -103,7 +106,7 @@ describe('plugins', () => {
 
       const list = {
         dummy: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         }
       }
 
@@ -123,7 +126,7 @@ describe('plugins', () => {
 
       const list = {
         dummy: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         }
       }
 
@@ -147,7 +150,7 @@ describe('plugins', () => {
 
       const list = {
         dummy: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         }
       }
 
@@ -167,7 +170,7 @@ describe('plugins', () => {
 
       const list = {
         dummy: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         }
       }
 
@@ -189,13 +192,13 @@ describe('plugins', () => {
 
       const list = {
         dummy0: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         },
         dummy1: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         },
         dummy2: {
-          module: path.join(__dirname, 'support/dummy-plugin')
+          module: path.join(__dirname, 'support/dummy-plugin.js')
         }
       }
 

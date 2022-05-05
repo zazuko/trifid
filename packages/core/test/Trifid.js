@@ -1,8 +1,11 @@
 /* global describe, it */
 
-const assert = require('assert')
-const path = require('path')
-const Trifid = require('..')
+import assert from 'assert'
+import path, { dirname } from 'path'
+import Trifid from '../index.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('Trifid', () => {
   it('should be a constructor', () => {

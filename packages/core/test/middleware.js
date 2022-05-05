@@ -1,9 +1,9 @@
 /* global describe, it */
 
-const assert = require('assert')
-const express = require('express')
-const request = require('supertest')
-const middleware = require('../lib/middleware')
+import assert from 'assert'
+import request from 'supertest'
+import middleware from '../lib/middleware.js'
+import express from 'express'
 
 describe('middleware', () => {
   describe('.mount', () => {

@@ -1,11 +1,11 @@
 /* global describe, it */
 
-const assert = require('assert')
-const url = require('url')
-const express = require('express')
-const request = require('supertest')
-const iriPlugin = require('../../plugins/iri')
-const context = require('../support/context')
+import assert from 'assert'
+import url from 'url'
+import express from 'express'
+import request from 'supertest'
+import iriPlugin from '../../plugins/iri.js'
+import context from '../support/context.js'
 
 describe('iri', () => {
   it('should be a function', () => {

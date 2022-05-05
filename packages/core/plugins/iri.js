@@ -1,11 +1,8 @@
-const url = require('url')
-const absoluteUrl = require('absolute-url')
+import absoluteUrl from 'absolute-url'
 
 const removeSearchParams = (originalUrl) => {
-  const parts = new url.URL(originalUrl)
-  parts.searchParams = new URLSearchParams()
-  parts.search = ''
-  return url.format(parts)
+  const url = new URL(originalUrl)
+  return `${url.origin}${url.pathname}`
 }
 
 const iri = (router) => {
@@ -18,4 +15,4 @@ const iri = (router) => {
   })
 }
 
-module.exports = iri
+export default iri

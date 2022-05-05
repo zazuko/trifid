@@ -1,17 +1,25 @@
-const path = require('path')
-const Promise = require('bluebird')
-const cloneDeep = require('lodash/cloneDeep')
-const get = require('lodash/get')
-const merge = require('lodash/merge')
-const set = require('lodash/set')
-const shortstop = require('shortstop')
-const shush = require('shush')
+import path from 'path'
+import Promise from 'bluebird'
+import cloneDeep from 'lodash/cloneDeep.js'
+import get from 'lodash/get.js'
+import merge from 'lodash/merge.js'
+import set from 'lodash/set.js'
+import shortstop from 'shortstop'
+import shush from 'shush'
 
 class ConfigHandler {
   constructor () {
     this.config = {}
-
     this.resolver = shortstop.create()
+  }
+
+  static pathResolver (base) {
+    return value => {
+      if (path.resolve(value) === value) {
+        return value
+      }
+      return path.join(base, value)
+    }
   }
 
   resolve (config) {
@@ -94,16 +102,6 @@ class ConfigHandler {
       return merge(this.config, processed)
     })
   }
-
-  static pathResolver (base) {
-    return value => {
-      if (path.resolve(value) === value) {
-        return value
-      }
-
-      return path.join(base, value)
-    }
-  }
 }
 
-module.exports = ConfigHandler
+export default ConfigHandler

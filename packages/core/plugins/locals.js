@@ -1,5 +1,5 @@
-const url = require('url')
-const absoluteUrl = require('absolute-url')
+import url from 'url'
+import absoluteUrl from 'absolute-url'
 
 /**
  * Adds router and request locals variables
@@ -24,4 +24,4 @@ function locals (router) {
   })
 }
 
-module.exports = locals
+export default locals

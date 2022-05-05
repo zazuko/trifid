@@ -1,7 +1,8 @@
 {
   "name": "trifid-core",
   "description": "Trifid Core",
-  "version": "1.4.0",
+  "type": "module",
+  "version": "2.4.0",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid-core",
   "repository": {
@@ -12,7 +13,7 @@
     "url": "https://github.com/zazuko/trifid-core/issues"
   },
   "scripts": {
-    "test": "standard && mocha"
+    "test": "standard && mocha --recursive"
   },
   "bin": {
     "trifid-core": "./server.js"

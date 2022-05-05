@@ -1,7 +1,7 @@
-const Promise = require('bluebird')
-const sortBy = require('lodash/sortBy')
-const values = require('lodash/values')
-const vhost = require('vhost')
+import Promise from 'bluebird'
+import sortBy from 'lodash/sortBy.js'
+import values from 'lodash/values.js'
+import vhost from 'vhost'
 
 function mount (router, config, callback) {
   return Promise.resolve().then(() => {
@@ -25,7 +25,7 @@ function mountAll (router, configs, callback) {
   })
 }
 
-module.exports = {
+export default {
   mount,
   mountAll
 }

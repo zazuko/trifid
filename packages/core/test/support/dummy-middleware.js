@@ -6,4 +6,4 @@ function dummyMiddleware () {
   }
 }
 
-module.exports = dummyMiddleware
+export default dummyMiddleware

@@ -1,9 +1,9 @@
-const middleware = require('../../lib/middleware')
-const moduleLoader = require('../../lib/module-loader')
+import middleware from '../../lib/middleware.js'
+import moduleLoader from '../../lib/module-loader.js'
 
 const context = {
   middleware,
   moduleLoader
 }
 
-module.exports = context
+export default context

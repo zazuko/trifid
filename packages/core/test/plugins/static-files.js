@@ -1,11 +1,14 @@
 /* global describe, it */
 
-const assert = require('assert')
-const path = require('path')
-const express = require('express')
-const request = require('supertest')
-const staticFiles = require('../../plugins/static-files')
-const context = require('../support/context')
+import assert from 'assert'
+import path, { dirname } from 'path'
+import express from 'express'
+import request from 'supertest'
+import staticFiles from '../../plugins/static-files.js'
+import context from '../support/context.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('static-files', () => {
   it('should be a function', () => {

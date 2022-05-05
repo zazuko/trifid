@@ -1,10 +1,13 @@
 /* global describe, it */
 
-const assert = require('assert')
-const path = require('path')
-const cloneDeep = require('lodash/cloneDeep')
-const merge = require('lodash/merge')
-const ConfigHandler = require('../lib/ConfigHandler')
+import assert from 'assert'
+import path, { dirname } from 'path'
+import ConfigHandler from '../lib/ConfigHandler.js'
+import cloneDeep from 'lodash/cloneDeep.js'
+import merge from 'lodash/merge.js'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('ConfigHandler', () => {
   it('should be a constructor', () => {

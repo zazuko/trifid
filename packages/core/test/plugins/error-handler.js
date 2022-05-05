@@ -1,9 +1,9 @@
 /* global describe, it */
 
-const assert = require('assert')
-const express = require('express')
-const request = require('supertest')
-const errorHandler = require('../../plugins/error-handler')
+import assert from 'assert'
+import express from 'express'
+import request from 'supertest'
+import errorHandler from '../../plugins/error-handler.js'
 
 describe('error-handler', () => {
   it('should be a function', () => {

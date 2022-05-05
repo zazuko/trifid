@@ -1,7 +1,8 @@
-const Promise = require('bluebird')
-const sortBy = require('lodash/sortBy')
-const debug = require('debug')('trifid:core')
-const moduleLoader = require('./module-loader')
+import sortBy from 'lodash/sortBy.js'
+import debugLib from 'debug'
+import customImport from './module-loader.js'
+
+const debug = debugLib('trifid:core')
 
 const prepare = (list) => {
   // key values -> array with name property
@@ -18,20 +19,21 @@ const prepare = (list) => {
   return sortBy(array, 'priority')
 }
 
-const load = (list, router, config, context) => {
-  list = prepare(list)
-
-  return Promise.mapSeries(list, plugin => {
+async function load (list, router, config, context) {
+  const result = []
+  for (const plugin of prepare(list)) {
     debug('loading: %s', plugin.name)
 
     const params = config[plugin.name]
-    const func = moduleLoader.require(plugin.module)
+    const func = await customImport(plugin.module)
 
-    return func.call(context, router, params, plugin)
-  })
+    result.push(func.call(context, router, params, plugin))
+  }
+
+  return result
 }
 
-module.exports = {
+export default {
   prepare,
   load
 }

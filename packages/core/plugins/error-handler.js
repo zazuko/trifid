@@ -11,4 +11,4 @@ function init (router) {
   })
 }
 
-module.exports = init
+export default init

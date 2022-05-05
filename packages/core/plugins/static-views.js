@@ -17,4 +17,4 @@ function staticViews (router, options) {
   })
 }
 
-module.exports = staticViews
+export default staticViews

@@ -8,4 +8,4 @@ function factory (options) {
   }
 }
 
-module.exports = factory
+export default factory

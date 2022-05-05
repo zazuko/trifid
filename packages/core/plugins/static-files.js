@@ -1,4 +1,4 @@
-const express = require('express')
+import express from 'express'
 
 function staticFiles (router, options) {
   return this.middleware.mountAll(router, options, config => {
@@ -6,4 +6,4 @@ function staticFiles (router, options) {
   })
 }
 
-module.exports = staticFiles
+export default staticFiles

@@ -1,10 +1,12 @@
-const path = require('path')
-const debug = require('debug')('trifid:core')
+import path from 'path'
+import debugLib from 'debug'
 
-function handler (router, config) {
-  this.middleware.mountAll(router, config, options => {
+const debug = debugLib('trifid:core')
+
+async function handler (router, config) {
+  await this.middleware.mountAll(router, config, async options => {
     debug(' mount handler: %s %o', path.basename(options.module), JSON.stringify(options.options))
-    const Handler = this.moduleLoader.require(options.module)
+    const Handler = await this.moduleLoader(options.module)
     const instance = new Handler(options.options)
 
     return (req, res, next) => {
@@ -13,4 +15,4 @@ function handler (router, config) {
   })
 }
 
-module.exports = handler
+export default handler
