@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "absolute-url": "^1.2.2",
-    "bluebird": "^3.7.2",
     "commander": "^9.2.0",
     "debug": "^4.3.4",
     "express": "^4.18.1",

@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import sortBy from 'lodash/sortBy.js'
 import values from 'lodash/values.js'
 import vhost from 'vhost'
@@ -17,12 +16,14 @@ function mount (router, config, callback) {
   })
 }
 
-function mountAll (router, configs, callback) {
+async function mountAll (router, configs, callback) {
   configs = configs || {}
 
-  return Promise.each(sortBy(values(configs), 'priority').filter(config => config), config => {
-    return mount(router, config, callback)
-  })
+  const mappedConfig = []
+  for (const config of sortBy(values(configs), 'priority')) {
+    mappedConfig.push(await mount(router, config, callback))
+  }
+  return mappedConfig
 }
 
 export default {

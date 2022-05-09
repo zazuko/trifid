@@ -1,5 +1,4 @@
 import path from 'path'
-import Promise from 'bluebird'
 import cloneDeep from 'lodash/cloneDeep.js'
 import get from 'lodash/get.js'
 import merge from 'lodash/merge.js'
@@ -23,7 +22,15 @@ class ConfigHandler {
   }
 
   resolve (config) {
-    return Promise.promisify(this.resolver.resolve.bind(this.resolver))(config)
+    return new Promise((resolve, reject) => {
+      this.resolver.resolve(config, (err, data) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
   }
 
   resolvePath (patname) {
