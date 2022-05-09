@@ -264,6 +264,23 @@ describe('config', () => {
         }
       })
     })
+
+    // allow complex object
+    assert.doesNotThrow(() => {
+      parser({
+        middlewares: {
+          module: {
+            order: 42,
+            module: 'module',
+            config: {
+              foo: {
+                bar: 'baz'
+              }
+            }
+          }
+        }
+      })
+    })
   })
 
   it('should throw on invalid values for middlewares', () => {
@@ -291,23 +308,6 @@ describe('config', () => {
       middlewares: {
         module: {
           order: 42
-        }
-      }
-    })
-  })
-
-  // complex object, keys and values should be strings
-  assert.throws(() => {
-    parser({
-      middlewares: {
-        module: {
-          order: 42,
-          module: 'module',
-          config: {
-            foo: {
-              bar: 'baz'
-            }
-          }
         }
       }
     })

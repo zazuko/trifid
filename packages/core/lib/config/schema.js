@@ -24,7 +24,7 @@ const server = {
   additionalProperties: false
 }
 
-const configurationKeys = {
+const globals = {
   type: 'object',
   patternProperties: {
     '.*': {
@@ -41,7 +41,7 @@ const middleware = {
   properties: {
     order: { type: 'number', minimum: 0 },
     module: { type: 'string', minLength: 1 },
-    config: configurationKeys
+    config: { type: 'object', additionalProperties: true }
   },
   required: ['module'],
   additionalProperties: false
@@ -64,7 +64,7 @@ const schema = {
       }
     },
     server,
-    globals: configurationKeys,
+    globals,
     middlewares
   },
   additionalProperties: false
