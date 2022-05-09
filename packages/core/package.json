@@ -2,7 +2,7 @@
   "name": "trifid-core",
   "description": "Trifid Core",
   "type": "module",
-  "version": "2.4.0",
+  "version": "1.4.0",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid-core",
   "repository": {
