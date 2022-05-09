@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { join, dirname } from 'path'
 import { Command } from 'commander'
 import { fileURLToPath } from 'url'
