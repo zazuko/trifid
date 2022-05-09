@@ -2,13 +2,16 @@
   "listener": {
     "port": 8080
   },
-  "staticViews": {
-    "/": "cwd:views/test.html"
+  "staticFiles": {
+    "sources": {
+      "path": "/",
+      "folder": "cwd:."
+    }
   },
   "plugins": {
-    "staticViews": {
+    "staticFiles": {
       "priority": 100,
-      "module": "trifid-core:./plugins/static-views.js"
+      "module": "trifid-core:./plugins/static-files.js"
     }
   }
 }
