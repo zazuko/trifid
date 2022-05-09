@@ -224,6 +224,46 @@ describe('config', () => {
         middlewares: {}
       })
     })
+
+    assert.doesNotThrow(() => {
+      parser({
+        middlewares: {
+          module: {
+            order: 42,
+            module: 'module'
+          }
+        }
+      })
+    })
+
+    assert.doesNotThrow(() => {
+      parser({
+        middlewares: {
+          module: {
+            order: 42,
+            module: 'module',
+            config: {
+              foo: 'bar'
+            }
+          }
+        }
+      })
+    })
+
+    assert.doesNotThrow(() => {
+      parser({
+        middlewares: {
+          module: {
+            order: 42,
+            module: 'module',
+            config: {
+              foo: 'bar',
+              baz: null
+            }
+          }
+        }
+      })
+    })
   })
 
   it('should throw on invalid values for middlewares', () => {
@@ -232,6 +272,44 @@ describe('config', () => {
       parser({
         middlewares: 'this is a string instead of an object'
       })
+    })
+  })
+
+  // not scoped into an object per middleware
+  assert.throws(() => {
+    parser({
+      middlewares: {
+        order: 42,
+        name: 'module'
+      }
+    })
+  })
+
+  // missing "module" property
+  assert.throws(() => {
+    parser({
+      middlewares: {
+        module: {
+          order: 42
+        }
+      }
+    })
+  })
+
+  // complex object, keys and values should be strings
+  assert.throws(() => {
+    parser({
+      middlewares: {
+        module: {
+          order: 42,
+          module: 'module',
+          config: {
+            foo: {
+              bar: 'baz'
+            }
+          }
+        }
+      }
     })
   })
 })
