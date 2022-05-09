@@ -1,13 +1,18 @@
 /* global describe, it */
 
-const assert = require('assert')
-const express = require('express')
-const fs = require('fs')
-const path = require('path')
-const request = require('supertest')
-const url = require('url')
-const Handler = require('..')
-const Promise = require('bluebird')
+import assert from 'assert'
+import express from 'express'
+import fs from 'fs'
+import path, { dirname } from 'path'
+import request from 'supertest'
+import url, { fileURLToPath } from 'url'
+import Handler from '../index.js'
+import Promise from 'bluebird'
+
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('trifid-handler-fetch', () => {
   const fileUrlDataset = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nq')
@@ -25,62 +30,62 @@ describe('trifid-handler-fetch', () => {
   it('should assign url option', () => {
     const iri = 'http://example.org/dataset'
 
-    const handler = new Handler({url: iri})
+    const handler = new Handler({ url: iri })
 
     assert.equal(handler.url, iri)
   })
 
   it('should use file:// and resolve to cwd if no protocol was given', () => {
-    const handler = new Handler({url: 'test'})
+    const handler = new Handler({ url: 'test' })
 
     assert.equal(handler.url, 'file://' + path.resolve('test'))
   })
 
   it('should assign cache option', () => {
-    const handler = new Handler({cache: 'test'})
+    const handler = new Handler({ cache: 'test' })
 
     assert.equal(handler.cache, 'test')
   })
 
   it('should assign contentType option', () => {
-    const handler = new Handler({contentType: 'test'})
+    const handler = new Handler({ contentType: 'test' })
 
     assert.equal(handler.contentType, 'test')
   })
 
   it('should assign options option', () => {
-    const handler = new Handler({options: 'test'})
+    const handler = new Handler({ options: 'test' })
 
     assert.equal(handler.options, 'test')
   })
 
   it('should assign resource option', () => {
-    const handler = new Handler({resource: 'test'})
+    const handler = new Handler({ resource: 'test' })
 
     assert.equal(handler.resource, 'test')
   })
 
   it('should assign split option', () => {
-    const handler = new Handler({split: 'test'})
+    const handler = new Handler({ split: 'test' })
 
     assert.equal(handler.split, 'test')
   })
 
   it('should implement the handler interface', () => {
-    const handler = new Handler({url: fileUrlDataset})
+    const handler = new Handler({ url: fileUrlDataset })
 
     assert.equal(typeof handler.handle, 'function')
   })
 
   it('should implement the legacy handler interface', () => {
-    const handler = new Handler({url: fileUrlDataset})
+    const handler = new Handler({ url: fileUrlDataset })
 
     assert.equal(typeof handler.get, 'function')
   })
 
   it('should send a response', () => {
-    const includeNt = '<http://localhost:8080/data/person/amy-farrah-fowler><http://www.w3.org/1999/02/22-rdf-syntax-ns#type><http://schema.org/Person>.'
-    const excludeNt = '<http://localhost:8080/data/person/sheldon-cooper><http://www.w3.org/1999/02/22-rdf-syntax-ns#type><http://schema.org/Person>.'
+    const includeNt = '<http://localhost:8080/data/person/amy-farrah-fowler><http://www.w3.org/1999/02/22-rdf-syntax-ns#type><http://schema.org/Person>'
+    const excludeNt = '<http://localhost:8080/data/person/sheldon-cooper><http://www.w3.org/1999/02/22-rdf-syntax-ns#type><http://schema.org/Person>'
 
     const app = express()
 
@@ -102,8 +107,8 @@ describe('trifid-handler-fetch', () => {
       .then((res) => {
         const text = res.text.split(' ').join('')
 
-        assert.notEqual(text.indexOf(includeNt), -1)
-        assert.equal(text.indexOf(excludeNt), -1)
+        assert.equal(text.indexOf(includeNt) >= 0, true)
+        assert.equal(text.indexOf(excludeNt) >= 0, false)
       })
   })
 
@@ -113,7 +118,7 @@ describe('trifid-handler-fetch', () => {
     const handler = new Handler({
       url: fileUrlDataset,
       options: {
-        contentTypeLookup: () => 'application/n-quads'
+        contentType: () => 'application/n-quads'
       }
     })
 

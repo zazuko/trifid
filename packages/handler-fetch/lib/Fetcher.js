@@ -1,9 +1,9 @@
-const fileFetch = require('file-fetch')
-const nodeifyFetch = require('nodeify-fetch')
-const protoFetch = require('proto-fetch')
-const rdf = require('rdf-ext')
-const rdfFetch = require('rdf-fetch')
-const resourcesToGraph = require('rdf-utils-dataset/resourcesToGraph')
+import fileFetch from 'file-fetch'
+import nodeifyFetch from 'nodeify-fetch'
+import protoFetch from 'proto-fetch'
+import rdf from 'rdf-ext'
+import rdfFetch from 'rdf-fetch'
+import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph.js'
 
 const fetch = protoFetch({
   file: fileFetch,
@@ -22,7 +22,7 @@ class Fetcher {
     }
 
     options.resources.forEach((resource) => {
-      dataset.removeMatches(null, null, null, rdf.namedNode(resource))
+      dataset.deleteMatches(null, null, null, rdf.namedNode(resource))
     })
   }
 
@@ -49,7 +49,7 @@ class Fetcher {
       output.addAll(input)
     }
 
-    options.resources = Object.keys(output.toArray().reduce((resources, quad) => {
+    options.resources = Object.keys([...output].reduce((resources, quad) => {
       resources[quad.graph.value] = true
 
       return resources
@@ -71,4 +71,4 @@ class Fetcher {
   }
 }
 
-module.exports = Fetcher
+export default Fetcher

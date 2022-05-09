@@ -1,21 +1,20 @@
-const formats = require('rdf-formats-common')()
-const path = require('path')
-const rdf = require('rdf-ext')
-const rdfBodyParser = require('rdf-body-parser')
-const url = require('url')
-const Fetcher = require('./lib/Fetcher')
-const JsonLdSerializer = require('rdf-serializer-jsonld-ext')
+import formats from '@rdfjs/formats-common/index.js'
+import path from 'path'
+import rdf from 'rdf-ext'
+import rdfHandler from '@rdfjs/express-handler'
 
-const jsonLdSerializer = new JsonLdSerializer({
-  process: [
-    {flatten: true},
-    {compact: true},
-    {outputFormat: 'string'}
-  ]
+import url from 'url'
+import Fetcher from './lib/Fetcher.js'
+import SerializerJsonld from '@rdfjs/serializer-jsonld-ext'
+
+const jsonLdSerializer = new SerializerJsonld({
+  encoding: 'string',
+  compact: true,
+  flatten: true
 })
 
-formats.serializers['application/json'] = jsonLdSerializer
-formats.serializers['application/ld+json'] = jsonLdSerializer
+formats.serializers.set('application/json', jsonLdSerializer)
+formats.serializers.set('application/ld+json', jsonLdSerializer)
 
 class FetchHandler {
   constructor (options) {
@@ -39,19 +38,17 @@ class FetchHandler {
   }
 
   _handle (req, res, next) {
-    rdfBodyParser.attach(req, res, {formats: formats}).then(() => {
+    rdfHandler.attach(req, res, { formats: formats }).then(() => {
       return Fetcher.load(this.dataset, this)
-    }).then(() => {
+    }).then(async () => {
       const dataset = this.dataset.match(null, null, null, rdf.namedNode(req.iri))
 
-      if (dataset.length === 0) {
+      if (dataset.size === 0) {
         next()
         return null
       }
 
-      const graph = rdf.graph(dataset)
-
-      return res.graph(graph)
+      await res.dataset(dataset)
     }).catch(next)
   }
 
@@ -63,4 +60,4 @@ class FetchHandler {
   }
 }
 
-module.exports = FetchHandler
+export default FetchHandler

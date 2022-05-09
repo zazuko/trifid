@@ -1,11 +1,15 @@
 /* global describe, it */
 
-const assert = require('assert')
-const fs = require('fs')
-const nock = require('nock')
-const rdf = require('rdf-ext')
-const url = require('url')
-const Fetcher = require('../lib/Fetcher')
+import assert from 'assert'
+import fs from 'fs'
+import nock from 'nock'
+import rdf from 'rdf-ext'
+import url from 'url'
+import Fetcher from '../lib/Fetcher.js'
+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 
 describe('Fetcher', () => {
   const fileUrlDataset = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nq')
@@ -20,7 +24,7 @@ describe('Fetcher', () => {
     })
 
     it('should return false if caching is enabled but fetched date is not set', () => {
-      assert(!Fetcher.isCached({cache: true}))
+      assert(!Fetcher.isCached({ cache: true }))
     })
 
     it('should return true if caching is enabled and fetched date is set', () => {
@@ -161,7 +165,7 @@ describe('Fetcher', () => {
           rdf.namedNode(resource))
       ])
 
-      Fetcher.spreadDataset(input, output, {resource: resource})
+      Fetcher.spreadDataset(input, output, { resource: resource })
 
       assert.equal(output.toCanonical(), expected.toCanonical())
     })
@@ -195,7 +199,7 @@ describe('Fetcher', () => {
           rdf.namedNode('http://example.org/subject2'))
       ])
 
-      Fetcher.spreadDataset(input, output, {split: true})
+      Fetcher.spreadDataset(input, output, { split: true })
 
       assert.equal(output.toCanonical(), expected.toCanonical())
     })
