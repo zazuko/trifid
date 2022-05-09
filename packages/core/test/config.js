@@ -265,7 +265,7 @@ describe('config', () => {
       })
     })
 
-    // allow complex object
+    // allow complex config object
     assert.doesNotThrow(() => {
       parser({
         middlewares: {
