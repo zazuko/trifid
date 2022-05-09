@@ -24,6 +24,36 @@ const server = {
   additionalProperties: false
 }
 
+const configurationKeys = {
+  type: 'object',
+  patternProperties: {
+    '.*': {
+      type: [
+        'string',
+        'null'
+      ]
+    }
+  }
+}
+
+const middleware = {
+  type: 'object',
+  properties: {
+    order: { type: 'number', minimum: 0 },
+    module: { type: 'string', minLength: 1 },
+    config: configurationKeys
+  },
+  required: ['module'],
+  additionalProperties: false
+}
+
+const middlewares = {
+  type: 'object',
+  patternProperties: {
+    '.*': middleware
+  }
+}
+
 const schema = {
   type: 'object',
   properties: {
@@ -33,7 +63,9 @@ const schema = {
         type: 'string'
       }
     },
-    server
+    server,
+    globals: configurationKeys,
+    middlewares
   },
   additionalProperties: false
 }
