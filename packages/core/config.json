@@ -1,0 +1,14 @@
+{
+  "listener": {
+    "port": 8080
+  },
+  "staticViews": {
+    "/": "cwd:views/test.html"
+  },
+  "plugins": {
+    "staticViews": {
+      "priority": 100,
+      "module": "trifid-core:./plugins/static-views.js"
+    }
+  }
+}

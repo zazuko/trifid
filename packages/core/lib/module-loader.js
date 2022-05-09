@@ -10,7 +10,7 @@ function resolve (modulePath) {
 
 async function customImport (modulePath) {
   if (!modulePath.endsWith('.js')) {
-    console.log(`Warning: declared ${modulePath} . Did you mean ${modulePath}.js ?`)
+    console.log(`Warning: declared ${modulePath}. Did you mean ${modulePath}.js?`)
   }
   const { default: func } = await import(resolve(modulePath))
   return func
