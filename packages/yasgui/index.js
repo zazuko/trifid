@@ -1,7 +1,11 @@
-const absoluteUrl = require('absolute-url')
-const express = require('express')
-const path = require('path')
-const url = require('url')
+import absoluteUrl from 'absolute-url'
+import express from 'express'
+import path from 'path'
+
+import { dirname } from 'path'
+import url, { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 function middleware (options) {
   const router = express.Router()
@@ -42,4 +46,4 @@ function factory (router, configs) {
   })
 }
 
-module.exports = factory
+export default factory
