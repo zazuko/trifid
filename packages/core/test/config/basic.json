@@ -1,16 +1,4 @@
 {
-  "extends": [
-    "file:./config2.json"
-  ],
-  "server": {
-    "listener": {
-      "port": 8080
-    }
-  },
-  "globals": {
-    "value": "config",
-    "config1": "config1"
-  },
   "middlewares": {
     "staticFiles": {
       "order": 100,
