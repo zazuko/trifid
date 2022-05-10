@@ -1,10 +1,9 @@
 import shush from 'shush'
+import merge from 'lodash/merge.js'
 import parser from './parser.js'
 import { cwdCallback } from '../resolvers.js'
-
-// configuration
-const maxDepth = 50
-const defaultPort = 8080
+import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver } from './resolvers.js'
+import { defaultPort, maxDepth } from './default.js'
 
 const resolveConfigFile = async (filePath, depth = 0) => {
   if (depth >= maxDepth) {
@@ -15,27 +14,50 @@ const resolveConfigFile = async (filePath, depth = 0) => {
   const fileFullPath = cwdCallback(filePath)
   const fileContent = shush(fileFullPath)
   const config = parser(fileContent)
+  addDefaultFields(config)
 
-  if (config.extends && Array.isArray(config.extends) && config.extends.length > 0) {
-    // TODO: add support for "extends"
-
-    console.warn('[WARNING] extends fields are not supported currently')
-
-    // const configs = await Promise.all(config.extends.map(configPath => resolveConfigFile(configPath, depth + 1)))
-
-    // TODO: merge configs
+  // fetch all configuration files from which this one is extending
+  let configs = []
+  if (Array.isArray(config.extends) && config.extends.length > 0) {
+    config.extends = extendsResolver(config.extends, fileFullPath)
+    configs = await Promise.all(config.extends.map(configPath => resolveConfigFile(configPath, depth + 1)))
   }
+
+  // merge all fields
+  const middlewares = {}
+  configs.forEach(c => {
+    // merge globals and server parts
+    config.globals = merge(c.globals, config.globals)
+    config.server = merge(c.server, config.server)
+
+    // merge middlewares
+    Object.keys(c.middlewares).forEach(m => {
+      middlewares[m] = c.middlewares[m]
+    })
+  })
+  Object.keys(config.middlewares).forEach(m => {
+    middlewares[m] = config.middlewares[m]
+  })
+
+  // apply all resolvers
+  config.middlewares = middlewaresResolver(middlewares, fileFullPath)
+  config.globals = globalsResolver(config.globals, fileFullPath)
+  config.server = serverResolver(config.server, fileFullPath)
+
+  // we don't need the extends field anymore
+  delete config.extends
 
   return config
 }
 
+/**
+ * Add default fields for a configuration.
+ *
+ * @param {*} config
+ */
 const addDefaultFields = (config) => {
   if (!config.server) {
     config.server = {}
-  }
-
-  if (!config.extends) {
-    config.extends = []
   }
 
   if (!config.globals) {
@@ -47,6 +69,11 @@ const addDefaultFields = (config) => {
   }
 }
 
+/**
+ * Add the default port for the server configuration.
+ *
+ * @param {*} config
+ */
 const addDefaultPort = (config) => {
   if (!config.server.listener) {
     config.server.listener = {}
@@ -63,7 +90,5 @@ const handler = async (configFile) => {
 
   return config
 }
-
-console.log(await handler('config.json'))
 
 export default handler

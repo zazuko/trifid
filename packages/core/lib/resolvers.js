@@ -61,10 +61,13 @@ export const cwdResolver = (value) => {
  * File resolver.
  */
 
-export const fileCallback = (name) => {
-  return pathResolver(dirname(import.meta.url), name)
+export const fileCallback = (base = undefined) => (name) => {
+  if (base === undefined) {
+    base = process.cwd()
+  }
+  return pathResolver(dirname(base), name)
 }
 
-export const fileResolver = (value) => {
-  return registerResolver('file', fileCallback, value)
+export const fileResolver = (value, base = undefined) => {
+  return registerResolver('file', fileCallback(base), value)
 }
