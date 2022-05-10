@@ -290,26 +290,26 @@ describe('config', () => {
         middlewares: 'this is a string instead of an object'
       })
     })
-  })
 
-  // not scoped into an object per middleware
-  assert.throws(() => {
-    parser({
-      middlewares: {
-        order: 42,
-        name: 'module'
-      }
-    })
-  })
-
-  // missing "module" property
-  assert.throws(() => {
-    parser({
-      middlewares: {
-        module: {
-          order: 42
+    // not scoped into an object per middleware
+    assert.throws(() => {
+      parser({
+        middlewares: {
+          order: 42,
+          name: 'module'
         }
-      }
+      })
+    })
+
+    // missing "module" property
+    assert.throws(() => {
+      parser({
+        middlewares: {
+          module: {
+            order: 42
+          }
+        }
+      })
     })
   })
 })
