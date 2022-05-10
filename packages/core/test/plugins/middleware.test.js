@@ -17,21 +17,24 @@ describe('middleware', () => {
     assert.equal(typeof middleware, 'function')
   })
 
-  it('should create a single instance of the middleware and add it to the router', async () => {
-    const app = express()
+  it(
+    'should create a single instance of the middleware and add it to the router',
+    async () => {
+      const app = express()
 
-    const plugin = {
-      middleware: dummyMiddlewarePath
+      const plugin = {
+        middleware: dummyMiddlewarePath
+      }
+
+      await middleware.call(context, app, null, plugin)
+
+      return request(app)
+        .get('/')
+        .then(res => {
+          assert.deepEqual(res.body, { 0: {} })
+        })
     }
-
-    await middleware.call(context, app, null, plugin)
-
-    return request(app)
-      .get('/')
-      .then(res => {
-        assert.deepEqual(res.body, { 0: {} })
-      })
-  })
+  )
 
   it('should create middleware with .apply if params are given', async () => {
     const app = express()
@@ -50,19 +53,22 @@ describe('middleware', () => {
       })
   })
 
-  it('should create middleware with .call and forward config if no params are given', async () => {
-    const app = express()
+  it(
+    'should create middleware with .call and forward config if no params are given',
+    async () => {
+      const app = express()
 
-    const plugin = {
-      middleware: dummyMiddlewarePath
+      const plugin = {
+        middleware: dummyMiddlewarePath
+      }
+
+      await middleware.call(context, app, { a: { b: 'c' } }, plugin)
+
+      return request(app)
+        .get('/')
+        .then(res => {
+          assert.deepEqual(res.body, { 0: { b: 'c' } })
+        })
     }
-
-    await middleware.call(context, app, { a: { b: 'c' } }, plugin)
-
-    return request(app)
-      .get('/')
-      .then(res => {
-        assert.deepEqual(res.body, { 0: { b: 'c' } })
-      })
-  })
+  )
 })

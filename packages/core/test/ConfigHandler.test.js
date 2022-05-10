@@ -137,39 +137,45 @@ describe('ConfigHandler', () => {
       assert.equal(typeof c.breakDown, 'function')
     })
 
-    it('should do nothing if the .breakDown property is not set in the config', () => {
-      const c = new ConfigHandler()
+    it(
+      'should do nothing if the .breakDown property is not set in the config',
+      () => {
+        const c = new ConfigHandler()
 
-      c.config = {
-        property: 0
-      }
-
-      const expected = cloneDeep(c.config)
-
-      return c.breakDown().then(() => {
-        assert.deepEqual(c.config, expected)
-      })
-    })
-
-    it('should process the rules given in the .breakDown property of the config', () => {
-      const c = new ConfigHandler()
-
-      c.config = {
-        property: 0,
-        property0: {},
-        breakDown: {
-          'property0.property00': 'property'
+        c.config = {
+          property: 0
         }
+
+        const expected = cloneDeep(c.config)
+
+        return c.breakDown().then(() => {
+          assert.deepEqual(c.config, expected)
+        })
       }
+    )
 
-      const expected = cloneDeep(c.config)
+    it(
+      'should process the rules given in the .breakDown property of the config',
+      () => {
+        const c = new ConfigHandler()
 
-      expected.property0.property00 = expected.property
+        c.config = {
+          property: 0,
+          property0: {},
+          breakDown: {
+            'property0.property00': 'property'
+          }
+        }
 
-      return c.breakDown().then(() => {
-        assert.deepEqual(c.config, expected)
-      })
-    })
+        const expected = cloneDeep(c.config)
+
+        expected.property0.property00 = expected.property
+
+        return c.breakDown().then(() => {
+          assert.deepEqual(c.config, expected)
+        })
+      }
+    )
   })
 
   describe('.configFromFile', () => {

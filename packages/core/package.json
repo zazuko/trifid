@@ -13,7 +13,7 @@
     "url": "https://github.com/zazuko/trifid-core/issues"
   },
   "scripts": {
-    "test": "standard && mocha --recursive"
+    "test": "standard && node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "bin": {
     "trifid-core": "./server.js"
@@ -35,7 +35,10 @@
     "vhost": "^3.0.2"
   },
   "devDependencies": {
-    "mocha": "^10.0.0",
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "babel-jest": "^28.1.0",
+    "jest": "^28.1.0",
     "nock": "^13.2.4",
     "standard": "^17.0.0",
     "supertest": "^6.2.3"
