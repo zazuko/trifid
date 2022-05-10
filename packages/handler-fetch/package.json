@@ -18,7 +18,6 @@
   "dependencies": {
     "@rdfjs/express-handler": "^1.2.2",
     "@rdfjs/formats-common": "^2.0.0",
-    "@rdfjs/serializer-jsonld": "^1.2.3",
     "@rdfjs/serializer-jsonld-ext": "^3.0.0",
     "file-fetch": "^1.7.0",
     "nodeify-fetch": "^3.0.0",
