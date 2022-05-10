@@ -1,6 +1,7 @@
-import shush from 'shush'
+import fs from 'fs/promises'
 import merge from 'lodash/merge.js'
 import parser from './parser.js'
+import JSON5 from 'json5'
 import { cwdCallback } from '../resolvers.js'
 import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver } from './resolvers.js'
 import { defaultPort, maxDepth } from './default.js'
@@ -12,8 +13,9 @@ const resolveConfigFile = async (filePath, depth = 0) => {
 
   // read config file
   const fileFullPath = cwdCallback(filePath)
-  const fileContent = shush(fileFullPath)
-  const config = parser(fileContent)
+  const fileContent = await fs.readFile(fileFullPath)
+  const fileParsed = JSON5.parse(fileContent)
+  const config = parser(fileParsed)
   addDefaultFields(config)
 
   // fetch all configuration files from which this one is extending
