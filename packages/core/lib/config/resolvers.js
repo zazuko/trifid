@@ -1,5 +1,3 @@
-import { dirname } from 'path'
-
 import { cwdResolver, envResolver, fileCallback, fileResolver } from '../resolvers.js'
 
 /**
@@ -9,9 +7,8 @@ import { cwdResolver, envResolver, fileCallback, fileResolver } from '../resolve
  * @returns
  */
 export const extendsResolver = (value, context) => {
-  const dir = dirname(context)
   return value.map(path => {
-    return fileCallback(dir)(fileResolver(cwdResolver(path), dir))
+    return fileCallback(context)(fileResolver(cwdResolver(path), context))
   })
 }
 

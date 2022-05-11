@@ -5,18 +5,21 @@ import JSON5 from 'json5'
 import { cwdCallback } from '../resolvers.js'
 import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver } from './resolvers.js'
 import { defaultPort, maxDepth } from './default.js'
+import { dirname } from 'path'
 
-const resolveConfig = async (rawConfig, context = undefined, depth = 0) => {
+const resolveConfig = async (rawConfig, fileFullPath = undefined, depth = 0) => {
   if (depth >= maxDepth) {
     throw new Error('reached max configuration depth, maybe you went in an infinite loop. Please check the extends values from your configuration file recursively')
   }
 
-  if (context === undefined) {
-    context = process.cwd()
+  if (fileFullPath === undefined) {
+    fileFullPath = process.cwd()
   }
 
   const config = parser(rawConfig)
   addDefaultFields(config)
+
+  const context = dirname(fileFullPath)
 
   // fetch all configuration files from which this one is extending
   let configs = []
