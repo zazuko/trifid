@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import merge from 'lodash/merge.js'
 import parser from './parser.js'
 import JSON5 from 'json5'
+import cloneDeep from 'lodash/cloneDeep.js'
 import { cwdCallback } from '../resolvers.js'
 import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver } from './resolvers.js'
 import { defaultPort, maxDepth } from './default.js'
@@ -102,7 +103,7 @@ const handler = async (configFile) => {
   if (typeof configFile === 'string') {
     config = await resolveConfigFile(configFile)
   } else {
-    config = await resolveConfig(configFile)
+    config = await resolveConfig(cloneDeep(configFile))
   }
   addDefaultFields(config)
   addDefaultPort(config)
