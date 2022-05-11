@@ -39,7 +39,10 @@ describe('config handler', () => {
   test('simple chain should work', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     await expect(handler(fileCallback(currentDir)('./config/chain/chain1.json'))).resolves.not.toThrow()
+  })
 
+  test('check if expected values are here on extended config', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
     const config = await handler(fileCallback(currentDir)('./config/chain/chain1.json'))
     expect(config.globals).toBeDefined()
     expect(config.globals.value3).toBeDefined()
@@ -55,7 +58,10 @@ describe('config handler', () => {
   test('simple check using the file resolver should work', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     await expect(handler(fileCallback(currentDir)('./config/chain-file/chain1.json'))).resolves.not.toThrow()
+  })
 
+  test('check if expected values are here on extended config with file prefix', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
     const config = await handler(fileCallback(currentDir)('./config/chain-file/chain1.json'))
     expect(config.globals).toBeDefined()
     expect(config.globals.value3).toBeDefined()
@@ -66,5 +72,10 @@ describe('config handler', () => {
     expect(config.globals.value1).toEqual('chain1')
     expect(config.globals.value).toBeDefined()
     expect(config.globals.value).toEqual('chain1')
+  })
+
+  test('should throw in case of infinite loop', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
+    await expect(handler(fileCallback(currentDir)('./config/infinite-loop/chain1.json'))).rejects.toThrow()
   })
 })

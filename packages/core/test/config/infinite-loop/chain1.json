@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "file:chain2.json"
+  ]
+}
