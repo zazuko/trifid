@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals'
 
-import { cwdCallback, envCallback, envResolver } from '../lib/resolvers.js'
+import { cwdCallback, cwdResolver, envCallback, envResolver } from '../lib/resolvers.js'
 
 describe('resolvers', () => {
   // Environment variables resolver
@@ -44,5 +44,23 @@ describe('resolvers', () => {
     expect(cwdCallback('./a/.././test.js')).toEqual(`${process.cwd()}/test.js`)
     expect(cwdCallback('/test.js')).toEqual('/test.js')
     expect(cwdCallback('/a/b/c/test.js')).toEqual('/a/b/c/test.js')
+  })
+
+  test('cwd resolver should not resolve on other prefix', () => {
+    expect(cwdResolver('something:test.js')).toEqual('something:test.js')
+  })
+
+  test('cwd resolver should resolve on the cwd prefix', () => {
+    expect(cwdResolver('cwd:test.js')).toEqual(`${process.cwd()}/test.js`)
+  })
+
+  test('cwd resolver should give the same results than the callback', () => {
+    expect(cwdResolver('cwd:.')).toEqual(process.cwd())
+    expect(cwdResolver('cwd:./test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdResolver('cwd:test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdResolver('cwd:././././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdResolver('cwd:./a/.././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdResolver('cwd:/test.js')).toEqual('/test.js')
+    expect(cwdResolver('cwd:/a/b/c/test.js')).toEqual('/a/b/c/test.js')
   })
 })
