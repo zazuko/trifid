@@ -23,15 +23,11 @@
     "npm": ">=6"
   },
   "dependencies": {
-    "absolute-url": "^1.2.2",
     "ajv": "^8.11.0",
     "commander": "^9.2.0",
-    "debug": "^4.3.4",
     "express": "^4.18.1",
     "json5": "^2.2.1",
     "lodash": "^4.17.21",
-    "shortstop": "^1.0.3",
-    "shush": "^1.0.1",
     "vhost": "^3.0.2"
   },
   "devDependencies": {
@@ -39,9 +35,7 @@
     "@babel/preset-env": "^7.17.10",
     "babel-jest": "^28.1.0",
     "jest": "^28.1.0",
-    "nock": "^13.2.4",
-    "standard": "^17.0.0",
-    "supertest": "^6.2.3"
+    "standard": "^17.0.0"
   },
   "jest": {
     "collectCoverage": true,
