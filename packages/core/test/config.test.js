@@ -1,7 +1,7 @@
 import assert from 'assert'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { describe, expect, it } from '@jest/globals'
+import { describe, expect, test } from '@jest/globals'
 
 import schema from '../lib/config/schema.js'
 import parser from '../lib/config/parser.js'
@@ -9,11 +9,11 @@ import handler from '../lib/config/handler.js'
 import { fileCallback } from '../lib/resolvers.js'
 
 describe('config', () => {
-  it('should be an object', () => {
+  test('should be an object', () => {
     assert.equal(typeof schema, 'object')
   })
 
-  it('should not throw if the configuration is empty', () => {
+  test('should not throw if the configuration is empty', () => {
     assert.doesNotThrow(() => {
       parser()
     })
@@ -23,13 +23,13 @@ describe('config', () => {
     })
   })
 
-  it('sould throw if we add some non-supported fields', () => {
+  test('sould throw if we add some non-supported fields', () => {
     assert.throws(() => {
       parser({ thisFieldIsNotSupported: true })
     })
   })
 
-  it('should not throw if supported properties are empty', () => {
+  test('should not throw if supported properties are empty', () => {
     assert.doesNotThrow(() => {
       parser({
         extends: [],
@@ -40,7 +40,7 @@ describe('config', () => {
     })
   })
 
-  it('should not throw on valid values for extends', () => {
+  test('should not throw on valid values for extends', () => {
     assert.doesNotThrow(() => {
       parser({
         extends: []
@@ -66,7 +66,7 @@ describe('config', () => {
     })
   })
 
-  it('should throw on invalid values for extends', () => {
+  test('should throw on invalid values for extends', () => {
     // this is a string instead of an array of strings
     assert.throws(() => {
       parser({
@@ -82,7 +82,7 @@ describe('config', () => {
     })
   })
 
-  it('should not throw on valid values for server', () => {
+  test('should not throw on valid values for server', () => {
     assert.doesNotThrow(() => {
       parser({
         server: {}
@@ -132,7 +132,7 @@ describe('config', () => {
     })
   })
 
-  it('should throw on invalid values for server', () => {
+  test('should throw on invalid values for server', () => {
     // this is a string instead of an object
     assert.throws(() => {
       parser({
@@ -177,7 +177,7 @@ describe('config', () => {
     })
   })
 
-  it('should not throw on valid values for globals', () => {
+  test('should not throw on valid values for globals', () => {
     assert.doesNotThrow(() => {
       parser({
         globals: {}
@@ -202,7 +202,7 @@ describe('config', () => {
     })
   })
 
-  it('should throw on invalid values for globals', () => {
+  test('should throw on invalid values for globals', () => {
     // this is a string instead of an object
     assert.throws(() => {
       parser({
@@ -222,7 +222,7 @@ describe('config', () => {
     })
   })
 
-  it('should not throw on valid values for middlewares', () => {
+  test('should not throw on valid values for middlewares', () => {
     assert.doesNotThrow(() => {
       parser({
         middlewares: {}
@@ -287,7 +287,7 @@ describe('config', () => {
     })
   })
 
-  it('should throw on invalid values for middlewares', () => {
+  test('should throw on invalid values for middlewares', () => {
     // this is a string instead of an object
     assert.throws(() => {
       parser({
@@ -317,17 +317,17 @@ describe('config', () => {
     })
   })
 
-  it('should not throw when loading an empty configuration file', async () => {
+  test('should not throw when loading an empty configuration file', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     await expect(handler(fileCallback(currentDir)('./config/empty.json'))).resolves.not.toThrow()
   })
 
-  it('should not throw when loading a basic configuration file', async () => {
+  test('should not throw when loading a basic configuration file', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     await expect(handler(fileCallback(currentDir)('./config/basic.json'))).resolves.not.toThrow()
   })
 
-  it('should throw when trying to load a non-existant configuration file', async () => {
+  test('should throw when trying to load a non-existant configuration file', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     await expect(handler(fileCallback(currentDir)('./config/non-existant.json'))).rejects.toThrow()
   })
