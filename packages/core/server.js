@@ -31,5 +31,4 @@ if (opts.port) {
 
 // load the configuration and start the server
 const instance = await trifid(config)
-console.log(instance.config)
 instance.start()

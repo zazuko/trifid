@@ -31,35 +31,6 @@ const load = async (config) => {
     }
 
     middlewares[m].module = await loader(middlewares[m].module)
-
-    // make sure order is defined
-    if (middlewares[m].order === undefined) {
-      middlewares[m].order = 0
-    }
-
-    // make sure paths is defined and is an array
-    if (middlewares[m].paths === undefined) {
-      middlewares[m].paths = []
-    }
-    if (typeof middlewares[m].paths === 'string') {
-      middlewares[m].paths = [middlewares[m].paths]
-    }
-
-    // make sure methods is defined and is an array
-    if (middlewares[m].methods === undefined) {
-      middlewares[m].methods = []
-    }
-    if (typeof middlewares[m].methods === 'string') {
-      middlewares[m].methods = [middlewares[m].methods]
-    }
-
-    // make sure hosts is defined and is an array
-    if (middlewares[m].hosts === undefined) {
-      middlewares[m].hosts = []
-    }
-    if (typeof middlewares[m].hosts === 'string') {
-      middlewares[m].hosts = [middlewares[m].hosts]
-    }
   }))
 
   return middlewares
