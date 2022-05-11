@@ -180,17 +180,8 @@ describe('config', () => {
         }
       })
     }).not.toThrow()
-  })
 
-  test('should throw on invalid values for globals', () => {
-    // this is a string instead of an object
-    expect(() => {
-      parser({
-        globals: 'this is a string instead of an object'
-      })
-    }).toThrow()
-
-    // complex object, keys and values should be strings
+    // multi-level globals
     expect(() => {
       parser({
         globals: {
@@ -198,6 +189,15 @@ describe('config', () => {
             bar: 'baz'
           }
         }
+      })
+    }).not.toThrow()
+  })
+
+  test('should throw on invalid values for globals', () => {
+    // this is a string instead of an object
+    expect(() => {
+      parser({
+        globals: 'this is a string instead of an object'
       })
     }).toThrow()
   })

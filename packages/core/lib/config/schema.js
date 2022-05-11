@@ -9,10 +9,12 @@ const server = {
       type: 'object',
       properties: {
         port: {
-          type: 'number',
-          minimum: 0,
-          maximum: 65535
-        }
+          anyOf: [
+            { type: 'number', minimum: 0, maximum: 65535 },
+            { type: 'string', minLength: 1 }
+          ]
+        },
+        host: { type: 'string', minLength: 1 }
       },
       additionalProperties: false
     },
@@ -26,14 +28,7 @@ const server = {
 
 const globals = {
   type: 'object',
-  patternProperties: {
-    '.*': {
-      type: [
-        'string',
-        'null'
-      ]
-    }
-  }
+  additionalProperties: true
 }
 
 const middleware = {
@@ -41,6 +36,24 @@ const middleware = {
   properties: {
     order: { type: 'number', minimum: 0 },
     module: { type: 'string', minLength: 1 },
+    paths: {
+      anyOf: [
+        { type: 'string', minLength: 1 },
+        { type: 'array', items: { type: 'string' } }
+      ]
+    },
+    methods: {
+      anyOf: [
+        { type: 'string', minLength: 1 },
+        { type: 'array', items: { type: 'string' } }
+      ]
+    },
+    hosts: {
+      anyOf: [
+        { type: 'string', minLength: 1 },
+        { type: 'array', items: { type: 'string' } }
+      ]
+    },
     config: { type: 'object', additionalProperties: true }
   },
   required: ['module'],

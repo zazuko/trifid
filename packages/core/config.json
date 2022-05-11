@@ -15,11 +15,9 @@
     "staticFiles": {
       "order": 100,
       "module": "file:./middlewares/static.js",
+      "paths": "/",
       "config": {
-        "sources": {
-          "path": "/",
-          "folder": "cwd:."
-        }
+        "directory": "cwd:."
       }
     }
   }

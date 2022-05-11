@@ -7,11 +7,9 @@
     "tests": {
       "order": 120,
       "module": "file:./middlewares/static.js",
+      "paths": "/tests-dir",
       "config": {
-        "test": {
-          "path": "/tests-dir",
-          "folder": "cwd:./test"
-        }
+        "directory": "cwd:./test"
       }
     }
   }
