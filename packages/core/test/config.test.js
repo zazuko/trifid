@@ -1,4 +1,3 @@
-import assert from 'assert'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { describe, expect, test } from '@jest/globals'
@@ -10,104 +9,89 @@ import { fileCallback } from '../lib/resolvers.js'
 
 describe('config', () => {
   test('should be an object', () => {
-    assert.equal(typeof schema, 'object')
+    expect(typeof schema).toEqual('object')
   })
 
   test('should not throw if the configuration is empty', () => {
-    assert.doesNotThrow(() => {
-      parser()
-    })
-
-    assert.doesNotThrow(() => {
-      parser({})
-    })
+    expect(() => parser()).not.toThrow()
+    expect(() => parser({})).not.toThrow()
   })
 
   test('sould throw if we add some non-supported fields', () => {
-    assert.throws(() => {
-      parser({ thisFieldIsNotSupported: true })
-    })
+    expect(() => parser({ thisFieldIsNotSupported: true })).toThrow()
   })
 
   test('should not throw if supported properties are empty', () => {
-    assert.doesNotThrow(() => {
-      parser({
-        extends: [],
-        globals: {},
-        server: {},
-        middlewares: {}
-      })
-    })
+    expect(() => parser({
+      extends: [],
+      globals: {},
+      server: {},
+      middlewares: {}
+    })).not.toThrow()
   })
 
   test('should not throw on valid values for extends', () => {
-    assert.doesNotThrow(() => {
-      parser({
-        extends: []
-      })
-    })
+    expect(() => parser({
+      extends: []
+    })).not.toThrow()
 
-    assert.doesNotThrow(() => {
-      parser({
-        extends: [
-          'path'
-        ]
-      })
-    })
+    expect(() => parser({
+      extends: [
+        'path'
+      ]
+    })).not.toThrow()
 
-    assert.doesNotThrow(() => {
-      parser({
-        extends: [
-          'path1',
-          'path2',
-          'path3'
-        ]
-      })
-    })
+    expect(() => parser({
+      extends: [
+        'path1',
+        'path2',
+        'path3'
+      ]
+    })).not.toThrow()
   })
 
   test('should throw on invalid values for extends', () => {
     // this is a string instead of an array of strings
-    assert.throws(() => {
+    expect(() => {
       parser({
         extends: 'this is a string instead of an array'
       })
-    })
+    }).toThrow()
 
     // this is not an array of strings, but an array of integers
-    assert.throws(() => {
+    expect(() => {
       parser({
         extends: [1, 2, 3]
       })
-    })
+    }).toThrow()
   })
 
   test('should not throw on valid values for server', () => {
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         server: {}
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         server: {
           listener: {},
           express: {}
         }
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         server: {
           listener: {},
           express: {}
         }
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         server: {
           listener: {
@@ -116,9 +100,9 @@ describe('config', () => {
           express: {}
         }
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         server: {
           listener: {
@@ -129,19 +113,19 @@ describe('config', () => {
           }
         }
       })
-    })
+    }).not.toThrow()
   })
 
   test('should throw on invalid values for server', () => {
     // this is a string instead of an object
-    assert.throws(() => {
+    expect(() => {
       parser({
         server: 'this is a string instead of an object'
       })
-    })
+    }).toThrow()
 
     // unsupported field
-    assert.throws(() => {
+    expect(() => {
       parser({
         server: {
           listener: {},
@@ -149,10 +133,10 @@ describe('config', () => {
           unsupportedField: true
         }
       })
-    })
+    }).toThrow()
 
     // invalid port number
-    assert.throws(() => {
+    expect(() => {
       parser({
         server: {
           listener: {
@@ -161,10 +145,10 @@ describe('config', () => {
           express: {}
         }
       })
-    })
+    }).toThrow()
 
     // unsupported listener property
-    assert.throws(() => {
+    expect(() => {
       parser({
         server: {
           listener: {
@@ -174,44 +158,44 @@ describe('config', () => {
           express: {}
         }
       })
-    })
+    }).toThrow()
   })
 
   test('should not throw on valid values for globals', () => {
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         globals: {}
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         globals: {
           foo: 'bar'
         }
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         globals: {
           foo: 'bar',
           jon: 'doe'
         }
       })
-    })
+    }).not.toThrow()
   })
 
   test('should throw on invalid values for globals', () => {
     // this is a string instead of an object
-    assert.throws(() => {
+    expect(() => {
       parser({
         globals: 'this is a string instead of an object'
       })
-    })
+    }).toThrow()
 
     // complex object, keys and values should be strings
-    assert.throws(() => {
+    expect(() => {
       parser({
         globals: {
           foo: {
@@ -219,17 +203,17 @@ describe('config', () => {
           }
         }
       })
-    })
+    }).toThrow()
   })
 
   test('should not throw on valid values for middlewares', () => {
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         middlewares: {}
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         middlewares: {
           module: {
@@ -238,9 +222,9 @@ describe('config', () => {
           }
         }
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         middlewares: {
           module: {
@@ -252,9 +236,9 @@ describe('config', () => {
           }
         }
       })
-    })
+    }).not.toThrow()
 
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         middlewares: {
           module: {
@@ -267,10 +251,10 @@ describe('config', () => {
           }
         }
       })
-    })
+    }).not.toThrow()
 
     // allow complex config object
-    assert.doesNotThrow(() => {
+    expect(() => {
       parser({
         middlewares: {
           module: {
@@ -284,29 +268,29 @@ describe('config', () => {
           }
         }
       })
-    })
+    }).not.toThrow()
   })
 
   test('should throw on invalid values for middlewares', () => {
     // this is a string instead of an object
-    assert.throws(() => {
+    expect(() => {
       parser({
         middlewares: 'this is a string instead of an object'
       })
-    })
+    }).toThrow()
 
     // not scoped into an object per middleware
-    assert.throws(() => {
+    expect(() => {
       parser({
         middlewares: {
           order: 42,
           name: 'module'
         }
       })
-    })
+    }).toThrow()
 
     // missing "module" property
-    assert.throws(() => {
+    expect(() => {
       parser({
         middlewares: {
           module: {
@@ -314,7 +298,7 @@ describe('config', () => {
           }
         }
       })
-    })
+    }).toThrow()
   })
 
   test('should not throw when loading an empty configuration file', async () => {
