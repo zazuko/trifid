@@ -1,5 +1,33 @@
 import cloneDeep from 'lodash/cloneDeep.js'
 
+// see: https://expressjs.com/fr/api.html#routing-methods (+all)
+const supportedMethods = [
+  'all',
+  'checkout',
+  'copy',
+  'delete',
+  'get',
+  'head',
+  'lock',
+  'merge',
+  'mkactivity',
+  'mkcol',
+  'move',
+  'm-search',
+  'notify',
+  'options',
+  'patch',
+  'post',
+  'purge',
+  'put',
+  'report',
+  'search',
+  'subscribe',
+  'trace',
+  'unlock',
+  'unsubscribe'
+]
+
 const standardize = (middleware) => {
   const m = cloneDeep(middleware)
 
@@ -16,13 +44,18 @@ const standardize = (middleware) => {
     m.paths = [m.paths]
   }
 
-  // make sure methods is defined and is an array
+  // make sure methods is defined and is an array of valid supported methods
   if (m.methods === undefined) {
     m.methods = []
   }
   if (typeof m.methods === 'string') {
     m.methods = [m.methods]
   }
+  m.methods = m.methods.map(method => {
+    return method.toLocaleLowerCase()
+  }).filter(method => {
+    return supportedMethods.includes(method)
+  })
 
   // make sure hosts is defined and is an array
   if (m.hosts === undefined) {
@@ -30,6 +63,11 @@ const standardize = (middleware) => {
   }
   if (typeof m.hosts === 'string') {
     m.hosts = [m.hosts]
+  }
+
+  // make sure config is defined
+  if (m.config === undefined) {
+    m.config = {}
   }
 
   return m

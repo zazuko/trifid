@@ -6,7 +6,7 @@
   "middlewares": {
     "tests": {
       "order": 120,
-      "module": "file:./plugins/static-files.js",
+      "module": "file:./middlewares/static.js",
       "config": {
         "test": {
           "path": "/tests-dir",
