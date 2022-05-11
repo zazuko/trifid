@@ -1,4 +1,4 @@
-import { resolve, join, dirname } from 'path'
+import { resolve, join } from 'path'
 
 /**
  * Register a resolver.
@@ -65,7 +65,7 @@ export const fileCallback = (base = undefined) => (name) => {
   if (base === undefined) {
     base = process.cwd()
   }
-  return pathResolver(dirname(base), name)
+  return pathResolver(base, name)
 }
 
 export const fileResolver = (value, base = undefined) => {

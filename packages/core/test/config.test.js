@@ -1,8 +1,12 @@
-/* global describe, it */
-
 import assert from 'assert'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+import { describe, expect, it } from '@jest/globals'
+
 import schema from '../lib/config/schema.js'
 import parser from '../lib/config/parser.js'
+import handler from '../lib/config/handler.js'
+import { fileCallback } from '../lib/resolvers.js'
 
 describe('config', () => {
   it('should be an object', () => {
@@ -311,5 +315,20 @@ describe('config', () => {
         }
       })
     })
+  })
+
+  it('should not throw when loading an empty configuration file', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
+    await expect(handler(fileCallback(currentDir)('./config/empty.json'))).resolves.not.toThrow()
+  })
+
+  it('should not throw when loading a basic configuration file', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
+    await expect(handler(fileCallback(currentDir)('./config/basic.json'))).resolves.not.toThrow()
+  })
+
+  it('should throw when trying to load a non-existant configuration file', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
+    await expect(handler(fileCallback(currentDir)('./config/non-existant.json'))).rejects.toThrow()
   })
 })
