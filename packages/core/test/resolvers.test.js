@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals'
 
-import { cwdCallback, cwdResolver, envCallback, envResolver, fileCallback } from '../lib/resolvers.js'
+import { cwdCallback, cwdResolver, envCallback, envResolver, fileCallback, fileResolver } from '../lib/resolvers.js'
 
 describe('resolvers', () => {
   // Environment variables resolver
@@ -102,5 +102,34 @@ describe('resolvers', () => {
     expect(fileCallback('/path/test')('./a/.././test.js')).toEqual('/path/test/test.js')
     expect(fileCallback('/path/test')('/test.js')).toEqual('/test.js')
     expect(fileCallback('/path/test')('/a/b/c/test.js')).toEqual('/a/b/c/test.js')
+  })
+
+  test('file resolver should not resolve on other prefix', () => {
+    expect(fileResolver('something:test.js')).toEqual('something:test.js')
+  })
+
+  test('file resolver should resolve on the file prefix', () => {
+    expect(fileResolver('file:test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileResolver('file:test.js', undefined)).toEqual(`${process.cwd()}/test.js`)
+    expect(fileResolver('file:test.js', '/path/test')).toEqual('/path/test/test.js')
+  })
+
+  test('file resolver should behave the same as the file callback', () => {
+    expect(fileResolver('file:.', '/path/test')).toEqual('/path/test')
+    expect(fileResolver('file:..', '/path/test')).toEqual('/path')
+
+    // note the '/' at the end
+    expect(fileResolver('file:../', '/path/test')).toEqual('/path/')
+
+    expect(fileResolver('file:../..', '/path/test')).toEqual('/')
+    expect(fileResolver('file:../../', '/path/test')).toEqual('/')
+    expect(fileResolver('file:../../..', '/path/test')).toEqual('/')
+    expect(fileResolver('file:../../../', '/path/test')).toEqual('/')
+    expect(fileResolver('file:./test.js', '/path/test')).toEqual('/path/test/test.js')
+    expect(fileResolver('file:test.js', '/path/test')).toEqual('/path/test/test.js')
+    expect(fileResolver('file:././././test.js', '/path/test')).toEqual('/path/test/test.js')
+    expect(fileResolver('file:./a/.././test.js', '/path/test')).toEqual('/path/test/test.js')
+    expect(fileResolver('file:/test.js', '/path/test')).toEqual('/test.js')
+    expect(fileResolver('file:/a/b/c/test.js', '/path/test')).toEqual('/a/b/c/test.js')
   })
 })
