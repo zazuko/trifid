@@ -1,4 +1,6 @@
-import { cwdResolver, envResolver, fileResolver } from '../resolvers.js'
+import { dirname } from 'path'
+
+import { cwdResolver, envResolver, fileCallback, fileResolver } from '../resolvers.js'
 
 /**
  *
@@ -7,8 +9,9 @@ import { cwdResolver, envResolver, fileResolver } from '../resolvers.js'
  * @returns
  */
 export const extendsResolver = (value, context) => {
+  const dir = dirname(context)
   return value.map(path => {
-    return fileResolver(path, context)
+    return fileCallback(dir)(fileResolver(cwdResolver(path), dir))
   })
 }
 

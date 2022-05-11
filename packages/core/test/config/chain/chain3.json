@@ -1,0 +1,8 @@
+{
+  "globals": {
+    "value3": "chain3",
+    "value2": "chain3",
+    "value1": "chain3",
+    "value": "chain3"
+  }
+}
