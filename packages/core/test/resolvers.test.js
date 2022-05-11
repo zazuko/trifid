@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals'
 
-import { cwdCallback, cwdResolver, envCallback, envResolver } from '../lib/resolvers.js'
+import { cwdCallback, cwdResolver, envCallback, envResolver, fileCallback } from '../lib/resolvers.js'
 
 describe('resolvers', () => {
   // Environment variables resolver
@@ -62,5 +62,45 @@ describe('resolvers', () => {
     expect(cwdResolver('cwd:./a/.././test.js')).toEqual(`${process.cwd()}/test.js`)
     expect(cwdResolver('cwd:/test.js')).toEqual('/test.js')
     expect(cwdResolver('cwd:/a/b/c/test.js')).toEqual('/a/b/c/test.js')
+  })
+
+  // File resolver
+
+  test('file callback should behave the same as cwd if no base is defined', () => {
+    expect(fileCallback()('.')).toEqual(process.cwd())
+    expect(fileCallback()('./test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback()('test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback()('././././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback()('./a/.././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback()('/test.js')).toEqual('/test.js')
+    expect(fileCallback()('/a/b/c/test.js')).toEqual('/a/b/c/test.js')
+
+    // test with explicit 'undefined' base
+    expect(fileCallback(undefined)('.')).toEqual(process.cwd())
+    expect(fileCallback(undefined)('./test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback(undefined)('test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback(undefined)('././././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback(undefined)('./a/.././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(fileCallback(undefined)('/test.js')).toEqual('/test.js')
+    expect(fileCallback(undefined)('/a/b/c/test.js')).toEqual('/a/b/c/test.js')
+  })
+
+  test('file callback should resolve as expected with the specified base', () => {
+    expect(fileCallback('/path/test')('.')).toEqual('/path/test')
+    expect(fileCallback('/path/test')('..')).toEqual('/path')
+
+    // note the '/' at the end
+    expect(fileCallback('/path/test')('../')).toEqual('/path/')
+
+    expect(fileCallback('/path/test')('../..')).toEqual('/')
+    expect(fileCallback('/path/test')('../../')).toEqual('/')
+    expect(fileCallback('/path/test')('../../..')).toEqual('/')
+    expect(fileCallback('/path/test')('../../../')).toEqual('/')
+    expect(fileCallback('/path/test')('./test.js')).toEqual('/path/test/test.js')
+    expect(fileCallback('/path/test')('test.js')).toEqual('/path/test/test.js')
+    expect(fileCallback('/path/test')('././././test.js')).toEqual('/path/test/test.js')
+    expect(fileCallback('/path/test')('./a/.././test.js')).toEqual('/path/test/test.js')
+    expect(fileCallback('/path/test')('/test.js')).toEqual('/test.js')
+    expect(fileCallback('/path/test')('/a/b/c/test.js')).toEqual('/a/b/c/test.js')
   })
 })
