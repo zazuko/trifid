@@ -6,22 +6,22 @@ import { cwdCallback } from '../resolvers.js'
 import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver } from './resolvers.js'
 import { defaultPort, maxDepth } from './default.js'
 
-const resolveConfigFile = async (filePath, depth = 0) => {
+const resolveConfig = async (rawConfig, context = undefined, depth = 0) => {
   if (depth >= maxDepth) {
     throw new Error('reached max configuration depth, maybe you went in an infinite loop. Please check the extends values from your configuration file recursively')
   }
 
-  // read config file
-  const fileFullPath = cwdCallback(filePath)
-  const fileContent = await fs.readFile(fileFullPath)
-  const fileParsed = JSON5.parse(fileContent)
-  const config = parser(fileParsed)
+  if (context === undefined) {
+    context = process.cwd()
+  }
+
+  const config = parser(rawConfig)
   addDefaultFields(config)
 
   // fetch all configuration files from which this one is extending
   let configs = []
   if (Array.isArray(config.extends) && config.extends.length > 0) {
-    config.extends = extendsResolver(config.extends, fileFullPath)
+    config.extends = extendsResolver(config.extends, context)
     configs = await Promise.all(config.extends.map(configPath => resolveConfigFile(configPath, depth + 1)))
   }
 
@@ -42,14 +42,23 @@ const resolveConfigFile = async (filePath, depth = 0) => {
   })
 
   // apply all resolvers
-  config.middlewares = middlewaresResolver(middlewares, fileFullPath)
-  config.globals = globalsResolver(config.globals, fileFullPath)
-  config.server = serverResolver(config.server, fileFullPath)
+  config.middlewares = middlewaresResolver(middlewares, context)
+  config.globals = globalsResolver(config.globals, context)
+  config.server = serverResolver(config.server, context)
 
   // we don't need the extends field anymore
   delete config.extends
 
   return config
+}
+
+const resolveConfigFile = async (filePath, depth = 0) => {
+  // read config file
+  const fileFullPath = cwdCallback(filePath)
+  const fileContent = await fs.readFile(fileFullPath)
+  const fileParsed = JSON5.parse(fileContent)
+
+  return await resolveConfig(fileParsed, fileFullPath, depth)
 }
 
 /**
@@ -86,7 +95,12 @@ const addDefaultPort = (config) => {
 }
 
 const handler = async (configFile) => {
-  const config = configFile ? await resolveConfigFile(configFile) : {}
+  let config = {}
+  if (typeof configFile === 'string') {
+    config = await resolveConfigFile(configFile)
+  } else {
+    config = await resolveConfig(configFile)
+  }
   addDefaultFields(config)
   addDefaultPort(config)
 

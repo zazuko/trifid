@@ -11,6 +11,28 @@ describe('config handler', () => {
     await expect(handler(fileCallback(currentDir)('./config/empty.json'))).resolves.not.toThrow()
   })
 
+  test('should not throw when loading an empty configuration', async () => {
+    await expect(handler({})).resolves.not.toThrow()
+  })
+
+  test('should not throw when loading a configuration that extends an existing one', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
+    await expect(handler({
+      extends: [
+        `${currentDir}/config/empty.json`
+      ]
+    })).resolves.not.toThrow()
+  })
+
+  test('should throw when loading a configuration that extends a non-existant one', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
+    await expect(handler({
+      extends: [
+        `${currentDir}/config/non-existant.json`
+      ]
+    })).rejects.toThrow()
+  })
+
   test('should not throw when loading a basic configuration file', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     await expect(handler(fileCallback(currentDir)('./config/basic.json'))).resolves.not.toThrow()
