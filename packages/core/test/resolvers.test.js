@@ -1,8 +1,10 @@
 import { describe, test, expect } from '@jest/globals'
 
-import { envCallback, envResolver } from '../lib/resolvers.js'
+import { cwdCallback, envCallback, envResolver } from '../lib/resolvers.js'
 
 describe('resolvers', () => {
+  // Environment variables resolver
+
   test('should be able to resolve an environment variable', () => {
     process.env.TEST_VARIABLE = 'test'
     expect(envCallback('TEST_VARIABLE')).toEqual('test')
@@ -27,5 +29,20 @@ describe('resolvers', () => {
   test('env should resolve to empty string for non-existant variable with the right prefix', () => {
     delete process.env.TEST_VARIABLE
     expect(envResolver('env:TEST_VARIABLE')).toEqual('')
+  })
+
+  // Current working directory resolver
+
+  test('should return the current working directory', () => {
+    expect(cwdCallback('.')).toEqual(process.cwd())
+  })
+
+  test('cwd should be able to resolve paths', () => {
+    expect(cwdCallback('./test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdCallback('test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdCallback('././././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdCallback('./a/.././test.js')).toEqual(`${process.cwd()}/test.js`)
+    expect(cwdCallback('/test.js')).toEqual('/test.js')
+    expect(cwdCallback('/a/b/c/test.js')).toEqual('/a/b/c/test.js')
   })
 })
