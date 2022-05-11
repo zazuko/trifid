@@ -35,7 +35,8 @@
     "@babel/preset-env": "^7.17.10",
     "babel-jest": "^28.1.0",
     "jest": "^28.1.0",
-    "standard": "^17.0.0"
+    "standard": "^17.0.0",
+    "supertest": "^6.2.3"
   },
   "jest": {
     "collectCoverage": true,
