@@ -1,19 +1,16 @@
 import path from 'path'
 
-function resolve (modulePath) {
-  if (modulePath.slice(0, 1) === '.') {
+const resolve = (modulePath) => {
+  if (['.', '/'].includes(modulePath.slice(0, 1))) {
     return path.resolve(modulePath)
   } else {
     return modulePath
   }
 }
 
-async function customImport (modulePath) {
-  if (!modulePath.endsWith('.js')) {
-    console.log(`Warning: declared ${modulePath}. Did you mean ${modulePath}.js?`)
-  }
-  const { default: func } = await import(resolve(modulePath))
-  return func
+const customImport = async (modulePath) => {
+  const middleware = await import(resolve(modulePath))
+  return middleware.default
 }
 
 export default customImport
