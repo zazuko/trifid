@@ -24,35 +24,21 @@ const apply = async (server, globals, middlewares) => {
     const trifid = trifidObject(merge(globals, config), server)
     const loadedMiddleware = await module(trifid)
 
+    // default path is '/' (see: https://github.com/expressjs/express/blob/d854c43ea177d1faeea56189249fff8c24a764bd/lib/router/index.js#L425)
     if (paths.length === 0) {
-      if (methods.length === 0) {
-        if (hosts.length === 0) {
-          server.use(loadedMiddleware)
-        } else {
-          hosts.map(host => server.use(vhost(host, loadedMiddleware)))
-        }
+      paths.push('/')
+    }
+
+    // if no methods are specified, use 'use'
+    if (methods.length === 0) {
+      methods.push('use')
+    }
+
+    for (const path of paths) {
+      if (hosts.length === 0) {
+        methods.map(method => server[method](path, loadedMiddleware))
       } else {
-        if (hosts.length === 0) {
-          methods.map(method => server[method](loadedMiddleware))
-        } else {
-          hosts.map(host => methods.map(method => server[method](vhost(host, loadedMiddleware))))
-        }
-      }
-    } else {
-      for (const path of paths) {
-        if (methods.length === 0) {
-          if (hosts.length === 0) {
-            server.use(path, loadedMiddleware)
-          } else {
-            hosts.map(host => server.use(path, vhost(host, loadedMiddleware)))
-          }
-        } else {
-          if (hosts.length === 0) {
-            methods.map(method => server[method](path, loadedMiddleware))
-          } else {
-            hosts.map(host => methods.map(method => server[method](path, vhost(host, loadedMiddleware))))
-          }
-        }
+        hosts.map(host => methods.map(method => server[method](path, vhost(host, loadedMiddleware))))
       }
     }
 
