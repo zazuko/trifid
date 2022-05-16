@@ -1,6 +1,6 @@
 import express from 'express'
 import handler from './lib/config/handler.js'
-import { defaultPort } from './lib/config/default.js'
+import { defaultHost, defaultPort } from './lib/config/default.js'
 import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
 
@@ -10,7 +10,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   server.disable('x-powered-by')
 
   const port = fullConfig?.server?.listener?.port || defaultPort
-  const host = '::'
+  const host = fullConfig?.server?.listener?.host || defaultHost
 
   const middlewares = await middlewaresAssembler(fullConfig, additionalMiddlewares)
   await applyMiddlewares(server, fullConfig.globals, middlewares)
