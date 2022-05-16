@@ -7,7 +7,7 @@ import trifid from './index.js'
 
 const program = new Command()
 
-program.option('-c, --config <path>', 'configuration file', 'config.json')
+program.option('-c, --config <path>', 'configuration file', 'config.yaml')
   .option('-p, --port <port>', 'listener port', parseInt)
   .parse(process.argv)
 

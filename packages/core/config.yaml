@@ -1,0 +1,25 @@
+extends:
+  - file:./config2.json
+
+server:
+  listener:
+    port: 8080
+  logLevel: debug
+
+globals:
+  value: config
+  config1: config1
+
+middlewares:
+  staticFiles:
+    order: 100
+    module: file:./middlewares/static.js
+    paths: "/"
+    config:
+      directory: cwd:.
+
+  zazuko-redirect:
+    module: file:./middlewares/redirect.js
+    paths: "/zazuko"
+    config:
+      target: https://zazuko.com/
