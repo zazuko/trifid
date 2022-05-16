@@ -19,6 +19,13 @@
       "config": {
         "directory": "cwd:."
       }
+    },
+    "zazuko-redirect": {
+      "module": "file:./middlewares/redirect.js",
+      "paths": "/",
+      "config": {
+        "target": "https://zazuko.com/"
+      }
     }
   }
 }
