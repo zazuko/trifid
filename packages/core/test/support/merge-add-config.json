@@ -1,8 +1,0 @@
-{
-  "baseConfig": "trifid-core:support/merge-config.json",
-  "property0": {
-    "property00": {
-      "property00b": "b"
-    }
-  }
-}
