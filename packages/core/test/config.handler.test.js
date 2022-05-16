@@ -38,6 +38,11 @@ describe('config handler', () => {
     await expect(handler(fileCallback(currentDir)('./support/basic.json'))).resolves.not.toThrow()
   })
 
+  test('should not throw when loading a basic YAML configuration file', async () => {
+    const currentDir = dirname(fileURLToPath(import.meta.url))
+    await expect(handler(fileCallback(currentDir)('./support/basic.yaml'))).resolves.not.toThrow()
+  })
+
   test('should throw when trying to load a non-existant configuration file', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     await expect(handler(fileCallback(currentDir)('./support/non-existant.json'))).rejects.toThrow()

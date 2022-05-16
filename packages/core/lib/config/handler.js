@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import merge from 'lodash/merge.js'
 import parser from './parser.js'
 import JSON5 from 'json5'
+import { parse } from 'yaml'
 import cloneDeep from 'lodash/cloneDeep.js'
 import { cwdCallback } from '../resolvers.js'
 import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver } from './resolvers.js'
@@ -60,9 +61,17 @@ const resolveConfigFile = async (filePath, depth = 0) => {
   // read config file
   const fileFullPath = cwdCallback(filePath)
   const fileContent = await fs.readFile(fileFullPath)
-  const fileParsed = JSON5.parse(fileContent)
 
-  return await resolveConfig(fileParsed, fileFullPath, depth)
+  let parsed
+
+  const fileExtension = `${fileFullPath.split('.').pop()}`.toLocaleLowerCase()
+  if (['yaml', 'yml'].includes(fileExtension)) {
+    parsed = parse(`${fileContent}`)
+  } else {
+    parsed = JSON5.parse(fileContent)
+  }
+
+  return await resolveConfig(parsed, fileFullPath, depth)
 }
 
 /**
