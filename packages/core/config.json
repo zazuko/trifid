@@ -5,7 +5,8 @@
   "server": {
     "listener": {
       "port": 8080
-    }
+    },
+    "logLevel": "debug"
   },
   "globals": {
     "value": "config",
@@ -22,7 +23,7 @@
     },
     "zazuko-redirect": {
       "module": "file:./middlewares/redirect.js",
-      "paths": "/",
+      "paths": "/zazuko",
       "config": {
         "target": "https://zazuko.com/"
       }

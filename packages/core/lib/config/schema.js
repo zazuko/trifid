@@ -18,6 +18,10 @@ const server = {
       },
       additionalProperties: false
     },
+    logLevel: {
+      type: 'string',
+      enum: ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']
+    },
     express: {
       type: 'object',
       additionalProperties: true

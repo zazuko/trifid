@@ -1,6 +1,9 @@
-const factory = (_trifid) => {
+const factory = (trifid) => {
+  const { logger } = trifid
+
   return (err, _req, res, _next) => {
-    console.error(err.stack || err.message)
+    logger.error(err.stack || err.message)
+
     res.statusCode = err.statusCode || 500
     res.end()
   }

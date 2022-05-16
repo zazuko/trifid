@@ -1,14 +1,15 @@
 import merge from 'lodash/merge.js'
 import vhost from 'vhost'
 
-const trifidObject = (config, server) => {
+const trifidObject = (config, server, logger) => {
   return {
     config,
-    server
+    server,
+    logger
   }
 }
 
-const apply = async (server, globals, middlewares) => {
+const apply = async (server, globals, middlewares, logger) => {
   for (const middleware of middlewares) {
     const name = middleware[0]
     const m = middleware[1]
@@ -21,7 +22,8 @@ const apply = async (server, globals, middlewares) => {
     delete m.order
     delete m.module
 
-    const trifid = trifidObject(merge(globals, config), server)
+    const middlewareLogger = logger.child({ name })
+    const trifid = trifidObject(merge(globals, config), server, middlewareLogger)
     const loadedMiddleware = await module(trifid)
 
     // default path is '/' (see: https://github.com/expressjs/express/blob/d854c43ea177d1faeea56189249fff8c24a764bd/lib/router/index.js#L425)
