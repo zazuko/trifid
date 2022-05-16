@@ -1,6 +1,12 @@
 .eslintrc
-.github
 .gitignore
-node_modules
+/node_modules/
 npm-debug.log
 package-lock.json
+*.tgz
+/test/
+/.github/
+/.git/
+/coverage/
+/config*.json
+babel*
