@@ -3,8 +3,14 @@ import handler from './lib/config/handler.js'
 import { defaultHost, defaultPort } from './lib/config/default.js'
 import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
+import pino from 'pino'
 
 const trifid = async (config, additionalMiddlewares = {}) => {
+  const logger = pino({
+    transport: {
+      target: 'pino-pretty'
+    }
+  })
   const fullConfig = await handler(config)
   const server = express()
   server.disable('x-powered-by')
@@ -16,7 +22,9 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   await applyMiddlewares(server, fullConfig.globals, middlewares)
 
   const start = () => {
-    server.listen(port, host)
+    server.listen(port, host, () => {
+      logger.info(`listening on http://${host}:${port}/`)
+    })
   }
 
   return {
