@@ -9,8 +9,8 @@ describe('redirect middleware', () => {
     expect(typeof redirectMiddleware).toEqual('function')
   })
 
-  test('should throw if the target parameter is not set', async () => {
-    await expect(() => redirectMiddleware({ config: {} })).toThrow()
+  test('should throw if the target parameter is not set', () => {
+    expect(() => redirectMiddleware({ config: {} })).toThrow()
   })
 
   test('should redirect request', async () => {
