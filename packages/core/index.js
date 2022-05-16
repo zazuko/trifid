@@ -7,6 +7,7 @@ import applyMiddlewares from './lib/middlewares/apply.js'
 const trifid = async (config, additionalMiddlewares = {}) => {
   const fullConfig = await handler(config)
   const server = express()
+  server.disable('x-powered-by')
 
   const port = fullConfig?.server?.listener?.port || defaultPort
   const host = '::'
