@@ -1,11 +1,11 @@
 import express from 'express'
 import pino from 'pino'
-import { create } from 'express-handlebars'
 
 import handler from './lib/config/handler.js'
 import { defaultHost, defaultLogLevel, defaultPort } from './lib/config/default.js'
 import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
+import templateEngine from './lib/templateEngine.js'
 
 /**
  * Create a new Trifid instance.
@@ -67,14 +67,6 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   const server = express()
   server.disable('x-powered-by')
 
-  // template engine configuration
-  const hbs = create({
-    extname: '.hbs'
-  })
-  server.engine('.hbs', hbs.engine)
-  server.set('view engine', '.hbs')
-  server.set('views', './views')
-
   // dynamic server configuration
   const port = fullConfig?.server?.listener?.port || defaultPort
   const host = fullConfig?.server?.listener?.host || defaultHost
@@ -90,8 +82,9 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     }
   })
 
+  const templateEngineInstance = await templateEngine()
   const middlewares = await middlewaresAssembler(fullConfig, additionalMiddlewares)
-  await applyMiddlewares(server, fullConfig.globals, middlewares, logger)
+  await applyMiddlewares(server, fullConfig.globals, middlewares, logger, templateEngineInstance)
 
   const start = () => {
     server.listen(port, host, () => {

@@ -1,7 +1,7 @@
 const factory = (trifid) => {
-  const { logger } = trifid
+  const { logger, render } = trifid
 
-  return (req, res, _next) => {
+  return async (req, res, _next) => {
     logger.debug(`path '${req.url}' returned a 404 error (Not Found)`)
 
     res.status(404)
@@ -11,9 +11,15 @@ const factory = (trifid) => {
       case 'json':
         res.send({ error: 'Not found' })
         break
+
       case 'html':
-        res.render('404', { url: req.url })
+        res.send(render('<h1>Not Found</h1><p>The requested path <strong>{{ url }}</strong> was not found.</p>', {
+          url: req.url
+        }, {
+          title: 'Not Found'
+        }))
         break
+
       default:
         res.send('Not Found\n')
         break
