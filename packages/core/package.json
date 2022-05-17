@@ -13,7 +13,8 @@
     "url": "https://github.com/zazuko/trifid-core/issues"
   },
   "scripts": {
-    "test": "standard && node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "standard && node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "watch": "nodemon server.js"
   },
   "bin": {
     "trifid-core": "./server.js"
@@ -39,6 +40,7 @@
     "@babel/preset-env": "^7.17.10",
     "babel-jest": "^28.1.0",
     "jest": "^28.1.0",
+    "nodemon": "^2.0.16",
     "standard": "^17.0.0",
     "supertest": "^6.2.3"
   },
