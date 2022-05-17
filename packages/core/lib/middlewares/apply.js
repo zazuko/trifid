@@ -23,7 +23,7 @@ const apply = async (server, globals, middlewares, logger) => {
     delete m.module
 
     const middlewareLogger = logger.child({ name })
-    const trifid = trifidObject(merge(globals, config), server, middlewareLogger)
+    const trifid = trifidObject(merge({}, globals, config), server, middlewareLogger)
     const loadedMiddleware = await module(trifid)
 
     // default path is '/' (see: https://github.com/expressjs/express/blob/d854c43ea177d1faeea56189249fff8c24a764bd/lib/router/index.js#L425)
@@ -44,7 +44,7 @@ const apply = async (server, globals, middlewares, logger) => {
       }
     }
 
-    console.log(name, paths, hosts, methods, module)
+    logger.debug(`mounted '${name}' middleware (methods=${methods}, paths=${paths}, hosts=${hosts || '*'})`)
   }
 }
 

@@ -1,10 +1,66 @@
 import express from 'express'
+import pino from 'pino'
+
 import handler from './lib/config/handler.js'
 import { defaultHost, defaultLogLevel, defaultPort } from './lib/config/default.js'
 import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
-import pino from 'pino'
 
+/**
+ * Create a new Trifid instance.
+ *
+ * @param {{
+ *   extends?: string[];
+ *   server?: {
+ *     listener: {
+ *       host?: string;
+ *       port?: number | string;
+ *     };
+ *     logLevel?: "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
+ *     express?: Record<string, any>;
+ *   };
+ *   globals?: Record<string, any>;
+ *   middlewares?: Record<string, {
+ *     order?: number,
+ *     module: string;
+ *     paths?: string | string[];
+ *     methods?: string | string[];
+ *     hosts?: string | string[];
+ *     config?: Record<string, any>;
+ *   }>;
+ * }}?} config Trifid configuration.
+ * @param {Record<string, {
+ *   order?: number,
+ *   module: (trifid: {logger: any; server: unknown; config: Record<string, any>}) => Promise<()> | ();
+ *   paths?: string | string[];
+ *   methods?: string | string[];
+ *   hosts?: string | string[];
+ *   config?: Record<string, any>;
+ * }?} additionalMiddlewares Add additional middlewares.
+ * @returns {Promise<{
+ *  start: () => void;
+ *  server: unknown;
+ *  config: {{
+ *   server?: {
+ *     listener: {
+ *       host?: string;
+ *       port?: number | string;
+ *     };
+ *     logLevel?: "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
+ *     express?: Record<string, any>;
+ *   };
+ *   globals?: Record<string, any>;
+ *   middlewares?: Record<string, {
+ *     order?: number,
+ *     module: string;
+ *     paths?: string | string[];
+ *     methods?: string | string[];
+ *     hosts?: string | string[];
+ *     config?: Record<string, any>;
+ *   }>;
+ * }}
+ * >}}
+ */
 const trifid = async (config, additionalMiddlewares = {}) => {
   const fullConfig = await handler(config)
   const server = express()
@@ -30,7 +86,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
 
   const start = () => {
     server.listen(port, host, () => {
-      logger.info(`listening on http://${host}:${port}/`)
+      logger.info(`Trifid instance listening on: http://${host}:${port}/`)
     })
   }
 

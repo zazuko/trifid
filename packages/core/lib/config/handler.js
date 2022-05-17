@@ -34,8 +34,8 @@ const resolveConfig = async (rawConfig, fileFullPath = undefined, depth = 0) => 
   const middlewares = {}
   configs.forEach(c => {
     // merge globals and server parts
-    config.globals = merge(c.globals, config.globals)
-    config.server = merge(c.server, config.server)
+    config.globals = merge({}, c.globals, config.globals)
+    config.server = merge({}, c.server, config.server)
 
     // merge middlewares
     Object.keys(c.middlewares).forEach(m => {

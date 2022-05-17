@@ -9,4 +9,5 @@ package-lock.json
 /.git/
 /coverage/
 /config*.json
+/config*.yaml
 babel*
