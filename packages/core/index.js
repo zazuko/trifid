@@ -1,5 +1,6 @@
 import express from 'express'
 import pino from 'pino'
+import { create } from 'express-handlebars'
 
 import handler from './lib/config/handler.js'
 import { defaultHost, defaultLogLevel, defaultPort } from './lib/config/default.js'
@@ -65,6 +66,14 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   const fullConfig = await handler(config)
   const server = express()
   server.disable('x-powered-by')
+
+  // template engine configuration
+  const hbs = create({
+    extname: '.hbs'
+  })
+  server.engine('.hbs', hbs.engine)
+  server.set('view engine', '.hbs')
+  server.set('views', './views')
 
   // dynamic server configuration
   const port = fullConfig?.server?.listener?.port || defaultPort

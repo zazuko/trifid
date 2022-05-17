@@ -1,5 +1,6 @@
 import healthMiddleware from '../../middlewares/health.js'
 import errorsMiddleware from '../../middlewares/errors.js'
+import notFoundMiddleware from '../../middlewares/notFound.js'
 
 const health = {
   paths: '/health',
@@ -9,10 +10,16 @@ const health = {
 
 const errors = {
   module: errorsMiddleware,
-  order: 1000
+  order: 1200
+}
+
+const notFound = {
+  module: notFoundMiddleware,
+  order: 1100
 }
 
 export default {
   health,
-  errors
+  errors,
+  notFound
 }
