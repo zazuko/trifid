@@ -2,18 +2,22 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Trifid</title>
+  <meta charset="utf-8" />
+  <title>{{#if title}}{{ title }}{{else}}Trifid{{/if}}</title>
 </head>
 
 <body>
-  {{> header }}
+  {{#unless disableHeader}}
+  {{{ header }}}
+  {{/unless}}
 
-  <main>
+  <main class="trifid-main">
     {{{ body }}}
   </main>
 
-  {{> footer }}
+  {{#unless disableFooter}}
+  {{{ footer }}}
+  {{/unless}}
 </body>
 
 </html>
