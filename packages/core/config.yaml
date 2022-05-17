@@ -23,3 +23,9 @@ middlewares:
     paths: "/zazuko"
     config:
       target: https://zazuko.com/
+
+  throw:
+    module: file:./middlewares/throw.js
+    paths: "/oops"
+    config:
+      message: This is a custom error message!
