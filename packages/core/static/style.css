@@ -1,0 +1,68 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-size: 1.2em;
+  font-family: sans-serif;
+  color: #000;
+  background-color: #fff;
+
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+a {
+  color: #ff441c;
+  text-decoration: underline;
+}
+
+.trifid-header,
+.trifid-footer {
+  background-color: #ffb15e;
+  height: 100px;
+}
+
+.trifid-header .logo-block {
+  background-color: #fcfcfc;
+  display: inline-flex;
+  align-items: center;
+  height: 100px;
+  padding: 0 24px;
+}
+
+.trifid-header .logo-block a {
+  color: #000;
+  text-decoration: none;
+  padding: 24px 0;
+}
+
+.trifid-header .logo-block .separator {
+  padding: 12px;
+}
+
+.trifid-header .logo-block .separator,
+.trifid-header .logo-block .app-name {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.trifid-content {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.trifid-footer {
+  display: flex;
+}
+
+.trifid-main {
+  flex: 1;
+}

@@ -14,7 +14,7 @@ middlewares:
   staticFiles:
     order: 100
     module: file:./middlewares/static.js
-    paths: "/"
+    paths: "/sources"
     config:
       directory: cwd:.
 
