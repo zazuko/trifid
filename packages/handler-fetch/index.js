@@ -7,14 +7,23 @@ import url from 'url'
 import Fetcher from './lib/Fetcher.js'
 import SerializerJsonld from '@rdfjs/serializer-jsonld-ext'
 
+// @TODO discuss what are the best serialization options.
 const jsonLdSerializer = new SerializerJsonld({
-  encoding: 'string',
-  compact: true,
-  flatten: true
+  encoding: 'string'
+  // compact: true,
+  // flatten: true
 })
 
 formats.serializers.set('application/json', jsonLdSerializer)
 formats.serializers.set('application/ld+json', jsonLdSerializer)
+
+function guessProtocol (candidate) {
+  try {
+    return new url.URL(candidate).protocol
+  } catch (error) {
+    return undefined
+  }
+}
 
 class FetchHandler {
   constructor (options) {
@@ -27,7 +36,7 @@ class FetchHandler {
     this.split = options.split
 
     // add file:// and resolve with cwd if no protocol was given
-    if (this.url && !url.parse(this.url).protocol) {
+    if (this.url && !guessProtocol(this.url)) {
       this.url = 'file://' + path.resolve(this.url)
     }
 
@@ -38,7 +47,7 @@ class FetchHandler {
   }
 
   _handle (req, res, next) {
-    rdfHandler.attach(req, res, { formats: formats }).then(() => {
+    rdfHandler.attach(req, res, { formats }).then(() => {
       return Fetcher.load(this.dataset, this)
     }).then(async () => {
       const dataset = this.dataset.match(null, null, null, rdf.namedNode(req.iri))

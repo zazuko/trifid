@@ -5,7 +5,7 @@ import express from 'express'
 import fs from 'fs'
 import path, { dirname } from 'path'
 import request from 'supertest'
-import url, { fileURLToPath } from 'url'
+import { fileURLToPath } from 'url'
 import Handler from '../index.js'
 import Promise from 'bluebird'
 
@@ -18,7 +18,7 @@ describe('trifid-handler-fetch', () => {
   const fileUrlDataset = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nq')
 
   const attachIri = (req, res, next) => {
-    req.iri = url.resolve('http://localhost:8080/', decodeURI(req.url))
+    req.iri = new URL(decodeURI(req.url), 'http://localhost:8080/').href
 
     next()
   }
@@ -138,7 +138,7 @@ describe('trifid-handler-fetch', () => {
       })
   })
 
-  it('should compact JSON-LD responses', () => {
+  it('retrieves JSON-LD responses', () => {
     const app = express()
 
     const handler = new Handler({
@@ -159,9 +159,9 @@ describe('trifid-handler-fetch', () => {
       .then((res) => {
         const jsonld = JSON.parse(res.text)
 
-        assert(!Array.isArray(jsonld))
-        assert.equal(jsonld['@id'], 'http://localhost:8080/data/person/amy-farrah-fowler')
-        assert.equal(jsonld['http://schema.org/givenName'], 'Amy')
+        assert(Array.isArray(jsonld))
+        assert(jsonld.length > 0)
+        assert.equal(jsonld[0]['@id'], 'http://localhost:8080/data/person/amy-farrah-fowler')
       })
   })
 
@@ -212,14 +212,14 @@ describe('trifid-handler-fetch', () => {
     app.use(attachIri)
     app.use(handler.handle)
 
-    fs.writeFileSync(url.parse(fileUrl).path, datasetBefore)
+    fs.writeFileSync(new URL(fileUrl), datasetBefore)
 
     return request(app)
       .get('/subject1')
       .set('accept', 'text/turtle')
       .expect(200)
       .then(() => {
-        fs.writeFileSync(url.parse(fileUrl).path, datasetAfter)
+        fs.writeFileSync(new URL(fileUrl), datasetAfter)
 
         return request(app)
           .get('/subject1')
@@ -253,21 +253,21 @@ describe('trifid-handler-fetch', () => {
     app.use(attachIri)
     app.use(handler.handle)
 
-    fs.writeFileSync(url.parse(fileUrl).path, datasetBefore)
+    fs.writeFileSync(new URL(fileUrl), datasetBefore)
 
     return request(app)
       .get('/subject1')
       .set('accept', 'text/turtle')
       .expect(200)
       .then(() => {
-        fs.writeFileSync(url.parse(fileUrl).path, datasetAfter)
+        fs.writeFileSync(new URL(fileUrl), datasetAfter)
 
         return request(app)
           .get('/subject1')
           .set('accept', 'text/turtle')
           .expect(404)
       }).then(() => {
-        fs.unlinkSync(url.parse(fileUrl).path)
+        fs.unlinkSync(new URL(fileUrl))
       })
   })
 

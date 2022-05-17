@@ -20,21 +20,19 @@
     "@rdfjs/formats-common": "^2.0.0",
     "@rdfjs/serializer-jsonld-ext": "^3.0.0",
     "file-fetch": "^1.7.0",
+    "rdf-fetch": "^1.0.0",
     "nodeify-fetch": "^3.0.0",
     "proto-fetch": "^1.0.0",
     "rdf-ext": "^2.0.1",
-    "rdf-fetch": "^1.0.0",
-    "rdf-serializer-jsonld-ext": "^1.4.0",
-    "rdf-utils-dataset": "^2.0.0",
     "rdfjs": "^0.0.1"
   },
   "devDependencies": {
-    "bluebird": "^3.5.3",
-    "express": "^4.15.4",
+    "bluebird": "^3.7.2",
+    "express": "^4.18.1",
     "mocha": "^10.0.0",
     "nock": "^13.2.4",
-    "standard": "^10.0.3",
-    "supertest": "^3.0.0",
-    "tbbt-ld": "^1.0.0"
+    "standard": "^17.0.0",
+    "supertest": "^6.2.3",
+    "tbbt-ld": "^1.1.0"
   }
 }

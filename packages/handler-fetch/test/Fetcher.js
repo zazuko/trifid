@@ -4,12 +4,11 @@ import assert from 'assert'
 import fs from 'fs'
 import nock from 'nock'
 import rdf from 'rdf-ext'
-import url from 'url'
 import Fetcher from '../lib/Fetcher.js'
 
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+import { createRequire } from 'module'
 
+const require = createRequire(import.meta.url) // eslint-disable-line
 
 describe('Fetcher', () => {
   const fileUrlDataset = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nq')
@@ -63,7 +62,7 @@ describe('Fetcher', () => {
     })
 
     it('should load a dataset from a http URL', () => {
-      const content = fs.readFileSync(url.parse(fileUrlDataset).path)
+      const content = fs.readFileSync(new URL(fileUrlDataset))
 
       nock('http://example.org').get('/dataset').reply(200, content, {
         'content-type': 'application/n-quads'
@@ -86,7 +85,7 @@ describe('Fetcher', () => {
     })
 
     it('should load a dataset from a http URL and use the given content type to parse it', () => {
-      const content = fs.readFileSync(url.parse(fileUrlDataset).path)
+      const content = fs.readFileSync(new URL(fileUrlDataset))
 
       nock('http://example.org').get('/dataset-content-type').reply(200, content)
 
@@ -165,7 +164,7 @@ describe('Fetcher', () => {
           rdf.namedNode(resource))
       ])
 
-      Fetcher.spreadDataset(input, output, { resource: resource })
+      Fetcher.spreadDataset(input, output, { resource })
 
       assert.equal(output.toCanonical(), expected.toCanonical())
     })

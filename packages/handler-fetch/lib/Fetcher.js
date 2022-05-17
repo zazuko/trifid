@@ -1,14 +1,13 @@
 import fileFetch from 'file-fetch'
-import nodeifyFetch from 'nodeify-fetch'
 import protoFetch from 'proto-fetch'
 import rdf from 'rdf-ext'
 import rdfFetch from 'rdf-fetch'
-import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph.js'
+import splitIntoGraphs from './spread/splitIntoGraphs.js'
 
 const fetch = protoFetch({
   file: fileFetch,
-  http: nodeifyFetch,
-  https: nodeifyFetch
+  http: rdf.fetch,
+  https: rdf.fetch
 })
 
 class Fetcher {
@@ -40,22 +39,22 @@ class Fetcher {
     })
   }
 
-  static spreadDataset (input, output, options) {
+  static spreadDataset (inputDataset, outputDataset, options) {
     if (options.resource) {
-      output.addAll(rdf.dataset(input, rdf.namedNode(options.resource)))
+      outputDataset.addAll(rdf.dataset(inputDataset, rdf.namedNode(options.resource)))
     } else if (options.split) {
-      output.addAll(resourcesToGraph(input))
+      outputDataset.addAll(splitIntoGraphs(inputDataset))
     } else {
-      output.addAll(input)
+      outputDataset.addAll(inputDataset)
     }
 
-    options.resources = Object.keys([...output].reduce((resources, quad) => {
+    options.resources = Object.keys([...outputDataset].reduce((resources, quad) => {
       resources[quad.graph.value] = true
 
       return resources
     }, {}))
 
-    return output
+    return outputDataset
   }
 
   static load (dataset, options) {
