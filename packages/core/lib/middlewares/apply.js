@@ -36,15 +36,20 @@ const apply = async (server, globals, middlewares, logger) => {
       methods.push('use')
     }
 
-    for (const path of paths) {
-      if (hosts.length === 0) {
-        methods.map(method => server[method](path, loadedMiddleware))
-      } else {
-        hosts.map(host => methods.map(method => server[method](path, vhost(host, loadedMiddleware))))
-      }
+    // if no hosts are specified, use a wildcard
+    if (hosts.length === 0) {
+      hosts.push('*')
     }
 
-    logger.debug(`mounted '${name}' middleware (methods=${methods}, paths=${paths}, hosts=${hosts || '*'})`)
+    // mount the middleware the way it should
+    for (const path of paths) {
+      hosts.map((host) => {
+        return methods.map((method) => {
+          logger.debug(`mount '${name}' middleware (method=${method}, path=${path}, host=${host})`)
+          return server[method](path, vhost(host, loadedMiddleware))
+        })
+      })
+    }
   }
 }
 
