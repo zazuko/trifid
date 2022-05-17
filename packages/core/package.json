@@ -14,8 +14,12 @@
   },
   "scripts": {
     "test": "standard && node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "typings": "tsc",
+    "clean": "rimraf *.tgz *.d.ts* lib/*.d.ts* lib/**/*.d.ts* middlewares/*.d.ts* middlewares/**/*.d.ts*",
+    "prepack": "npm run clean && npm run typings"
   },
+  "types": "./index.d.ts",
   "bin": {
     "trifid-core": "./server.js"
   },
@@ -41,8 +45,10 @@
     "babel-jest": "^28.1.0",
     "jest": "^28.1.0",
     "nodemon": "^2.0.16",
+    "rimraf": "^3.0.2",
     "standard": "^17.0.0",
-    "supertest": "^6.2.3"
+    "supertest": "^6.2.3",
+    "typescript": "^4.6.4"
   },
   "jest": {
     "collectCoverage": true,

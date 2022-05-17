@@ -53,7 +53,7 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
   /**
    * Render the full page.
    *
-   * @param {string} template Handlebars template path.
+   * @param {string} templatePath Handlebars template path.
    * @param {Record<string, any>} context Context for the rendered view.
    * @param {Record<string, any>} options Options to pass for the main view.
    * @returns {string} The rendered view
