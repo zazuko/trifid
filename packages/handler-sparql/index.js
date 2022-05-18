@@ -1,6 +1,9 @@
-const debug = require('debug')('trifid:handler-sparql')
-const SparqlHttpClient = require('sparql-http-client')
-SparqlHttpClient.fetch = require('node-fetch')
+import debugLib from 'debug'
+import nodeFetch from 'node-fetch'
+import SparqlHttpClient from 'sparql-http-client'
+
+const debug = debugLib('trifid:handler-sparql')
+SparqlHttpClient.fetch = nodeFetch
 
 function authBasicHeader (user, password) {
   return 'Basic ' + Buffer.from(user + ':' + password).toString('base64')
@@ -150,4 +153,4 @@ class SparqlHandler {
   }
 }
 
-module.exports = SparqlHandler
+export default SparqlHandler

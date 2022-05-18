@@ -1,9 +1,9 @@
-const { strictEqual } = require('assert')
-const withServer = require('express-as-promise/withServer.js')
-const { describe, it } = require('mocha')
-const SparqlHandler = require('../index.js')
-const createEndpoint = require('./support/createEndpoint.js')
-const setIri = require('./support/setIri.js')
+import { strictEqual } from 'assert'
+import withServer from 'express-as-promise/withServer.js'
+import { describe, it } from 'mocha'
+import SparqlHandler from '../index.js'
+import createEndpoint from './support/createEndpoint.js'
+import setIri from './support/setIri.js'
 
 /* eslint-disable no-template-curly-in-string */
 const defaults = {

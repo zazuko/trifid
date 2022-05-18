@@ -1,4 +1,4 @@
-const ExpressAsPromise = require('express-as-promise')
+import ExpressAsPromise from 'express-as-promise'
 
 async function createEndpoint () {
   const server = new ExpressAsPromise()
@@ -22,4 +22,4 @@ async function createEndpoint () {
   return server
 }
 
-module.exports = createEndpoint
+export default createEndpoint
