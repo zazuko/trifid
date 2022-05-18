@@ -144,11 +144,12 @@ class SparqlHandler {
         return next()
       }
 
-      Object.keys(result.headers).forEach(name => {
-        res.setHeader(name, result.headers[name])
+      const { headers, stream } = result
+      Object.keys(headers).forEach(name => {
+        res.setHeader(name, headers[name])
       })
 
-      result.stream.pipe(res)
+      stream.pipe(res)
     }).catch(next)
   }
 }
