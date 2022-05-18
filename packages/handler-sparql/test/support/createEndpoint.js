@@ -17,7 +17,7 @@ async function createEndpoint (status = 200) {
       return res.set('content-type', 'application/sparql-results+json').json({ boolean: true })
     }
 
-    if (query.startsWith('DESCRIBE')) {
+    if (query.startsWith('DESCRIBE') || query.startsWith('CONSTRUCT')) {
       const body = 'hello'
       return res
         .writeHead(status, {
