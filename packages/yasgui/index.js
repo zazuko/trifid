@@ -1,26 +1,26 @@
 import absoluteUrl from 'absolute-url'
 import express from 'express'
-import path from 'path'
 
-import { dirname } from 'path'
-import url, { fileURLToPath } from 'url'
+import url from 'url'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-
-function middleware (options) {
+function createMiddleWare (options, logger = (str) => console.log(str)) {
   const router = express.Router()
 
   if (!options || !options.endpointUrl) {
     return router
   }
 
-  options.template = options.template || path.join(__dirname, 'views/index.html')
+  const templatePath = new URL('views/index.html', import.meta.url).pathname
+  options.template = options.template || templatePath
+
+  const yasguiPath = new URL('node_modules/yasgui/dist/', import.meta.url).pathname
+  router.use('/dist/', express.static(yasguiPath))
 
   // render index page
   router.get('/', (req, res) => {
     absoluteUrl.attach(req)
 
-    const urlPathname = url.parse(req.originalUrl).pathname
+    const urlPathname = url.parse(req.originalUrl).pathname // eslint-disable-line
 
     // redirect to trailing slash URL for relative pathes of JS and CSS files
     if (urlPathname.slice(-1) !== '/') {
@@ -28,22 +28,20 @@ function middleware (options) {
     }
 
     // read SPARQL endpoint URL from options and resolve with absoluteUrl
-    res.locals.endpointUrl = url.resolve(req.absoluteUrl(), options.endpointUrl)
+    res.locals.endpointUrl = url.resolve(req.absoluteUrl(), options.endpointUrl) // eslint-disable-line
     res.locals.urlShortener = options.urlShortener
 
     res.render(options.template)
   })
 
-  // static files from yasgui dist folder
-  router.use('/dist/', express.static(path.resolve(require.resolve('yasgui'), '../../dist/')))
-
   return router
 }
 
-function factory (router, configs) {
-  return this.middleware.mountAll(router, configs, (config) => {
-    return middleware(config)
-  })
+function trifidFactory (trifid) {
+  const { config, logger } = trifid
+
+  return createMiddleWare(config, logger)
 }
 
-export default factory
+export default trifidFactory
+export { createMiddleWare }

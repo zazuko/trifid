@@ -21,6 +21,11 @@
     "yasgui": "^2.7.29"
   },
   "devDependencies": {
-    "standard": "^10.0.3"
+    "c8": "^7.11.3",
+    "ejs": "^3.1.8",
+    "express-as-promise": "^1.2.0",
+    "get-stream": "^6.0.1",
+    "mocha": "^10.0.0",
+    "standard": "^17.0.0"
   }
 }
