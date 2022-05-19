@@ -1,8 +1,11 @@
-const absoluteUrl = require('absolute-url')
-const express = require('express')
-const path = require('path')
+import absoluteUrl from 'absolute-url'
+import express from 'express'
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
 
-function middleware (options) {
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+function createMiddleWare (options, logger = str => console.log(str)) {
   const router = express.Router()
 
   if (!options || !options.endpointUrl) {
@@ -20,6 +23,9 @@ function middleware (options) {
     { code: 'fr', label: 'French' },
     { code: 'it', label: 'Italian' }
   ]
+
+  const graphExplorerPath = new URL('node_modules/graph-explorer/dist/', import.meta.url).pathname
+  router.use('/dist/', express.static(graphExplorerPath))
 
   // render index page
   router.get('/', (req, res) => {
@@ -43,16 +49,14 @@ function middleware (options) {
     res.render(options.template)
   })
 
-  // static files from yasgui dist folder
-  router.use('/dist/', express.static(path.resolve(require.resolve('graph-explorer'), '../../dist/')))
-
   return router
 }
 
-function factory (router, configs) {
-  return this.middleware.mountAll(router, configs, (config) => {
-    return middleware(config)
-  })
+function trifidFactory (trifid) {
+  const { config, logger } = trifid
+
+  return createMiddleWare(config, logger)
 }
 
-module.exports = factory
+export default trifidFactory
+export { createMiddleWare }
