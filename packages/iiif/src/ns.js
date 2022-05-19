@@ -1,4 +1,4 @@
-const namespace = require('@rdfjs/namespace')
+import namespace from '@rdfjs/namespace'
 
 const iiif_image = namespace('http://iiif.io/api/image/3#')
 const iiif_prezi = namespace('http://iiif.io/api/presentation/3#')
@@ -10,7 +10,7 @@ const as = namespace('http://www.w3.org/ns/activitystreams#')
 const oa = namespace('http://www.w3.org/ns/oa#')
 const rdf = namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 
-module.exports = {
+export default {
   as,
   dcterms,
   exif,

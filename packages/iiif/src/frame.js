@@ -1,4 +1,4 @@
-const jsonld = require('jsonld')
+import jsonld from 'jsonld'
 
 // jsonld.frame gets the schema (context) remotely, which is really expensive.
 // This map is a 'cache' for that specific call
@@ -50,7 +50,7 @@ async function frame (doc) {
   return framed
 }
 
-module.exports = frame
+export default frame
 
 
 

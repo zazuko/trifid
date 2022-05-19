@@ -1,8 +1,8 @@
-const queries = require('./queries.js')
-const ns = require('./ns.js')
-const rdf = require('rdf-ext')
-const clownface = require('clownface')
-const through2 = require('through2')
+import queries from './queries.js'
+import ns from './ns.js'
+import rdf from 'rdf-ext'
+import clownface from 'clownface'
+import through2 from 'through2'
 
 const fixBlankNodes = () =>
   through2.obj((chunk, _enc, callback) => {
@@ -64,4 +64,4 @@ function createApi (client, clientOptions) {
   }
 }
 
-module.exports = createApi
+export default createApi
