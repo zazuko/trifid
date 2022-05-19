@@ -1,8 +1,8 @@
-import queries from './queries.js'
-import ns from './ns.js'
-import rdf from 'rdf-ext'
 import clownface from 'clownface'
+import rdf from 'rdf-ext'
 import through2 from 'through2'
+import ns from './ns.js'
+import queries from './queries.js'
 
 const fixBlankNodes = () =>
   through2.obj((chunk, _enc, callback) => {
@@ -48,7 +48,7 @@ function createApi (client, clientOptions) {
       ns.as.OrderedCollectionPage,
       ns.oa.Annotation,
       ns.dctypes.StillImage,
-      ns.dctypes.MovingImage,
+      ns.dctypes.MovingImage
     ]).terms
 
     // And describe them

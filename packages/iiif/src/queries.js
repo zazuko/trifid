@@ -1,77 +1,75 @@
 import { sparql } from '@tpluscode/rdf-string'
 import ns from './ns.js'
 
-const { as, dcterms, exif, iiif_image, iiif_prezi, oa, rdf, schema } = ns
-
 function discoverManifest (iri) {
   return sparql`
 CONSTRUCT {
-  ?m a ${iiif_prezi.Manifest} ;
-    ${as.items} ?manifestItems .
+  ?m a ${ns.iiif_prezi.Manifest} ;
+    ${ns.as.items} ?manifestItems .
 
-  ?manifestRest ${rdf.first} ?canvas ;
-    ${rdf.rest} ?manifestTail .
+  ?manifestRest ${ns.rdf.first} ?canvas ;
+    ${ns.rdf.rest} ?manifestTail .
 
-  ?canvas a ${iiif_prezi.Canvas} ;
-    ${as.items} ?canvasItems .
+  ?canvas a ${ns.iiif_prezi.Canvas} ;
+    ${ns.as.items} ?canvasItems .
 
-  ?canvasRest ${rdf.first} ?page ;
-    ${rdf.rest} ?canvasTail .
+  ?canvasRest ${ns.rdf.first} ?page ;
+    ${ns.rdf.rest} ?canvasTail .
 
-  ?page a ${as.OrderedCollectionPage} ;
-    ${as.items} ?pageItems .
+  ?page a ${ns.as.OrderedCollectionPage} ;
+    ${ns.as.items} ?pageItems .
 
-  ?pageRest ${rdf.first} ?annotation ;
-    ${rdf.rest} ?pageTail .
+  ?pageRest ${ns.rdf.first} ?annotation ;
+    ${ns.rdf.rest} ?pageTail .
 
-  ?annotation a ${oa.Annotation} ;
-    ${oa.hasBody} ?body .
+  ?annotation a ${ns.oa.Annotation} ;
+    ${ns.oa.hasBody} ?body .
 
   ?body a ?dcmiType ;
-    ${schema.potentialAction} ?service .
+    ${ns.schema.potentialAction} ?service .
 
-  ?service a ${iiif_image.ImageService} ;
-    ${dcterms.conformsTo} ?serviceLevel ;
-    ${dcterms.type} ?serviceType ;
-    ${exif.height} ?serviceHeight ;
-    ${exif.width} ?serviceWidth .
+  ?service a ${ns.iiif_image.ImageService} ;
+    ${ns.dcterms.conformsTo} ?serviceLevel ;
+    ${ns.dcterms.type} ?serviceType ;
+    ${ns.exif.height} ?serviceHeight ;
+    ${ns.exif.width} ?serviceWidth .
 } WHERE {
   #pragma optimizer.property.paths.start off
 
-  ?m a ${iiif_prezi.Manifest} ;
-    ${as.items} ?manifestItems .
+  ?m a ${ns.iiif_prezi.Manifest} ;
+    ${ns.as.items} ?manifestItems .
 
-  ?manifestItems ${rdf.rest}* ?manifestRest .
-  ?manifestRest ${rdf.first} ?canvas ;
-    ${rdf.rest} ?manifestTail .
+  ?manifestItems ${ns.rdf.rest}* ?manifestRest .
+  ?manifestRest ${ns.rdf.first} ?canvas ;
+    ${ns.rdf.rest} ?manifestTail .
 
-  ?canvas a ${iiif_prezi.Canvas} ;
-    ${as.items} ?canvasItems .
+  ?canvas a ${ns.iiif_prezi.Canvas} ;
+    ${ns.as.items} ?canvasItems .
 
-  ?canvasItems ${rdf.rest}* ?canvasRest .
-  ?canvasRest ${rdf.first} ?page ;
-    ${rdf.rest} ?canvasTail .
+  ?canvasItems ${ns.rdf.rest}* ?canvasRest .
+  ?canvasRest ${ns.rdf.first} ?page ;
+    ${ns.rdf.rest} ?canvasTail .
 
-  ?page a ${as.OrderedCollectionPage} ;
-    ${as.items} ?pageItems .
+  ?page a ${ns.as.OrderedCollectionPage} ;
+    ${ns.as.items} ?pageItems .
 
-  ?pageItems ${rdf.rest}* ?pageRest .
-  ?pageRest ${rdf.first} ?annotation ;
-    ${rdf.rest} ?pageTail .
+  ?pageItems ${ns.rdf.rest}* ?pageRest .
+  ?pageRest ${ns.rdf.first} ?annotation ;
+    ${ns.rdf.rest} ?pageTail .
 
-  ?annotation a ${oa.Annotation} ;
-    ${oa.hasBody} ?body .
+  ?annotation a ${ns.oa.Annotation} ;
+    ${ns.oa.hasBody} ?body .
 
   ?body a ?dcmiType .
 
   OPTIONAL {
-    ?body ${schema.potentialAction} ?service .
+    ?body ${ns.schema.potentialAction} ?service .
 
-    ?service a ${iiif_image.ImageService} ;
-      ${dcterms.conformsTo} ?serviceLevel ;
-      ${dcterms.type} ?serviceType ;
-      ${exif.height} ?serviceHeight ;
-      ${exif.width} ?serviceWidth .
+    ?service a ${ns.iiif_image.ImageService} ;
+      ${ns.dcterms.conformsTo} ?serviceLevel ;
+      ${ns.dcterms.type} ?serviceType ;
+      ${ns.exif.height} ?serviceHeight ;
+      ${ns.exif.width} ?serviceWidth .
   }
 
   VALUES ?m { ${iri} }
@@ -83,11 +81,10 @@ function describeNodes (nodes) {
   return nodes
     .reduce((acc, node) => sparql`${acc} ${node}`, sparql`DESCRIBE`)
     .toString()
-
 }
 
 function manifestExists (iri) {
-  return sparql`ASK { ${iri} a ${iiif_prezi.Manifest} }`.toString()
+  return sparql`ASK { ${iri} a ${ns.iiif_prezi.Manifest} }`.toString()
 }
 
 export default { discoverManifest, describeNodes, manifestExists }
