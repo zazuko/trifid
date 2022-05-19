@@ -21,6 +21,7 @@ import templateEngine from './lib/templateEngine.js'
  *     express?: Record<string, any>;
  *   };
  *   globals?: Record<string, any>;
+ *   template?: Record<string, any>;
  *   middlewares?: Record<string, {
  *     order?: number,
  *     module: string;
@@ -51,6 +52,7 @@ import templateEngine from './lib/templateEngine.js'
  *     express?: Record<string, any>;
  *   };
  *   globals?: Record<string, any>;
+ *   template?: Record<string, any>;
  *   middlewares?: Record<string, {
  *     order?: number,
  *     module: string;
@@ -74,6 +76,9 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   // logger configuration
   const logLevel = fullConfig?.server?.logLevel || defaultLogLevel
 
+  // template configuration
+  const template = fullConfig?.template || {}
+
   const logger = pino({
     name: 'trifid-core',
     level: logLevel,
@@ -82,7 +87,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     }
   })
 
-  const templateEngineInstance = await templateEngine()
+  const templateEngineInstance = await templateEngine(template)
   const middlewares = await middlewaresAssembler(fullConfig, additionalMiddlewares)
   await applyMiddlewares(server, fullConfig.globals, middlewares, logger, templateEngineInstance)
 

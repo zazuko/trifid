@@ -82,7 +82,11 @@ const schema = {
     },
     server,
     globals,
-    middlewares
+    middlewares,
+    template: {
+      type: 'object',
+      additionalProperties: true
+    }
   },
   additionalProperties: false
 }

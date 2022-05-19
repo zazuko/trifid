@@ -15,7 +15,7 @@ export const extendsResolver = (value, context) => {
 export const applyResolvers = (value, context) => {
   if (typeof value === 'object') {
     Object.keys(value).map(k => {
-      value[k] = serverResolver(value[k], context)
+      value[k] = applyResolvers(value[k], context)
       return value[k]
     })
 
@@ -27,6 +27,10 @@ export const applyResolvers = (value, context) => {
   }
 
   return value
+}
+
+export const templateResolver = (value, context) => {
+  return applyResolvers(value, context)
 }
 
 export const serverResolver = (value, context) => {

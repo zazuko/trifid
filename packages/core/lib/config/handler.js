@@ -5,7 +5,7 @@ import JSON5 from 'json5'
 import { parse } from 'yaml'
 import cloneDeep from 'lodash/cloneDeep.js'
 import { cwdCallback } from '../resolvers.js'
-import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver } from './resolvers.js'
+import { extendsResolver, globalsResolver, middlewaresResolver, serverResolver, templateResolver } from './resolvers.js'
 import { defaultPort, maxDepth } from './default.js'
 import { dirname } from 'path'
 
@@ -33,9 +33,10 @@ const resolveConfig = async (rawConfig, fileFullPath = undefined, depth = 0) => 
   // merge all fields
   const middlewares = {}
   configs.forEach(c => {
-    // merge globals and server parts
+    // merge template, globals and server parts
     config.globals = merge({}, c.globals, config.globals)
     config.server = merge({}, c.server, config.server)
+    config.template = merge({}, c.template, config.template)
 
     // merge middlewares
     Object.keys(c.middlewares).forEach(m => {
@@ -50,6 +51,7 @@ const resolveConfig = async (rawConfig, fileFullPath = undefined, depth = 0) => 
   config.middlewares = middlewaresResolver(middlewares, context)
   config.globals = globalsResolver(config.globals, context)
   config.server = serverResolver(config.server, context)
+  config.template = templateResolver(config.template, context)
 
   // we don't need the extends field anymore
   delete config.extends

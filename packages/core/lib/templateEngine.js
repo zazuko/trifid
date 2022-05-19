@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const defaultConfig = {
-  templates: {
+  files: {
     main: `${currentDir}/../views/layouts/main.hbs`,
     header: `${currentDir}/../views/partials/header.hbs`,
     footer: `${currentDir}/../views/partials/footer.hbs`
@@ -34,17 +34,17 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
     return resolvedTemplates.get(path)
   }
 
-  if (!templateOptions?.templates) {
-    throw new Error('no base template found')
+  if (!templateOptions?.files) {
+    throw new Error('no files defined')
   }
 
-  if (!templateOptions?.templates?.main) {
+  if (!templateOptions?.files?.main) {
     throw new Error("no 'main' template was defined")
   }
 
   const templates = Object.fromEntries(
     await Promise.all(
-      Object.entries(templateOptions.templates).map(async (t) => [t[0], await resolveTemplate(t[1])])
+      Object.entries(templateOptions.files).map(async (t) => [t[0], await resolveTemplate(t[1])])
     )
   )
   const templatesWithoutMain = Object.fromEntries(Object.entries(templates).filter((t) => t[0] !== 'main'))
