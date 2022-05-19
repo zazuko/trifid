@@ -27,7 +27,8 @@ const filterOutAsItems = () =>
 
 function createApi (client, clientOptions) {
   async function exists (iri) {
-    return await client.query.ask(queries.manifestExists(iri), clientOptions)
+    const query = queries.manifestExists(iri)
+    return await client.query.ask(query, clientOptions)
   }
 
   async function getBasicDataset (iri) {
@@ -64,4 +65,4 @@ function createApi (client, clientOptions) {
   }
 }
 
-export default createApi
+export { createApi }
