@@ -2,7 +2,7 @@ import jsonld from 'jsonld'
 import rdf from 'rdf-ext'
 import SparqlHttpClient from 'sparql-http-client'
 import frame from './src/frame.js'
-import createApi from './src/iiif.js'
+import { createApi } from './src/iiif.js'
 
 function createMiddleware (api, options = {}, logger = str => console.log(str)) {
   const { uriPrefix } = options
@@ -35,11 +35,11 @@ function createMiddleware (api, options = {}, logger = str => console.log(str)) 
   }
 }
 
-async function factory (trifid) {
+function trifidFactory (trifid) {
   const { config, logger } = trifid
 
   if (!config || !config.endpointUrl) {
-    throw Error('No endpoint configured, module not mounted')
+    throw Error('missing endpointUrl parameter')
   }
   const client = new SparqlHttpClient({
     endpointUrl: config.endpointUrl,
@@ -47,13 +47,13 @@ async function factory (trifid) {
     password: config.endpointPassword
   })
 
-  const clientOptions = {
+  const api = createApi(client, {
     operation: 'postUrlencoded'
-  }
-  const api = createApi(client, clientOptions)
+  })
   const uriPrefix = config.uriPrefix ? config.uriPrefix : ''
 
   return createMiddleware(api, { uriPrefix }, logger)
 }
 
-export default factory
+export default trifidFactory
+export { createMiddleware }
