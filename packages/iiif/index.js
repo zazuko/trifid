@@ -1,19 +1,20 @@
-import SparqlHttpClient from 'sparql-http-client'
-import createApi from './src/iiif.js'
-import rdf from 'rdf-ext'
 import jsonld from 'jsonld'
+import rdf from 'rdf-ext'
+import SparqlHttpClient from 'sparql-http-client'
 import frame from './src/frame.js'
+import createApi from './src/iiif.js'
 
-function createMiddleware (api, options = {}, logger = (str) => console.log(str)) {
-
+function createMiddleware (api, options = {}, logger = str => console.log(str)) {
   const { uriPrefix } = options
 
   return async (req, res, next) => {
     const url = req.url
-    if (req.method !== 'GET') return next()
+    if (req.method !== 'GET') {
+      return next()
+    }
 
     if (!(uriPrefix || req.query.uri)) {
-      logger(`No uri query parameter`)
+      logger('No uri query parameter')
       return next()
     }
 
@@ -43,11 +44,11 @@ async function factory (trifid) {
   const client = new SparqlHttpClient({
     endpointUrl: config.endpointUrl,
     user: config.endpointUser,
-    password: config.endpointPassword,
+    password: config.endpointPassword
   })
 
   const clientOptions = {
-    operation: 'postUrlencoded',
+    operation: 'postUrlencoded'
   }
   const api = createApi(client, clientOptions)
   const uriPrefix = config.uriPrefix ? config.uriPrefix : ''
