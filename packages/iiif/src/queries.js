@@ -1,6 +1,6 @@
-const rdfString = require('@tpluscode/rdf-string')
-const ns = require('./ns.js')
-const { sparql } = rdfString
+import { sparql } from '@tpluscode/rdf-string'
+import ns from './ns.js'
+
 const { as, dcterms, exif, iiif_image, iiif_prezi, oa, rdf, schema } = ns
 
 function discoverManifest (iri) {
@@ -90,4 +90,4 @@ function manifestExists (iri) {
   return sparql`ASK { ${iri} a ${iiif_prezi.Manifest} }`.toString()
 }
 
-module.exports = { discoverManifest, describeNodes, manifestExists }
+export default { discoverManifest, describeNodes, manifestExists }
