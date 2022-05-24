@@ -86,61 +86,28 @@ The following options are supported:
 - `user`: User to connect to the SPARQL endpoint
 - `password`: Password to connect to the SPARQL endpoint
 
-Configuring Trifid to use `@zazuko/trifid-plugin-ckan` is done the same way as `trifid-plugin-yasgui`.
-Since Trifid provides an example config using `trifid-plugin-yasgui`:
-[`config-sparql.json`](https://github.com/zazuko/trifid/blob/1946e324c5a8340b6de5526fae5344e79aa024f2/config-sparql.json),
-here is how to configure `@zazuko/trifid-plugin-ckan` by simply duplicating the YASGUI config parts:
+Configuring Trifid to use `@zazuko/trifid-plugin-ckan` is easy, just add the following in your configuration file:
 
-```diff
-  "yasgui": {
-    "default": {
-      "path": "/sparql"
-    }
-  },
-+ "ckan": {
-+   "default": {
-+     "path": "/ckan"
-+   }
-+ },
-  "breakDown": {
-    "handler": {},
-    "handler.root": {},
-    "handler.root.options": {},
-    "handler.root.options.endpointUrl": "sparqlEndpointUrl",
-    "handler.root.options.authentication": "sparqlEndpointAuthentication",
-    "sparqlProxy": {},
-    "sparqlProxy.default": {},
-    "sparqlProxy.default.endpointUrl": "sparqlEndpointUrl",
-    "sparqlProxy.default.authentication": "sparqlEndpointAuthentication",
-    "yasgui": {},
-    "yasgui.default": {},
-    "yasgui.default.endpointUrl": [
-      "sparqlProxy.default.path",
-      "sparqlEndpointUrl"
-    ],
-+   "ckan": {},
-+   "ckan.default": {},
-+   "ckan.default.endpointUrl": [
-+     "sparqlProxy.default.path",
-+     "sparqlEndpointUrl"
-+   ]
-  },
-  "plugins": {
-    "sparqlProxy": {
-      "priority": 115,
-      "module": "trifid-core:./plugins/middleware",
-      "middleware": "sparql-proxy"
-    },
-    "yasgui": {
-      "priority": 115,
-      "module": "trifid-plugin-yasgui"
-    },
-+   "ckan": {
-+     "priority": 115,
-+     "module": "@zazuko/trifid-plugin-ckan"
-+   }
-  }
-}
+```yaml
+middlewares:
+
+  # …other middlewares
+
+  ckan:
+    module: "@zazuko/trifid-plugin-ckan"
+    paths: /ckan
+    config:
+      endpointUrl: https://some-custom-endpoint/
+      # user: root
+      # password: super-secret
+```
+
+and update the `config` fields with correct informations.
+
+Do not forget to add it to your Node dependencies:
+
+```sh
+npm install @zazuko/trifid-plugin-ckan
 ```
 
 With this configuration, the service will be exposed at `/ckan` and will require the `organization` query parameter, like this: `/ckan?organization=…`.
