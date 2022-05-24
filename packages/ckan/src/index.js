@@ -21,6 +21,8 @@ const factory = (trifid) => {
       return res.status(400).send('Missing `organization` query param')
     }
 
+    logger.debug(`asked for the '${organization}' organization`)
+
     try {
       const uri = rdf.namedNode(organization)
 
