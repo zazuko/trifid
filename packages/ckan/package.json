@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Endpoint for opendata.swiss CKAN harvester",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "test": "standard"
   },
@@ -11,9 +12,7 @@
   "dependencies": {
     "@tpluscode/rdf-string": "^0.2.25",
     "@zazuko/rdf-vocabularies": "2021.9.22-3",
-    "debug": "^4.3.4",
     "dotenv": "^16.0.0",
-    "express": "^4.17.3",
     "rdf-ext": "^2.0.1",
     "sparql-http-client": "^2.4.0",
     "xmlbuilder2": "^3.0.2"

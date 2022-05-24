@@ -1,5 +1,5 @@
 import { sparql } from '@tpluscode/rdf-string'
-import * as ns from './namespace.mjs'
+import * as ns from './namespace.js'
 
 function datasetsQuery (organizationId) {
   return sparql`

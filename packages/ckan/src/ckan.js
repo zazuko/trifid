@@ -1,6 +1,6 @@
-import { toXML } from './xml.mjs'
+import { toXML } from './xml.js'
 
-import { datasetsQuery } from './query.mjs'
+import { datasetsQuery } from './query.js'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
 
 export function createAPI (config) {

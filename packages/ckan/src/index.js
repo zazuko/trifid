@@ -1,60 +1,41 @@
-const express = require('express')
-const rdf = import('rdf-ext')
-const debug = require('debug')('ckan:')
-const url = require('url')
+import { createAPI } from './ckan.js'
+import rdf from 'rdf-ext'
 
-async function importAPI (clientConfig) {
-  const { createAPI } = await import('./ckan.mjs')
-  return createAPI(clientConfig)
-}
+const factory = (trifid) => {
+  const { config, logger } = trifid
 
-function middleware (options) {
-  const router = express.Router()
-
-  if (!options || !options.endpointUrl) {
-    debug('Warning: no endpoint configured, module not mounted')
-    return router
+  const { endpointUrl, user, password } = config
+  if (!endpointUrl) {
+    throw new Error("configuration is missing 'endpointUrl' field")
   }
 
-  router.get('/', async (req, res) => {
-    // Create an absolute URL if a relative URL is provided
-    options.endpointUrl = (new url.URL(options.endpointUrl, req.absoluteUrl())).toString()
-
-    const { fetchDatasets, toXML } = await importAPI({
-      endpointUrl: options.endpointUrl,
-      user: options.user,
-      password: options.password
+  return async (req, res, _next) => {
+    const { fetchDatasets, toXML } = createAPI({
+      endpointUrl,
+      user,
+      password
     })
 
-    const organization = req.query.organization
+    const organization = req?.query?.organization
     if (!organization) {
       return res.status(400).send('Missing `organization` query param')
     }
 
     try {
-      const rdfResolved = await rdf
-      const uri = rdfResolved.default.namedNode(organization)
+      const uri = rdf.namedNode(organization)
 
       const dataset = await fetchDatasets(uri)
-      const xml = await toXML(dataset)
+      const xml = toXML(dataset)
 
       const format = 'application/rdf+xml'
       res.setHeader('Content-Type', format)
 
       return res.send(xml.toString())
     } catch (e) {
-      debug(e)
+      logger.error(e)
       return res.status(500).send('Error')
     }
-  })
-
-  return router
+  }
 }
 
-function factory (router, configs) {
-  return this.middleware.mountAll(router, configs, (config) => {
-    return middleware(config)
-  })
-}
-
-module.exports = factory
+export default factory
