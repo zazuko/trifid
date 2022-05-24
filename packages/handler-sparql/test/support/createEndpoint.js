@@ -1,5 +1,4 @@
 import ExpressAsPromise from 'express-as-promise'
-import { Readable } from 'stream'
 
 async function createEndpoint (status = 200) {
   const server = new ExpressAsPromise()
@@ -14,7 +13,10 @@ async function createEndpoint (status = 200) {
     server.queries.push(query)
 
     if (query.startsWith('ASK')) {
-      return res.set('content-type', 'application/sparql-results+json').json({ boolean: true })
+      return res
+        .status(status)
+        .set('content-type', 'application/sparql-results+json')
+        .json({ boolean: true })
     }
 
     if (query.startsWith('DESCRIBE') || query.startsWith('CONSTRUCT')) {

@@ -23,10 +23,9 @@ describe('trifid-handler-sparql', () => {
     [
       { iri: 'http://localhost/test', resourceNoSlash: undefined },
       { iri: 'http://localhost/test/', resourceNoSlash: undefined },
-      { iri: 'http://localhost/test', resourceNoSlash: true },
-    ].forEach((input) => {
+      { iri: 'http://localhost/test', resourceNoSlash: true }
+    ].forEach(input => {
       it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
-
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -52,10 +51,9 @@ describe('trifid-handler-sparql', () => {
     [
       { iri: 'http://localhost/test', resourceNoSlash: undefined },
       { iri: 'http://localhost/test/', resourceNoSlash: undefined },
-      { iri: 'http://localhost/test', resourceNoSlash: true },
-    ].forEach((input) => {
+      { iri: 'http://localhost/test', resourceNoSlash: true }
+    ].forEach(input => {
       it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
-
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -80,9 +78,8 @@ describe('trifid-handler-sparql', () => {
   describe('uses containerExistsQuery and containerGraphQuery', async () => {
     [
       { iri: 'http://localhost/test/', resourceNoSlash: true }
-    ].forEach((input) => {
+    ].forEach(input => {
       it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
-
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -199,7 +196,7 @@ describe('trifid-handler-sparql', () => {
       server.app.use(setIri('http://localhost/test'))
       server.app.use(handler.handle.bind(handler))
 
-      await server.fetch('/test', { headers: { 'accept': 'format' } })
+      await server.fetch('/test', { headers: { accept: 'format' } })
       await endpoint.stop()
 
       strictEqual(endpoint.requestHeaders[1].accept, 'format')
@@ -215,25 +212,25 @@ describe('trifid-handler-sparql', () => {
       server.app.use(setIri('http://localhost/test'))
       server.app.use(handler.handle.bind(handler))
 
-      const res = await server.fetch('/test', { headers: { 'accept': 'format' } })
+      const res = await server.fetch('/test', { headers: { accept: 'format' } })
       await endpoint.stop()
       strictEqual(res.headers['content-encoding'], undefined)
     })
   })
-// @TODO check requirements
-  describe('Endpoint status codes forwarded', async () => {
+
+  // @TODO https://github.com/zazuko/trifid/issues/39
+  describe.skip('Endpoint status codes forwarded', async () => {
     [
       400,
-      500,
-    ].forEach((status) => {
+      500
+    ].forEach(status => {
       it(`for status ${status}`, async function () {
-
         await withServer(async server => {
-          const endpoint = await createEndpoint(status = status)
+          const endpoint = await createEndpoint(status)
 
           const handler = new SparqlHandler({
             ...defaults,
-            endpointUrl: endpoint.url,
+            endpointUrl: endpoint.url
           })
 
           server.app.use(setIri('http://localhost/test'))
@@ -246,5 +243,4 @@ describe('trifid-handler-sparql', () => {
       })
     })
   })
-
 })

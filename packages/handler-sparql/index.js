@@ -86,7 +86,6 @@ class SparqlHandler {
       headers: headers,
       stream: res.body
     }
-
   }
 
   handle (req, res, next) {
@@ -108,13 +107,12 @@ class SparqlHandler {
     const { status, exists } = await this.exists(iri, queryExist)
 
     if (status !== 200) {
-      res.status(status)
+      // @TODO https://github.com/zazuko/trifid/issues/39
       return next()
     } else if (!exists) {
-      res.status(404)
+      // @TODO https://github.com/zazuko/trifid/issues/39
       return next()
     } else {
-
       const query = isContainer ? this.buildContainerGraphQuery(iri) : this.buildResourceGraphQuery(iri)
 
       const { status, headers, stream } = await this.graphStream(iri, query, req.headers.accept)
@@ -128,7 +126,6 @@ class SparqlHandler {
       })
       stream.pipe(res)
     }
-
   }
 }
 
