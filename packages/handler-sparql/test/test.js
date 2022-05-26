@@ -218,11 +218,10 @@ describe('trifid-handler-sparql', () => {
     })
   })
 
-  // @TODO https://github.com/zazuko/trifid/issues/39
-  describe.skip('Endpoint status codes forwarded', async () => {
+  describe('Endpoint status codes forwarded', async () => {
     [
-      400,
-      500
+      400, 401, 403, 405, 415, 444,
+      500, 501, 502, 503, 511
     ].forEach(status => {
       it(`for status ${status}`, async function () {
         await withServer(async server => {

@@ -107,11 +107,9 @@ class SparqlHandler {
     const { status, exists } = await this.exists(iri, queryExist)
 
     if (status !== 200) {
-      // @TODO https://github.com/zazuko/trifid/issues/39
-      return next()
+      return res.status(status).send('')
     } else if (!exists) {
-      // @TODO https://github.com/zazuko/trifid/issues/39
-      return next()
+      return res.status(404).send('')
     } else {
       const query = isContainer ? this.buildContainerGraphQuery(iri) : this.buildResourceGraphQuery(iri)
 
