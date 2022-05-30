@@ -13,7 +13,7 @@
     "url": "https://github.com/zazuko/trifid-plugin-yasgui/issues"
   },
   "scripts": {
-    "test": "standard"
+    "test": "standard && mocha"
   },
   "dependencies": {
     "absolute-url": "^1.2.2",
