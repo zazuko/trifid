@@ -1,6 +1,7 @@
 {
   "name": "trifid-plugin-spex",
   "description": "Trifid SPEX plugin",
+  "type": "module",
   "version": "0.1.2",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid-plugin-spex",
@@ -12,7 +13,7 @@
     "url": "https://github.com/zazuko/trifid-plugin-spex/issues"
   },
   "scripts": {
-    "test": "standard"
+    "test": "standard && mocha"
   },
   "dependencies": {
     "@zazuko/spex": "^0.1.4",
@@ -20,6 +21,11 @@
     "express": "^4.15.4"
   },
   "devDependencies": {
-    "standard": "^16.0.0"
+    "c8": "^7.11.3",
+    "ejs": "^3.1.8",
+    "express-as-promise": "^1.2.0",
+    "get-stream": "^6.0.1",
+    "mocha": "^10.0.0",
+    "standard": "^17.0.0"
   }
 }

@@ -1,7 +1,9 @@
-const absoluteUrl = require('absolute-url')
-const express = require('express')
-const path = require('path')
-const url = require('url')
+import absoluteUrl from 'absolute-url'
+import express from 'express'
+import path, { dirname } from 'path'
+import url, { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const defaults = {
   template: path.join(__dirname, 'views/index.html')
@@ -16,7 +18,7 @@ const defaultOptions = {
   forceIntrospection: false
 }
 
-function middleware (config) {
+function createMiddleWare (config, logger = (str) => console.log(str)) {
   const router = express.Router()
 
   const options = { ...defaultOptions, ...(config.options || {}) }
@@ -40,15 +42,15 @@ function middleware (config) {
   })
 
   // static files from spex dist folder
-  router.use('/static/', express.static(path.resolve(require.resolve('@zazuko/spex'), '../../dist/')))
-
+  const yasguiPath = new URL('node_modules/@zazuko/spex', import.meta.url).pathname
+  router.use('/static/', express.static(yasguiPath))
   return router
 }
 
-function factory (router, configs) {
-  return this.middleware.mountAll(router, configs, (config) => {
-    return middleware(config)
-  })
+function trifidFactory (trifid) {
+  const { config, logger } = trifid
+  return createMiddleWare(config, logger)
 }
 
-module.exports = factory
+export default trifidFactory
+export { createMiddleWare }
