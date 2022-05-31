@@ -17,7 +17,7 @@ const jsonLdSerializer = new SerializerJsonld({
 formats.serializers.set('application/json', jsonLdSerializer)
 formats.serializers.set('application/ld+json', jsonLdSerializer)
 
-function guessProtocol (candidate) {
+const guessProtocol = (candidate) => {
   try {
     return new url.URL(candidate).protocol
   } catch (error) {
@@ -25,7 +25,7 @@ function guessProtocol (candidate) {
   }
 }
 
-class FetchHandler {
+export class FetchHandler {
   constructor (options) {
     this.dataset = rdf.dataset()
     this.url = options.url
@@ -69,4 +69,14 @@ class FetchHandler {
   }
 }
 
-export default FetchHandler
+const factory = trifid => {
+  const { config } = trifid
+
+  const handler = new FetchHandler(config)
+
+  return (req, res, next) => {
+    handler.handle(req, res, next)
+  }
+}
+
+export default factory

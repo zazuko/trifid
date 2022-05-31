@@ -6,7 +6,7 @@ import fs from 'fs'
 import path, { dirname } from 'path'
 import request from 'supertest'
 import { fileURLToPath } from 'url'
-import Handler from '../index.js'
+import { FetchHandler as Handler } from '../index.js'
 import Promise from 'bluebird'
 
 import { createRequire } from 'module'
