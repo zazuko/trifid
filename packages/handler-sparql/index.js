@@ -5,51 +5,62 @@ import SparqlHttpClient from 'sparql-http-client'
 const debug = debugLib('trifid:handler-sparql')
 SparqlHttpClient.fetch = nodeFetch
 
+const defaults = {
+  authentication: false,
+  resourceNoSlash: true,
+  resourceExistsQuery: 'ASK { <${iri}> ?p ?o }', // eslint-disable-line no-template-curly-in-string
+  resourceGraphQuery: 'DESCRIBE <${iri}>', // eslint-disable-line no-template-curly-in-string
+  containerExistsQuery: 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }', // eslint-disable-line no-template-curly-in-string
+  containerGraphQuery: 'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }' // eslint-disable-line no-template-curly-in-string
+}
+
 const authBasicHeader = (user, password) => {
   return 'Basic ' + Buffer.from(user + ':' + password).toString('base64')
 }
 
-const handler = options => {
-  const authentication = options.authentication || false
-  const resourceNoSlash = options.resourceNoSlash || true
-  const resourceExistsQuery = options.resourceExistsQuery || 'ASK { <${iri}> ?p ?o }' // eslint-disable-line no-template-curly-in-string
-  const resourceGraphQuery = options.resourceGraphQuery || 'DESCRIBE <${iri}>' // eslint-disable-line no-template-curly-in-string
-  const containerExistsQuery = options.containerExistsQuery || 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }' // eslint-disable-line no-template-curly-in-string
-  const containerGraphQuery = options.containerGraphQuery || 'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }' // eslint-disable-line no-template-curly-in-string
-  const client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
+export class SparqlHandler {
+  constructor (options) {
+    this.authentication = options.authentication
+    this.resourceNoSlash = options.resourceNoSlash
+    this.resourceExistsQuery = options.resourceExistsQuery
+    this.resourceGraphQuery = options.resourceGraphQuery
+    this.containerExistsQuery = options.containerExistsQuery
+    this.containerGraphQuery = options.containerGraphQuery
+    this.client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
+  }
 
-  const buildQueryOptions = () => {
+  buildQueryOptions () {
     const queryOptions = {}
 
-    if (authentication) {
+    if (this.authentication) {
       queryOptions.headers = {
-        Authorization: authBasicHeader(authentication.user, authentication.password)
+        Authorization: authBasicHeader(this.authentication.user, this.authentication.password)
       }
     }
 
     return queryOptions
   }
 
-  const buildResourceExistsQuery = iri => {
-    return resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  buildResourceExistsQuery (iri) {
+    return this.resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  const buildResourceGraphQuery = iri => {
-    return resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  buildResourceGraphQuery (iri) {
+    return this.resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  const buildContainerExistsQuery = iri => {
-    return containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  buildContainerExistsQuery (iri) {
+    return this.containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  const buildContainerGraphQuery = iri => {
-    return containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  buildContainerGraphQuery (iri) {
+    return this.containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  const exists = async (iri, query) => {
+  async exists (iri, query) {
     debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
-    const res = await client.selectQuery(query, buildQueryOptions())
+    const res = await this.client.selectQuery(query, this.buildQueryOptions())
     const status = res.status
     if (status !== 200) {
       return { status, undefined }
@@ -59,14 +70,14 @@ const handler = options => {
     return { status, exists }
   }
 
-  const graphStream = async (iri, query, accept) => {
+  async graphStream (iri, query, accept) {
     debug('SPARQL query for IRI <' + iri + '> : ' + query)
 
-    const queryOptions = buildQueryOptions()
+    const queryOptions = this.buildQueryOptions()
 
     queryOptions.accept = accept
 
-    const res = await client.constructQuery(query, queryOptions)
+    const res = await this.client.constructQuery(query, queryOptions)
     if (res.status !== 200) {
       return { status: res.status }
     }
@@ -86,24 +97,32 @@ const handler = options => {
     }
   }
 
-  const get = async (req, res, next, iri) => {
+  handle (req, res, next) {
+    if (req.method === 'GET') {
+      this.get(req, res, next, req.iri)
+    } else {
+      next()
+    }
+  }
+
+  async get (req, res, next, iri) {
     iri = encodeURI(iri)
 
     debug('handle GET request for IRI <' + iri + '>')
 
-    const isContainer = resourceNoSlash && iri.endsWith('/')
-    const queryExist = isContainer ? buildContainerExistsQuery(iri) : buildResourceExistsQuery(iri)
+    const isContainer = this.resourceNoSlash && iri.endsWith('/')
+    const queryExist = isContainer ? this.buildContainerExistsQuery(iri) : this.buildResourceExistsQuery(iri)
 
-    const { status, isExisting } = await exists(iri, queryExist)
+    const { status, exists } = await this.exists(iri, queryExist)
 
     if (status !== 200) {
       return res.status(status).send('')
-    } else if (!isExisting) {
+    } else if (!exists) {
       return res.status(404).send('')
     } else {
-      const query = isContainer ? buildContainerGraphQuery(iri) : buildResourceGraphQuery(iri)
+      const query = isContainer ? this.buildContainerGraphQuery(iri) : this.buildResourceGraphQuery(iri)
 
-      const { status, headers, stream } = await graphStream(iri, query, req.headers.accept)
+      const { status, headers, stream } = await this.graphStream(iri, query, req.headers.accept)
 
       if (!stream) {
         return next()
@@ -115,21 +134,16 @@ const handler = options => {
       stream.pipe(res)
     }
   }
+}
+
+export const factory = trifid => {
+  const { config } = trifid
+
+  const handler = new SparqlHandler({ ...defaults, ...config })
 
   return (req, res, next) => {
-    if (req.method === 'GET') {
-      get(req, res, next, req.iri)
-    } else {
-      next()
-    }
+    handler.handle(req, res, next)
   }
 }
 
-const factory = trifid => {
-  const { config } = trifid
-
-  return handler(config)
-}
-
-export const SparqlHandler = handler
 export default factory
