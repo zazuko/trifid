@@ -6,7 +6,7 @@ import url, { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const defaults = {
-  template: path.join(__dirname, 'views/index.html')
+  template: path.join(__dirname, 'views/index.hbs')
 }
 
 const defaultOptions = {
@@ -18,14 +18,14 @@ const defaultOptions = {
   forceIntrospection: false
 }
 
-function createMiddleWare (config, logger = (str) => console.log(str)) {
+const createMiddleWare = (config, render) => {
   const router = express.Router()
 
   const options = { ...defaultOptions, ...(config.options || {}) }
   config = { ...defaults, ...config, options }
 
   // render index page
-  router.get('/', (req, res) => {
+  router.get('/', async (req, res) => {
     // Enforce trailing slash to ensure that static files are served from the correct URL
     if (!req.originalUrl.endsWith('/')) {
       return res.redirect(req.originalUrl + '/')
@@ -36,20 +36,22 @@ function createMiddleWare (config, logger = (str) => console.log(str)) {
     // Create an absolute URL if a relative URL is provided
     options.url = (new url.URL(options.url, req.absoluteUrl())).toString()
 
-    res.locals.options = JSON.stringify(options)
-
-    res.render(config.template)
+    res.send(await render(config.template, {
+      options: JSON.stringify(options)
+    }, {
+      title: 'SPEX'
+    }))
   })
 
   // static files from spex dist folder
-  const yasguiPath = new URL('node_modules/@zazuko/spex', import.meta.url).pathname
+  const yasguiPath = new URL('node_modules/@zazuko/spex/dist', import.meta.url).pathname
   router.use('/static/', express.static(yasguiPath))
   return router
 }
 
-function trifidFactory (trifid) {
-  const { config, logger } = trifid
-  return createMiddleWare(config, logger)
+const trifidFactory = (trifid) => {
+  const { config, render } = trifid
+  return createMiddleWare(config, render)
 }
 
 export default trifidFactory
