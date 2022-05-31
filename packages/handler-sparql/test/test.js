@@ -1,7 +1,7 @@
 import { strictEqual } from 'assert'
 import withServer from 'express-as-promise/withServer.js'
 import { describe, it } from 'mocha'
-import SparqlHandler from '../index.js'
+import { SparqlHandler } from '../index.js'
 import { createEndpoint } from './support/createEndpoint.js'
 import setIri from './support/setIri.js'
 
@@ -29,14 +29,14 @@ describe('trifid-handler-sparql', () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
-          const handler = new SparqlHandler({
+          const handler = SparqlHandler({
             ...defaults,
             endpointUrl: endpoint.url,
             resourceNoSlash: input.resourceNoSlash
           })
 
           server.app.use(setIri(input.iri))
-          server.app.use(handler.handle.bind(handler))
+          server.app.use(handler)
 
           await server.fetch('/test')
           await endpoint.stop()
@@ -57,14 +57,14 @@ describe('trifid-handler-sparql', () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
-          const handler = new SparqlHandler({
+          const handler = SparqlHandler({
             ...defaults,
             endpointUrl: endpoint.url,
             resourceNoSlash: input.resourceNoSlash
           })
 
           server.app.use(setIri(input.iri))
-          server.app.use(handler.handle.bind(handler))
+          server.app.use(handler)
 
           await server.fetch('/test')
           await endpoint.stop()
@@ -83,14 +83,14 @@ describe('trifid-handler-sparql', () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
-          const handler = new SparqlHandler({
+          const handler = SparqlHandler({
             ...defaults,
             endpointUrl: endpoint.url,
             resourceNoSlash: input.resourceNoSlash
           })
 
           server.app.use(setIri(input.iri))
-          server.app.use(handler.handle.bind(handler))
+          server.app.use(handler)
 
           await server.fetch('/test')
           await endpoint.stop()
@@ -106,10 +106,10 @@ describe('trifid-handler-sparql', () => {
     await withServer(async server => {
       const endpoint = await createEndpoint()
 
-      const handler = new SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
+      const handler = SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
 
       server.app.use(setIri('http://localhost/test<test'))
-      server.app.use(handler.handle.bind(handler))
+      server.app.use(handler)
 
       await server.fetch('/test')
       await endpoint.stop()
@@ -122,10 +122,10 @@ describe('trifid-handler-sparql', () => {
     await withServer(async server => {
       const endpoint = await createEndpoint()
 
-      const handler = new SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
+      const handler = SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
 
       server.app.use(setIri('http://localhost/test<test'))
-      server.app.use(handler.handle.bind(handler))
+      server.app.use(handler)
 
       await server.fetch('/test')
       await endpoint.stop()
@@ -138,10 +138,10 @@ describe('trifid-handler-sparql', () => {
     await withServer(async server => {
       const endpoint = await createEndpoint()
 
-      const handler = new SparqlHandler({ ...defaults, endpointUrl: endpoint.url, resourceNoSlash: true })
+      const handler = SparqlHandler({ ...defaults, endpointUrl: endpoint.url, resourceNoSlash: true })
 
       server.app.use(setIri('http://localhost/test<test/'))
-      server.app.use(handler.handle.bind(handler))
+      server.app.use(handler)
 
       await server.fetch('/test')
       await endpoint.stop()
@@ -154,10 +154,10 @@ describe('trifid-handler-sparql', () => {
     await withServer(async server => {
       const endpoint = await createEndpoint()
 
-      const handler = new SparqlHandler({ ...defaults, endpointUrl: endpoint.url, resourceNoSlash: true })
+      const handler = SparqlHandler({ ...defaults, endpointUrl: endpoint.url, resourceNoSlash: true })
 
       server.app.use(setIri('http://localhost/test<test/'))
-      server.app.use(handler.handle.bind(handler))
+      server.app.use(handler)
 
       await server.fetch('/test')
       await endpoint.stop()
@@ -175,10 +175,10 @@ describe('trifid-handler-sparql', () => {
         password: 'password'
       }
 
-      const handler = new SparqlHandler({ ...defaults, endpointUrl: endpoint.url, authentication: authentication })
+      const handler = SparqlHandler({ ...defaults, endpointUrl: endpoint.url, authentication: authentication })
 
       server.app.use(setIri('http://localhost/test'))
-      server.app.use(handler.handle.bind(handler))
+      server.app.use(handler)
 
       await server.fetch('/test')
       await endpoint.stop()
@@ -191,10 +191,10 @@ describe('trifid-handler-sparql', () => {
     await withServer(async server => {
       const endpoint = await createEndpoint()
 
-      const handler = new SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
+      const handler = SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
 
       server.app.use(setIri('http://localhost/test'))
-      server.app.use(handler.handle.bind(handler))
+      server.app.use(handler)
 
       await server.fetch('/test', { headers: { accept: 'format' } })
       await endpoint.stop()
@@ -207,10 +207,10 @@ describe('trifid-handler-sparql', () => {
     await withServer(async server => {
       const endpoint = await createEndpoint()
 
-      const handler = new SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
+      const handler = SparqlHandler({ ...defaults, endpointUrl: endpoint.url })
 
       server.app.use(setIri('http://localhost/test'))
-      server.app.use(handler.handle.bind(handler))
+      server.app.use(handler)
 
       const res = await server.fetch('/test', { headers: { accept: 'format' } })
       await endpoint.stop()
@@ -227,13 +227,13 @@ describe('trifid-handler-sparql', () => {
         await withServer(async server => {
           const endpoint = await createEndpoint(status)
 
-          const handler = new SparqlHandler({
+          const handler = SparqlHandler({
             ...defaults,
             endpointUrl: endpoint.url
           })
 
           server.app.use(setIri('http://localhost/test'))
-          server.app.use(handler.handle.bind(handler))
+          server.app.use(handler)
 
           const res = await server.fetch('/test')
           await endpoint.stop()

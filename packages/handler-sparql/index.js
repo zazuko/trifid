@@ -5,53 +5,51 @@ import SparqlHttpClient from 'sparql-http-client'
 const debug = debugLib('trifid:handler-sparql')
 SparqlHttpClient.fetch = nodeFetch
 
-function authBasicHeader (user, password) {
+const authBasicHeader = (user, password) => {
   return 'Basic ' + Buffer.from(user + ':' + password).toString('base64')
 }
 
-class SparqlHandler {
-  constructor (options) {
-    this.authentication = options.authentication
-    this.resourceNoSlash = options.resourceNoSlash
-    this.resourceExistsQuery = options.resourceExistsQuery
-    this.resourceGraphQuery = options.resourceGraphQuery
-    this.containerExistsQuery = options.containerExistsQuery
-    this.containerGraphQuery = options.containerGraphQuery
-    this.client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
-  }
+const handler = options => {
+  const authentication = options.authentication || false
+  const resourceNoSlash = options.resourceNoSlash || true
+  const resourceExistsQuery = options.resourceExistsQuery || 'ASK { <${iri}> ?p ?o }' // eslint-disable-line no-template-curly-in-string
+  const resourceGraphQuery = options.resourceGraphQuery || 'DESCRIBE <${iri}>' // eslint-disable-line no-template-curly-in-string
+  const containerExistsQuery = options.containerExistsQuery || 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }' // eslint-disable-line no-template-curly-in-string
+  const containerGraphQuery = options.containerGraphQuery || 'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }' // eslint-disable-line no-template-curly-in-string
+  const client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
 
-  buildQueryOptions () {
+  const buildQueryOptions = () => {
     const queryOptions = {}
 
-    if (this.authentication) {
+    if (authentication) {
       queryOptions.headers = {
-        Authorization: authBasicHeader(this.authentication.user, this.authentication.password)
+        Authorization: authBasicHeader(authentication.user, authentication.password)
       }
     }
 
     return queryOptions
   }
 
-  buildResourceExistsQuery (iri) {
-    return this.resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  const buildResourceExistsQuery = iri => {
+    return resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  buildResourceGraphQuery (iri) {
-    return this.resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  const buildResourceGraphQuery = iri => {
+    return resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  buildContainerExistsQuery (iri) {
-    return this.containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  const buildContainerExistsQuery = iri => {
+    return containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  buildContainerGraphQuery (iri) {
-    return this.containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
+  const buildContainerGraphQuery = iri => {
+    return containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  async exists (iri, query) {
+  const exists = async (iri, query) => {
     debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
-    const res = await this.client.selectQuery(query, this.buildQueryOptions())
+    const res = await client.selectQuery(query, buildQueryOptions())
     const status = res.status
     if (status !== 200) {
       return { status, undefined }
@@ -61,14 +59,14 @@ class SparqlHandler {
     return { status, exists }
   }
 
-  async graphStream (iri, query, accept) {
+  const graphStream = async (iri, query, accept) => {
     debug('SPARQL query for IRI <' + iri + '> : ' + query)
 
-    const queryOptions = this.buildQueryOptions()
+    const queryOptions = buildQueryOptions()
 
     queryOptions.accept = accept
 
-    const res = await this.client.constructQuery(query, queryOptions)
+    const res = await client.constructQuery(query, queryOptions)
     if (res.status !== 200) {
       return { status: res.status }
     }
@@ -88,32 +86,24 @@ class SparqlHandler {
     }
   }
 
-  handle (req, res, next) {
-    if (req.method === 'GET') {
-      this.get(req, res, next, req.iri)
-    } else {
-      next()
-    }
-  }
-
-  async get (req, res, next, iri) {
+  const get = async (req, res, next, iri) => {
     iri = encodeURI(iri)
 
     debug('handle GET request for IRI <' + iri + '>')
 
-    const isContainer = this.resourceNoSlash && iri.endsWith('/')
-    const queryExist = isContainer ? this.buildContainerExistsQuery(iri) : this.buildResourceExistsQuery(iri)
+    const isContainer = resourceNoSlash && iri.endsWith('/')
+    const queryExist = isContainer ? buildContainerExistsQuery(iri) : buildResourceExistsQuery(iri)
 
-    const { status, exists } = await this.exists(iri, queryExist)
+    const { status, isExisting } = await exists(iri, queryExist)
 
     if (status !== 200) {
       return res.status(status).send('')
-    } else if (!exists) {
+    } else if (!isExisting) {
       return res.status(404).send('')
     } else {
-      const query = isContainer ? this.buildContainerGraphQuery(iri) : this.buildResourceGraphQuery(iri)
+      const query = isContainer ? buildContainerGraphQuery(iri) : buildResourceGraphQuery(iri)
 
-      const { status, headers, stream } = await this.graphStream(iri, query, req.headers.accept)
+      const { status, headers, stream } = await graphStream(iri, query, req.headers.accept)
 
       if (!stream) {
         return next()
@@ -125,6 +115,21 @@ class SparqlHandler {
       stream.pipe(res)
     }
   }
+
+  return (req, res, next) => {
+    if (req.method === 'GET') {
+      get(req, res, next, req.iri)
+    } else {
+      next()
+    }
+  }
 }
 
-export default SparqlHandler
+const factory = trifid => {
+  const { config } = trifid
+
+  return handler(config)
+}
+
+export const SparqlHandler = handler
+export default factory
