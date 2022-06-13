@@ -1,18 +1,18 @@
 const rdfString = require('@tpluscode/rdf-string')
 const ns = require('./ns.js')
 const { sparql } = rdfString
-const { as, dcterms, exif, iiif_image, iiif_prezi, oa, rdf, schema } = ns
+const { as, dcterms, exif, iiifImage, iiifPrezi, oa, rdf, schema } = ns
 
-function discoverManifest (iri) {
+const discoverManifest = (iri) => {
   return sparql`
 CONSTRUCT {
-  ?m a ${iiif_prezi.Manifest} ;
+  ?m a ${iiifPrezi.Manifest} ;
     ${as.items} ?manifestItems .
 
   ?manifestRest ${rdf.first} ?canvas ;
     ${rdf.rest} ?manifestTail .
 
-  ?canvas a ${iiif_prezi.Canvas} ;
+  ?canvas a ${iiifPrezi.Canvas} ;
     ${as.items} ?canvasItems .
 
   ?canvasRest ${rdf.first} ?page ;
@@ -30,7 +30,7 @@ CONSTRUCT {
   ?body a ?dcmiType ;
     ${schema.potentialAction} ?service .
 
-  ?service a ${iiif_image.ImageService} ;
+  ?service a ${iiifImage.ImageService} ;
     ${dcterms.conformsTo} ?serviceLevel ;
     ${dcterms.type} ?serviceType ;
     ${exif.height} ?serviceHeight ;
@@ -38,14 +38,14 @@ CONSTRUCT {
 } WHERE {
   #pragma optimizer.property.paths.start off
 
-  ?m a ${iiif_prezi.Manifest} ;
+  ?m a ${iiifPrezi.Manifest} ;
     ${as.items} ?manifestItems .
 
   ?manifestItems ${rdf.rest}* ?manifestRest .
   ?manifestRest ${rdf.first} ?canvas ;
     ${rdf.rest} ?manifestTail .
 
-  ?canvas a ${iiif_prezi.Canvas} ;
+  ?canvas a ${iiifPrezi.Canvas} ;
     ${as.items} ?canvasItems .
 
   ?canvasItems ${rdf.rest}* ?canvasRest .
@@ -67,7 +67,7 @@ CONSTRUCT {
   OPTIONAL {
     ?body ${schema.potentialAction} ?service .
 
-    ?service a ${iiif_image.ImageService} ;
+    ?service a ${iiifImage.ImageService} ;
       ${dcterms.conformsTo} ?serviceLevel ;
       ${dcterms.type} ?serviceType ;
       ${exif.height} ?serviceHeight ;
@@ -79,15 +79,14 @@ CONSTRUCT {
 `.toString()
 }
 
-function describeNodes (nodes) {
+const describeNodes = (nodes) => {
   return nodes
     .reduce((acc, node) => sparql`${acc} ${node}`, sparql`DESCRIBE`)
     .toString()
-
 }
 
-function manifestExists (iri) {
-  return sparql`ASK { ${iri} a ${iiif_prezi.Manifest} }`.toString()
+const manifestExists = (iri) => {
+  return sparql`ASK { ${iri} a ${iiifPrezi.Manifest} }`.toString()
 }
 
 module.exports = { discoverManifest, describeNodes, manifestExists }

@@ -25,12 +25,12 @@ const filterOutAsItems = () =>
     }
   })
 
-function createApi (client, clientOptions) {
-  async function exists (iri) {
+const createApi = (client, clientOptions) => {
+  const exists = async (iri) => {
     return await client.query.ask(queries.manifestExists(iri), clientOptions)
   }
 
-  async function getBasicDataset (iri) {
+  const getBasicDataset = async (iri) => {
     const dataset = rdf.dataset()
     const query = queries.discoverManifest(iri)
     const stream = await client.query.construct(query, clientOptions)
@@ -38,17 +38,17 @@ function createApi (client, clientOptions) {
     return dataset
   }
 
-  async function augmentDataset (dataset) {
+  const augmentDataset = async (dataset) => {
     const ptr = clownface({ dataset })
 
     // Find all important nodes
     const nodes = ptr.has(ns.rdf.type, [
-      ns.iiif_prezi.Manifest,
-      ns.iiif_prezi.Canvas,
+      ns.iiifPrezi.Manifest,
+      ns.iiifPrezi.Canvas,
       ns.as.OrderedCollectionPage,
       ns.oa.Annotation,
       ns.dctypes.StillImage,
-      ns.dctypes.MovingImage,
+      ns.dctypes.MovingImage
     ]).terms
 
     // And describe them

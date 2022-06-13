@@ -1,7 +1,7 @@
 const namespace = require('@rdfjs/namespace')
 
-const iiif_image = namespace('http://iiif.io/api/image/3#')
-const iiif_prezi = namespace('http://iiif.io/api/presentation/3#')
+const iiifImage = namespace('http://iiif.io/api/image/3#')
+const iiifPrezi = namespace('http://iiif.io/api/presentation/3#')
 const dctypes = namespace('http://purl.org/dc/dcmitype/')
 const exif = namespace('http://www.w3.org/2003/12/exif/ns#')
 const dcterms = namespace('http://purl.org/dc/terms/')
@@ -14,8 +14,8 @@ module.exports = {
   as,
   dcterms,
   exif,
-  iiif_image,
-  iiif_prezi,
+  iiifImage,
+  iiifPrezi,
   oa,
   rdf,
   schema,

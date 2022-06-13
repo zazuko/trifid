@@ -6,18 +6,17 @@ const rdf = require('rdf-ext')
 const jsonld = require('jsonld')
 const frame = require('./src/frame.js')
 
-function middleware (api, uriPrefix) {
-
+const middleware = (api, uriPrefix) => {
   return async (req, res, next) => {
     const url = req.url
     if (req.method !== 'GET') return next()
 
-    if (!(uriPrefix || req.query.uri)){
-      debug(`No uri query parameter`)
+    if (!(uriPrefix || req.query.uri)) {
+      debug('No uri query parameter')
       return next()
     }
 
-    const uri = uriPrefix?rdf.namedNode(`${uriPrefix}${url}`):rdf.namedNode(req.query.uri)
+    const uri = uriPrefix ? rdf.namedNode(`${uriPrefix}${url}`) : rdf.namedNode(req.query.uri)
 
     if (!await api.exists(uri)) {
       debug(`uri: ${uri} not found`)
@@ -32,11 +31,9 @@ function middleware (api, uriPrefix) {
 
     res.send(framed)
   }
-
 }
 
-async function iiif (path, options) {
-
+const iiif = async (path, options) => {
   const router = express.Router()
   if (!options || !options.endpointUrl) {
     debug('Warning: no endpoint configured, module not mounted')
@@ -45,16 +42,16 @@ async function iiif (path, options) {
   const client = new SparqlHttpClient({
     endpointUrl: options.endpointUrl,
     user: options.endpointUser,
-    password: options.endpointPassword,
+    password: options.endpointPassword
   })
 
   const clientOptions = {
-    operation: 'postUrlencoded',
+    operation: 'postUrlencoded'
   }
   const api = createApi(client, clientOptions)
-  const uriPrefix = options.uriPrefix?options.uriPrefix:''
+  const uriPrefix = options.uriPrefix ? options.uriPrefix : ''
 
-  router.get(path, middleware(api,uriPrefix))
+  router.get(path, middleware(api, uriPrefix))
   return router
 }
 

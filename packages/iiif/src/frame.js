@@ -20,23 +20,23 @@ const iiifFrame = {
     {
       body: {
         '@type': '@id',
-        '@id': 'oa:hasBody',
+        '@id': 'oa:hasBody'
       },
       target: {
         '@type': '@id',
-        '@id': 'oa:hasTarget',
+        '@id': 'oa:hasTarget'
       },
       motivation: {
         '@type': '@vocab',
-        '@id': 'oa:motivatedBy',
+        '@id': 'oa:motivatedBy'
       },
       partOf: {
         '@type': '@id',
-        '@id': 'as:partOf',
-      },
-    },
+        '@id': 'as:partOf'
+      }
+    }
   ],
-  type: 'Manifest',
+  type: 'Manifest'
 }
 
 /**
@@ -44,13 +44,10 @@ const iiifFrame = {
  * @param doc
  * @returns {Promise<*>}
  */
-async function frame (doc) {
+const frame = async (doc) => {
   const framed = await jsonld.frame(doc, iiifFrame, { documentLoader: customLoader })
   framed['@context'] = 'http://iiif.io/api/presentation/3/context.json'
   return framed
 }
 
 module.exports = frame
-
-
-
