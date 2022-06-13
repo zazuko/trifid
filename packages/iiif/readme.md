@@ -15,8 +15,8 @@ Mounting the plugin
     "path": "/*",
     "uriPrefix": "https://website",
     "endpointUrl": "https://website/query",
-    "user": "optional",
-    "password": "optional"
+    "endpointUser": "optional",
+    "endpointPassword": "optional"
   },
   "plugins": {
     "iiif": {
@@ -27,7 +27,7 @@ Mounting the plugin
 }
 ```
 
-Then, 
+Then,
 
 http://localhost:8080/data/1
 
