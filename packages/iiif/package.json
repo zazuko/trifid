@@ -1,7 +1,7 @@
 {
-  "name": "trifid-plugin-iiif",
+  "name": "@zazuko/trifid-plugin-iiif",
   "version": "0.1.0",
-  "description": "",
+  "description": "Trifid plugin to handle IIIF data",
   "keywords": [
     "trifid",
     "trifid-plugin",
