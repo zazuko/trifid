@@ -3,9 +3,21 @@
   "name": "trifid-plugin-iiif",
   "version": "0.1.0",
   "description": "",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "iiif"
+  ],
+  "author": "Zazuko GmbH",
+  "license": "MIT",
+  "homepage": "https://github.com/zazuko/trifid-plugin-iiif",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid-plugin-iiif.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid-plugin-iiif/issues"
+  },
   "dependencies": {
     "@rdfjs/express-handler": "^1.2.2",
     "@rdfjs/namespace": "^1.1.0",
