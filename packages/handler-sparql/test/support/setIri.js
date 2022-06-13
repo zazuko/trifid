@@ -6,4 +6,4 @@ function setIri (iri) {
   }
 }
 
-module.exports = setIri
+export default setIri
