@@ -1,0 +1,4 @@
+.eslintrc
+.github
+node_modules
+*.tgz

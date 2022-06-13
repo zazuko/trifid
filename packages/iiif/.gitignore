@@ -1,4 +1,2 @@
-lib/
 node_modules/
-.env
-playground
+*.tgz
