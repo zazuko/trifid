@@ -1,7 +1,7 @@
 # trifid-handler-fetch
 
 Handler for Trifid which reads the data from a URL.
-[nodeify-fetch](https://www.npmjs.com/package/nodeify-fetch) is used for `http://` and `https://` URLs.
+[fetch-lite](https://github.com/rdfjs-base/fetch-lite) is used for `http://` and `https://` URLs.
 [file-fetch](https://www.npmjs.com/package/file-fetch) is used for `file://` URLs.
 
 ## Usage
@@ -10,7 +10,7 @@ Add the `trifid-handler-fetch` package to your dependencies:
 
     npm install trifid-handler-fetch --save
 
-Change the `handler` property in the config like in the example below and adapt the options. 
+Change the `handler` property in the config like in the example below and adapt the options.
 
 ## Example
 

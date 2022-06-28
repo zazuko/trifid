@@ -1,14 +1,13 @@
-const fileFetch = require('file-fetch')
-const nodeifyFetch = require('nodeify-fetch')
-const protoFetch = require('proto-fetch')
-const rdf = require('rdf-ext')
-const rdfFetch = require('rdf-fetch')
-const resourcesToGraph = require('rdf-utils-dataset/resourcesToGraph')
+import fileFetch from 'file-fetch'
+import protoFetch from 'proto-fetch'
+import rdf from 'rdf-ext'
+import rdfFetch from 'rdf-fetch'
+import splitIntoGraphs from './spread/splitIntoGraphs.js'
 
 const fetch = protoFetch({
   file: fileFetch,
-  http: nodeifyFetch,
-  https: nodeifyFetch
+  http: rdf.fetch,
+  https: rdf.fetch
 })
 
 class Fetcher {
@@ -22,7 +21,7 @@ class Fetcher {
     }
 
     options.resources.forEach((resource) => {
-      dataset.removeMatches(null, null, null, rdf.namedNode(resource))
+      dataset.deleteMatches(null, null, null, rdf.namedNode(resource))
     })
   }
 
@@ -40,22 +39,22 @@ class Fetcher {
     })
   }
 
-  static spreadDataset (input, output, options) {
+  static spreadDataset (inputDataset, outputDataset, options) {
     if (options.resource) {
-      output.addAll(rdf.dataset(input, rdf.namedNode(options.resource)))
+      outputDataset.addAll(rdf.dataset(inputDataset, rdf.namedNode(options.resource)))
     } else if (options.split) {
-      output.addAll(resourcesToGraph(input))
+      outputDataset.addAll(splitIntoGraphs(inputDataset))
     } else {
-      output.addAll(input)
+      outputDataset.addAll(inputDataset)
     }
 
-    options.resources = Object.keys(output.toArray().reduce((resources, quad) => {
+    options.resources = Object.keys([...outputDataset].reduce((resources, quad) => {
       resources[quad.graph.value] = true
 
       return resources
     }, {}))
 
-    return output
+    return outputDataset
   }
 
   static load (dataset, options) {
@@ -71,4 +70,4 @@ class Fetcher {
   }
 }
 
-module.exports = Fetcher
+export default Fetcher

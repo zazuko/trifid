@@ -1,23 +1,31 @@
-const formats = require('rdf-formats-common')()
-const path = require('path')
-const rdf = require('rdf-ext')
-const rdfBodyParser = require('rdf-body-parser')
-const url = require('url')
-const Fetcher = require('./lib/Fetcher')
-const JsonLdSerializer = require('rdf-serializer-jsonld-ext')
+import formats from '@rdfjs/formats-common/index.js'
+import path from 'path'
+import rdf from 'rdf-ext'
+import rdfHandler from '@rdfjs/express-handler'
 
-const jsonLdSerializer = new JsonLdSerializer({
-  process: [
-    {flatten: true},
-    {compact: true},
-    {outputFormat: 'string'}
-  ]
+import url from 'url'
+import Fetcher from './lib/Fetcher.js'
+import SerializerJsonld from '@rdfjs/serializer-jsonld-ext'
+
+// @TODO discuss what are the best serialization options.
+const jsonLdSerializer = new SerializerJsonld({
+  encoding: 'string'
+  // compact: true,
+  // flatten: true
 })
 
-formats.serializers['application/json'] = jsonLdSerializer
-formats.serializers['application/ld+json'] = jsonLdSerializer
+formats.serializers.set('application/json', jsonLdSerializer)
+formats.serializers.set('application/ld+json', jsonLdSerializer)
 
-class FetchHandler {
+const guessProtocol = (candidate) => {
+  try {
+    return new url.URL(candidate).protocol
+  } catch (error) {
+    return undefined
+  }
+}
+
+export class FetchHandler {
   constructor (options) {
     this.dataset = rdf.dataset()
     this.url = options.url
@@ -28,7 +36,7 @@ class FetchHandler {
     this.split = options.split
 
     // add file:// and resolve with cwd if no protocol was given
-    if (this.url && !url.parse(this.url).protocol) {
+    if (this.url && !guessProtocol(this.url)) {
       this.url = 'file://' + path.resolve(this.url)
     }
 
@@ -39,19 +47,17 @@ class FetchHandler {
   }
 
   _handle (req, res, next) {
-    rdfBodyParser.attach(req, res, {formats: formats}).then(() => {
+    rdfHandler.attach(req, res, { formats }).then(() => {
       return Fetcher.load(this.dataset, this)
-    }).then(() => {
+    }).then(async () => {
       const dataset = this.dataset.match(null, null, null, rdf.namedNode(req.iri))
 
-      if (dataset.length === 0) {
+      if (dataset.size === 0) {
         next()
         return null
       }
 
-      const graph = rdf.graph(dataset)
-
-      return res.graph(graph)
+      await res.dataset(dataset)
     }).catch(next)
   }
 
@@ -63,4 +69,14 @@ class FetchHandler {
   }
 }
 
-module.exports = FetchHandler
+const factory = trifid => {
+  const { config } = trifid
+
+  const handler = new FetchHandler(config)
+
+  return (req, res, next) => {
+    handler.handle(req, res, next)
+  }
+}
+
+export default factory
