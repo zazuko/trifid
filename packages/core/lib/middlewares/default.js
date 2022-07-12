@@ -5,6 +5,7 @@ import healthMiddleware from '../../middlewares/health.js'
 import errorsMiddleware from '../../middlewares/errors.js'
 import notFoundMiddleware from '../../middlewares/notFound.js'
 import staticMiddleware from '../../middlewares/static.js'
+import iriMiddleware from '../../middlewares/iri.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -32,9 +33,15 @@ const templateStaticFiles = {
   }
 }
 
+const iri = {
+  module: iriMiddleware,
+  order: 0
+}
+
 export default {
   health,
   errors,
   notFound,
-  templateStaticFiles
+  templateStaticFiles,
+  iri
 }
