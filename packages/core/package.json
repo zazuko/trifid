@@ -29,26 +29,26 @@
   },
   "dependencies": {
     "ajv": "^8.11.0",
-    "commander": "^9.2.0",
+    "commander": "^9.3.0",
     "express": "^4.18.1",
     "handlebars": "^4.7.7",
     "json5": "^2.2.1",
     "lodash": "^4.17.21",
-    "pino": "^7.11.0",
-    "pino-pretty": "^7.6.1",
+    "pino": "^8.1.0",
+    "pino-pretty": "^8.1.0",
     "vhost": "^3.0.2",
-    "yaml": "^2.1.0"
+    "yaml": "^2.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
-    "babel-jest": "^28.1.0",
-    "jest": "^28.1.0",
-    "nodemon": "^2.0.16",
+    "@babel/core": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "babel-jest": "^28.1.2",
+    "jest": "^28.1.2",
+    "nodemon": "^2.0.19",
     "rimraf": "^3.0.2",
     "standard": "^17.0.0",
-    "supertest": "^6.2.3",
-    "typescript": "^4.6.4"
+    "supertest": "^6.2.4",
+    "typescript": "^4.7.4"
   },
   "jest": {
     "collectCoverage": true,
