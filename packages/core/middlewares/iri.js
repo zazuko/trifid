@@ -54,11 +54,12 @@ const iri = (req, basePath) => {
 }
 
 const factory = (trifid) => {
-  const { config } = trifid
+  const { config, logger } = trifid
   const { basePath } = config
 
   return (req, _res, next) => {
     req.iri = decodeURI(iri(req, basePath))
+    logger.debug(`value for req.iri: ${req.iri}`)
     next()
   }
 }
