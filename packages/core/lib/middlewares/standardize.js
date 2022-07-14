@@ -33,7 +33,7 @@ const standardize = (middleware) => {
 
   // make sure order is defined
   if (m.order === undefined) {
-    m.order = 0
+    m.order = 100
   }
 
   // make sure paths is defined and is an array
