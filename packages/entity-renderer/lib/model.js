@@ -1,7 +1,7 @@
 import rdf from 'rdf-ext'
 import { subjects } from './builder/utils.js'
 
-function entities (cf, entityBuilder) {
+function entity (cf, entityBuilder) {
   const visited = rdf.termSet()
   const entities = []
 
@@ -17,4 +17,16 @@ function entities (cf, entityBuilder) {
   return entities
 }
 
-export { entities }
+function namedCounts (cf, options) {
+  const namedGraphs = rdf.termMap()
+  for (const quad of cf.any().dataset) {
+    if (quad.graph) {
+      const count = namedGraphs.get(quad.graph)
+      const newCount = count !== undefined ? (count + 1) : 1
+      namedGraphs.set(quad.graph, newCount)
+    }
+  }
+  return namedGraphs
+}
+
+export { entity, namedCounts }

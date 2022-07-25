@@ -7,6 +7,7 @@ import toMatchSnapshot from 'expect-mocha-snapshot'
 import { describe, it } from 'mocha'
 import rdf from 'rdf-ext'
 import { entityBuilder } from '../lib/builder/entityBuilder.js'
+import { entity } from '../lib/model.js'
 import { ns } from '../lib/namespaces.js'
 import { toQuads } from './support/serialization.js'
 
@@ -85,7 +86,7 @@ const entitySchema = {
   }
 }
 
-describe('entity', () => {
+describe('entityBuilder', () => {
   it('should be a function', () => {
     assert.equal(typeof entityBuilder, 'function')
   })
@@ -291,4 +292,66 @@ describe('no grouping by value or property', () => {
       assert.jsonSchema(result, entitySchema)
     })
   }
+})
+
+it('do not repeat with compactMode false', function () {
+  const data = `
+<a> <d> <e> ;
+    <d> <e> .
+<e> <b> <c>.
+`
+  const cf = clown(data, rdf.namedNode('a'))
+
+  const compactMode = false
+
+  const builder = entityBuilder(cf)
+  .embedLists(compactMode)
+  .groupValuesByProperty(compactMode)
+  .groupPropertiesByValue(compactMode)
+  .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
+  .withPreferredLanguages(['de', 'fr', 'it', 'en'])
+
+  const result = entity(cf, builder)
+
+  expect(result).toMatchSnapshot(this)
+})
+
+it('do not repeat with compactMode true', function () {
+  const data = `
+<a> <d> <e> ;
+    <d> <e> .
+<e> <b> <c>.
+`
+
+  const cf = clown(data, rdf.namedNode('a'))
+
+  const compactMode = false
+
+  const builder = entityBuilder(cf)
+  .embedLists(compactMode)
+  .groupValuesByProperty(compactMode)
+  .groupPropertiesByValue(compactMode)
+  .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
+  .withPreferredLanguages(['de', 'fr', 'it', 'en'])
+
+  const result = entity(cf, builder)
+
+  expect(result).toMatchSnapshot(this)
+})
+
+it('fetch languages', function () {
+  const data = `
+
+<a> <${ns.schema.name}> "Or me" ;
+    <${ns.schema.name}> "Me"@de .
+`
+  const cf = clown(data, rdf.namedNode('a'))
+
+  const builder = entityBuilder(cf)
+  .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
+  .withPreferredLanguages(['de', 'fr', 'it', 'en'])
+
+  const result = entity(cf, builder)
+
+  expect(result).toMatchSnapshot(this)
 })

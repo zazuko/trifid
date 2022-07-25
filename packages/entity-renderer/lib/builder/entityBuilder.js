@@ -191,4 +191,21 @@ function entityBuilder (cf) {
   return new EntityBuilder(cf)
 }
 
-export { entityBuilder }
+function defaultBuilder (cf, options = {
+  preferredLanguages: ['de', 'fr', 'it', 'en'], compactMode: true, externalLabels: rdf.clownface({ dataset: rdf.dataset() })
+}) {
+  const builder = entityBuilder(cf).
+    embedNamed(options.embedNamed).
+    embedBlanks(options.embedBlanks).
+    embedLists(options.embedLists).
+    groupValuesByProperty(options.groupValuesByProperty).
+    groupPropertiesByValue(options.groupPropertiesByValue).
+    maxLevel(options.maxLevel).
+    withExternalLabels(options.externalLabels).
+    withPreferredLanguages(options.preferredLanguages)
+
+  return builder
+}
+
+
+export { entityBuilder, defaultBuilder }
