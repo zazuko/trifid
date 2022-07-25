@@ -1,0 +1,218 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests do not repeat with compact 1`] = `
+Array [
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "e",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "e",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+  Object {
+    "label": Object {
+      "string": "e",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": Object {
+      "termType": "NamedNode",
+      "value": "e",
+    },
+  },
+]
+`;
+
+exports[`tests do not repeat without compact 1`] = `
+Array [
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "e",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "e",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+  Object {
+    "label": Object {
+      "string": "e",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": Object {
+      "termType": "NamedNode",
+      "value": "e",
+    },
+  },
+]
+`;
+
+exports[`tests fetch languages 1`] = `
+Array [
+  Object {
+    "label": Object {
+      "language": "de",
+      "string": "Me",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "name",
+              "vocab": "schema",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://schema.org/name",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "Or me",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "Or me",
+            },
+          },
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "langString",
+                "vocab": "rdf",
+              },
+              "language": "de",
+              "string": "Me",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+              },
+              "language": "de",
+              "termType": "Literal",
+              "value": "Me",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;

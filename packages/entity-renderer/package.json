@@ -1,0 +1,33 @@
+{
+  "name": "trifid-renderer-entity",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Renders a RDF entity in Trifid",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zazuko/trifid-renderer-entity.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid-renderer-entity/issues"
+  },
+  "homepage": "https://github.com/zazuko/trifid-renderer-entity#readme",
+  "dependencies": {
+    "lit": "^2.2.8",
+    "rdf-ext": "^2.0.1",
+    "standard": "^17.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-json-schema": "^1.5.1",
+    "expect": "27.5.1",
+    "expect-mocha-snapshot": "^2.1.5",
+    "mocha": "^10.0.0",
+    "n3": "^1.16.2"
+  }
+}

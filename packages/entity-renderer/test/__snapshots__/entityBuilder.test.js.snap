@@ -1,0 +1,4071 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`default blank node 1`] = `
+Array [
+  "
+<a> <b> [ <c> <d> ] .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "n3-5",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "c",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "c",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "string": "d",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "d",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "BlankNode",
+              "value": "n3-5",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default does not repeat 1`] = `
+Array [
+  "
+<a> <b> <c> ;
+    <b> <c> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default foaf image 1`] = `
+Array [
+  "
+<a> <http://xmlns.com/foaf/0.1/img> <little-cat> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "img",
+              "vocab": "foaf",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://xmlns.com/foaf/0.1/img",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "little-cat",
+            },
+            "renderAs": "Image",
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "little-cat",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default groups attributes 1`] = `
+Array [
+  "
+<a> <b> <c> ;
+    <b> <d> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default groups by value 1`] = `
+Array [
+  "
+<a> <b> <d> ;
+    <c> <d> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default languages 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos a\\" .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"prefered\\"@en .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "language": "en",
+      "string": "prefered",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "prefLabel",
+              "vocab": "skos",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "skos a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "skos a",
+            },
+          },
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "langString",
+                "vocab": "rdf",
+              },
+              "language": "en",
+              "string": "prefered",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+              },
+              "language": "en",
+              "termType": "Literal",
+              "value": "prefered",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default list 1`] = `
+Array [
+  "
+<a> <b> ( <c> <d> ) .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "renderAs": "List",
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default literal 1`] = `
+Array [
+  "
+<a> <b> \\"c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "c",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default object label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://xmlns.com/foaf/0.1/name> \\"foaf c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "foaf c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default object label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "rdfs c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default object label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://schema.org/name> \\"schema c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "schema c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default object label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "skos c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default predicate label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://xmlns.com/foaf/0.1/name> \\"foaf b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "foaf b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default predicate label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "rdfs b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default predicate label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://schema.org/name> \\"schema b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "schema b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default predicate label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "skos b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default schema image 1`] = `
+Array [
+  "
+<a> <http://schema.org/image> <little-cat> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "image",
+              "vocab": "schema",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://schema.org/image",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "little-cat",
+            },
+            "renderAs": "Image",
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "little-cat",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default simple 1`] = `
+Array [
+  "
+<a> <b> <c> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default subject label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://xmlns.com/foaf/0.1/name> \\"foaf a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "foaf a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "name",
+              "vocab": "foaf",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://xmlns.com/foaf/0.1/name",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "foaf a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "foaf a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default subject label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "rdfs a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "label",
+              "vocab": "rdfs",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2000/01/rdf-schema#label",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "rdfs a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "rdfs a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default subject label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://schema.org/name> \\"schema a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "schema a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "name",
+              "vocab": "schema",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://schema.org/name",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "schema a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "schema a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`default subject label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "skos a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "prefLabel",
+              "vocab": "skos",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "skos a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "skos a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property blank node 1`] = `
+Array [
+  "
+<a> <b> [ <c> <d> ] .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "n3-8",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "c",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "c",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "string": "d",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "d",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "BlankNode",
+              "value": "n3-8",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property does not repeat 1`] = `
+Array [
+  "
+<a> <b> <c> ;
+    <b> <c> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property foaf image 1`] = `
+Array [
+  "
+<a> <http://xmlns.com/foaf/0.1/img> <little-cat> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "img",
+              "vocab": "foaf",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://xmlns.com/foaf/0.1/img",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "little-cat",
+            },
+            "renderAs": "Image",
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "little-cat",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property groups attributes 1`] = `
+Array [
+  "
+<a> <b> <c> ;
+    <b> <d> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property groups by value 1`] = `
+Array [
+  "
+<a> <b> <d> ;
+    <c> <d> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property languages 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos a\\" .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"prefered\\"@en .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "language": "en",
+      "string": "prefered",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "prefLabel",
+              "vocab": "skos",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "skos a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "skos a",
+            },
+          },
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "langString",
+                "vocab": "rdf",
+              },
+              "language": "en",
+              "string": "prefered",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+              },
+              "language": "en",
+              "termType": "Literal",
+              "value": "prefered",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property list 1`] = `
+Array [
+  "
+<a> <b> ( <c> <d> ) .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "renderAs": "List",
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property literal 1`] = `
+Array [
+  "
+<a> <b> \\"c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "c",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property object label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://xmlns.com/foaf/0.1/name> \\"foaf c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "foaf c",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "name",
+                      "vocab": "foaf",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "http://xmlns.com/foaf/0.1/name",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "datatype": Object {
+                        "string": "string",
+                        "vocab": "xsd",
+                      },
+                      "string": "foaf c",
+                    },
+                    "term": Object {
+                      "datatype": Object {
+                        "termType": "NamedNode",
+                        "value": "http://www.w3.org/2001/XMLSchema#string",
+                      },
+                      "language": "",
+                      "termType": "Literal",
+                      "value": "foaf c",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property object label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "rdfs c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property object label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://schema.org/name> \\"schema c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "schema c",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "name",
+                      "vocab": "schema",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "http://schema.org/name",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "datatype": Object {
+                        "string": "string",
+                        "vocab": "xsd",
+                      },
+                      "string": "schema c",
+                    },
+                    "term": Object {
+                      "datatype": Object {
+                        "termType": "NamedNode",
+                        "value": "http://www.w3.org/2001/XMLSchema#string",
+                      },
+                      "language": "",
+                      "termType": "Literal",
+                      "value": "schema c",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property object label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "skos c",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "prefLabel",
+                      "vocab": "skos",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "datatype": Object {
+                        "string": "string",
+                        "vocab": "xsd",
+                      },
+                      "string": "skos c",
+                    },
+                    "term": Object {
+                      "datatype": Object {
+                        "termType": "NamedNode",
+                        "value": "http://www.w3.org/2001/XMLSchema#string",
+                      },
+                      "language": "",
+                      "termType": "Literal",
+                      "value": "skos c",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property predicate label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://xmlns.com/foaf/0.1/name> \\"foaf b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "foaf b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property predicate label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "rdfs b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property predicate label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://schema.org/name> \\"schema b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "schema b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property predicate label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "skos b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property schema image 1`] = `
+Array [
+  "
+<a> <http://schema.org/image> <little-cat> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "image",
+              "vocab": "schema",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://schema.org/image",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "little-cat",
+            },
+            "renderAs": "Image",
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "little-cat",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property simple 1`] = `
+Array [
+  "
+<a> <b> <c> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property subject label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://xmlns.com/foaf/0.1/name> \\"foaf a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "foaf a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "name",
+              "vocab": "foaf",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://xmlns.com/foaf/0.1/name",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "foaf a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "foaf a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property subject label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "rdfs a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property subject label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://schema.org/name> \\"schema a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "schema a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "name",
+              "vocab": "schema",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://schema.org/name",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "schema a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "schema a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`ignore property subject label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "skos a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "prefLabel",
+              "vocab": "skos",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "skos a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "skos a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property blank node 1`] = `
+Array [
+  "
+<a> <b> [ <c> <d> ] .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "n3-11",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "c",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "c",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "string": "d",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "d",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "BlankNode",
+              "value": "n3-11",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property does not repeat 1`] = `
+Array [
+  "
+<a> <b> <c> ;
+    <b> <c> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property foaf image 1`] = `
+Array [
+  "
+<a> <http://xmlns.com/foaf/0.1/img> <little-cat> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "img",
+              "vocab": "foaf",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://xmlns.com/foaf/0.1/img",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "little-cat",
+            },
+            "renderAs": "Image",
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "little-cat",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property groups attributes 1`] = `
+Array [
+  "
+<a> <b> <c> ;
+    <b> <d> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property groups by value 1`] = `
+Array [
+  "
+<a> <b> <d> ;
+    <c> <d> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property languages 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos a\\" .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"prefered\\"@en .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "language": "en",
+      "string": "prefered",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "prefLabel",
+              "vocab": "skos",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "skos a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "skos a",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "prefLabel",
+              "vocab": "skos",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "langString",
+                "vocab": "rdf",
+              },
+              "language": "en",
+              "string": "prefered",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+              },
+              "language": "en",
+              "termType": "Literal",
+              "value": "prefered",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property list 1`] = `
+Array [
+  "
+<a> <b> ( <c> <d> ) .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "d",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "d",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property literal 1`] = `
+Array [
+  "
+<a> <b> \\"c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "c",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property object label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://xmlns.com/foaf/0.1/name> \\"foaf c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "foaf c",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "name",
+                      "vocab": "foaf",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "http://xmlns.com/foaf/0.1/name",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "datatype": Object {
+                        "string": "string",
+                        "vocab": "xsd",
+                      },
+                      "string": "foaf c",
+                    },
+                    "term": Object {
+                      "datatype": Object {
+                        "termType": "NamedNode",
+                        "value": "http://www.w3.org/2001/XMLSchema#string",
+                      },
+                      "language": "",
+                      "termType": "Literal",
+                      "value": "foaf c",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property object label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "rdfs c",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "label",
+                      "vocab": "rdfs",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "http://www.w3.org/2000/01/rdf-schema#label",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "datatype": Object {
+                        "string": "string",
+                        "vocab": "xsd",
+                      },
+                      "string": "rdfs c",
+                    },
+                    "term": Object {
+                      "datatype": Object {
+                        "termType": "NamedNode",
+                        "value": "http://www.w3.org/2001/XMLSchema#string",
+                      },
+                      "language": "",
+                      "termType": "Literal",
+                      "value": "rdfs c",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property object label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://schema.org/name> \\"schema c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "schema c",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "name",
+                      "vocab": "schema",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "http://schema.org/name",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "datatype": Object {
+                        "string": "string",
+                        "vocab": "xsd",
+                      },
+                      "string": "schema c",
+                    },
+                    "term": Object {
+                      "datatype": Object {
+                        "termType": "NamedNode",
+                        "value": "http://www.w3.org/2001/XMLSchema#string",
+                      },
+                      "language": "",
+                      "termType": "Literal",
+                      "value": "schema c",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property object label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<c> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos c\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "skos c",
+            },
+            "rows": Array [
+              Object {
+                "properties": Array [
+                  Object {
+                    "label": Object {
+                      "string": "prefLabel",
+                      "vocab": "skos",
+                    },
+                    "term": Object {
+                      "termType": "NamedNode",
+                      "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+                    },
+                  },
+                ],
+                "values": Array [
+                  Object {
+                    "label": Object {
+                      "datatype": Object {
+                        "string": "string",
+                        "vocab": "xsd",
+                      },
+                      "string": "skos c",
+                    },
+                    "term": Object {
+                      "datatype": Object {
+                        "termType": "NamedNode",
+                        "value": "http://www.w3.org/2001/XMLSchema#string",
+                      },
+                      "language": "",
+                      "termType": "Literal",
+                      "value": "skos c",
+                    },
+                  },
+                ],
+              },
+            ],
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property predicate label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://xmlns.com/foaf/0.1/name> \\"foaf b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "foaf b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property predicate label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "rdfs b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property predicate label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://schema.org/name> \\"schema b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "schema b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property predicate label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<b> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos b\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "skos b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property schema image 1`] = `
+Array [
+  "
+<a> <http://schema.org/image> <little-cat> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "image",
+              "vocab": "schema",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://schema.org/image",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "little-cat",
+            },
+            "renderAs": "Image",
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "little-cat",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property simple 1`] = `
+Array [
+  "
+<a> <b> <c> .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property subject label foaf 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://xmlns.com/foaf/0.1/name> \\"foaf a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "foaf a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "name",
+              "vocab": "foaf",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://xmlns.com/foaf/0.1/name",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "foaf a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "foaf a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property subject label rdfs 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2000/01/rdf-schema#label> \\"rdfs a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "rdfs a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "label",
+              "vocab": "rdfs",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2000/01/rdf-schema#label",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "rdfs a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "rdfs a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property subject label schema 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://schema.org/name> \\"schema a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "schema a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "name",
+              "vocab": "schema",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://schema.org/name",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "schema a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "schema a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`no grouping by value or property subject label skos 1`] = `
+Array [
+  "
+<a> <b> <c> .
+<a> <http://www.w3.org/2004/02/skos/core#prefLabel> \\"skos a\\" .
+",
+  NamedNode {
+    "value": "a",
+  },
+  Object {
+    "label": Object {
+      "string": "skos a",
+    },
+    "rows": Array [
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "b",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "b",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "string": "c",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "c",
+            },
+          },
+        ],
+      },
+      Object {
+        "properties": Array [
+          Object {
+            "label": Object {
+              "string": "prefLabel",
+              "vocab": "skos",
+            },
+            "term": Object {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            },
+          },
+        ],
+        "values": Array [
+          Object {
+            "label": Object {
+              "datatype": Object {
+                "string": "string",
+                "vocab": "xsd",
+              },
+              "string": "skos a",
+            },
+            "term": Object {
+              "datatype": Object {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string",
+              },
+              "language": "",
+              "termType": "Literal",
+              "value": "skos a",
+            },
+          },
+        ],
+      },
+    ],
+    "term": NamedNode {
+      "value": "a",
+    },
+  },
+]
+`;
