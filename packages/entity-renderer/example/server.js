@@ -14,9 +14,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 createServer(async (request, response) => {
 
   if (request.url === '/css') {
-
-    const styleFile = resolve(__dirname, './styles', 'zazuko.css')
-    console.log(styleFile)
+    const styleFile = resolve(__dirname, '../views', 'style.css')
     createReadStream(styleFile).pipe(response)
   } else {
 
