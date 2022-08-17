@@ -1,64 +1,35 @@
-import path from 'path'
+import absoluteUrl from 'absolute-url'
+import { URL } from 'url'
 
-const iri = (req, basePath) => {
-  let host = req.get('host')
-  let port = ''
-  let protocol = req.protocol
-  const originalUrl = new URL(`${protocol}://${host}${req.originalUrl}`)
-  let { pathname } = originalUrl
+/**
+ * Replacement for `url.format` which is deprecated.
+ *
+ * @param {*} urlObject The URL object.
+ * @returns {string} URL as a string.
+ */
+const urlFrom = (urlObject) => String(Object.assign(new URL('http://example.com'), urlObject))
 
-  if (protocol === 'http' && req.socket.ssl) {
-    protocol = 'https'
+/**
+ * Remove the part of a URL.
+ *
+ * @param {string} originalUrl Original URL.
+ * @param {*} part The part to remove.
+ * @returns {string} The URL without the specified part.
+ */
+const removeUrlPart = (originalUrl, part) => {
+  const parts = new URL(originalUrl)
+  if (parts[part]) {
+    delete parts[part]
   }
-
-  if (basePath) {
-    pathname = path.join(basePath, pathname)
-  }
-
-  const headers = req.headers
-  host = headers.host
-
-  // use proxy header fields?
-  if (req.app && req.app.get('trust proxy')) {
-    if ('x-forwarded-proto' in headers) {
-      protocol = headers['x-forwarded-proto']
-    }
-
-    if ('x-forwarded-host' in headers) {
-      host = headers['x-forwarded-host']
-    }
-  }
-
-  if (!host) {
-    const address = req.socket.address()
-    host = `${address.address}:${address.port}`
-  }
-
-  const hostSplit = host.split(':')
-  if (hostSplit.length > 1) {
-    host = hostSplit[0]
-    port = parseInt(hostSplit[1])
-  }
-
-  // ignore port if default http(s) port
-  if ([80, 443].includes(port)) {
-    port = ''
-  }
-
-  // add ':' before port number
-  if (port && port !== '') {
-    port = `:${port}`
-  }
-
-  return `${protocol}://${host}${port}${pathname}`
+  return urlFrom(parts)
 }
 
 const factory = (trifid) => {
-  const { config, logger } = trifid
-  const { basePath } = config
+  const { logger } = trifid
 
   return (req, _res, next) => {
-    req.iri = decodeURI(iri(req, basePath))
+    absoluteUrl.attach(req)
+    req.iri = decodeURI(removeUrlPart(req.absoluteUrl(), 'search'))
     logger.debug(`value for req.iri: ${req.iri}`)
     next()
   }
