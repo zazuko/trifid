@@ -6,6 +6,7 @@ import errorsMiddleware from '../../middlewares/errors.js'
 import notFoundMiddleware from '../../middlewares/notFound.js'
 import staticMiddleware from '../../middlewares/static.js'
 import iriMiddleware from '../../middlewares/iri.js'
+import localsMiddleware from '../../middlewares/locals.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -38,10 +39,16 @@ const iri = {
   order: 0
 }
 
+const locals = {
+  module: localsMiddleware,
+  order: 1
+}
+
 export default {
   health,
   errors,
   notFound,
   templateStaticFiles,
-  iri
+  iri,
+  locals
 }
