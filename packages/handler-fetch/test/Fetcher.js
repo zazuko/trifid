@@ -81,7 +81,10 @@ describe('Fetcher', () => {
     it('should load a dataset from a http URL and use the given content type to parse it', async () => {
       const content = fs.readFileSync(new URL(fileUrlDataset))
 
-      nock('http://example.org').get('/dataset-content-type').reply(200, content)
+      nock('http://example.org').get('/dataset-content-type')
+        .reply(200, content, {
+          'content-type': 'text/turtle'
+        })
 
       const options = {
         url: 'http://example.org/dataset-content-type',
