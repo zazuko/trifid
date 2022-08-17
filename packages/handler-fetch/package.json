@@ -2,7 +2,7 @@
   "name": "trifid-handler-fetch",
   "description": "Fetch handler for Trifid",
   "type": "module",
-  "version": "1.3.2",
+  "version": "2.0.0",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid-handler-fetch",
   "repository": {
