@@ -10,18 +10,16 @@ import { URL } from 'url'
 const urlFrom = (urlObject) => String(Object.assign(new URL('http://example.com'), urlObject))
 
 /**
- * Remove the part of a URL.
+ * Remove the searchParams part of a URL.
  *
  * @param {string} originalUrl Original URL.
- * @param {*} part The part to remove.
- * @returns {string} The URL without the specified part.
+ * @returns {string} The URL without the searchParams part.
  */
-const removeUrlPart = (originalUrl, part) => {
-  const parts = new URL(originalUrl)
-  if (parts[part]) {
-    delete parts[part]
-  }
-  return urlFrom(parts)
+const removeSearchParams = (originalUrl) => {
+  const url = new URL(originalUrl)
+  url.search = ''
+  url.searchParams.forEach((_value, key) => url.searchParams.delete(key))
+  return urlFrom(url)
 }
 
 const factory = (trifid) => {
@@ -29,7 +27,7 @@ const factory = (trifid) => {
 
   return (req, _res, next) => {
     absoluteUrl.attach(req)
-    req.iri = decodeURI(removeUrlPart(req.absoluteUrl(), 'search'))
+    req.iri = decodeURI(removeSearchParams(req.absoluteUrl()))
     logger.debug(`value for req.iri: ${req.iri}`)
     next()
   }
