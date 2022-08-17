@@ -19,6 +19,9 @@ describe('redirect middleware', () => {
     app.use('/redirect', redirectMiddleware({
       config: {
         target: '/'
+      },
+      logger: {
+        debug: (_) => {}
       }
     }))
 
@@ -33,6 +36,9 @@ describe('redirect middleware', () => {
     app.use('/redirect', redirectMiddleware({
       config: {
         target: '/'
+      },
+      logger: {
+        debug: (_) => {}
       }
     }))
 
