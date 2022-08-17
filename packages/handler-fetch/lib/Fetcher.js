@@ -29,7 +29,10 @@ class Fetcher {
     options.options = options.options || {}
     options.options.fetch = fetch
 
-    const res = await rdfFetch(options.url, options.options)
+    const res = await rdfFetch(options.url, {
+      ...options.options,
+      factory: rdf
+    })
     if (options.contentType) {
       res.headers.set('content-type', options.contentType)
     }
