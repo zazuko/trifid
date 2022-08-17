@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@rdfjs/express-handler": "^1.2.2",
-    "@rdfjs/formats-common": "^2.0.0",
+    "@rdfjs/formats-common": "^2.2.0",
     "@rdfjs/serializer-jsonld-ext": "^3.0.0",
     "file-fetch": "^1.7.0",
     "rdf-fetch": "^1.0.0",
@@ -30,9 +30,9 @@
     "bluebird": "^3.7.2",
     "express": "^4.18.1",
     "mocha": "^10.0.0",
-    "nock": "^13.2.4",
+    "nock": "^13.2.9",
     "standard": "^17.0.0",
-    "supertest": "^6.2.3",
+    "supertest": "^6.2.4",
     "tbbt-ld": "^1.1.0"
   }
 }
