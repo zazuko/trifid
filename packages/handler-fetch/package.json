@@ -4,6 +4,7 @@
   "type": "module",
   "version": "2.0.0",
   "license": "MIT",
+  "main": "index.js",
   "homepage": "https://github.com/zazuko/trifid-handler-fetch",
   "repository": {
     "type": "git",
