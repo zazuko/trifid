@@ -83,7 +83,7 @@ describe('trifid-handler-fetch', () => {
     assert.equal(typeof handler.get, 'function')
   })
 
-  it('should send a response', () => {
+  it('should send a response', async () => {
     const includeNt = '<http://localhost:8080/data/person/amy-farrah-fowler><http://www.w3.org/1999/02/22-rdf-syntax-ns#type><http://schema.org/Person>'
     const excludeNt = '<http://localhost:8080/data/person/sheldon-cooper><http://www.w3.org/1999/02/22-rdf-syntax-ns#type><http://schema.org/Person>'
 
@@ -101,18 +101,15 @@ describe('trifid-handler-fetch', () => {
     app.use(attachIri)
     app.use(handler.handle)
 
-    return request(app)
+    const res = await request(app)
       .get('/data/person/amy-farrah-fowler')
       .set('accept', 'text/turtle')
-      .then((res) => {
-        const text = res.text.split(' ').join('')
-
-        assert.equal(text.indexOf(includeNt) >= 0, true)
-        assert.equal(text.indexOf(excludeNt) >= 0, false)
-      })
+    const text = res.text.split(' ').join('')
+    assert.equal(text.indexOf(includeNt) >= 0, true)
+    assert.equal(text.indexOf(excludeNt) >= 0, false)
   })
 
-  it('should not process next middleware after sending content', () => {
+  it('should not process next middleware after sending content', async () => {
     const app = express()
 
     const handler = new Handler({
@@ -130,15 +127,14 @@ describe('trifid-handler-fetch', () => {
       touched = true
     })
 
-    return request(app)
+    await request(app)
       .get('/data/person/amy-farrah-fowler')
       .set('accept', 'text/turtle')
-      .then(() => Promise.delay(500)).then(() => {
-        assert(!touched)
-      })
+    await Promise.delay(500)
+    assert(!touched)
   })
 
-  it('retrieves JSON-LD responses', () => {
+  it('retrieves JSON-LD responses', async () => {
     const app = express()
 
     const handler = new Handler({
@@ -153,16 +149,13 @@ describe('trifid-handler-fetch', () => {
     app.use(attachIri)
     app.use(handler.handle)
 
-    return request(app)
+    const res = await request(app)
       .get('/data/person/amy-farrah-fowler')
       .set('accept', 'application/ld+json')
-      .then((res) => {
-        const jsonld = JSON.parse(res.text)
-
-        assert(Array.isArray(jsonld))
-        assert(jsonld.length > 0)
-        assert.equal(jsonld[0]['@id'], 'http://localhost:8080/data/person/amy-farrah-fowler')
-      })
+    const jsonld = JSON.parse(res.text)
+    assert(Array.isArray(jsonld))
+    assert(jsonld.length > 0)
+    assert.equal(jsonld[0]['@id'], 'http://localhost:8080/data/person/amy-farrah-fowler')
   })
 
   it('should send a 404 response for unknown resources', () => {
@@ -186,9 +179,9 @@ describe('trifid-handler-fetch', () => {
       .expect(404)
   })
 
-  it('should cache the dataset if cache option is true', () => {
+  it('should cache the dataset if cache option is true', async () => {
     const base = 'http://localhost:8080'
-    const fileUrl = 'file://' + path.join(__dirname, 'test.nt')
+    const fileUrl = `file://${path.join(__dirname, 'test.nt')}`
 
     const datasetBefore =
       `<${base}/subject0> <${base}/predicate> "object0" .\n<${base}/subject1> <${base}/predicate> "object1" .\n`
@@ -214,23 +207,20 @@ describe('trifid-handler-fetch', () => {
 
     fs.writeFileSync(new URL(fileUrl), datasetBefore)
 
-    return request(app)
+    await request(app)
       .get('/subject1')
       .set('accept', 'text/turtle')
       .expect(200)
-      .then(() => {
-        fs.writeFileSync(new URL(fileUrl), datasetAfter)
-
-        return request(app)
-          .get('/subject1')
-          .set('accept', 'text/turtle')
-          .expect(200)
-      })
+    fs.writeFileSync(new URL(fileUrl), datasetAfter)
+    return await request(app)
+      .get('/subject1')
+      .set('accept', 'text/turtle')
+      .expect(200)
   })
 
-  it('should not cache the dataset if cache options is not true', () => {
+  it('should not cache the dataset if cache options is not true', async () => {
     const base = 'http://localhost:8080'
-    const fileUrl = 'file://' + path.join(__dirname, 'test.nt')
+    const fileUrl = `file://${path.join(__dirname, 'test.nt')}`
 
     const datasetBefore =
       `<${base}/subject0> <${base}/predicate> "object0" .\n<${base}/subject1> <${base}/predicate> "object1" .\n`
@@ -255,20 +245,16 @@ describe('trifid-handler-fetch', () => {
 
     fs.writeFileSync(new URL(fileUrl), datasetBefore)
 
-    return request(app)
+    await request(app)
       .get('/subject1')
       .set('accept', 'text/turtle')
       .expect(200)
-      .then(() => {
-        fs.writeFileSync(new URL(fileUrl), datasetAfter)
-
-        return request(app)
-          .get('/subject1')
-          .set('accept', 'text/turtle')
-          .expect(404)
-      }).then(() => {
-        fs.unlinkSync(new URL(fileUrl))
-      })
+    fs.writeFileSync(new URL(fileUrl), datasetAfter)
+    await request(app)
+      .get('/subject1')
+      .set('accept', 'text/turtle')
+      .expect(404)
+    fs.unlinkSync(new URL(fileUrl))
   })
 
   it('should implement the legacy interface', () => {
