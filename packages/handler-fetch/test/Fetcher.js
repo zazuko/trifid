@@ -8,10 +8,10 @@ import Fetcher from '../lib/Fetcher.js'
 
 import { createRequire } from 'module'
 
-const require = createRequire(import.meta.url) // eslint-disable-line
+const require = createRequire(import.meta.url)
 
 describe('Fetcher', () => {
-  const fileUrlDataset = 'file://' + require.resolve('tbbt-ld/dist/tbbt.nq')
+  const fileUrlDataset = `file://${require.resolve('tbbt-ld/dist/tbbt.nq')}`
 
   describe('.isCached', () => {
     it('should be a method', () => {
@@ -39,7 +39,7 @@ describe('Fetcher', () => {
       assert.equal(typeof Fetcher.fetchDataset, 'function')
     })
 
-    it('should load a dataset from a file URL', () => {
+    it('should load a dataset from a file URL', async () => {
       const options = {
         url: fileUrlDataset,
         options: {
@@ -49,19 +49,16 @@ describe('Fetcher', () => {
         }
       }
 
-      return Fetcher.fetchDataset(options).then((dataset) => {
-        const graphs = dataset.toArray().reduce((graphs, quad) => {
-          graphs[quad.graph.value] = true
-
-          return graphs
-        }, {})
-
-        assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-        assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-      })
+      const dataset = await Fetcher.fetchDataset(options)
+      const graphs = Array.from(dataset).reduce((graph, quad) => {
+        graph[quad.graph.value] = true
+        return graph
+      }, {})
+      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
+      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
     })
 
-    it('should load a dataset from a http URL', () => {
+    it('should load a dataset from a http URL', async () => {
       const content = fs.readFileSync(new URL(fileUrlDataset))
 
       nock('http://example.org').get('/dataset').reply(200, content, {
@@ -72,19 +69,16 @@ describe('Fetcher', () => {
         url: 'http://example.org/dataset'
       }
 
-      return Fetcher.fetchDataset(options).then((dataset) => {
-        const graphs = dataset.toArray().reduce((graphs, quad) => {
-          graphs[quad.graph.value] = true
-
-          return graphs
-        }, {})
-
-        assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-        assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-      })
+      const dataset = await Fetcher.fetchDataset(options)
+      const graphs = Array.from(dataset).reduce((graph, quad) => {
+        graph[quad.graph.value] = true
+        return graph
+      }, {})
+      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
+      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
     })
 
-    it('should load a dataset from a http URL and use the given content type to parse it', () => {
+    it('should load a dataset from a http URL and use the given content type to parse it', async () => {
       const content = fs.readFileSync(new URL(fileUrlDataset))
 
       nock('http://example.org').get('/dataset-content-type').reply(200, content)
@@ -94,16 +88,13 @@ describe('Fetcher', () => {
         contentType: 'application/n-quads'
       }
 
-      return Fetcher.fetchDataset(options).then((dataset) => {
-        const graphs = dataset.toArray().reduce((graphs, quad) => {
-          graphs[quad.graph.value] = true
-
-          return graphs
-        }, {})
-
-        assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
-        assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
-      })
+      const dataset = await Fetcher.fetchDataset(options)
+      const graphs = Array.from(dataset).reduce((graph, quad) => {
+        graph[quad.graph.value] = true
+        return graph
+      }, {})
+      assert(graphs['http://localhost:8080/data/person/amy-farrah-fowler'])
+      assert(graphs['http://localhost:8080/data/person/sheldon-cooper'])
     })
   })
 

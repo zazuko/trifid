@@ -1,7 +1,7 @@
 import fileFetch from 'file-fetch'
 import protoFetch from 'proto-fetch'
 import rdf from 'rdf-ext'
-import rdfFetch from 'rdf-fetch'
+import rdfFetch from '@rdfjs/fetch'
 import splitIntoGraphs from './spread/splitIntoGraphs.js'
 
 const fetch = protoFetch({
@@ -25,18 +25,16 @@ class Fetcher {
     })
   }
 
-  static fetchDataset (options) {
+  static async fetchDataset (options) {
     options.options = options.options || {}
     options.options.fetch = fetch
 
-    return rdfFetch(options.url, options.options).then((res) => {
-      if (options.contentType) {
-        res.headers.set('content-type', options.contentType)
-      }
-      options.fetched = new Date()
-
-      return res.dataset()
-    })
+    const res = await rdfFetch(options.url, options.options)
+    if (options.contentType) {
+      res.headers.set('content-type', options.contentType)
+    }
+    options.fetched = new Date()
+    return res.dataset()
   }
 
   static spreadDataset (inputDataset, outputDataset, options) {
@@ -57,16 +55,15 @@ class Fetcher {
     return outputDataset
   }
 
-  static load (dataset, options) {
+  static async load (dataset, options) {
     if (Fetcher.isCached(options)) {
       return Promise.resolve()
     }
 
     Fetcher.clearDataset(dataset, options)
 
-    return Fetcher.fetchDataset(options).then((input) => {
-      return Fetcher.spreadDataset(input, dataset, options)
-    })
+    const input = await Fetcher.fetchDataset(options)
+    return Fetcher.spreadDataset(input, dataset, options)
   }
 }
 
