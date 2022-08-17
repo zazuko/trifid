@@ -1,7 +1,9 @@
 import absoluteUrl from 'absolute-url'
 import url from 'url'
 
-function factory (trifid) {
+const factory = (trifid) => {
+  const { logger } = trifid
+
   return (req, res, next) => {
     absoluteUrl.attach(req)
 
@@ -13,7 +15,9 @@ function factory (trifid) {
 
     // dummy translation
     res.locals.t = res.locals.t || (x => {
-      return x.substring(x.indexOf(':') + 1)
+      const translation = x.substring(x.indexOf(':') + 1)
+      logger.debug(`translation value: ${translation}`)
+      return translation
     })
     next()
   }
