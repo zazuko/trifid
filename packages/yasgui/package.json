@@ -2,7 +2,7 @@
   "name": "trifid-plugin-yasgui",
   "description": "Trifid YASGUI plugin",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid-plugin-yasgui",
   "repository": {
