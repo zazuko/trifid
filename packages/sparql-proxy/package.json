@@ -12,10 +12,16 @@
     "url": "https://github.com/zazuko/trifid-plugin-sparql-proxy/issues"
   },
   "license": "MIT",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "standard"
   },
   "devDependencies": {
     "standard": "^17.0.0"
+  },
+  "dependencies": {
+    "sparql-proxy": "^2.2.2"
   }
 }
