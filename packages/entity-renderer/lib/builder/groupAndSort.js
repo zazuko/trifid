@@ -30,7 +30,6 @@ function sortProperties (a, b) {
   return b.properties.length < a.properties.length
 }
 
-
 function groupByValue (rows) {
   const rowsByObject = new Map()
   const eqSet = (a, b) => a.size === b.size && [...a].every(value => b.has(value))

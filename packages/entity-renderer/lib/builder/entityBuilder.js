@@ -62,11 +62,13 @@ function getEntity (cf, options, context) {
   const rows = getRows(cf, options, context)
 
   // Already grouped by property. If groupValuesByProperty is false, expand.
-  const byProperty = options.groupValuesByProperty ? rows : rows.map(row => row.values.map(value => {
-    return {
-      properties: row.properties, values: [value]
-    }
-  })).flat()
+  const byProperty = options.groupValuesByProperty
+    ? rows
+    : rows.map(row => row.values.map(value => {
+      return {
+        properties: row.properties, values: [value]
+      }
+    })).flat()
   const byValue = options.groupPropertiesByValue ? groupByValue(byProperty) : byProperty
   byValue.sort(sortProperties)
   const entity = {
@@ -194,18 +196,17 @@ function entityBuilder (cf) {
 function defaultBuilder (cf, options = {
   preferredLanguages: ['de', 'fr', 'it', 'en'], compactMode: true, externalLabels: rdf.clownface({ dataset: rdf.dataset() })
 }) {
-  const builder = entityBuilder(cf).
-    embedNamed(options.embedNamed).
-    embedBlanks(options.embedBlanks).
-    embedLists(options.embedLists).
-    groupValuesByProperty(options.groupValuesByProperty).
-    groupPropertiesByValue(options.groupPropertiesByValue).
-    maxLevel(options.maxLevel).
-    withExternalLabels(options.externalLabels).
-    withPreferredLanguages(options.preferredLanguages)
+  const builder = entityBuilder(cf)
+    .embedNamed(options.embedNamed)
+    .embedBlanks(options.embedBlanks)
+    .embedLists(options.embedLists)
+    .groupValuesByProperty(options.groupValuesByProperty)
+    .groupPropertiesByValue(options.groupPropertiesByValue)
+    .maxLevel(options.maxLevel)
+    .withExternalLabels(options.externalLabels)
+    .withPreferredLanguages(options.preferredLanguages)
 
   return builder
 }
-
 
 export { entityBuilder, defaultBuilder }

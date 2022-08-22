@@ -18,7 +18,7 @@ const assert = chai.assert
 chai.use(schema)
 
 function clown (turtle, term) {
-  return rdf.clownface({ dataset: rdf.dataset().addAll(toQuads(turtle)), term: term })
+  return rdf.clownface({ dataset: rdf.dataset().addAll(toQuads(turtle)), term })
 }
 
 const entitySchema = {
@@ -111,11 +111,8 @@ describe('entityBuilder', () => {
     const data = '_:a <a> [ <b> _:a] .'
     const cf = clown(data, rdf.blankNode('_:a'))
 
-    for (const quad of cf.dataset) {
-      const result = entityBuilder(cf).build()
-
-      assert.jsonSchema(result, entitySchema)
-    }
+    const result = entityBuilder(cf).build()
+    assert.jsonSchema(result, entitySchema)
   })
 })
 
@@ -305,11 +302,11 @@ it('do not repeat with compactMode false', function () {
   const compactMode = false
 
   const builder = entityBuilder(cf)
-  .embedLists(compactMode)
-  .groupValuesByProperty(compactMode)
-  .groupPropertiesByValue(compactMode)
-  .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
-  .withPreferredLanguages(['de', 'fr', 'it', 'en'])
+    .embedLists(compactMode)
+    .groupValuesByProperty(compactMode)
+    .groupPropertiesByValue(compactMode)
+    .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
+    .withPreferredLanguages(['de', 'fr', 'it', 'en'])
 
   const result = entity(cf, builder)
 
@@ -328,11 +325,11 @@ it('do not repeat with compactMode true', function () {
   const compactMode = false
 
   const builder = entityBuilder(cf)
-  .embedLists(compactMode)
-  .groupValuesByProperty(compactMode)
-  .groupPropertiesByValue(compactMode)
-  .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
-  .withPreferredLanguages(['de', 'fr', 'it', 'en'])
+    .embedLists(compactMode)
+    .groupValuesByProperty(compactMode)
+    .groupPropertiesByValue(compactMode)
+    .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
+    .withPreferredLanguages(['de', 'fr', 'it', 'en'])
 
   const result = entity(cf, builder)
 
@@ -348,8 +345,8 @@ it('fetch languages', function () {
   const cf = clown(data, rdf.namedNode('a'))
 
   const builder = entityBuilder(cf)
-  .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
-  .withPreferredLanguages(['de', 'fr', 'it', 'en'])
+    .withExternalLabels(rdf.clownface({ dataset: rdf.dataset() }))
+    .withPreferredLanguages(['de', 'fr', 'it', 'en'])
 
   const result = entity(cf, builder)
 

@@ -10,14 +10,16 @@ function toQuads (str) {
   return parser.parse(str)
 }
 
-function getOptions ({ preferredLanguages, compactMode, highLightLanguage }) {
-  return {
-    embedNamed: false, embedBlanks: false, embedLists: true, groupValuesByProperty: compactMode, groupPropertiesByValue: compactMode, preferredLanguages, highLightLanguage
-  }
-}
-
 class TrifidEntityRenderer {
   constructor (options) {
+    this.rendererOptions = {
+      embedNamed: false,
+      embedBlanks: false,
+      embedLists: true,
+      groupValuesByProperty: options.compactMode,
+      groupPropertiesByValue: options.compactMode
+    }
+
     this.template = options.template
     this.templateError = options.templateError
   }
@@ -40,7 +42,6 @@ class TrifidEntityRenderer {
   }
 
   renderTemplate (template, req, res) {
-
     const iri = req.iri
 
     res.locals.statusCode = res.statusCode
@@ -51,8 +52,7 @@ class TrifidEntityRenderer {
     const selectedLanguage = req.query.lang ? req.query.lang : 'de'
     const preferredLanguages = selectedLanguage ? [selectedLanguage, ...defaultLang] : defaultLang
 
-    const rendererOptions = getOptions({ preferredLanguages, compactMode: true, highLightLanguage: selectedLanguage })
-
+    const rendererOptions = { ...this.rendererOptions, preferredLanguages, highLightLanguage: selectedLanguage }
     const resourceWebComponent = ResourceDescription(cf, rendererOptions)
     const stringIterator = renderWebComponent(resourceWebComponent)
 
@@ -60,7 +60,6 @@ class TrifidEntityRenderer {
 
     this._render(this.template, req, res)
   }
-
 }
 
 export default TrifidEntityRenderer

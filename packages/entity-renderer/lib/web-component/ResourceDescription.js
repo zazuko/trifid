@@ -6,7 +6,6 @@ import { NamedGraphSummary } from './NamedGraphSummary.js'
 import { defaultBuilder } from '../builder/entityBuilder.js'
 
 function EntityList (cf, options) {
-
   const builder = defaultBuilder(cf, options)
   const items = entity(cf, builder)
   const primaryNodes = rdf.termSet(items.map(item => item.term))
@@ -21,7 +20,6 @@ function EntityList (cf, options) {
 }
 
 function ResourceDescription (cf, options) {
-
   if (options.debug) {
     return html`
         ${EntityList(cf, options)}

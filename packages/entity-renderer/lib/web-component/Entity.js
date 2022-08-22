@@ -1,9 +1,7 @@
 import { html } from 'lit'
 
 function Term (entity, options, context, renderedAsRoot) {
-
   if (renderedAsRoot) {
-
     const url = entity.term.termType === 'BlankNode' ? '' : entity.term.value
 
     return html`<a href="${url}" id="${entity.term.value}" title=" ${entity.term.value}">${entity.label.string ? entity.label.string : entity.term.value}</a>`
@@ -34,11 +32,9 @@ function Term (entity, options, context, renderedAsRoot) {
   }
 
   return html`<span>${entity.label.string ? entity.label.string : entity.term.value}</span>`
-
 }
 
 function TermWithCues (entity, options, context, renderedAsRoot) {
-
   const spans = []
   if (entity.label.vocab && options?.technicalCues) {
     spans.push(html`<span class="vocab">${entity.label.vocab}</span>`)
@@ -54,8 +50,10 @@ function TermWithCues (entity, options, context, renderedAsRoot) {
 
   if (options?.highLightLanguage && entity.label.language) {
     const isHighLight = entity.label.language === options.highLightLanguage
-    return isHighLight ? html`
-        <div>${spans}</div>` : html`
+    return isHighLight
+      ? html`
+        <div>${spans}</div>`
+      : html`
         <div class="bringDown">${spans}</div>`
   }
 
@@ -64,16 +62,17 @@ function TermWithCues (entity, options, context, renderedAsRoot) {
 }
 
 function Row (row, options, context) {
-
   const predicatesList = html`
       <ul> ${row.properties.map(property => html`
           <li>${TermWithCues(property, options, context)}</li>`)}
       </ul>`
 
-  const valuesList = row.renderAs === 'List' ? html`
+  const valuesList = row.renderAs === 'List'
+    ? html`
       <ol>${row.values.map(value => html`
           <li>${TermWithCues(value, options, context)}</li>`)}
-      </ol>` : html`
+      </ol>`
+    : html`
       <ul>${row.values.map(value => html`
           <li>${Entity(value, options, context)}</li>`)}
       </ul>`
