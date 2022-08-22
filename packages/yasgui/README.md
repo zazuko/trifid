@@ -15,14 +15,14 @@ And then add in the `config.yaml` file the following part:
 
 ```yaml
 middlewares:
-	# […] your other middlewares
-	yasgui:
+  # […] your other middlewares
+  yasgui:
     module: trifid-plugin-yasgui
     paths: /sparql
     config:
       endpointUrl: https://example.com/query
       urlShortener: https://example.com/api/v1/shorten
-			# …other configuration fields
+      # …other configuration fields
 ```
 
 ## Configuration
