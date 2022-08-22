@@ -13,6 +13,11 @@
   "bugs": {
     "url": "https://github.com/zazuko/trifid-plugin-yasgui/issues"
   },
+  "files": [
+    "test",
+    "views",
+    "index.js"
+  ],
   "scripts": {
     "test": "standard && mocha"
   },
