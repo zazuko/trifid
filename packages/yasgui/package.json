@@ -16,7 +16,6 @@
     "test": "standard && mocha"
   },
   "dependencies": {
-    "absolute-url": "^1.2.2",
     "express": "^4.18.1",
     "yasgui": "^2.7.29"
   },

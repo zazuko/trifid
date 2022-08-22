@@ -1,0 +1,31 @@
+<div class="trifid-content">
+  <style type="text/css">
+    @import url("/yasgui-dist/yasgui.css");
+
+  </style>
+
+  <div id="yasgui"></div>
+  <p>
+    <a href="https://triply.cc/docs/yasgui-api" target="_blank" rel="noreferrer noopener">About YASGUI</a>
+    -
+    <a href="https://github.com/zazuko/trifid-plugin-yasgui" target="_blank" rel="noreferrer noopener">Trifid plugin</a>
+  </p>
+
+  <script src="/yasgui-dist/yasgui.min.js"></script>
+  <script>
+    const config = {
+      "api": {}
+    }
+  </script>
+
+  {{#if urlShortener }}
+  <script>
+    config.api.urlShortener = '{{ urlShortener }}'
+  </script>
+  {{/if}}
+
+  <script>
+    YASGUI.defaults.yasqe.sparql.endpoint = '{{ endpointUrl }}'
+    const yasgui = YASGUI(document.getElementById('yasgui'), config)
+  </script>
+</div>
