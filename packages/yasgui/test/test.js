@@ -30,10 +30,10 @@ describe('trifid-plugin-yasgui', () => {
       assert.strictEqual(typeof trifidFactory, 'function')
     })
 
-    it('should create a middleware with factory and default options', () => {
+    it('should create a middleware with factory and default options', async () => {
       const app = express()
       const trifid = createTrifidConfig(app, {})
-      const middleware = trifidFactory(trifid)
+      const middleware = await trifidFactory(trifid)
 
       assert.strictEqual(typeof middleware, 'function')
     })
@@ -45,16 +45,61 @@ describe('trifid-plugin-yasgui', () => {
       app.use(absoluteUrl())
 
       const trifidConfig = createTrifidConfig(app, {})
-      const middleware = trifidFactory(trifidConfig)
-      app.use('/sparql', middleware)
+      trifidFactory(trifidConfig).then(middleware => {
+        app.use('/sparql', middleware)
+        request(app)
+          .get('/sparql')
+          .expect(200)
+          .end((err, _res) => {
+            if (err) {
+              done(err)
+            } else {
+              done()
+            }
+          })
+      })
+    })
+  })
 
-      request(app)
-        .get('/sparql')
-        .expect(200)
-        .end(function (err, res) {
-          if (err) done(err)
-          done()
-        })
+  describe('YASGUI dist', () => {
+    it('can serve static CSS style', (done) => {
+      const app = express()
+      app.use(absoluteUrl())
+
+      const trifidConfig = createTrifidConfig(app, {})
+      trifidFactory(trifidConfig).then(middleware => {
+        app.use('/sparql', middleware)
+        request(app)
+          .get('/yasgui-dist/yasgui.css')
+          .expect(200)
+          .end((err, _res) => {
+            if (err) {
+              done(err)
+            } else {
+              done()
+            }
+          })
+      })
+    })
+
+    it('can serve static JavaScript script', (done) => {
+      const app = express()
+      app.use(absoluteUrl())
+
+      const trifidConfig = createTrifidConfig(app, {})
+      trifidFactory(trifidConfig).then(middleware => {
+        app.use('/sparql', middleware)
+        request(app)
+          .get('/yasgui-dist/yasgui.min.js')
+          .expect(200)
+          .end((err, _res) => {
+            if (err) {
+              done(err)
+            } else {
+              done()
+            }
+          })
+      })
     })
   })
 })

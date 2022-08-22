@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "express": "^4.18.1",
+    "import-meta-resolve": "^2.1.0",
     "yasgui": "^2.7.29"
   },
   "devDependencies": {
