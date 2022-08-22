@@ -1,13 +1,26 @@
 import assert from 'assert'
-import withServer from 'express-as-promise/withServer.js'
+import request from 'supertest'
 import { describe, it } from 'mocha'
 import trifidFactory from '../index.js'
-import { renderFile } from 'ejs'
-import getStream from 'get-stream'
+import express from 'express'
+import absoluteUrl from 'absolute-url'
 
-const createTrifidConfig = (config) => {
+const createTrifidConfig = (app, config) => {
+  const server = app
+  const logger = console
+  const render = (filePath, context, options) => {
+    return JSON.stringify({
+      filePath,
+      context,
+      options
+    }, null, 2)
+  }
+
   return {
-    config
+    config,
+    server,
+    logger,
+    render
   }
 }
 
@@ -18,7 +31,8 @@ describe('trifid-plugin-yasgui', () => {
     })
 
     it('should create a middleware with factory and default options', () => {
-      const trifid = createTrifidConfig({})
+      const app = express()
+      const trifid = createTrifidConfig(app, {})
       const middleware = trifidFactory(trifid)
 
       assert.strictEqual(typeof middleware, 'function')
@@ -26,18 +40,21 @@ describe('trifid-plugin-yasgui', () => {
   })
 
   describe('middleware', () => {
-    it('can execute', async () => {
-      await withServer(async server => {
-        const trifidConfig = createTrifidConfig({ endpointUrl: '/test' })
-        const middleware = trifidFactory(trifidConfig)
-        server.app.engine('html', renderFile)
-        server.app.use(middleware)
+    it('can execute', (done) => {
+      const app = express()
+      app.use(absoluteUrl())
 
-        const res = await server.fetch('/')
-        const bodyStr = await getStream(res.body)
-        assert.strictEqual(res.status, 200)
-        assert.strictEqual(bodyStr.indexOf('SPARQL endpoint URL') > 0, true)
-      })
+      const trifidConfig = createTrifidConfig(app, {})
+      const middleware = trifidFactory(trifidConfig)
+      app.use('/sparql', middleware)
+
+      request(app)
+        .get('/sparql')
+        .expect(200)
+        .end(function (err, res) {
+          if (err) done(err)
+          done()
+        })
     })
   })
 })

@@ -9,10 +9,7 @@ const trifidFactory = (trifid) => {
   const { config, logger, render, server } = trifid
   const { template, endpointUrl, urlShortener } = config
 
-  if (!endpointUrl) {
-    throw new Error("no value was set for required field: 'endpointUrl'")
-  }
-
+  const endpoint = endpointUrl || '/query'
   const view = !template ? `${currentDir}/views/yasgui.hbs` : template
 
   const yasguiPath = new URL('node_modules/yasgui/dist/', import.meta.url).pathname
@@ -21,11 +18,13 @@ const trifidFactory = (trifid) => {
   return async (req, res, next) => {
     logger.debug('Yasgui plugin was called')
 
-    res.send(await render(view, {
+    const content = await render(view, {
       // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
-      endpointUrl: url.resolve(req.absoluteUrl(), endpointUrl), // eslint-disable-line
+      endpointUrl: url.resolve(req.absoluteUrl(), endpoint), // eslint-disable-line
       urlShortener
-    }, { title: 'YASGUI' }))
+    }, { title: 'YASGUI' })
+
+    res.send(content)
   }
 }
 
