@@ -5,9 +5,8 @@ import trifidFactory from '../index.js'
 import { renderFile } from 'ejs'
 import getStream from 'get-stream'
 
-function createTrifidConfig (config, loggerSpy = []) {
+const createTrifidConfig = (config) => {
   return {
-    logger: str => loggerSpy.push(str),
     config
   }
 }
@@ -29,8 +28,7 @@ describe('trifid-plugin-yasgui', () => {
   describe('middleware', () => {
     it('can execute', async () => {
       await withServer(async server => {
-        const logs = []
-        const trifidConfig = createTrifidConfig({ endpointUrl: '/test' }, logs)
+        const trifidConfig = createTrifidConfig({ endpointUrl: '/test' })
         const middleware = trifidFactory(trifidConfig)
         server.app.engine('html', renderFile)
         server.app.use(middleware)

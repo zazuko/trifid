@@ -3,7 +3,7 @@ import express from 'express'
 
 import url from 'url'
 
-function createMiddleWare (options, logger = (str) => console.log(str)) {
+const createMiddleWare = (options) => {
   const router = express.Router()
 
   if (!options || !options.endpointUrl) {
@@ -37,10 +37,10 @@ function createMiddleWare (options, logger = (str) => console.log(str)) {
   return router
 }
 
-function trifidFactory (trifid) {
-  const { config, logger } = trifid
+const trifidFactory = (trifid) => {
+  const { config } = trifid
 
-  return createMiddleWare(config, logger)
+  return createMiddleWare(config)
 }
 
 export default trifidFactory
