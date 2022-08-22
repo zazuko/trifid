@@ -17,7 +17,7 @@ And then add in the `config.yaml` file the following part:
 ```yaml
 middlewares:
   # […] your other middlewares
-  yasgui:
+  sparql-proxy:
     module: "@zazuko/trifid-plugin-sparql-proxy"
     paths: /query
     config:
