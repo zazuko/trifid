@@ -1,47 +1,31 @@
-import absoluteUrl from 'absolute-url'
 import express from 'express'
 
-import url from 'url'
+import url, { fileURLToPath } from 'url'
+import { dirname } from 'path'
 
-const createMiddleWare = (options) => {
-  const router = express.Router()
-
-  if (!options || !options.endpointUrl) {
-    return router
-  }
-
-  const templatePath = new URL('views/index.html', import.meta.url).pathname
-  options.template = options.template || templatePath
-
-  const yasguiPath = new URL('node_modules/yasgui/dist/', import.meta.url).pathname
-  router.use('/dist/', express.static(yasguiPath))
-
-  // render index page
-  router.get('/', (req, res) => {
-    absoluteUrl.attach(req)
-
-    const urlPathname = url.parse(req.originalUrl).pathname // eslint-disable-line
-
-    // redirect to trailing slash URL for relative pathes of JS and CSS files
-    if (urlPathname.slice(-1) !== '/') {
-      return res.redirect(urlPathname + '/')
-    }
-
-    // read SPARQL endpoint URL from options and resolve with absoluteUrl
-    res.locals.endpointUrl = url.resolve(req.absoluteUrl(), options.endpointUrl) // eslint-disable-line
-    res.locals.urlShortener = options.urlShortener
-
-    res.render(options.template)
-  })
-
-  return router
-}
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const trifidFactory = (trifid) => {
-  const { config } = trifid
+  const { config, logger, render, server } = trifid
+  const { template, endpointUrl, urlShortener } = config
 
-  return createMiddleWare(config)
+  const endpoint = endpointUrl || '/query'
+  const view = !template ? `${currentDir}/views/yasgui.hbs` : template
+
+  const yasguiPath = new URL('node_modules/yasgui/dist/', import.meta.url).pathname
+  server.use('/yasgui-dist/', express.static(yasguiPath))
+
+  return async (req, res, next) => {
+    logger.debug('Yasgui plugin was called')
+
+    const content = await render(view, {
+      // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
+      endpointUrl: url.resolve(req.absoluteUrl(), endpoint), // eslint-disable-line
+      urlShortener
+    }, { title: 'YASGUI' })
+
+    res.send(content)
+  }
 }
 
 export default trifidFactory
-export { createMiddleWare }
