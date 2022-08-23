@@ -36,12 +36,12 @@ const templateStaticFiles = {
 
 const iri = {
   module: iriMiddleware,
-  order: 0
+  order: 10
 }
 
 const locals = {
   module: localsMiddleware,
-  order: 1
+  order: 11
 }
 
 export default {
