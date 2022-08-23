@@ -19,7 +19,7 @@ const authBasicHeader = (user, password) => {
 }
 
 export class SparqlHandler {
-  constructor (options) {
+  constructor(options) { // eslint-disable-line
     this.authentication = options.authentication
     this.resourceNoSlash = options.resourceNoSlash
     this.resourceExistsQuery = options.resourceExistsQuery
