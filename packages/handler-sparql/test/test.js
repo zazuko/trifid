@@ -25,7 +25,7 @@ describe('trifid-handler-sparql', () => {
       { iri: 'http://localhost/test/', resourceNoSlash: undefined },
       { iri: 'http://localhost/test', resourceNoSlash: true }
     ].forEach(input => {
-      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
+      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -53,7 +53,7 @@ describe('trifid-handler-sparql', () => {
       { iri: 'http://localhost/test/', resourceNoSlash: undefined },
       { iri: 'http://localhost/test', resourceNoSlash: true }
     ].forEach(input => {
-      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
+      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -79,7 +79,7 @@ describe('trifid-handler-sparql', () => {
     [
       { iri: 'http://localhost/test/', resourceNoSlash: true }
     ].forEach(input => {
-      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
+      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -223,7 +223,7 @@ describe('trifid-handler-sparql', () => {
       400, 401, 403, 405, 415, 444,
       500, 501, 502, 503, 511
     ].forEach(status => {
-      it(`for status ${status}`, async function () {
+      it(`for status ${status}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint(status)
 
