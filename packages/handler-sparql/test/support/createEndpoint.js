@@ -1,6 +1,6 @@
 import ExpressAsPromise from 'express-as-promise'
 
-async function createEndpoint (status = 200) {
+const createEndpoint = async (status = 200) => {
   const server = new ExpressAsPromise()
 
   server.requestHeaders = []

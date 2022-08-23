@@ -5,12 +5,21 @@ import SparqlHttpClient from 'sparql-http-client'
 const debug = debugLib('trifid:handler-sparql')
 SparqlHttpClient.fetch = nodeFetch
 
-function authBasicHeader (user, password) {
+const defaults = {
+  authentication: false,
+  resourceNoSlash: true,
+  resourceExistsQuery: 'ASK { <${iri}> ?p ?o }', // eslint-disable-line no-template-curly-in-string
+  resourceGraphQuery: 'DESCRIBE <${iri}>', // eslint-disable-line no-template-curly-in-string
+  containerExistsQuery: 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }', // eslint-disable-line no-template-curly-in-string
+  containerGraphQuery: 'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }' // eslint-disable-line no-template-curly-in-string
+}
+
+const authBasicHeader = (user, password) => {
   return 'Basic ' + Buffer.from(user + ':' + password).toString('base64')
 }
 
-class SparqlHandler {
-  constructor (options) {
+export class SparqlHandler {
+  constructor(options) { // eslint-disable-line
     this.authentication = options.authentication
     this.resourceNoSlash = options.resourceNoSlash
     this.resourceExistsQuery = options.resourceExistsQuery
@@ -107,11 +116,9 @@ class SparqlHandler {
     const { status, exists } = await this.exists(iri, queryExist)
 
     if (status !== 200) {
-      // @TODO https://github.com/zazuko/trifid/issues/39
-      return next()
+      return res.status(status).send('')
     } else if (!exists) {
-      // @TODO https://github.com/zazuko/trifid/issues/39
-      return next()
+      return res.status(404).send('')
     } else {
       const query = isContainer ? this.buildContainerGraphQuery(iri) : this.buildResourceGraphQuery(iri)
 
@@ -129,4 +136,14 @@ class SparqlHandler {
   }
 }
 
-export default SparqlHandler
+export const factory = trifid => {
+  const { config } = trifid
+
+  const handler = new SparqlHandler({ ...defaults, ...config })
+
+  return (req, res, next) => {
+    handler.handle(req, res, next)
+  }
+}
+
+export default factory

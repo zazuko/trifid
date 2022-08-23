@@ -1,7 +1,6 @@
-function setIri (iri) {
-  return (req, res, next) => {
+const setIri = iri => {
+  return (req, _res, next) => {
     req.iri = iri
-
     next()
   }
 }

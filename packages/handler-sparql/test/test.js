@@ -1,7 +1,7 @@
 import { strictEqual } from 'assert'
 import withServer from 'express-as-promise/withServer.js'
 import { describe, it } from 'mocha'
-import SparqlHandler from '../index.js'
+import { SparqlHandler } from '../index.js'
 import { createEndpoint } from './support/createEndpoint.js'
 import setIri from './support/setIri.js'
 
@@ -25,7 +25,7 @@ describe('trifid-handler-sparql', () => {
       { iri: 'http://localhost/test/', resourceNoSlash: undefined },
       { iri: 'http://localhost/test', resourceNoSlash: true }
     ].forEach(input => {
-      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
+      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -53,7 +53,7 @@ describe('trifid-handler-sparql', () => {
       { iri: 'http://localhost/test/', resourceNoSlash: undefined },
       { iri: 'http://localhost/test', resourceNoSlash: true }
     ].forEach(input => {
-      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
+      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -79,7 +79,7 @@ describe('trifid-handler-sparql', () => {
     [
       { iri: 'http://localhost/test/', resourceNoSlash: true }
     ].forEach(input => {
-      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async function () {
+      it(`for IRI ${input.iri}, resourceNoSlash:${input.resourceNoSlash}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint()
 
@@ -218,13 +218,12 @@ describe('trifid-handler-sparql', () => {
     })
   })
 
-  // @TODO https://github.com/zazuko/trifid/issues/39
-  describe.skip('Endpoint status codes forwarded', async () => {
+  describe('Endpoint status codes forwarded', async () => {
     [
-      400,
-      500
+      400, 401, 403, 405, 415, 444,
+      500, 501, 502, 503, 511
     ].forEach(status => {
-      it(`for status ${status}`, async function () {
+      it(`for status ${status}`, async () => {
         await withServer(async server => {
           const endpoint = await createEndpoint(status)
 
