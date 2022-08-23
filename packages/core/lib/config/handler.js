@@ -109,6 +109,21 @@ const addDefaultPort = (config) => {
   }
 }
 
+/**
+ * Add some default Express settings for the server configuration.
+ *
+ * @param {*} config
+ */
+const addDefaultExpressSettings = (config) => {
+  if (!config.server.express) {
+    config.server.express = {}
+  }
+
+  if (!Object.hasOwnProperty.call(config.server.express, 'trust proxy')) {
+    config.server.express['trust proxy'] = 'loopback'
+  }
+}
+
 const handler = async (configFile) => {
   let config = {}
   if (typeof configFile === 'string') {
@@ -118,6 +133,7 @@ const handler = async (configFile) => {
   }
   addDefaultFields(config)
   addDefaultPort(config)
+  addDefaultExpressSettings(config)
 
   return config
 }

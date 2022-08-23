@@ -69,6 +69,13 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   const server = express()
   server.disable('x-powered-by')
 
+  // configure Express server
+  if (fullConfig?.server?.express) {
+    for (const expressSettingKey in fullConfig.server.express) {
+      server.set(expressSettingKey, fullConfig.server.express[expressSettingKey])
+    }
+  }
+
   // dynamic server configuration
   const port = fullConfig?.server?.listener?.port || defaultPort
   const host = fullConfig?.server?.listener?.host || defaultHost
