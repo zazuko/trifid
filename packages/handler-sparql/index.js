@@ -32,7 +32,7 @@ export class SparqlHandler {
   buildQueryOptions () {
     const queryOptions = {}
 
-    if (this.authentication) {
+    if (this.authentication && this.authentication.user && this.authentication.password) {
       queryOptions.headers = {
         Authorization: authBasicHeader(this.authentication.user, this.authentication.password)
       }
