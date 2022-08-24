@@ -10,17 +10,6 @@ body {
   --color-white: #ffffff;
   --color-darker-white: #fcfcfc;
   --color-light-grey: #e5e5e5;
-
-  /*I've got this from inspecting bootstrap*/
-  box-sizing: border-box;
-  color: rgb(102, 102, 102);
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  letter-spacing: 0.1px;
-  line-height: 24px;
-  list-style-image: none;
-  list-style-position: outside;
-  list-style-type: none
 }
 
 .navbar-brand {
@@ -146,4 +135,30 @@ body {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+.navbar-default .navbar-brand {
+  color: #666666;
+}
+
+navbar-brand {
+  float: left;
+  padding: 20.5px 15px;
+  font-size: 17px;
+  line-height: 23px;
+  height: 64px;
+}
+
+.footer-elements {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-elements .controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-elements .bottom {
+  align-self: center;
 }
