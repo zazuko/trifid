@@ -1,0 +1,173 @@
+<style>
+  body {
+    --color-primary: #ffb15e;
+    --color-primary-light: #ffe38d;
+    --color-secondary: #ff441c;
+    --color-secondary-dark: #c30000;
+    --color-text-on-primary: #000000;
+    --color-text-on-secondary: #000000;
+    --color-black: #000000;
+    --color-grey: #4f4f4f;
+    --color-white: #ffffff;
+    --color-darker-white: #fcfcfc;
+    --color-light-grey: #e5e5e5;
+  }
+
+  .navbar-brand {
+    font-size: 24px;
+  }
+
+  .container>.navbar-header,
+  .container-fluid>.navbar-header,
+  .container>.navbar-collapse,
+  .container-fluid>.navbar-collapse {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+
+  .container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .container .entities {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .container .entity {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-grey);
+  }
+
+  .container .header {
+    padding-left: 10px;
+    background-color: var(--color-primary-light);
+  }
+
+  .container .header a {
+    color: var(--color-text-on-primary);
+  }
+
+  .container .rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container .rows> :nth-child(1n) {
+    border-top: 1px solid var(--color-light-grey);
+  }
+
+  .container .rows> :nth-child(2n) {
+    border-top: 1px solid var(--color-light-grey);
+    /*background-color: var(--color-primary-light);*/
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .container .rows .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /*flex-wrap: wrap;*/
+  }
+
+  .container .row> :nth-child(1) {
+    align-self: flex-start;
+    width: 20%;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: 1rem;
+  }
+
+  .container .row> :nth-child(2) {
+    width: 80%;
+    margin-left: 1rem;
+    margin-right: auto;
+  }
+
+  .container ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    gap: 5px;
+
+    justify-content: center;
+    padding-left: 5px;
+  }
+
+  .container div .bringDown {
+    color: var(--color-grey);
+    /*font-size: 0.7rem;*/
+  }
+
+  .container .vocab {
+    color: var(--color-secondary);
+    font-size: 0.7rem;
+  }
+
+  .container .vocab::after {
+    content: ':';
+  }
+
+  .container .language {
+    color: var(--color-secondary);
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
+
+  .container .datatype {
+    color: var(--color-secondary);
+    font-size: 0.5rem;
+    margin-left: 4px;
+  }
+
+  .container .BlankNode {
+    font-size: 10px;
+  }
+
+  .container .BlankNode a {
+    color: var(--color-grey);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  .navbar-default .navbar-brand {
+    color: #666666;
+  }
+
+  navbar-brand {
+    float: left;
+    padding: 20.5px 15px;
+    font-size: 17px;
+    line-height: 23px;
+    height: 64px;
+  }
+
+  .footer-elements {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer-elements .controls {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer-elements .bottom {
+    align-self: center;
+  }
+
+</style>
+
+<div class="trifid-content">
+  <div class="container">
+    {{{ dataset }}}
+  </div>
+</div>
