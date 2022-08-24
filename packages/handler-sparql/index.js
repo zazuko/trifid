@@ -1,3 +1,5 @@
+// eslint-disable-next-line node/no-deprecated-api
+import { resolve } from 'url'
 import debugLib from 'debug'
 import nodeFetch from 'node-fetch'
 import SparqlHttpClient from 'sparql-http-client'
@@ -139,10 +141,16 @@ export class SparqlHandler {
 
 export const factory = trifid => {
   const { config } = trifid
+  const { endpointUrl } = config
 
-  const handler = new SparqlHandler({ ...defaults, ...config })
+  const endpoint = endpointUrl || '/query'
 
   return (req, res, next) => {
+    const handler = new SparqlHandler({
+      ...defaults,
+      ...config,
+      endpointUrl: resolve(req.absoluteUrl(), endpoint)
+    })
     handler.handle(req, res, next)
   }
 }
