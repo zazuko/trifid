@@ -1,65 +1,91 @@
-import { render as renderWebComponent } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
-import { Parser } from 'n3'
-import rdf from 'rdf-ext'
+import hijackResponse from 'hijackresponse'
+import { Readable } from 'stream'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+import rdfFormats from '@rdfjs/formats-common'
+import clownfaceRenderer from './renderer/clownface.js'
 
-import { ResourceDescription } from './lib/web-component/ResourceDescription.js'
+const { parsers, serializers } = rdfFormats
 
-const parser = new Parser()
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
-function toQuads (str) {
-  return parser.parse(str)
+/**
+ * Convert a Readable into a string.
+ *
+ * @param {Readable} readableStream The readable stream to convert.
+ * @returns {Promise<string>} The result as a string.
+ */
+const readableToString = async (readableStream) => {
+  const chunks = []
+  for await (const chunk of readableStream) {
+    chunks.push(chunk)
+  }
+  return chunks.join('')
 }
 
-class TrifidEntityRenderer {
-  constructor (options) {
-    this.rendererOptions = {
-      embedNamed: false,
-      embedBlanks: false,
-      embedLists: true,
-      groupValuesByProperty: options.compactMode,
-      groupPropertiesByValue: options.compactMode
+/**
+ * Convert a stream into a string.
+ *
+ * @param {*} readableStream The readable stream to convert.
+ * @returns {Promise<string>} The result as a string.
+ */
+const streamToString = async (readableStream) => {
+  const readable = Readable.from(readableStream, { encoding: 'utf8' })
+  return readableToString(readable)
+}
+
+const factory = async (trifid) => {
+  const { render, logger } = trifid
+
+  return async (req, res, next) => {
+    // only take care of the rendering if HTML is requested
+    const accepts = req.accepts(['text/plain', 'json', 'html'])
+    if (accepts !== 'html') {
+      return next()
     }
 
-    this.template = options.template
-    this.templateError = options.templateError
-  }
+    hijackResponse(res, next).then(async ({ readable, writable }) => {
+      const contentType = res.getHeader('Content-Type')
+      if (!contentType) {
+        return readable.pipe(writable)
+      }
 
-  render (req, res) {
-    this.renderTemplate(this.template, req, res)
-  }
+      const mimeType = contentType.toLowerCase().split(';')[0].trim()
+      const hijackFormats = [
+        'application/ld+json',
+        'application/trig',
+        'application/n-quads',
+        'application/n-triples',
+        'text/n3',
+        'text/turtle',
+        'application/rdf+xml'
+      ]
+      if (!hijackFormats.includes(mimeType)) {
+        return readable.pipe(writable)
+      }
 
-  error (req, res) {
-    res.locals.statusCode = res.statusCode
-    if (this.templateError) {
-      res.render(this.templateError)
-    } else {
-      console.log('Error template needs to be specified')
-    }
-  }
+      // load render module
+      const nquadsStream = serializers.import('application/ld+json', parsers.import(mimeType, readable))
+      const streamData = await streamToString(nquadsStream)
 
-  async _render (template, req, res) {
-    res.render(this.template)
-  }
+      let contentToForward
+      try {
+        const graph = JSON.parse(streamData)
+        const data = await clownfaceRenderer(req, graph)
+        const view = await render(`${currentDir}/views/render.hbs`, {
+          dataset: data
+        })
+        contentToForward = view
+        res.setHeader('Content-Type', 'text/html')
+      } catch (e) {
+        logger.error(e)
+        return readable.pipe(writable)
+      }
 
-  renderTemplate (template, req, res) {
-    const iri = req.iri
-
-    res.locals.statusCode = res.statusCode
-
-    const cf = rdf.clownface({ dataset: rdf.dataset().addAll(toQuads(res.locals.graph)), term: rdf.namedNode(iri) })
-
-    const defaultLang = ['de', 'fr', 'it', 'en']
-    const selectedLanguage = req.query.lang ? req.query.lang : 'de'
-    const preferredLanguages = selectedLanguage ? [selectedLanguage, ...defaultLang] : defaultLang
-
-    const rendererOptions = { ...this.rendererOptions, preferredLanguages, highLightLanguage: selectedLanguage }
-    const resourceWebComponent = ResourceDescription(cf, rendererOptions)
-    const stringIterator = renderWebComponent(resourceWebComponent)
-
-    res.locals.resourceDescription = Array.from(stringIterator).join('\n')
-
-    this._render(this.template, req, res)
+      writable.write(contentToForward)
+      writable.end()
+    })
   }
 }
 
-export default TrifidEntityRenderer
+export default factory
