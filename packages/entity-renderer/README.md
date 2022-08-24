@@ -13,7 +13,7 @@ And then add in the `config.yaml` file the following part:
 ```yaml
 middlewares:
   # […]
-  sparql-proxy:
+  entity-renderer:
     module: "@zazuko/trifid-renderer-entity"
 ```
 
