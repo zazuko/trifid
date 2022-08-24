@@ -13,7 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 createServer(async (request, response) => {
   if (request.url === '/css') {
-    const styleFile = resolve(__dirname, '../views', 'style.css')
+    const styleFile = resolve(__dirname, 'style.css')
     createReadStream(styleFile).pipe(response)
   } else {
     function * renderPage (webpage) {
