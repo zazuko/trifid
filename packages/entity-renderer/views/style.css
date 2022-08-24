@@ -27,7 +27,10 @@ body {
   font-size: 24px;
 }
 
-.container > .navbar-header, .container-fluid > .navbar-header, .container > .navbar-collapse, .container-fluid > .navbar-collapse {
+.container>.navbar-header,
+.container-fluid>.navbar-header,
+.container>.navbar-collapse,
+.container-fluid>.navbar-collapse {
   margin-right: -15px;
   margin-left: -15px;
 }
@@ -66,11 +69,11 @@ body {
   flex-direction: column;
 }
 
-.container .rows > :nth-child(1n) {
+.container .rows> :nth-child(1n) {
   border-top: 1px solid var(--color-light-grey);
 }
 
-.container .rows > :nth-child(2n) {
+.container .rows> :nth-child(2n) {
   border-top: 1px solid var(--color-light-grey);
   /*background-color: var(--color-primary-light);*/
   background: rgba(0, 0, 0, 0.05);
@@ -83,7 +86,7 @@ body {
   /*flex-wrap: wrap;*/
 }
 
-.container .row > :nth-child(1) {
+.container .row> :nth-child(1) {
   align-self: flex-start;
   width: 20%;
   margin-top: 1rem;
@@ -91,7 +94,7 @@ body {
   margin-right: 1rem;
 }
 
-.container .row > :nth-child(2) {
+.container .row> :nth-child(2) {
   width: 80%;
   margin-left: 1rem;
   margin-right: auto;
@@ -144,4 +147,3 @@ body {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
-
