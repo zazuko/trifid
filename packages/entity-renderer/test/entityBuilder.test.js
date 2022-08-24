@@ -2,7 +2,7 @@ import chai from 'chai'
 
 import schema from 'chai-json-schema'
 
-import expect from 'expect'
+import { expect } from 'expect'
 import toMatchSnapshot from 'expect-mocha-snapshot'
 import { describe, it } from 'mocha'
 import rdf from 'rdf-ext'
