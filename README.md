@@ -261,20 +261,20 @@ An example on using Docker can be found at [lod.opentransportdata.swiss](https:/
 
 #### Trifid environment variables
 
-You can change its behavior by changing the following environment variable:
+You can use the following environment variables:
 
-```sh
-TRIFID_CONFIG config-sparql.json
-```
-
-This overrides the default configuration `config.json`.
+- `TRIFID_CONFIG`: the configuration file to use (default value: `config-docker.json`, which enable the following environment variables)
+- `SPARQL_ENDPOINT_URL`: the SPARQL endpoint URL to use
+- `DATASET_BASE_URL`: the base URL to use to enable rewriting
+- `SPARQL_USER`: the user to use to authenticate against the SPARQL endpoint
+- `SPARQL_PASSWORD`: the password to use to authenticate against the SPARQL endpoint
 
 #### Use the pre built image
 
-If you do not want to build your own Docker image, you can pull the official image from [Docker Hub](https://hub.docker.com/r/zazuko/trifid/):
+If you do not want to build your own Docker image, you can pull the official image from the Docker Container Registry:
 
 ```sh
-docker pull zazuko/trifid
+docker pull ghcr.io/zazuko/trifid
 ```
 
 ### Reverse Proxy
