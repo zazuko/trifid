@@ -34,9 +34,11 @@ Trifid can be completely themed according to your needs. Example resources using
 Trifid is a [Node.js](http://nodejs.org/) based application.
 To install and run it you will need to install [Node.js](http://nodejs.org/) on your system.
 
-Clone the Github repository and run
+Clone the Github repository and run:
 
-    npm install
+```sh
+npm install
+```
 
 to install all module dependencies.
 
@@ -44,15 +46,21 @@ to install all module dependencies.
 
 To start the server execute the following command:
 
-    npm start
+```sh
+npm start
+```
 
 The server script is also a command line program which can be called like this:
 
-    trifid --config=my-trifid-config.json
+```
+trifid --config=my-trifid-config.json
+```
 
 If you want to run Trifid using a SPARQL endpoint and default settings, you can run it even without a config file:
 
-    trifid --sparql-endpoint-url=http://localhost:3030/sparql     
+```sh
+trifid --sparql-endpoint-url=http://localhost:3030/sparql
+```
 
 ### Parameters
 
@@ -78,7 +86,9 @@ Values of the base file will be overwritten.
 The default configuration `config.json` uses the file system handler and a [sample dataset](https://github.com/zazukoians/tbbt-ld) with characters from _The Big Bang Theory_.
 The following command will run it:
 
-    npm start
+```sh
+npm start
+```
 
 You will then be able to access its content, e.g. <http://localhost:8080/data/person/amy-farrah-fowler>.
 
@@ -90,7 +100,7 @@ For production systems we recommend data access via the [SPARQL 1.1 Protocol](ht
 `config-sparql.json` can be used as base configuration.
 The following lines defines a configuration using a Fuseki SPARQL endpoint:
 
-```JSON
+```json
 {
   "baseConfig": "trifid:config-sparql.json",
   "sparqlEndpointUrl": "http://localhost:3030/dataset/sparql"
@@ -103,7 +113,9 @@ The value of the `sparqlEndpointUrl` property is used in the handler and also th
 
 Sometimes SPARQL endpoints are running on TLS/SSL but provide an incomplete configuration or a self-signed certificate. In that case one can disable strict certificate checking by setting the environment variable `NODE_TLS_REJECT_UNAUTHORIZED`. For example:
 
-    $ export NODE_TLS_REJECT_UNAUTHORIZED=0
+```sh
+$ export NODE_TLS_REJECT_UNAUTHORIZED=0
+```
 
 ### Properties
 
@@ -142,7 +154,8 @@ Also a `hostname` can be specified to use the config only for matching host name
 The `priority` may be required if multiple configs could match to an URL.
 
 Example:
-```JSON
+
+```json
 "pluginName": {
   "root": {
     // "path": "/" will be automatically added if path is not given
@@ -172,7 +185,7 @@ It's possible to use prefixes in the folder value.
 
 Example:
 
-```JSON
+```json
 "staticFiles": {
   "rendererFiles": {
     "hostname": "example.org",
@@ -233,19 +246,26 @@ Trifid can be installed using Docker. With this method you only need to have Doc
 
 Once Docker is installed clone the Github repository and run
 
-    docker build -t trifid .
+```sh
+docker build -t trifid .
+```
 
 This creates an image named `trifid` that you can execute with
 
-    docker run -ti -p 8080:8080 trifid
+```sh
+docker run --rm -it -p 8080:8080 trifid
+```
 
-Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper . An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
+Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper .
+An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
 
 #### Trifid environment variables
 
 You can change its behavior by changing the following environment variable:
 
-    TRIFID_CONFIG config-sparql.json
+```sh
+TRIFID_CONFIG config-sparql.json
+```
 
 This overrides the default configuration `config.json`.
 
@@ -253,8 +273,9 @@ This overrides the default configuration `config.json`.
 
 If you do not want to build your own Docker image, you can pull the official image from [Docker Hub](https://hub.docker.com/r/zazuko/trifid/):
 
-    docker pull zazuko/trifid
-
+```sh
+docker pull zazuko/trifid
+```
 
 ### Reverse Proxy
 
