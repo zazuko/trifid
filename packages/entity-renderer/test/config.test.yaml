@@ -1,0 +1,22 @@
+server:
+  logLevel: debug
+
+middlewares:
+
+  welcome:
+    module: trifid-core/middlewares/view.js
+    paths: /
+    methods: GET
+    config:
+      path: test/support/welcome.hbs
+
+  entity-renderer:
+    module: "file:../index.js"
+
+  fetch-handler:
+    module: trifid-handler-fetch
+    config:
+      url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt
+      contentType: application/n-triples
+      split: true
+      cache: true
