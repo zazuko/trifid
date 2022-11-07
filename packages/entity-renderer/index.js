@@ -3,7 +3,7 @@ import { Readable } from 'stream'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import rdfFormats from '@rdfjs/formats-common'
-import clownfaceRenderer from './renderer/clownface.js'
+import { createRenderer } from './renderer/clownface.js'
 
 const { parsers, serializers } = rdfFormats
 
@@ -35,7 +35,8 @@ const streamToString = async (readableStream) => {
 }
 
 const factory = async (trifid) => {
-  const { render, logger } = trifid
+  const { render, logger, config } = trifid
+  const renderer = createRenderer({ options: config })
 
   return async (req, res, next) => {
     // only take care of the rendering if HTML is requested
@@ -71,7 +72,7 @@ const factory = async (trifid) => {
       let contentToForward
       try {
         const graph = JSON.parse(streamData)
-        const data = await clownfaceRenderer(req, graph)
+        const data = await renderer(req, graph)
         const view = await render(`${currentDir}/views/render.hbs`, {
           dataset: data
         })

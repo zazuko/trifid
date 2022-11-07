@@ -5,11 +5,11 @@
   "description": "Renders a RDF entity in Trifid",
   "main": "index.js",
   "scripts": {
-    "example-instance": "trifid-core -c ./test/config.test.yaml",
+    "example-instance": "node ./examples/run-instances.js",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "dev-integration-test": "start-server-and-test example-instance http://localhost:8080 cy:open",
-    "integration-test": "start-server-and-test example-instance http://localhost:8080 cy:run",
+    "dev-integration-test": "start-server-and-test example-instance http://0.0.0.0:8080 cy:open",
+    "integration-test": "start-server-and-test example-instance http://0.0.0.0:8080 cy:run",
     "unit-test": "standard && c8 --reporter=lcov --reporter=text mocha",
     "test": "npm run unit-test && npm run integration-test"
   },

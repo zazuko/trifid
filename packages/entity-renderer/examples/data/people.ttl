@@ -1,5 +1,7 @@
-const peopleData = `<http://localhost:8080/data/person/amy-farrah-fowler> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
+<http://localhost:8080/data/person/amy-farrah-fowler> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/additionalName> "Farrah" .
+<http://localhost:8080/data/person/amy-farrah-fowler> <http://localhost:8080/data/nickName> "Farrah" .
+
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/familyName> "Fowler" .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/givenName> "Amy" .
 <http://localhost:8080/data/person/amy-farrah-fowler> <http://schema.org/jobTitle> "neurobiologist" .
@@ -124,5 +126,3 @@ _:b4 <http://schema.org/streetAddress> "2311 North Los Robles Avenue, Apartment 
 <http://localhost:8080/data/person/stuart-bloom> <http://schema.org/knows> <http://localhost:8080/data/person/penny> .
 <http://localhost:8080/data/person/stuart-bloom> <http://schema.org/knows> <http://localhost:8080/data/person/rajesh-koothrappali> .
 <http://localhost:8080/data/person/stuart-bloom> <http://schema.org/knows> <http://localhost:8080/data/person/sheldon-cooper> .
-`
-export { peopleData }

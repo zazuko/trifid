@@ -1,61 +1,60 @@
-const cubeView = `
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/ns/void#Dataset> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dcat#Dataset> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Dataset> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://cube.link/Cube> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://cube.link/view/View> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/name> "Bevölkerung nach Stadtquartier, seit 1934" .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/contributor> <https://ld.stadt-zuerich.ch/org/Zazuko> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/publisher> <https://ld.stadt-zuerich.ch/org/SSZ> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/contactPoint> <https://ld.stadt-zuerich.ch/org/SSZ> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/dateCreated> "2021-06-11"^^<http://www.w3.org/2001/XMLSchema#date> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/dateModified> "2021-06-11"^^<http://www.w3.org/2001/XMLSchema#date> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/identifier> "V000001" .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://schema.org/isBasedOn> <https://ld.stadt-zuerich.ch/statistics/view/D000001> .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://purl.org/dc/terms/rights> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db88 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://www.w3.org/ns/dcat#distribution> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db89 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <http://www.w3.org/ns/dcat#distribution> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db90 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db5 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db14 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db23 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db32 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db41 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db47 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db53 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db59 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db65 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db68 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db76 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db79 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db82 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db9 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db12 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db18 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db21 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db27 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db30 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db36 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db39 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db45 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db51 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db57 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db63 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db72 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db75 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db78 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db86 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db87 .
-<https://ld.stadt-zuerich.ch/statistics/view/V000001> <https://cube.link/observations> <https://ld.stadt-zuerich.ch/statistics/view/V000001/observation/> .
-_:b65_genid2def72a467497d4f41a54a3020f88f312d2db88 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/RightsStatement> .
+<http://localhost:8081/view/0001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/ns/void#Dataset> .
+  <http://localhost:8081/view/0001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dcat#Dataset> .
+  <http://localhost:8081/view/0001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Dataset> .
+  <http://localhost:8081/view/0001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://cube.link/Cube> .
+  <http://localhost:8081/view/0001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://cube.link/view/View> .
+  <http://localhost:8081/view/0001> <http://schema.org/name> "Bevölkerung nach Stadtquartier, seit 1934" .
+  <http://localhost:8081/view/0001> <http://schema.org/contributor> <https://ld.stadt-zuerich.ch/org/Zazuko> .
+  <http://localhost:8081/view/0001> <http://schema.org/publisher> <https://ld.stadt-zuerich.ch/org/SSZ> .
+  <http://localhost:8081/view/0001> <http://schema.org/contactPoint> <https://ld.stadt-zuerich.ch/org/SSZ> .
+  <http://localhost:8081/view/0001> <http://schema.org/dateCreated> "2021-06-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <http://localhost:8081/view/0001> <http://schema.org/dateModified> "2021-06-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <http://localhost:8081/view/0001> <http://schema.org/identifier> "V000001" .
+  <http://localhost:8081/view/0001> <http://schema.org/isBasedOn> <https://ld.stadt-zuerich.ch/statistics/view/D000001> .
+  <http://localhost:8081/view/0001> <http://purl.org/dc/terms/rights> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db88 .
+  <http://localhost:8081/view/0001> <http://www.w3.org/ns/dcat#distribution> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db89 .
+  <http://localhost:8081/view/0001> <http://www.w3.org/ns/dcat#distribution> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db90 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db5 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db14 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db23 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db32 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db41 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db47 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db53 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db59 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db65 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db68 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db76 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db79 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/dimension> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db82 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db9 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db12 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db18 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db21 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db27 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db30 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db36 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db39 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db45 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db51 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db57 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db63 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db72 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db75 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db78 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db86 .
+  <http://localhost:8081/view/0001> <https://cube.link/view/filter> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db87 .
+  <http://localhost:8081/view/0001> <https://cube.link/observations> <http://localhost:8081/view/0001/observation/> .
+  _:b65_genid2def72a467497d4f41a54a3020f88f312d2db88 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/RightsStatement> .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db88 <http://schema.org/name> "Statistikgesetz (StatG)" .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db88 <http://schema.org/description> "Zur Auskunft oder Mitwirkung verpflichtete öffentliche Organe oder Private erteilen wahrheitsgetreue Informationen." .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db88 <http://schema.org/identifier> "431.1 § 13." .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db89 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dcat#Distribution> .
-_:b65_genid2def72a467497d4f41a54a3020f88f312d2db89 <http://www.w3.org/ns/dcat#downloadURL> <https://ld.stadt-zuerich.ch/statistics/view/V000001/observation/?format=csv> .
+_:b65_genid2def72a467497d4f41a54a3020f88f312d2db89 <http://www.w3.org/ns/dcat#downloadURL> <http://localhost:8081/view/0001/observation/?format=csv> .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db89 <http://purl.org/dc/terms/format> "CSV" .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db89 <http://www.w3.org/ns/dcat#mediaType> "text/csv" .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db90 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dcat#Distribution> .
-_:b65_genid2def72a467497d4f41a54a3020f88f312d2db90 <http://www.w3.org/ns/dcat#downloadURL> <https://ld.stadt-zuerich.ch/statistics/view/V000001/observation/> .
+_:b65_genid2def72a467497d4f41a54a3020f88f312d2db90 <http://www.w3.org/ns/dcat#downloadURL> <http://localhost:8081/view/0001/observation/> .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db90 <http://purl.org/dc/terms/format> "RDF" .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db90 <http://www.w3.org/ns/dcat#mediaType> "application/n-triples" .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db5 <https://cube.link/view/from> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db6 .
@@ -351,6 +350,3 @@ _:b65_genid2def72a467497d4f41a54a3020f88f312d2db74 <https://cube.link/view/path>
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db85 <https://cube.link/view/source> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db81 .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db85 <https://cube.link/view/path> <https://ld.stadt-zuerich.ch/schema/referenceTime> .
 _:b65_genid2def72a467497d4f41a54a3020f88f312d2db85 <https://cube.link/view/join> _:b65_genid2def72a467497d4f41a54a3020f88f312d2db79 .
-`
-
-export { cubeView }

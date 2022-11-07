@@ -1,0 +1,24 @@
+server:
+  logLevel: debug
+
+middlewares:
+
+  welcome:
+    module: trifid-core/middlewares/view.js
+    paths: /
+    methods: GET
+    config:
+      path: examples/static/welcome.hbs
+
+  entity-renderer:
+    module: "file:../../index.js"
+    config:
+      compactMode: false
+
+  fetch-handler:
+    module: trifid-handler-fetch
+    config:
+      url: file:../data/people.ttl
+      contentType: application/n-triples
+      split: true
+      cache: true
