@@ -89,14 +89,13 @@ function createRenderer ({ options = {} }) {
         req.query.lang, ...DEFAULTS.preferredLanguages]
     }
 
-    console.log(rendererConfig)
     if (req.query.highLightLanguage !== undefined) {
       rendererConfig.highLightLanguage = req.query.highLightLanguage
     }
+
     if (!rendererConfig.highLightLanguage) {
       rendererConfig.highLightLanguage = rendererConfig.preferredLanguages[0]
     }
-    console.log(rendererConfig)
 
     if (rendererConfig.compactMode) {
       rendererConfig.groupValuesByProperty = rendererConfig.compactMode
