@@ -1,11 +1,11 @@
 import {
-  render as renderWebComponent,
+  render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import jsonld from 'jsonld'
 import { Parser } from 'n3'
 import rdf from 'rdf-ext'
 import {
-  ResourceDescription,
+  ResourceDescription
 } from '../lib/web-component/ResourceDescription.js'
 
 const { toRDF } = jsonld
