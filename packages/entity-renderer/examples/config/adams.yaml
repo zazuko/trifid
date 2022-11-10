@@ -10,29 +10,29 @@ middlewares:
     config:
       path: examples/static/welcome.hbs
 
-  entity-renderer:
-    module: "file:../../index.js"
+#  entity-renderer:
+#    module: "file:../../index.js"
 
   embedNamed:
-    paths: /data/gomez
+    paths: /adams/gomez
     module: "file:../../index.js"
     config:
       embedBlanks: true
 
   noTechnicalCues:
-    paths: /data/morticia
+    paths: /adams/morticia
     module: "file:../../index.js"
     config:
       technicalCues: false
 
   compactMode:
-    paths: /data/uncle
+    paths: /adams/uncle
     module: "file:../../index.js"
     config:
       compactMode: false
 
   highLightLanguage:
-    paths: /data/eudora
+    paths: /adams/eudora
     module: "file:../../index.js"
     config:
       compactMode: true
