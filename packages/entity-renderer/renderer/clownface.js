@@ -1,11 +1,11 @@
 import {
-  render as renderWebComponent
+  render as renderWebComponent,
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import jsonld from 'jsonld'
 import { Parser } from 'n3'
 import rdf from 'rdf-ext'
 import {
-  ResourceDescription
+  ResourceDescription,
 } from '../lib/web-component/ResourceDescription.js'
 
 const { toRDF } = jsonld
@@ -87,12 +87,16 @@ function createRenderer ({ options = {} }) {
     if (req.query.lang) {
       rendererConfig.preferredLanguages = [
         req.query.lang, ...DEFAULTS.preferredLanguages]
-      rendererConfig.highLightLanguage = req.query.lang
     }
 
+    console.log(rendererConfig)
     if (req.query.highLightLanguage !== undefined) {
       rendererConfig.highLightLanguage = req.query.highLightLanguage
     }
+    if (!rendererConfig.highLightLanguage) {
+      rendererConfig.highLightLanguage = rendererConfig.preferredLanguages[0]
+    }
+    console.log(rendererConfig)
 
     if (rendererConfig.compactMode) {
       rendererConfig.groupValuesByProperty = rendererConfig.compactMode
