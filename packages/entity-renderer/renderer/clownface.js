@@ -1,25 +1,10 @@
 import {
   render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
-import jsonld from 'jsonld'
-import { Parser } from 'n3'
 import rdf from 'rdf-ext'
 import {
   ResourceDescription
 } from '../lib/web-component/ResourceDescription.js'
-
-const { toRDF } = jsonld
-const parser = new Parser()
-
-/**
- * Convert a string to quads.
- *
- * @param {string} str String to be parsed.
- * @returns Quads.
- */
-const toQuads = (str) => {
-  return parser.parse(str)
-}
 
 const DEFAULTS = {
   compactMode: true,
@@ -51,7 +36,7 @@ function toBoolean (val) {
  */
 
 function createRenderer ({ options = {} }) {
-  return async (req, graph) => {
+  return async (req, { dataset }) => {
     const rendererConfig = Object.assign({}, DEFAULTS, options)
 
     // Honor parameters in the request
@@ -104,13 +89,6 @@ function createRenderer ({ options = {} }) {
 
     const iri = req.iri
     const term = rdf.namedNode(iri)
-    const dataset = rdf.dataset()
-
-    const nquads = await toRDF(graph, {
-      format: 'application/n-quads'
-    })
-
-    dataset.addAll(toQuads(nquads))
 
     const cf = rdf.clownface({ dataset, term })
 

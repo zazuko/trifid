@@ -4,6 +4,7 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import rdfFormats from '@rdfjs/formats-common'
 import { createRenderer } from './renderer/clownface.js'
+import rdf from 'rdf-ext'
 
 const { parsers, serializers } = rdfFormats
 
@@ -65,14 +66,12 @@ const factory = async (trifid) => {
         return readable.pipe(writable)
       }
 
-      // load render module
-      const nquadsStream = serializers.import('application/ld+json', parsers.import(mimeType, readable))
-      const streamData = await streamToString(nquadsStream)
+      const quadStream = await parsers.import(mimeType, readable)
+      const dataset = await rdf.dataset().import(quadStream)
 
       let contentToForward
       try {
-        const graph = JSON.parse(streamData)
-        const data = await renderer(req, graph)
+        const data = await renderer(req, { dataset })
         const view = await render(`${currentDir}/views/render.hbs`, {
           dataset: data
         })
