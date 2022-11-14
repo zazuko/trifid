@@ -16,3 +16,9 @@ middlewares:
   sparql-proxy:
     module: "@zazuko/trifid-renderer-entity"
 ```
+
+## Run an example instance
+
+```sh
+npm run example-instance
+```

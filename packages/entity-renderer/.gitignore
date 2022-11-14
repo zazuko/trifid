@@ -3,3 +3,6 @@ coverage/
 package-lock.json
 yarn.lock
 *.tgz
+videos
+screenshots
+downloads

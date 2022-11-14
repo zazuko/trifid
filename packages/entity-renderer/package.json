@@ -5,7 +5,13 @@
   "description": "Renders a RDF entity in Trifid",
   "main": "index.js",
   "scripts": {
-    "test": "standard && c8 --reporter=lcov --reporter=text mocha"
+    "example-instance": "trifid-core -c ./test/config.test.yaml",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "dev-integration-test": "start-server-and-test example-instance http://localhost:8080 cy:open",
+    "integration-test": "start-server-and-test example-instance http://localhost:8080 cy:run",
+    "unit-test": "standard && c8 --reporter=lcov --reporter=text mocha",
+    "test": "npm run unit-test && npm run integration-test"
   },
   "repository": {
     "type": "git",
@@ -34,7 +40,11 @@
     "expect-mocha-snapshot": "^2.1.5",
     "mocha": "^10.0.0",
     "n3": "^1.16.2",
-    "standard": "^17.0.0"
+    "standard": "^17.0.0",
+    "trifid-core": "^2.0.0-alpha.7",
+    "trifid-handler-fetch": "^2.0.1",
+    "cypress": "^10.11.0",
+    "start-server-and-test": "^1.14.0"
   },
   "files": [
     "index.js",
