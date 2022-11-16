@@ -1,0 +1,18 @@
+server:
+  logLevel: debug
+
+middlewares:
+
+  redirect:
+    module: "file:../../index.js"
+    config:
+      handleRedirects: true
+
+  fetch-handler:
+    module: trifid-handler-fetch
+    config:
+      url: file:./redirect.ttl
+      contentType: application/n-triples
+      split: true
+      cache: true
+
