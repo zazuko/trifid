@@ -38,7 +38,6 @@ ex:gomez
   ex:lives_at   [ rdfs:label "Address" ;
                   ex:street  "Cemetery Lane" ;
                   ex:number  "001" ;
-#                   ex:_namedNode [ ex:property "value" ; ex:property "value"]
                 ] ;
   ex:todoList   ( ex:drinkTea "Go to the supermarket" ex:readNewspaper ) ;
   ex:spouseIn   ex:second_generation .

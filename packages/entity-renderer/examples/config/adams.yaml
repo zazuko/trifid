@@ -10,9 +10,6 @@ middlewares:
     config:
       path: examples/static/welcome.hbs
 
-#  entity-renderer:
-#    module: "file:../../index.js"
-
   embedNamed:
     paths: /adams/gomez
     module: "file:../../index.js"
