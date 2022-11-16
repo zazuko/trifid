@@ -1,41 +1,17 @@
 import hijackResponse from 'hijackresponse'
-import { Readable } from 'stream'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import rdfFormats from '@rdfjs/formats-common'
-import clownfaceRenderer from './renderer/clownface.js'
+import { createRenderer } from './renderer/clownface.js'
+import rdf from 'rdf-ext'
 
-const { parsers, serializers } = rdfFormats
+const { parsers } = rdfFormats
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-/**
- * Convert a Readable into a string.
- *
- * @param {Readable} readableStream The readable stream to convert.
- * @returns {Promise<string>} The result as a string.
- */
-const readableToString = async (readableStream) => {
-  const chunks = []
-  for await (const chunk of readableStream) {
-    chunks.push(chunk)
-  }
-  return chunks.join('')
-}
-
-/**
- * Convert a stream into a string.
- *
- * @param {*} readableStream The readable stream to convert.
- * @returns {Promise<string>} The result as a string.
- */
-const streamToString = async (readableStream) => {
-  const readable = Readable.from(readableStream, { encoding: 'utf8' })
-  return readableToString(readable)
-}
-
 const factory = async (trifid) => {
-  const { render, logger } = trifid
+  const { render, logger, config } = trifid
+  const renderer = createRenderer({ options: config })
 
   return async (req, res, next) => {
     // only take care of the rendering if HTML is requested
@@ -64,14 +40,12 @@ const factory = async (trifid) => {
         return readable.pipe(writable)
       }
 
-      // load render module
-      const nquadsStream = serializers.import('application/ld+json', parsers.import(mimeType, readable))
-      const streamData = await streamToString(nquadsStream)
+      const quadStream = await parsers.import(mimeType, readable)
+      const dataset = await rdf.dataset().import(quadStream)
 
       let contentToForward
       try {
-        const graph = JSON.parse(streamData)
-        const data = await clownfaceRenderer(req, graph)
+        const data = await renderer(req, { dataset })
         const view = await render(`${currentDir}/views/render.hbs`, {
           dataset: data
         })

@@ -8,15 +8,17 @@ middlewares:
     paths: /
     methods: GET
     config:
-      path: test/support/welcome.hbs
+      path: examples/static/welcome.hbs
 
   entity-renderer:
-    module: "file:../index.js"
+    module: "file:../../index.js"
+    config:
+      compactMode: false
 
   fetch-handler:
     module: trifid-handler-fetch
     config:
-      url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt
+      url: file:../data/people.ttl
       contentType: application/n-triples
       split: true
       cache: true

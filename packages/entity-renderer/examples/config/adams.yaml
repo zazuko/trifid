@@ -1,0 +1,44 @@
+server:
+  logLevel: debug
+
+middlewares:
+
+  welcome:
+    module: trifid-core/middlewares/view.js
+    paths: /
+    methods: GET
+    config:
+      path: examples/static/welcome.hbs
+
+  embedNamed:
+    paths: /adams/gomez
+    module: "file:../../index.js"
+    config:
+      embedBlanks: true
+
+  noTechnicalCues:
+    paths: /adams/morticia
+    module: "file:../../index.js"
+    config:
+      technicalCues: false
+
+  compactMode:
+    paths: /adams/uncle
+    module: "file:../../index.js"
+    config:
+      compactMode: false
+
+  highLightLanguage:
+    paths: /adams/eudora
+    module: "file:../../index.js"
+    config:
+      compactMode: true
+      highLightLanguage: 'es'
+
+  fetch-handler:
+    module: trifid-handler-fetch
+    config:
+      url: file:../data/adams.ttl
+      contentType: application/n-triples
+      split: true
+      cache: true
