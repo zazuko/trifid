@@ -2,9 +2,7 @@ import {
   render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
-import {
-  ResourceDescription
-} from '../lib/web-component/ResourceDescription.js'
+import { ResourceDescription } from 'rdf-entity-webcomponent'
 
 const DEFAULTS = {
   compactMode: true,
