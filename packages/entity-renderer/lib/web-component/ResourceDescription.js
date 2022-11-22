@@ -2,7 +2,7 @@ import { html } from 'lit'
 import rdf from 'rdf-ext'
 import { entity } from '../model.js'
 import { Entity } from './Entity.js'
-import { NamedGraphSummary } from './NamedGraphSummary.js'
+import { Metadata, Debug } from './Metadata.js'
 import { entityBuilder } from '../builder/entityBuilder.js'
 
 function EntityList (cf, options) {
@@ -31,34 +31,26 @@ function EntityList (cf, options) {
 function ResourceDescription (cf, options) {
   if (options.debug) {
     return html`
-        ${EntityList(cf, options)}
-        ${NamedGraphSummary(cf, options)}
-        ${Debug(cf, options)}
+        <div>
+            ${EntityList(cf, options)}
+            ${Metadata(cf, options)}
+            ${Debug(cf, options)}
+        </div>
     `
   }
 
   return html`
       ${EntityList(cf, options)}
-      ${NamedGraphSummary(cf, options)}
+      ${Metadata(cf, options)}
   `
 }
 
-function Debug (cf, options) {
-  const list = []
-  for (const quad of cf.dataset) {
-    list.push(html`
-        <tr>
-            <td>${quad.subject.value}</td>
-            <td>${quad.predicate.value}</td>
-            <td>[${quad.object.termType}]${quad.object.value}</td>
-        </tr>`)
-  }
-
+function Empty (cf, options) {
   return html`
-      <table class="debug">
-          ${list}
-      </table>
+      <div>
+          No quads
+      </div>
   `
 }
 
-export { ResourceDescription }
+export { ResourceDescription, Empty }
