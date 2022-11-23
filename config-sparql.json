@@ -51,7 +51,7 @@
     "sparqlProxy": {
       "priority": 115,
       "module": "trifid-core:./plugins/middleware",
-      "middleware": "sparql-proxy"
+      "middleware": "@zazuko/sparql-proxy"
     },
     "yasgui": {
       "priority": 115,
