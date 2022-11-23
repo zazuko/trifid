@@ -9,7 +9,7 @@ const resolvePath = (modulePath) => {
   }
 }
 
-const loader = async (modulePath) => {
+export const loader = async (modulePath) => {
   const middleware = await import(resolvePath(modulePath))
   return middleware.default
 }
