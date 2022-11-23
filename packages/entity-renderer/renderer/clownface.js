@@ -13,7 +13,8 @@ const DEFAULTS = {
   embedNamed: false,
   embedLists: true,
   debug: false,
-  maxLevel: 3 // externalLabels: labels.cf,
+  maxLevel: 3,
+  showNamedGraphs: true
 }
 
 function toBoolean (val) {
@@ -65,6 +66,10 @@ function createRenderer ({ options = {} }) {
 
     if (req.query.debug !== undefined) {
       rendererConfig.debug = toBoolean(req.query.debug)
+    }
+
+    if (req.query.showNamedGraphs !== undefined) {
+      rendererConfig.showNamedGraphs = toBoolean(req.query.showNamedGraphs)
     }
 
     if (req.query.lang) {
