@@ -38,6 +38,6 @@
     "trifid-renderer-simple": "^5.0.1"
   },
   "devDependencies": {
-    "standard": "^16.0.4"
+    "standard": "^17.0.0"
   }
 }
