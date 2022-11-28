@@ -19,6 +19,7 @@
     "clean": "rimraf *.tgz *.d.ts* lib/*.d.ts* lib/**/*.d.ts* middlewares/*.d.ts* middlewares/**/*.d.ts*",
     "prepack": "npm run clean && npm run typings"
   },
+  "main": "index.js",
   "types": "./index.d.ts",
   "bin": {
     "trifid-core": "./server.js"
