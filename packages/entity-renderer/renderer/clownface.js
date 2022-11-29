@@ -9,7 +9,7 @@ const DEFAULTS = {
   embedBlanks: true,
   technicalCues: true,
   preferredLanguages: ['en', 'fr', 'de', 'it'],
-  highLightLanguage: 'en',
+  highlightLanguage: 'en',
   embedNamed: false,
   embedLists: true,
   debug: false,
@@ -77,12 +77,12 @@ function createRenderer ({ options = {} }) {
         req.query.lang, ...DEFAULTS.preferredLanguages]
     }
 
-    if (req.query.highLightLanguage !== undefined) {
-      rendererConfig.highLightLanguage = req.query.highLightLanguage
+    if (req.query.highlightLanguage !== undefined) {
+      rendererConfig.highlightLanguage = req.query.highlightLanguage
     }
 
-    if (!rendererConfig.highLightLanguage) {
-      rendererConfig.highLightLanguage = rendererConfig.preferredLanguages[0]
+    if (!rendererConfig.highlightLanguage) {
+      rendererConfig.highlightLanguage = rendererConfig.preferredLanguages[0]
     }
 
     if (rendererConfig.compactMode) {

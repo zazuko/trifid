@@ -2,7 +2,6 @@ server:
   logLevel: debug
 
 middlewares:
-
   welcome:
     module: trifid-core/middlewares/view.js
     paths: /
@@ -28,12 +27,12 @@ middlewares:
     config:
       compactMode: false
 
-  highLightLanguage:
+  highlightLanguage:
     paths: /adams/eudora
     module: "file:../../index.js"
     config:
       compactMode: true
-      highLightLanguage: 'es'
+      highlightLanguage: "es"
 
   fetch-handler:
     module: trifid-handler-fetch
