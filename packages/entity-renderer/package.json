@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/zazuko/trifid-renderer-entity.git"
   },
-  "author": "",
+  "author": "Zazuko GmbH",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zazuko/trifid-renderer-entity/issues"

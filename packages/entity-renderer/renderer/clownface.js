@@ -26,6 +26,7 @@ function toBoolean (val) {
   }
   return undefined
 }
+
 /**
  * Render HTML.
  *
@@ -33,12 +34,12 @@ function toBoolean (val) {
  * @param {*} graph Graph from a handler (JSON object).
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
-
 function createRenderer ({ options = {} }) {
   return async (req, { dataset }) => {
     const rendererConfig = Object.assign({}, DEFAULTS, options)
 
     // Honor parameters in the request
+
     if (req.query.compactMode !== undefined) {
       rendererConfig.compactMode = toBoolean(req.query.compactMode)
     }
