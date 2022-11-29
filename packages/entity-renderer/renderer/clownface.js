@@ -6,7 +6,7 @@ import { ResourceDescription } from 'rdf-entity-webcomponent'
 
 const DEFAULTS = {
   compactMode: true,
-  embedBlanks: true,
+  embedBlankNodes: true,
   technicalCues: true,
   preferredLanguages: ['en', 'fr', 'de', 'it'],
   highlightLanguage: 'en',
@@ -52,8 +52,8 @@ function createRenderer ({ options = {} }) {
       rendererConfig.embedNamed = toBoolean(req.query.embedNamed)
     }
 
-    if (req.query.embedBlanks !== undefined) {
-      rendererConfig.embedBlanks = toBoolean(req.query.embedBlanks)
+    if (req.query.embedBlankNodes !== undefined) {
+      rendererConfig.embedBlankNodes = toBoolean(req.query.embedBlankNodes)
     }
 
     if (req.query.embedLists !== undefined) {

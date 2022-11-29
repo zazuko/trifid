@@ -13,7 +13,7 @@ middlewares:
     paths: /adams/gomez
     module: "file:../../index.js"
     config:
-      embedBlanks: true
+      embedBlankNodes: true
 
   noTechnicalCues:
     paths: /adams/morticia
