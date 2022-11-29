@@ -6,15 +6,15 @@ import { ResourceDescription } from 'rdf-entity-webcomponent'
 
 const DEFAULTS = {
   compactMode: true,
-  embedBlanks: true,
   technicalCues: true,
   preferredLanguages: ['en', 'fr', 'de', 'it'],
-  highLightLanguage: 'en',
-  embedNamed: false,
+  highlightLanguage: 'en',
+  embedBlankNodes: true,
+  embedNamedNodes: false,
   embedLists: true,
   debug: false,
   maxLevel: 3,
-  showNamedGraphs: true
+  namedGraphs: true
 }
 
 function toBoolean (val) {
@@ -39,7 +39,6 @@ function createRenderer ({ options = {} }) {
     const rendererConfig = Object.assign({}, DEFAULTS, options)
 
     // Honor parameters in the request
-
     if (req.query.compactMode !== undefined) {
       rendererConfig.compactMode = toBoolean(req.query.compactMode)
     }
@@ -48,12 +47,12 @@ function createRenderer ({ options = {} }) {
       rendererConfig.technicalCues = toBoolean(req.query.technicalCues)
     }
 
-    if (req.query.embedNamed !== undefined) {
-      rendererConfig.embedNamed = toBoolean(req.query.embedNamed)
+    if (req.query.embedNamedNodes !== undefined) {
+      rendererConfig.embedNamedNodes = toBoolean(req.query.embedNamedNodes)
     }
 
-    if (req.query.embedBlanks !== undefined) {
-      rendererConfig.embedBlanks = toBoolean(req.query.embedBlanks)
+    if (req.query.embedBlankNodes !== undefined) {
+      rendererConfig.embedBlankNodes = toBoolean(req.query.embedBlankNodes)
     }
 
     if (req.query.embedLists !== undefined) {
@@ -77,15 +76,15 @@ function createRenderer ({ options = {} }) {
         req.query.lang, ...DEFAULTS.preferredLanguages]
     }
 
-    if (req.query.highLightLanguage !== undefined) {
-      rendererConfig.highLightLanguage = req.query.highLightLanguage
+    if (req.query.highlightLanguage !== undefined) {
+      rendererConfig.highlightLanguage = req.query.highlightLanguage
     }
 
-    if (!rendererConfig.highLightLanguage) {
-      rendererConfig.highLightLanguage = rendererConfig.preferredLanguages[0]
+    if (!rendererConfig.highlightLanguage) {
+      rendererConfig.highlightLanguage = rendererConfig.preferredLanguages[0]
     }
 
-    if (rendererConfig.compactMode) {
+    if (rendererConfig.compactMode !== undefined) {
       rendererConfig.groupValuesByProperty = rendererConfig.compactMode
       rendererConfig.groupPropertiesByValue = rendererConfig.compactMode
     }

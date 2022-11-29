@@ -14,7 +14,7 @@ middlewares:
     paths: /adams/gomez
     module: "file:../../index.js"
     config:
-      embedBlanks: true
+      embedBlankNodes: true
 
   noTechnicalCues:
     paths: /adams/morticia
@@ -33,7 +33,7 @@ middlewares:
     module: "file:../../index.js"
     config:
       compactMode: true
-      highLightLanguage: 'es'
+      highlightLanguage: 'es'
 
   fetch-handler:
     module: trifid-handler-fetch
