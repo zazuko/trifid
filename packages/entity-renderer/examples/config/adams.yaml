@@ -9,7 +9,7 @@ middlewares:
     config:
       path: examples/static/welcome.hbs
 
-  embedNamed:
+  embedNamedNodes:
     paths: /adams/gomez
     module: "file:../../index.js"
     config:

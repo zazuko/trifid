@@ -10,7 +10,7 @@ const DEFAULTS = {
   technicalCues: true,
   preferredLanguages: ['en', 'fr', 'de', 'it'],
   highlightLanguage: 'en',
-  embedNamed: false,
+  embedNamedNodes: false,
   embedLists: true,
   debug: false,
   maxLevel: 3,
@@ -26,6 +26,7 @@ function toBoolean (val) {
   }
   return undefined
 }
+
 /**
  * Render HTML.
  *
@@ -33,7 +34,6 @@ function toBoolean (val) {
  * @param {*} graph Graph from a handler (JSON object).
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
-
 function createRenderer ({ options = {} }) {
   return async (req, { dataset }) => {
     const rendererConfig = Object.assign({}, DEFAULTS, options)
@@ -48,8 +48,8 @@ function createRenderer ({ options = {} }) {
       rendererConfig.technicalCues = toBoolean(req.query.technicalCues)
     }
 
-    if (req.query.embedNamed !== undefined) {
-      rendererConfig.embedNamed = toBoolean(req.query.embedNamed)
+    if (req.query.embedNamedNodes !== undefined) {
+      rendererConfig.embedNamedNodes = toBoolean(req.query.embedNamedNodes)
     }
 
     if (req.query.embedBlankNodes !== undefined) {
