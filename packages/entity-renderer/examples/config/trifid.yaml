@@ -9,10 +9,13 @@ middlewares:
     config:
       path: file:../views/welcome.hbs
 
-  entity-renderer:
+  adams:
+    paths: /adams/
     module: file:../../index.js
-    config:
-      compactMode: false
+
+  person:
+    paths: /person/
+    module: file:../../index.js
 
   fetch-handler:
     module: trifid-handler-fetch
