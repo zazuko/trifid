@@ -2,16 +2,15 @@ server:
   logLevel: debug
 
 middlewares:
-
   welcome:
     module: trifid-core/middlewares/view.js
     paths: /
     methods: GET
     config:
-      path: examples/static/welcome.hbs
+      path: file:../views/welcome.hbs
 
   entity-renderer:
-    module: "file:../../index.js"
+    module: file:../../index.js
     config:
       compactMode: false
 

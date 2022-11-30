@@ -2,38 +2,37 @@ server:
   logLevel: debug
 
 middlewares:
-
   welcome:
     module: trifid-core/middlewares/view.js
     paths: /
     methods: GET
     config:
-      path: examples/static/welcome.hbs
+      path: file:../views/welcome.hbs
 
   embedNamedNodes:
     paths: /adams/gomez
-    module: "file:../../index.js"
+    module: file:../../index.js
     config:
       embedBlankNodes: true
 
   noTechnicalCues:
     paths: /adams/morticia
-    module: "file:../../index.js"
+    module: file:../../index.js
     config:
       technicalCues: false
 
   compactMode:
     paths: /adams/uncle
-    module: "file:../../index.js"
+    module: file:../../index.js
     config:
       compactMode: false
 
   highlightLanguage:
     paths: /adams/eudora
-    module: "file:../../index.js"
+    module: file:../../index.js
     config:
       compactMode: true
-      highlightLanguage: "es"
+      highlightLanguage: es
 
   fetch-handler:
     module: trifid-handler-fetch
