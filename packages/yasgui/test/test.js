@@ -70,7 +70,7 @@ describe('trifid-plugin-yasgui', () => {
       trifidFactory(trifidConfig).then(middleware => {
         app.use('/sparql', middleware)
         request(app)
-          .get('/yasgui-dist/yasgui.css')
+          .get('/yasgui-dist/yasgui.min.css')
           .expect(200)
           .end((err, _res) => {
             if (err) {

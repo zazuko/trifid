@@ -1,7 +1,6 @@
 <div class="trifid-content">
   <style type="text/css">
-    @import url("/yasgui-dist/yasgui.css");
-
+    @import url("/yasgui-dist/yasgui.min.css");
   </style>
 
   <div id="yasgui"></div>
@@ -20,12 +19,21 @@
 
   {{#if urlShortener }}
   <script>
-    config.api.urlShortener = '{{ urlShortener }}'
+    config.yasqe = {
+      createShortLink: function(yasqe, longString) {
+        return yasqe.superagent
+          .post('{{ urlShortener }}')
+          .send({ url: longString })
+          .then(function(resp) {
+            return resp.text
+          });
+      }
+    }
   </script>
   {{/if}}
 
   <script>
-    YASGUI.defaults.yasqe.sparql.endpoint = '{{ endpointUrl }}'
-    const yasgui = YASGUI(document.getElementById('yasgui'), config)
+    Yasgui.defaults.requestConfig.endpoint = '{{ endpointUrl }}'
+    const yasgui = new Yasgui(document.getElementById('yasgui'), config)
   </script>
 </div>

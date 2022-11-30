@@ -12,7 +12,7 @@ const trifidFactory = async (trifid) => {
   const endpoint = endpointUrl || '/query'
   const view = !template ? `${currentDir}/views/yasgui.hbs` : template
 
-  const yasguiPath = await resolve('yasgui/dist/', import.meta.url)
+  const yasguiPath = await resolve('@triply/yasgui/build/', import.meta.url)
   server.use('/yasgui-dist/', express.static(yasguiPath.replace(/^file:\/\//, '')))
 
   return async (req, res, _next) => {
