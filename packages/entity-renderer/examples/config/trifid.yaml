@@ -2,20 +2,17 @@ server:
   logLevel: debug
 
 middlewares:
-  welcome:
+
+  entity-renderer:
+    paths: /
+    module: file:../../index.js
+
+  entity-host-web-page:
     module: trifid-core/middlewares/view.js
     paths: /
     methods: GET
     config:
       path: file:../views/welcome.hbs
-
-  adams:
-    paths: /adams/
-    module: file:../../index.js
-
-  person:
-    paths: /person/
-    module: file:../../index.js
 
   fetch-handler:
     module: trifid-handler-fetch
