@@ -2,17 +2,17 @@ server:
   logLevel: debug
 
 middlewares:
-  welcome:
+
+  entity-renderer:
+    paths: /
+    module: file:../../index.js
+
+  entity-host-web-page:
     module: trifid-core/middlewares/view.js
     paths: /
     methods: GET
     config:
       path: file:../views/welcome.hbs
-
-  entity-renderer:
-    module: file:../../index.js
-    config:
-      compactMode: false
 
   fetch-handler:
     module: trifid-handler-fetch

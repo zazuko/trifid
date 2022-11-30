@@ -1,128 +1,164 @@
-<http://localhost:3000/person/amy-farrah-fowler> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/additionalName> "Farrah" .
-<http://localhost:3000/person/amy-farrah-fowler> <http://localhost:3000/data/nickName> "Farrah" .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix schema: <http://schema.org/> .
+@prefix adams: <http://localhost:3000/adams/> .
+@prefix ex: <http://localhost:3000/person/> .
 
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/familyName> "Fowler" .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/givenName> "Amy" .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/jobTitle> "neurobiologist" .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:3000/person/leonard-hofstadter> .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/amy-farrah-fowler> <http://schema.org/knows> <http://localhost:3000/person/stuart-bloom> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/additionalName> "Maryann" .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/familyName> "Rostenkowski-Wolowitz" .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/givenName> "Bernadette" .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/jobTitle> "microbiologist" .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/knows> <http://localhost:3000/person/amy-farrah-fowler> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/knows> <http://localhost:3000/person/leonard-hofstadter> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/knows> <http://localhost:3000/person/stuart-bloom> .
-<http://localhost:3000/person/bernadette-rostenkowski> <http://schema.org/spouse> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/howard-wolowitz> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/additionalName> "Joel" .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/familyName> "Wolowitz" .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/givenName> "Howard" .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/jobTitle> "aerospace engineer" .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/knows> <http://localhost:3000/person/amy-farrah-fowler> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/knows> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/knows> <http://localhost:3000/person/leonard-hofstadter> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/knows> <http://localhost:3000/person/stuart-bloom> .
-<http://localhost:3000/person/howard-wolowitz> <http://schema.org/spouse> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/leonard-hofstadter> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/additionalName> "Leakey" .
-_:b1 <http://schema.org/addressCountry> "US" .
-_:b1 <http://schema.org/addressLocality> "Pasadena" .
-_:b1 <http://schema.org/addressRegion> "CA" .
-_:b1 <http://schema.org/postalCode> "91104" .
-_:b1 <http://schema.org/streetAddress> "2311 North Los Robles Avenue, Apartment 4A" .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/address> _:b1 .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/familyName> "Hofstadter" .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/givenName> "Leonard" .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/jobTitle> "experimental physicist" .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/amy-farrah-fowler> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/mary-cooper> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/leonard-hofstadter> <http://schema.org/knows> <http://localhost:3000/person/stuart-bloom> .
-<http://localhost:3000/person/mary-cooper> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-_:b2 <http://schema.org/addressCountry> "US" .
-_:b2 <http://schema.org/addressRegion> "TX" .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/address> _:b2 .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/children> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/familyName> "Cooper" .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/givenName> "Mary" .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/mary-cooper> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/penny> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-_:b3 <http://schema.org/addressCountry> "US" .
-_:b3 <http://schema.org/addressLocality> "Pasadena" .
-_:b3 <http://schema.org/addressRegion> "CA" .
-_:b3 <http://schema.org/postalCode> "91104" .
-_:b3 <http://schema.org/streetAddress> "2311 North Los Robles Avenue, Apartment 4B" .
-<http://localhost:3000/person/penny> <http://schema.org/address> _:b3 .
-<http://localhost:3000/person/penny> <http://schema.org/givenName> "Penny" .
-<http://localhost:3000/person/penny> <http://schema.org/jobTitle> "pharmaceutical sales representative" .
-<http://localhost:3000/person/penny> <http://schema.org/knows> <http://localhost:3000/person/amy-farrah-fowler> .
-<http://localhost:3000/person/penny> <http://schema.org/knows> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/penny> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/penny> <http://schema.org/knows> <http://localhost:3000/person/leonard-hofstadter> .
-<http://localhost:3000/person/penny> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/penny> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/penny> <http://schema.org/knows> <http://localhost:3000/person/stuart-bloom> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/additionalName> "Ramayan Raj" .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/familyName> "Koothrappali" .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/givenName> "Rajesh" .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/jobTitle> "astrophysicist" .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/knows> <http://localhost:3000/person/amy-farrah-fowler> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/knows> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/knows> <http://localhost:3000/person/leonard-hofstadter> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
-<http://localhost:3000/person/rajesh-koothrappali> <http://schema.org/knows> <http://localhost:3000/person/stuart-bloom> .
-<http://localhost:3000/person/sheldon-cooper> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/additionalName> "Lee" .
-_:b4 <http://schema.org/addressCountry> "US" .
-_:b4 <http://schema.org/addressLocality> "Pasadena" .
-_:b4 <http://schema.org/addressRegion> "CA" .
-_:b4 <http://schema.org/postalCode> "91104" .
-_:b4 <http://schema.org/streetAddress> "2311 North Los Robles Avenue, Apartment 4A" .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/address> _:b4 .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/familyName> "Cooper" .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/givenName> "Sheldon" .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/jobTitle> "theoretical physicist" .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/knows> <http://localhost:3000/person/amy-farrah-fowler> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/knows> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/knows> <http://localhost:3000/person/leonard-hofstadter> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/knows> <http://localhost:3000/person/stuart-bloom> .
-<http://localhost:3000/person/sheldon-cooper> <http://schema.org/parent> <http://localhost:3000/person/mary-cooper> .
-<http://localhost:3000/person/stuart-bloom> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/familyName> "Bloom" .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/givenName> "Stuart" .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/jobTitle> "comic book store owner" .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/knows> <http://localhost:3000/person/amy-farrah-fowler> .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/knows> <http://localhost:3000/person/bernadette-rostenkowski> .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/knows> <http://localhost:3000/person/howard-wolowitz> .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/knows> <http://localhost:3000/person/leonard-hofstadter> .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/knows> <http://localhost:3000/person/penny> .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/knows> <http://localhost:3000/person/rajesh-koothrappali> .
-<http://localhost:3000/person/stuart-bloom> <http://schema.org/knows> <http://localhost:3000/person/sheldon-cooper> .
+adams:eudora foaf:name "Eudora Addams" ;
+             adams:hasPartner adams:gomez ;
+             adams:hasChild adams:pugsley, adams:wednesday ;
+             adams:gender adams:F ;
+             adams:likes "Manger"@fr, "Comer"@es, "Eat"@en ;
+             foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/4/44/Gr1.jpg/revision/latest?cb=20170324004607> .
+
+adams:gender foaf:name "Gender (en)"@en .
+
+adams:todoList rdfs:label "Todo List", "Todo List (De)"@de, "Todo List (Fr)"@fr, "Todo List (Es)"@es .
+
+adams:gomez foaf:name "Gomez Addams" ;
+            a foaf:Person, adams:Celebrity ;
+            adams:gender adams:M ;
+            adams:livesWith adams:morticia ;
+            adams:hasPartner adams:morticia ;
+            adams:hasBrother adams:uncle ;
+            adams:hasChild adams:pugsley, adams:wednesday ;
+            rdfs:label "Gomez Addams" ;
+            adams:lives_at [
+                        rdfs:label "Address" ;
+                        adams:street "Cemetery Lane" ;
+                        adams:number "001" ;
+                      ] ;
+            adams:todoList (
+                        adams:drinkTea
+                        "Go to the supermarket"
+                        adams:readNewspaper
+                      ) ;
+            adams:spouseIn adams:second_generation ;
+            foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/d/db/Little_helper_gomez.jpg/revision/latest?cb=20150403201303> .
+
+adams:drinkTea foaf:name "Drink tea" ;
+               adams:amount 2 .
+
+adams:readNewspaper foaf:name "Read the newspaper" .
+
+adams:morticia foaf:name "Morticia A. Addams" ;
+               adams:gender adams:F ;
+               adams:hasPartner adams:gomez ;
+               foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/8/88/MorticiaOrgApp.jpg/revision/latest?cb=20091209074043> .
+
+adams:uncle foaf:name "Uncle Fester" ;
+            adams:gender adams:M ;
+            adams:likes "Manger"@fr, "Comer"@es, "Eat"@en ;
+            foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/3/30/FesterOrgApp.jpg/revision/latest?cb=20091221151414&format=original> .
+
+adams:pugsley foaf:name "Pugsley Addams" ;
+              adams:gender adams:M ;
+              foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/2/20/PugsOrgApp.jpg/revision/latest?cb=20091221151620> .
+
+adams:wednesday foaf:name "Wednesday Friday Addams" ;
+                adams:gender adams:F ;
+                foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/d/d6/Wednesday.png/revision/latest?cb=20140225145056> .
+
+adams:lurch foaf:name "Lurch" ;
+            adams:gender adams:M ;
+            foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/0/08/Lurch4.jpg/revision/latest?cb=20110707003536> .
+
+adams:thing foaf:name "Thing" ;
+            adams:romanceWith adams:ladyfingers ;
+            adams:gender adams:M ;
+            foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/8/82/Thing_1991.jpg/revision/latest?cb=20100108153017> .
+
+adams:ladyfingers foaf:name "Lady Fingers" ;
+                  adams:gender adams:F ;
+                  foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/2/2e/36._Thing%27s_Romance_026.jpg/revision/latest?cb=20121020154800> .
+
+ex:amy-farrah-fowler a schema:Person ;
+                     schema:additionalName "Farrah" ;
+                     <http://localhost:3000/data/nickName> "Farrah" ;
+                     schema:familyName "Fowler" ;
+                     schema:name "Amy" ;
+                     schema:givenName "Amy" ;
+                     schema:jobTitle "neurobiologist" ;
+                     schema:knows ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:bernadette-rostenkowski a schema:Person ;
+                           schema:additionalName "Maryann" ;
+                           schema:familyName "Rostenkowski-Wolowitz" ;
+                           schema:givenName "Bernadette" ;
+                           schema:jobTitle "microbiologist" ;
+                           schema:knows ex:amy-farrah-fowler, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom ;
+                           schema:spouse ex:howard-wolowitz .
+
+ex:howard-wolowitz a schema:Person ;
+                   schema:additionalName "Joel" ;
+                   schema:familyName "Wolowitz" ;
+                   schema:givenName "Howard" ;
+                   schema:jobTitle "aerospace engineer" ;
+                   schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom ;
+                   schema:spouse ex:bernadette-rostenkowski .
+
+ex:leonard-hofstadter a schema:Person ;
+                      schema:additionalName "Leakey" ;
+                      schema:address [
+                          schema:addressCountry "US" ;
+                          schema:addressLocality "Pasadena" ;
+                          schema:addressRegion "CA" ;
+                          schema:postalCode "91104" ;
+                          schema:streetAddress "2311 North Los Robles Avenue, Apartment 4A" ;
+                        ] ;
+                      schema:familyName "Hofstadter" ;
+                      schema:givenName "Leonard" ;
+                      schema:jobTitle "experimental physicist" ;
+                      schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:mary-cooper, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:mary-cooper a schema:Person ;
+               schema:address [
+                   schema:addressCountry "US" ;
+                   schema:addressRegion "TX" ;
+                 ] ;
+               schema:children ex:sheldon-cooper ;
+               schema:familyName "Cooper" ;
+               schema:givenName "Mary" ;
+               schema:knows ex:howard-wolowitz, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper .
+
+ex:penny a schema:Person ;
+         schema:address [
+             schema:addressCountry "US" ;
+             schema:addressLocality "Pasadena" ;
+             schema:addressRegion "CA" ;
+             schema:postalCode "91104" ;
+             schema:streetAddress "2311 North Los Robles Avenue, Apartment 4B" ;
+           ] ;
+         schema:givenName "Penny" ;
+         schema:jobTitle "pharmaceutical sales representative" ;
+         schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:rajesh-koothrappali a schema:Person ;
+                       schema:additionalName "Ramayan Raj" ;
+                       schema:familyName "Koothrappali" ;
+                       schema:givenName "Rajesh" ;
+                       schema:jobTitle "astrophysicist" ;
+                       schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:sheldon-cooper a schema:Person ;
+                  schema:additionalName "Lee" ;
+                  schema:address [
+                      schema:addressCountry "US" ;
+                      schema:addressLocality "Pasadena" ;
+                      schema:addressRegion "CA" ;
+                      schema:postalCode "91104" ;
+                      schema:streetAddress "2311 North Los Robles Avenue, Apartment 4A" ;
+                    ] ;
+                  schema:familyName "Cooper" ;
+                  schema:givenName "Sheldon" ;
+                  schema:jobTitle "theoretical physicist" ;
+                  schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:stuart-bloom ;
+                  schema:parent ex:mary-cooper .
+
+ex:stuart-bloom a schema:Person ;
+                schema:familyName "Bloom" ;
+                schema:givenName "Stuart" ;
+                schema:jobTitle "comic book store owner" ;
+                schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper .
+

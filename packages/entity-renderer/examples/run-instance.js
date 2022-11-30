@@ -17,14 +17,12 @@ async function createTrifidInstance (filePath) {
   return await trifid(config)
 }
 
-const people = await createTrifidInstance('examples/config/people.yaml')
-const adams = await createTrifidInstance('examples/config/adams.yaml')
+const test = await createTrifidInstance('examples/config/trifid.yaml')
 
 const app = express() // The main app
 const PORT = 3000
 
-app.use('/person', people.server)
-app.use('/', adams.server)
+app.use('/', test.server)
 app.listen(PORT, function (err) {
   if (err) console.log(err)
   console.log('Server listening on PORT', PORT)
