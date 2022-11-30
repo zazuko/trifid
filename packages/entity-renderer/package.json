@@ -24,7 +24,7 @@
   "homepage": "https://github.com/zazuko/trifid-renderer-entity#readme",
   "dependencies": {
     "@lit-labs/ssr": "^2.2.3",
-    "@rdfjs/formats-common": "^2.2.0",
+    "@rdfjs/formats-common": "^3.1.0",
     "express": "^4.18.2",
     "hijackresponse": "^5.0.0",
     "rdf-ext": "^2.1.0",
