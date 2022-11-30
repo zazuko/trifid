@@ -40,9 +40,7 @@
   },
   "files": [
     "index.js",
-    "lib",
     "renderer",
-    "views",
-    "test"
+    "views"
   ]
 }
