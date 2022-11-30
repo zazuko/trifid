@@ -10,11 +10,11 @@ middlewares:
     config:
       path: examples/static/welcome.hbs
 
-  embedNamed:
+  embedNamedNodes:
     paths: /adams/gomez
     module: "file:../../index.js"
     config:
-      embedBlanks: true
+      embedBlankNodes: true
 
   noTechnicalCues:
     paths: /adams/morticia
@@ -28,12 +28,12 @@ middlewares:
     config:
       compactMode: false
 
-  highLightLanguage:
+  highlightLanguage:
     paths: /adams/eudora
     module: "file:../../index.js"
     config:
       compactMode: true
-      highLightLanguage: 'es'
+      highlightLanguage: "es"
 
   fetch-handler:
     module: trifid-handler-fetch

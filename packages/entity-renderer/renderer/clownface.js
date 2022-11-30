@@ -2,20 +2,19 @@ import {
   render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
-import {
-  ResourceDescription
-} from '../lib/web-component/ResourceDescription.js'
+import { ResourceDescription } from 'rdf-entity-webcomponent'
 
 const DEFAULTS = {
   compactMode: true,
-  embedBlanks: true,
   technicalCues: true,
   preferredLanguages: ['en', 'fr', 'de', 'it'],
-  highLightLanguage: 'en',
-  embedNamed: false,
+  highlightLanguage: 'en',
+  embedBlankNodes: true,
+  embedNamedNodes: false,
   embedLists: true,
   debug: false,
-  maxLevel: 3 // externalLabels: labels.cf,
+  maxLevel: 3,
+  namedGraphs: true
 }
 
 function toBoolean (val) {
@@ -27,6 +26,7 @@ function toBoolean (val) {
   }
   return undefined
 }
+
 /**
  * Render HTML.
  *
@@ -34,7 +34,6 @@ function toBoolean (val) {
  * @param {*} graph Graph from a handler (JSON object).
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
-
 function createRenderer ({ options = {} }) {
   return async (req, { dataset }) => {
     const rendererConfig = Object.assign({}, DEFAULTS, options)
@@ -49,12 +48,12 @@ function createRenderer ({ options = {} }) {
       rendererConfig.technicalCues = toBoolean(req.query.technicalCues)
     }
 
-    if (req.query.embedNamed !== undefined) {
-      rendererConfig.embedNamed = toBoolean(req.query.embedNamed)
+    if (req.query.embedNamedNodes !== undefined) {
+      rendererConfig.embedNamedNodes = toBoolean(req.query.embedNamedNodes)
     }
 
-    if (req.query.embedBlanks !== undefined) {
-      rendererConfig.embedBlanks = toBoolean(req.query.embedBlanks)
+    if (req.query.embedBlankNodes !== undefined) {
+      rendererConfig.embedBlankNodes = toBoolean(req.query.embedBlankNodes)
     }
 
     if (req.query.embedLists !== undefined) {
@@ -69,20 +68,24 @@ function createRenderer ({ options = {} }) {
       rendererConfig.debug = toBoolean(req.query.debug)
     }
 
+    if (req.query.showNamedGraphs !== undefined) {
+      rendererConfig.showNamedGraphs = toBoolean(req.query.showNamedGraphs)
+    }
+
     if (req.query.lang) {
       rendererConfig.preferredLanguages = [
         req.query.lang, ...DEFAULTS.preferredLanguages]
     }
 
-    if (req.query.highLightLanguage !== undefined) {
-      rendererConfig.highLightLanguage = req.query.highLightLanguage
+    if (req.query.highlightLanguage !== undefined) {
+      rendererConfig.highlightLanguage = req.query.highlightLanguage
     }
 
-    if (!rendererConfig.highLightLanguage) {
-      rendererConfig.highLightLanguage = rendererConfig.preferredLanguages[0]
+    if (!rendererConfig.highlightLanguage) {
+      rendererConfig.highlightLanguage = rendererConfig.preferredLanguages[0]
     }
 
-    if (rendererConfig.compactMode) {
+    if (rendererConfig.compactMode !== undefined) {
       rendererConfig.groupValuesByProperty = rendererConfig.compactMode
       rendererConfig.groupPropertiesByValue = rendererConfig.compactMode
     }
