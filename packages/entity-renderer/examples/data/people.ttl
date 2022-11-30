@@ -77,6 +77,7 @@ ex:amy-farrah-fowler a schema:Person ;
                      schema:additionalName "Farrah" ;
                      <http://localhost:3000/data/nickName> "Farrah" ;
                      schema:familyName "Fowler" ;
+                     schema:name "Amy" ;
                      schema:givenName "Amy" ;
                      schema:jobTitle "neurobiologist" ;
                      schema:knows ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom .
