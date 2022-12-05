@@ -1,221 +1,228 @@
 <style>
-  body {
-    --color-primary: #ffb15e;
-    --color-primary-light: #ffe38d;
-    --color-secondary: #ff441c;
-    --color-secondary-dark: #c30000;
-    --color-text-on-primary: #000000;
-    --color-text-on-secondary: #000000;
-    --color-black: #000000;
-    --color-grey: #4f4f4f;
-    --color-white: #ffffff;
-    --color-darker-white: #fcfcfc;
-    --color-light-grey: #e5e5e5;
-  }
+    @import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
-  .navbar-brand {
-    font-size: 24px;
-  }
 
-  .container>.navbar-header,
-  .container-fluid>.navbar-header,
-  .container>.navbar-collapse,
-  .container-fluid>.navbar-collapse {
-    margin-right: -15px;
-    margin-left: -15px;
-  }
 
-  .container {
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
+    body {
+        --color-primary: #ffb15e;
+        --color-primary-light: #ffe38d;
+        --color-secondary: #ff441c;
+        --color-secondary-dark: #c30000;
+        --color-text-on-primary: #000000;
+        --color-text-on-secondary: #000000;
+        --color-black: #000000;
+        --color-grey: #4f4f4f;
+        --color-white: #ffffff;
+        --color-darker-white: #fcfcfc;
+        --color-light-grey: #e5e5e5;
+        font-family: "Roboto Thin", serif;
+    }
 
-  .container .entities {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+    .navbar-brand {
+        font-size: 24px;
+    }
 
-  .navbar-default .navbar-brand {
-    color: #666666;
-  }
+    .container > .navbar-header,
+    .container-fluid > .navbar-header,
+    .container > .navbar-collapse,
+    .container-fluid > .navbar-collapse {
+        margin-right: -15px;
+        margin-left: -15px;
+    }
 
-  navbar-brand {
-    float: left;
-    padding: 20.5px 15px;
-    font-size: 17px;
-    line-height: 23px;
-    height: 64px;
-  }
+    .container {
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 
-  .footer-elements {
-    display: flex;
-    flex-direction: column;
-  }
+    .container .entities {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-  .footer-elements .controls {
-    display: flex;
-    justify-content: space-between;
-  }
+    .navbar-default .navbar-brand {
+        color: #666666;
+    }
 
-  .footer-elements .bottom {
-    align-self: center;
-  }
+    navbar-brand {
+        float: left;
+        padding: 20.5px 15px;
+        font-size: 17px;
+        line-height: 23px;
+        height: 64px;
+    }
 
-  /*Entity renderer CSS*/
+    .footer-elements {
+        display: flex;
+        flex-direction: column;
+    }
 
-  .entities {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-  }
+    .footer-elements .controls {
+        display: flex;
+        justify-content: space-between;
+    }
 
-  .entity {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--color-grey);
-  }
+    .footer-elements .bottom {
+        align-self: center;
+    }
 
-  .main-header {
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 30px;
-  }
+    /*Entity renderer CSS*/
 
-  .main-header h2{
-      font-size: 32px;
-      text-align: center;
-  }
+    .entities {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-  .main-header a{
-      font-size: 18px;
-      color: var(--color-black);
-      text-transform: uppercase;
-      text-align: center;
-  }
+    .entity {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--color-grey);
+    }
 
-  .header {
-      font-size: 18px;
-      padding-left: 10px;
-      border-bottom: 1px dashed var(--color-grey);
-  }
+    .main-header {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 30px;
+    }
 
-  .header a {
-      color: var(--color-text-on-primary);
-  }
+    .main-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        text-align: center;
+    }
 
-  .rows {
-      display: flex;
-      flex-direction: column;
-  }
+    .main-header a {
+        font-size: 18px;
+        color: var(--color-black);
+        text-transform: uppercase;
+        text-align: center;
+    }
 
-  .rows > :nth-child(1n) {
-      border-top: 1px solid var(--color-light-grey);
-  }
+    .header {
+        font-size: 18px;
+        padding-left: 10px;
+        border-bottom: 1px dashed var(--color-grey);
+    }
 
-  .rows > :nth-child(2n) {
-      border-top: 1px solid var(--color-light-grey);
-      background: rgba(0, 0, 0, 0.05);
-  }
+    .header a {
+        color: var(--color-text-on-primary);
+    }
 
-  .rows .row {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-  }
+    .rows {
+        display: flex;
+        flex-direction: column;
+    }
 
-  .row > :nth-child(1) {
-      align-self: flex-start;
-      width: 35%;
-      word-break: break-all;
-      margin-top: 1rem;
-      margin-left: 1%;
-      margin-right: 1rem;
-  }
+    .rows > :nth-child(1n) {
+        border-top: 1px solid var(--color-light-grey);
+    }
 
-  .row > :nth-child(2) {
-      wrap-option: wrap;
-      width: 65%;
-      word-break: break-all;
-      margin-left: 1rem;
-      margin-right: auto;
-  }
+    .rows > :nth-child(2n) {
+        border-top: 1px solid var(--color-light-grey);
+        background: rgba(0, 0, 0, 0.05);
+    }
 
-  ul {
-      display: flex;
-      flex-direction: column;
-      list-style: none;
-      gap: 5px;
-      justify-content: center;
-      padding-left: 5px;
-  }
+    .rows .row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
 
-  div .bringDown {
-      color: var(--color-grey);
-  }
+    .row > :nth-child(1) {
+        align-self: flex-start;
+        width: 35%;
+        word-break: break-all;
+        margin-top: 1rem;
+        margin-left: 1%;
+        margin-right: 1rem;
+    }
 
-  .vocab {
-      color: var(--color-text-on-secondary);
-      font-size: 0.7rem;
-  }
+    .row > :nth-child(2) {
+        wrap-option: wrap;
+        width: 65%;
+        word-break: break-all;
+        margin-left: 1rem;
+        margin-right: auto;
+    }
 
-  .vocab::after {
-      content: ':';
-  }
+    ul {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        gap: 5px;
+        justify-content: center;
+        padding-left: 5px;
+    }
 
-  .language {
-      color: var(--color-text-on-secondary);
-      font-size: 0.7rem;
-      margin-left: 4px;
-  }
+    div .bringDown {
+        color: var(--color-grey);
+    }
 
-  .datatype {
-      color: var(--color-text-on-secondary);
-      font-size: 0.5rem;
-      margin-left: 4px;
-  }
+    .vocab {
+        color: var(--color-text-on-secondary);
+        font-size: 0.7rem;
+    }
 
-  .BlankNode {
-      font-size: 10px;
-  }
+    .vocab::after {
+        content: ':';
+    }
 
-  .BlankNode a {
-      color: var(--color-grey);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-  }
+    .language {
+        color: var(--color-text-on-secondary);
+        font-size: 0.7rem;
+        margin-left: 4px;
+    }
 
-  .metadata {
-      border: var(--color-grey) solid 1px;
-  }
+    .datatype {
+        color: var(--color-text-on-secondary);
+        font-size: 0.5rem;
+        margin-left: 4px;
+    }
 
-  .metadata h3 {
-      text-align: center;
-      color: var(--color-grey);
-  }
+    .BlankNode {
+        font-size: 10px;
+    }
 
-  .metadata table {
-      margin-left: auto;
-      margin-right: auto;
-  }
+    .BlankNode a {
+        color: var(--color-grey);
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
 
-  .img-container {
-      margin-left: auto;
-      margin-right: auto;
-  }
+    .metadata {
+        border: var(--color-grey) solid 1px;
+    }
 
-  .img-container img {
-      max-width: 100%;
-  }
+    .metadata h3 {
+        text-align: center;
+        color: var(--color-grey);
+    }
+
+    .metadata table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .img-container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .img-container img {
+        max-width: 100%;
+    }
 
 </style>
 
 <div class="trifid-content">
-  <div class="container">
-    {{{ dataset }}}
-  </div>
+    <div class="container">
+        {{{ dataset }}}
+    </div>
 </div>
