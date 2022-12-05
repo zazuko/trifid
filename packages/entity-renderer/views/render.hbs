@@ -25,7 +25,6 @@
     margin-left: -15px;
   }
 
-
   .container {
     margin-right: auto;
     margin-left: auto;
@@ -37,110 +36,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-  }
-
-  .container .entity {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--color-grey);
-  }
-
-  .container .header {
-    padding-left: 10px;
-    background-color: var(--color-primary-light);
-  }
-
-  .container .header a {
-    color: var(--color-text-on-primary);
-  }
-
-  .container .rows {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .container .rows> :nth-child(1n) {
-    border-top: 1px solid var(--color-light-grey);
-  }
-
-  .container .rows> :nth-child(2n) {
-    border-top: 1px solid var(--color-light-grey);
-    background: rgba(0, 0, 0, 0.05);
-  }
-
-  .container .rows .row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    /*flex-wrap: wrap;*/
-  }
-
-  .container .row> :nth-child(1) {
-    align-self: flex-start;
-    width: 35%;
-    word-break: break-all;
-    margin-top: 1rem;
-    margin-left: auto;
-    margin-right: 1rem;
-  }
-
-  .container .row> :nth-child(2) {
-    width: 65%;
-    word-break: break-all;
-    margin-left: 1rem;
-    margin-right: auto;
-  }
-
-  .container ul {
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    gap: 5px;
-
-    justify-content: center;
-    padding-left: 5px;
-  }
-
-  .container div .bringDown {
-    color: var(--color-grey);
-    font-size: 0.7rem;
-  }
-
-  .container .vocab {
-    color: var(--color-secondary);
-    font-size: 0.7rem;
-  }
-
-  .container .vocab::after {
-    content: ':';
-  }
-
-  .container .language {
-    color: var(--color-secondary);
-    font-size: 0.7rem;
-    margin-left: 4px;
-  }
-
-  .container .datatype {
-    color: var(--color-secondary);
-    font-size: 0.5rem;
-    margin-left: 4px;
-  }
-
-  .container .BlankNode {
-    font-size: 10px;
-  }
-
-  .container .BlankNode a {
-    color: var(--color-grey);
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
-
-  .container .metadata h3 {
-      color: var(--color-grey);
   }
 
   .navbar-default .navbar-brand {
@@ -167,6 +62,154 @@
 
   .footer-elements .bottom {
     align-self: center;
+  }
+
+  /*Entity renderer CSS*/
+
+  .entities {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+  }
+
+  .entity {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--color-grey);
+  }
+
+  .main-header {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 30px;
+  }
+
+  .main-header h2{
+      font-size: 32px;
+      text-align: center;
+  }
+
+  .main-header a{
+      font-size: 18px;
+      color: var(--color-black);
+      text-transform: uppercase;
+      text-align: center;
+  }
+
+  .header {
+      font-size: 18px;
+      padding-left: 10px;
+      border-bottom: 1px dashed var(--color-grey);
+  }
+
+  .header a {
+      color: var(--color-text-on-primary);
+  }
+
+  .rows {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .rows > :nth-child(1n) {
+      border-top: 1px solid var(--color-light-grey);
+  }
+
+  .rows > :nth-child(2n) {
+      border-top: 1px solid var(--color-light-grey);
+      background: rgba(0, 0, 0, 0.05);
+  }
+
+  .rows .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+  }
+
+  .row > :nth-child(1) {
+      align-self: flex-start;
+      width: 35%;
+      word-break: break-all;
+      margin-top: 1rem;
+      margin-left: 1%;
+      margin-right: 1rem;
+  }
+
+  .row > :nth-child(2) {
+      wrap-option: wrap;
+      width: 65%;
+      word-break: break-all;
+      margin-left: 1rem;
+      margin-right: auto;
+  }
+
+  ul {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      gap: 5px;
+      justify-content: center;
+      padding-left: 5px;
+  }
+
+  div .bringDown {
+      color: var(--color-grey);
+  }
+
+  .vocab {
+      color: var(--color-text-on-secondary);
+      font-size: 0.7rem;
+  }
+
+  .vocab::after {
+      content: ':';
+  }
+
+  .language {
+      color: var(--color-text-on-secondary);
+      font-size: 0.7rem;
+      margin-left: 4px;
+  }
+
+  .datatype {
+      color: var(--color-text-on-secondary);
+      font-size: 0.5rem;
+      margin-left: 4px;
+  }
+
+  .BlankNode {
+      font-size: 10px;
+  }
+
+  .BlankNode a {
+      color: var(--color-grey);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+  }
+
+  .metadata {
+      border: var(--color-grey) solid 1px;
+  }
+
+  .metadata h3 {
+      text-align: center;
+      color: var(--color-grey);
+  }
+
+  .metadata table {
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .img-container {
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .img-container img {
+      max-width: 100%;
   }
 
 </style>

@@ -28,7 +28,7 @@
     "express": "^4.18.2",
     "hijackresponse": "^5.0.0",
     "rdf-ext": "^2.1.0",
-    "rdf-entity-webcomponent": "^0.5.1"
+    "rdf-entity-webcomponent": "^0.5.3"
   },
   "devDependencies": {
     "cypress": "^11.2.0",
