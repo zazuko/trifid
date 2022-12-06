@@ -1,58 +1,91 @@
-import hijackResponse from 'hijackresponse'
-import rdfFormats from '@rdfjs/formats-common'
-import { getMatchers } from './src/getMatchers.js'
-import rdf from 'rdf-ext'
-import SerializerJsonld from '@rdfjs/serializer-jsonld-ext'
+import debugLib from 'debug'
+import ParsingClient from 'sparql-http-client/ParsingClient.js'
+import { resolve } from 'url'
 
-const { parsers, serializers } = rdfFormats
+const debug = debugLib('trifid-handler-http-in-rdf')
 
-// This is the same as rdf-handler-fetch
-const jsonLdSerializer = new SerializerJsonld({
-  encoding: 'string'
-})
+const defaults = {
+  authentication: false, redirectQuery: `
+    PREFIX http:   <http://www.w3.org/2011/http#>
+    SELECT ?location ?code WHERE {
+      GRAPH ?g {
+            ?request a http:GetRequest ;
+            http:response [
+                a http:Response ;
+                http:responseCode ?code ;
+                http:location ?location 
+            ] ;
+            http:requestURI <\${iri}>     
+      }
+    } LIMIT 1`
+}
 
-serializers.set('application/json', jsonLdSerializer)
-serializers.set('application/ld+json', jsonLdSerializer)
-parsers.set('application/json', parsers.get('application/ld+json'))
+const authBasicHeader = (user, password) => {
+  return 'Basic ' + Buffer.from(user + ':' + password).toString('base64')
+}
 
-const factory = async (trifid) => {
+export class HttpInRDFHandler {
+  constructor (options) {
+    this.authentication = options.authentication
+    this.redirectQuery = options.redirectQuery
+    this.client = new ParsingClient({ endpointUrl: options.endpointUrl })
+  }
+
+  buildQueryOptions () {
+    const queryOptions = {}
+    if (this.authentication && this.authentication.user &&
+      this.authentication.password) {
+      queryOptions.headers = {
+        Authorization: authBasicHeader(this.authentication.user,
+          this.authentication.password)
+      }
+    }
+    return queryOptions
+  }
+
+  async queryRedirect (iri) {
+    const redirectQuery = this.redirectQuery.split('${iri}').join(iri)
+    debug('SPARQL redirect query for IRI <' + iri + '> : ' + redirectQuery)
+    const bindings = await this.client.query.select(redirectQuery,
+      this.buildQueryOptions())
+    if (bindings.length) {
+      return bindings[0]
+    }
+    return false
+  }
+
+  handle (req, res, next) {
+    if (req.method === 'GET') {
+      this.get(req, res, next, req.iri)
+    } else {
+      next()
+    }
+  }
+
+  async get (req, res, next, iri) {
+    iri = encodeURI(iri)
+    debug('handle GET request for IRI <' + iri + '>')
+    const redirect = await this.queryRedirect(iri)
+    if (redirect) {
+      const { code, location } = redirect
+      res.status(code.value).redirect(location.value)
+    } else {
+      return next()
+    }
+  }
+}
+
+export const factory = trifid => {
   const { config } = trifid
-  const matchers = getMatchers({ options: config })
+  const { endpointUrl } = config
 
-  return async (req, res, next) => {
-    hijackResponse(res, next).then(async ({ readable, writable }) => {
-      const contentType = res.getHeader('Content-Type')
-      if (!contentType) {
-        return readable.pipe(writable)
-      }
+  const endpoint = endpointUrl || '/query'
 
-      const mimeType = contentType.toLowerCase().split(';')[0].trim()
-      const hijackFormats = [
-        'application/json',
-        'application/ld+json',
-        'application/trig',
-        'application/n-quads',
-        'application/n-triples',
-        'text/n3',
-        'text/turtle',
-        'application/rdf+xml']
-      if (!hijackFormats.includes(mimeType)) {
-        return readable.pipe(writable)
-      }
-
-      const quadStream = await parsers.import(mimeType, readable)
-      const dataset = await rdf.dataset().import(quadStream)
-      const term = rdf.namedNode(req.iri)
-
-      for (const matcher of matchers) {
-        const handleMatch = matcher({ term, dataset })
-        if (handleMatch) {
-          handleMatch(req, res, next)
-        }
-      }
-      const outputStream = serializers.import(mimeType, dataset.toStream())
-      return outputStream.pipe(writable)
+  return (req, res, next) => {
+    const handler = new HttpInRDFHandler({
+      ...defaults, ...config, endpointUrl: resolve(req.absoluteUrl(), endpoint)
     })
+    handler.handle(req, res, next)
   }
 }
 
