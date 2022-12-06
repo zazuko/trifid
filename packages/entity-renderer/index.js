@@ -42,7 +42,7 @@ const factory = async (trifid) => {
       return readable.pipe(writable)
     }
 
-    const quadStream = await parsers.import(mimeType, readable)
+    const quadStream = parsers.import(mimeType, readable)
     const dataset = await rdf.dataset().import(quadStream)
 
     let contentToForward
