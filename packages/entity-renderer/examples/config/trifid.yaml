@@ -6,6 +6,8 @@ middlewares:
   entity-renderer:
     paths: /
     module: file:../../index.js
+    config:
+      path: file:../../views/render.hbs
 
   entity-host-web-page:
     module: trifid-core/middlewares/view.js

@@ -12,6 +12,8 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 const factory = async (trifid) => {
   const { render, logger, config } = trifid
   const renderer = createRenderer({ options: config })
+  const { path } = config
+  const entityTemplatePath = path || `${currentDir}/views/render.hbs`
 
   return async (req, res, next) => {
     // only take care of the rendering if HTML is requested
@@ -34,8 +36,7 @@ const factory = async (trifid) => {
         'application/n-triples',
         'text/n3',
         'text/turtle',
-        'application/rdf+xml'
-      ]
+        'application/rdf+xml']
       if (!hijackFormats.includes(mimeType)) {
         return readable.pipe(writable)
       }
@@ -46,7 +47,7 @@ const factory = async (trifid) => {
       let contentToForward
       try {
         const data = await renderer(req, { dataset })
-        const view = await render(`${currentDir}/views/render.hbs`, {
+        const view = await render(entityTemplatePath, {
           dataset: data
         })
         contentToForward = view
