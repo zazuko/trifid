@@ -2,8 +2,6 @@
     @import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
     @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
-
-
     body {
         --color-primary: #ffb15e;
         --color-primary-light: #ffe38d;
@@ -72,20 +70,6 @@
 
     /*Entity renderer CSS*/
 
-    :host {
-        --color-primary: #ffb15e;
-        --color-primary-light: #ffe38d;
-        --color-secondary: #ff441c;
-        --color-secondary-dark: #c30000;
-        --color-text-on-primary: #000000;
-        --color-text-on-secondary: #000000;
-        --color-black: #000000;
-        --color-grey: #4f4f4f;
-        --color-white: #ffffff;
-        --color-darker-white: #fcfcfc;
-        --color-light-grey: #e5e5e5;
-    }
-
     .entities {
         display: flex;
         flex-direction: column;
@@ -95,11 +79,11 @@
     .entity {
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--color-grey);
+        border: 1px solid var(--color-light-grey);
     }
 
     .entity-root {
-        border: none;
+        border: 1px solid var(--color-light-grey);
     }
 
     .main-header {
@@ -125,7 +109,7 @@
     .header {
         font-size: 18px;
         padding-left: 10px;
-        border-bottom: 1px dashed var(--color-grey);
+        border-bottom: 1px dashed var(--color-light-grey);
     }
 
     .header a {
