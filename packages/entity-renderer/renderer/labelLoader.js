@@ -14,19 +14,34 @@ import ParsingClient from 'sparql-http-client/ParsingClient.js'
 class LabelLoader {
   constructor (options) {
     const {
-      endpointUrl, labelNamespace, chunkSize, concurrency, timeout
+      endpointUrl,
+      labelNamespace,
+      chunkSize,
+      concurrency,
+      timeout,
+      authentication
     } = options
     if (!endpointUrl) {
       throw Error('requires a endpointUrl')
     }
-    this.client = new ParsingClient({ endpointUrl })
+
+    const clientOptions = {
+      endpointUrl
+    }
+    if (authentication?.user) {
+      clientOptions.user = authentication.user
+    }
+    if (authentication?.password) {
+      clientOptions.password = authentication.password
+    }
+
+    this.client = new ParsingClient(clientOptions)
     // To filter by a namespace, for example 'https://ld.zazuko.com'
-    this.labelNamespace = labelNamespace || endpointUrl.split(
-      '/').splice(0, 3).join('/')
+    this.labelNamespace = labelNamespace ||
+      endpointUrl.split('/').splice(0, 3).join('/')
     this.chunkSize = chunkSize || 30
     this.queue = new PQueue({
-      concurrency: concurrency || 2,
-      timeout: timeout || 1000
+      concurrency: concurrency || 2, timeout: timeout || 1000
     })
   }
 
@@ -78,7 +93,7 @@ CONSTRUCT {
     const tasks = []
     while (terms.length) {
       const chunk = terms.splice(0, this.chunkSize)
-      if (chunk.length){
+      if (chunk.length) {
         tasks.push(this.queue.add(() => this.fetchLabels(chunk)))
       }
     }
