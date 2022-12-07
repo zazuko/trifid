@@ -98,7 +98,7 @@ function createRenderer ({ options = {} }) {
     // If a labelLoader is configured, try to fetch the labels
     if (options.labelLoader) {
       const endpoint = options.labelLoader.endpointUrl || '/query'
-      const endpointUrl = new URL(req.absoluteUrl(), endpoint)
+      const endpointUrl = new URL(endpoint, req.absoluteUrl())
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl })
       const quadChunks = await labelLoader.tryFetchAll(cf)
