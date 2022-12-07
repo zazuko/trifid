@@ -1,4 +1,5 @@
 import hijackResponse from 'hijackresponse'
+import absoluteUrl from 'absolute-url'
 import { Readable } from 'stream'
 
 /**
@@ -79,9 +80,13 @@ export const factory = trifid => {
   }
 
   return async (req, res, next) => {
+    // make sure that `absolute-url` middleware is used
+    absoluteUrl.attach(req)
+
     const absoluteBaseUrl = new URL('/', req.absoluteUrl())
     const currentBaseUrl = absoluteBaseUrl.toString()
 
+    // ignore the rewrite of IRI if requested or if `req.iri` is not defined
     if (rewriteIri && req.iri) {
       req.iri = req.iri.replaceAll(currentBaseUrl, datasetBaseUrl)
       logger.debug(`new IRI is ${req.iri}`)
