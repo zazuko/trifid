@@ -92,9 +92,9 @@ function createRenderer ({ options = {} }) {
 
     const iri = req.iri
     const term = rdf.namedNode(iri)
-
     const cf = rdf.clownface({ dataset, term })
 
+    const externalLabels = rdf.clownface({ dataset: rdf.dataset() })
     // If a labelLoader is configured, try to fetch the labels
     if (options.labelLoader) {
       const endpoint = options.labelLoader.endpointUrl || '/query'
@@ -103,8 +103,9 @@ function createRenderer ({ options = {} }) {
         { ...options.labelLoader, endpointUrl })
       const quadChunks = await labelLoader.tryFetchAll(cf)
       const labelQuads = quadChunks.filter(notNull => notNull).flat()
-      cf.dataset.addAll(labelQuads)
+      externalLabels.dataset.addAll(labelQuads)
     }
+    rendererConfig.externalLabels = externalLabels
 
     const resourceWebComponent = ResourceDescription(cf, rendererConfig)
     const stringIterator = renderWebComponent(resourceWebComponent)
