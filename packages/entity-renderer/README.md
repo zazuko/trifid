@@ -15,6 +15,10 @@ middlewares:
   # […]
   entity-renderer:
     module: "@zazuko/trifid-renderer-entity"
+    config:
+      # ignore some specific paths
+      ignorePaths:
+        - /query
 ```
 
 ## Define your own css/template

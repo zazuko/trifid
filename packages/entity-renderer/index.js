@@ -12,10 +12,23 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 const factory = async (trifid) => {
   const { render, logger, config } = trifid
   const renderer = createRenderer({ options: config })
-  const { path } = config
+  const { path, ignorePaths } = config
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
 
+  // if `ignorePaths` is not provided or invalid, we configure some defaults values
+  let ignoredPaths = ignorePaths
+  if (!ignorePaths || !Array.isArray(ignorePaths)) {
+    ignoredPaths = [
+      '/query'
+    ]
+  }
+
   return async (req, res, next) => {
+    // check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
+    if (req.path in ignoredPaths) {
+      return next()
+    }
+
     // only take care of the rendering if HTML is requested
     const accepts = req.accepts(['text/plain', 'json', 'html'])
     if (accepts !== 'html') {
