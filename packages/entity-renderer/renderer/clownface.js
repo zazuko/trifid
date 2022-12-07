@@ -4,6 +4,7 @@ import {
 import rdf from 'rdf-ext'
 import { ResourceDescription } from 'rdf-entity-webcomponent'
 import { LabelLoader } from './labelLoader.js'
+import { resolve } from 'url'
 
 const DEFAULTS = {
   compactMode: true,
@@ -36,10 +37,6 @@ function toBoolean (val) {
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
 function createRenderer ({ options = {} }) {
-  let labelLoader
-  if (options.labelLoader) {
-    labelLoader = new LabelLoader(options.labelLoader)
-  }
 
   return async (req, { dataset }) => {
     const rendererConfig = Object.assign({}, DEFAULTS, options)
@@ -101,7 +98,10 @@ function createRenderer ({ options = {} }) {
     const cf = rdf.clownface({ dataset, term })
 
     // If a labelLoader is configured, try to fetch the labels
-    if (labelLoader) {
+    if (options.labelLoader) {
+      const endpoint = options.labelLoader.endpointUrl || '/query'
+      const endpointUrl = resolve(req.absoluteUrl(), endpoint)
+      const labelLoader = new LabelLoader({ ...options.labelLoader, endpointUrl })
       const quadChunks = await labelLoader.tryFetchAll(cf)
       const labelQuads = quadChunks.filter(notNull => notNull).flat()
       cf.dataset.addAll(labelQuads)
