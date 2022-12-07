@@ -78,7 +78,9 @@ CONSTRUCT {
     const tasks = []
     while (terms.length) {
       const chunk = terms.splice(0, this.chunkSize)
-      tasks.push(this.queue.add(() => this.fetchLabels(chunk)))
+      if (chunk.length){
+        tasks.push(this.queue.add(() => this.fetchLabels(chunk)))
+      }
     }
     return await Promise.all(tasks)
   }
