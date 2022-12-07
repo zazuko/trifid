@@ -17,7 +17,8 @@
     "watch": "nodemon server.js",
     "typings": "tsc",
     "clean": "rimraf *.tgz *.d.ts* lib/*.d.ts* lib/**/*.d.ts* middlewares/*.d.ts* middlewares/**/*.d.ts*",
-    "prepack": "npm run clean && npm run typings"
+    "prepack": "npm run clean && npm run typings",
+    "postpublish": "npm run clean"
   },
   "main": "index.js",
   "types": "./index.d.ts",
