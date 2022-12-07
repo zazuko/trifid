@@ -1,8 +1,9 @@
 import {
-  render as renderWebComponent
+  render as renderWebComponent,
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
 import { ResourceDescription } from 'rdf-entity-webcomponent'
+import { LabelLoader } from './labelLoader.js'
 
 const DEFAULTS = {
   compactMode: true,
@@ -14,7 +15,7 @@ const DEFAULTS = {
   embedLists: true,
   debug: false,
   maxLevel: 3,
-  namedGraphs: true
+  namedGraphs: true,
 }
 
 function toBoolean (val) {
@@ -35,11 +36,17 @@ function toBoolean (val) {
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
 function createRenderer ({ options = {} }) {
+
+  let labelLoader = undefined
+  if (options.labelLoader) {
+    labelLoader = new LabelLoader(options.labelLoader)
+  }
+
   return async (req, { dataset }) => {
+
     const rendererConfig = Object.assign({}, DEFAULTS, options)
 
     // Honor parameters in the request
-
     if (req.query.compactMode !== undefined) {
       rendererConfig.compactMode = toBoolean(req.query.compactMode)
     }
@@ -94,6 +101,13 @@ function createRenderer ({ options = {} }) {
     const term = rdf.namedNode(iri)
 
     const cf = rdf.clownface({ dataset, term })
+
+    // If a labelLoader is configured, try to fetch the labels
+    if (labelLoader) {
+      const quadChunks = await labelLoader.tryFetchAll(cf)
+      const labelQuads = quadChunks.filter(notNull => notNull).flat()
+      cf.dataset.addAll(labelQuads)
+    }
 
     const resourceWebComponent = ResourceDescription(cf, rendererConfig)
     const stringIterator = renderWebComponent(resourceWebComponent)
