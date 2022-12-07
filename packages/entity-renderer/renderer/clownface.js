@@ -1,5 +1,5 @@
 import {
-  render as renderWebComponent,
+  render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
 import { ResourceDescription } from 'rdf-entity-webcomponent'
@@ -15,7 +15,7 @@ const DEFAULTS = {
   embedLists: true,
   debug: false,
   maxLevel: 3,
-  namedGraphs: true,
+  namedGraphs: true
 }
 
 function toBoolean (val) {
@@ -36,14 +36,12 @@ function toBoolean (val) {
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
 function createRenderer ({ options = {} }) {
-
-  let labelLoader = undefined
+  let labelLoader
   if (options.labelLoader) {
     labelLoader = new LabelLoader(options.labelLoader)
   }
 
   return async (req, { dataset }) => {
-
     const rendererConfig = Object.assign({}, DEFAULTS, options)
 
     // Honor parameters in the request

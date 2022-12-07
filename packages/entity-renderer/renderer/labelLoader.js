@@ -14,19 +14,19 @@ import ParsingClient from 'sparql-http-client/ParsingClient.js'
 class LabelLoader {
   constructor (options) {
     const {
-      endpointUrl, labelNamespace, chunkSize, concurrency, timeout,
+      endpointUrl, labelNamespace, chunkSize, concurrency, timeout
     } = options
     if (!endpointUrl) {
       throw Error('requires a endpointUrl')
     }
     this.client = new ParsingClient({ endpointUrl })
     // To filter by a namespace, for example 'https://ld.zazuko.com'
-    this.labelNamespace = labelNamespace ? labelNamespace : endpointUrl.split(
+    this.labelNamespace = labelNamespace || endpointUrl.split(
       '/').splice(0, 3).join('/')
-    this.chunkSize = chunkSize ? chunkSize : 30
+    this.chunkSize = chunkSize || 30
     this.queue = new PQueue({
-      concurrency: concurrency ? concurrency : 2,
-      timeout: timeout ? timeout : 1000,
+      concurrency: concurrency || 2,
+      timeout: timeout || 1000
     })
   }
 
