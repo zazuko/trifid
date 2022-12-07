@@ -25,7 +25,7 @@ const factory = async (trifid) => {
 
   return async (req, res, next) => {
     // check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
-    if (req.path in ignoredPaths) {
+    if (ignoredPaths.includes(req.path)) {
       return next()
     }
 
