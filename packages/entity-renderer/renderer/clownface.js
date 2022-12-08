@@ -1,5 +1,5 @@
 import {
-  render as renderWebComponent,
+  render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
 import { ResourceDescription } from 'rdf-entity-webcomponent'
@@ -15,7 +15,7 @@ const DEFAULTS = {
   embedLists: true,
   debug: false,
   maxLevel: 3,
-  showNamedGraphs: true,
+  showNamedGraphs: true
 }
 
 function toBoolean (val) {
@@ -103,7 +103,7 @@ function createRenderer ({ options = {} }) {
       const endpointUrl = new URL(endpoint, req.absoluteUrl())
 
       // Add to the metadata
-      rendererConfig.metadata.endpointUrl = rdf.namedNode(endpointUrl)
+      rendererConfig.metadata['SPARQL endpoint:'] = rdf.namedNode(endpointUrl)
 
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl })
