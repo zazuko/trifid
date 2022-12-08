@@ -103,7 +103,7 @@ function createRenderer ({ options = {} }) {
       const endpointUrl = new URL(endpoint, req.absoluteUrl())
 
       // Add to the metadata
-      rendererConfig.metadata['SPARQL endpoint:'] = rdf.namedNode(endpointUrl)
+      rendererConfig.metadata['SPARQL endpoint:'] = rdf.namedNode(`${endpointUrl}`)
 
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl })
