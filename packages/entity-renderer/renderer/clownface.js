@@ -1,5 +1,5 @@
 import {
-  render as renderWebComponent
+  render as renderWebComponent,
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
 import { ResourceDescription } from 'rdf-entity-webcomponent'
@@ -15,7 +15,7 @@ const DEFAULTS = {
   embedLists: true,
   debug: false,
   maxLevel: 3,
-  namedGraphs: true
+  showNamedGraphs: true,
 }
 
 function toBoolean (val) {
@@ -94,11 +94,17 @@ function createRenderer ({ options = {} }) {
     const foundQuad = [...dataset].find(quad => quad.subject.equals(term))
     const cf = rdf.clownface({ dataset, term: foundQuad ? term : undefined })
 
+    rendererConfig.metadata = {}
+
     const externalLabels = rdf.clownface({ dataset: rdf.dataset() })
     // If a labelLoader is configured, try to fetch the labels
     if (options.labelLoader) {
       const endpoint = options.labelLoader.endpointUrl || '/query'
       const endpointUrl = new URL(endpoint, req.absoluteUrl())
+
+      // Add to the metadata
+      rendererConfig.metadata.endpointUrl = rdf.namedNode(endpointUrl)
+
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl })
       const quadChunks = await labelLoader.tryFetchAll(cf)
