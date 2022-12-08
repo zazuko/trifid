@@ -1,16 +1,16 @@
 {
-  "name": "trifid-handler-http-in-rdf",
-  "description": "HTTP-in-RDF middleware",
+  "name": "@zazuko/trifid-handle-redirects",
+  "description": "Handle redirects",
   "type": "module",
   "version": "0.1.0",
   "license": "MIT",
-  "homepage": "https://github.com/zazuko/trifid-handler-http-in-rdf",
+  "homepage": "https://github.com/zazuko/trifid-handle-redirects",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-handler-http-in-rdf.git"
+    "url": "https://github.com/zazuko/trifid-handle-redirects.git"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-handler-http-in-rdf/issues"
+    "url": "https://github.com/zazuko/trifid-handle-redirects/issues"
   },
   "scripts": {
     "pretest": "standard",
@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "node-fetch": "^3.3.0",
     "sparql-http-client": "^2.4.1"
   },
   "devDependencies": {

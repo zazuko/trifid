@@ -1,6 +1,5 @@
 import debugLib from 'debug'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
-import { resolve } from 'url'
 
 const debug = debugLib('trifid-handler-http-in-rdf')
 
@@ -44,7 +43,7 @@ export class HttpInRDFHandler {
   }
 
   async queryRedirect (iri) {
-    const redirectQuery = this.redirectQuery.split('${iri}').join(iri)
+    const redirectQuery = this.redirectQuery.split('${iri}').join(iri) // eslint-disable-line
     debug('SPARQL redirect query for IRI <' + iri + '> : ' + redirectQuery)
     const bindings = await this.client.query.select(redirectQuery,
       this.buildQueryOptions())
@@ -83,7 +82,7 @@ export const factory = trifid => {
 
   return (req, res, next) => {
     const handler = new HttpInRDFHandler({
-      ...defaults, ...config, endpointUrl: resolve(req.absoluteUrl(), endpoint)
+      ...defaults, ...config, endpointUrl: new URL(endpoint, req.absoluteUrl())
     })
     handler.handle(req, res, next)
   }
