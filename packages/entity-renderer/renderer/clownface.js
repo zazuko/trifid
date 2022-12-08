@@ -90,7 +90,9 @@ function createRenderer ({ options = {} }) {
       rendererConfig.groupPropertiesByValue = rendererConfig.compactMode
     }
 
-    const cf = rdf.clownface({ dataset })
+    const term = rdf.namedNode(req.iri)
+    const foundQuad = [...dataset].find(quad => quad.subject.equals(term))
+    const cf = rdf.clownface({ dataset, term: foundQuad ? term : undefined })
 
     const externalLabels = rdf.clownface({ dataset: rdf.dataset() })
     // If a labelLoader is configured, try to fetch the labels
