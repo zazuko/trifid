@@ -1,6 +1,6 @@
 # trifid-handle-redirects
 
-SPARQL handler for [Trifid](https://github.com/zazuko/trifid).
+Redirects handler for [Trifid](https://github.com/zazuko/trifid).
 
 # Usage
 
