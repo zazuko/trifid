@@ -4,7 +4,8 @@ import ParsingClient from 'sparql-http-client/ParsingClient.js'
 const debug = debugLib('trifid-handler-http-in-rdf')
 
 const defaults = {
-  authentication: false, redirectQuery: `
+  authentication: false,
+  redirectQuery: `
     PREFIX http:   <http://www.w3.org/2011/http#>
     SELECT ?location ?code WHERE {
       GRAPH ?g {
