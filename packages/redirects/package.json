@@ -13,8 +13,7 @@
     "url": "https://github.com/zazuko/trifid-handle-redirects/issues"
   },
   "scripts": {
-    "pretest": "standard",
-    "test": "mocha"
+    "pretest": "standard"
   },
   "dependencies": {
     "debug": "^4.3.4",
