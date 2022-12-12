@@ -21,6 +21,9 @@ middlewares:
     module: "@zazuko/trifid-plugin-sparql-proxy"
     paths: /query
     config:
-      endpointUrl: https://example.com/query
+      sparqlEndpoint:
+        url: https://example.com/query
+        username: admin
+        password: secret
       # …other configuration fields
 ```
