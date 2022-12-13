@@ -7,7 +7,7 @@ Redirects handler for [Trifid](https://github.com/zazuko/trifid).
 Install this Trifid plugin using:
 
 ```sh
-npm install trifid-handle-redirects
+npm install @zazuko/trifid-handle-redirects
 ```
 
 Add to the trifid-configuration file
@@ -16,7 +16,7 @@ Add to the trifid-configuration file
 middlewares:
   # […]
   arbitrary-name:
-    module: trifid-handle-redirects   
+    module: "@zazuko/trifid-handle-redirects"
 ```
 
 ## Defaults
