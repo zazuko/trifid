@@ -4,6 +4,9 @@
   "type": "module",
   "version": "0.1.1",
   "license": "MIT",
+  "author": {
+    "name": "Zazuko GmbH"
+  },
   "homepage": "https://github.com/zazuko/trifid-handle-redirects",
   "repository": {
     "type": "git",
@@ -22,9 +25,5 @@
   },
   "devDependencies": {
     "standard": "^17.0.0"
-  },
-  "engines": {
-    "node": ">=8",
-    "npm": ">=6"
   }
 }
