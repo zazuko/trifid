@@ -7,17 +7,17 @@
   "scripts": {
     "test": "standard"
   },
-  "author": "Zazuko",
+  "author": "Zazuko GmbH",
   "license": "UNLICENSED",
   "dependencies": {
-    "@tpluscode/rdf-string": "^0.2.25",
-    "@zazuko/rdf-vocabularies": "2021.9.22-3",
-    "dotenv": "^16.0.0",
-    "rdf-ext": "^2.0.1",
-    "sparql-http-client": "^2.4.0",
+    "@tpluscode/rdf-string": "^0.2.26",
+    "@zazuko/rdf-vocabularies": "2022.11.28",
+    "dotenv": "^16.0.3",
+    "rdf-ext": "^2.1.0",
+    "sparql-http-client": "^2.4.1",
     "xmlbuilder2": "^3.0.2"
   },
   "devDependencies": {
-    "standard": "^16.0.4"
+    "standard": "^17.0.0"
   }
 }
