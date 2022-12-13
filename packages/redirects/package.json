@@ -4,6 +4,7 @@
   "type": "module",
   "version": "0.1.1",
   "license": "MIT",
+  "main": "index.js",
   "author": {
     "name": "Zazuko GmbH"
   },
