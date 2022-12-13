@@ -19,17 +19,10 @@
     "index.js"
   ],
   "scripts": {
-    "prepare": "npm run build:ol",
-    "pack": "npm run build:ol",
-    "build:ol:core": "esbuild ./node_modules/@openlayers-elements/core/ol-map.js --bundle --minify --outfile=static/ol-map.js",
-    "build:ol:wkt": "esbuild ./node_modules/@openlayers-elements/maps/ol-layer-wkt.js --bundle --minify --outfile=static/ol-layer-wkt.js",
-    "build:ol:osm": "esbuild ./node_modules/@openlayers-elements/maps/ol-layer-openstreetmap.js --bundle --minify --outfile=static/ol-layer-osm.js",
-    "build:ol": "npm-run-all -p build:ol:*",
     "test": "standard && mocha"
   },
   "dependencies": {
-    "@openlayers-elements/core": "^0.3.0",
-    "@openlayers-elements/maps": "^0.3.0",
+    "@openlayers-elements/bundle": "^0.1.0",
     "@triply/yasgui": "^4.2.28",
     "express": "^4.18.2",
     "import-meta-resolve": "^2.2.0"
@@ -37,9 +30,7 @@
   "devDependencies": {
     "absolute-url": "^1.2.2",
     "c8": "^7.12.0",
-    "esbuild": "^0.16.4",
     "mocha": "^10.1.0",
-    "npm-run-all": "^4.1.5",
     "standard": "^17.0.0",
     "supertest": "^6.3.1"
   }

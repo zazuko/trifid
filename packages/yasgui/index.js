@@ -17,9 +17,8 @@ const trifidFactory = async (trifid) => {
   server.use('/yasgui-dist/', express.static(yasguiPath.replace(/^file:\/\//, '')))
 
   // serve static files for openlayers (maps)
-  const staticUrl = new URL('static/', import.meta.url)
-  const staticPath = fileURLToPath(staticUrl)
-  server.use('/yasgui-static/', express.static(staticPath))
+  const olPath = await resolve('@openlayers-elements/bundle/dist/', import.meta.url)
+  server.use('/yasgui-ol/', express.static(olPath.replace(/^file:\/\//, '')))
 
   // serve static files for custom plugins
   const pluginsUrl = new URL('plugins/', import.meta.url)
