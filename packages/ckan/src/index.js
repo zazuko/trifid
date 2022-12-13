@@ -5,13 +5,12 @@ const factory = (trifid) => {
   const { config, logger } = trifid
 
   const { endpointUrl, user, password } = config
-  if (!endpointUrl) {
-    throw new Error("configuration is missing 'endpointUrl' field")
-  }
+  const configuredEndpoint = endpointUrl || '/query'
 
   return async (req, res, _next) => {
+    const endpoint = new URL(configuredEndpoint, req.absoluteUrl())
     const { fetchDatasets, toXML } = createAPI({
-      endpointUrl,
+      endpointUrl: endpoint,
       user,
       password
     })
