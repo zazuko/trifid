@@ -16,6 +16,7 @@
   "files": [
     "test",
     "views",
+    "plugins",
     "index.js"
   ],
   "scripts": {
