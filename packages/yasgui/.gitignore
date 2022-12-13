@@ -3,3 +3,6 @@ node_modules
 npm-debug.log
 /nbproject/private/
 *.tgz
+static/ol-map.js
+static/ol-layer-wkt.js
+static/ol-layer-osm.js
