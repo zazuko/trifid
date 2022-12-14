@@ -36,9 +36,7 @@ class LabelLoader {
     }
 
     this.client = new ParsingClient(clientOptions)
-    // To filter by a namespace, for example 'https://ld.zazuko.com'
-    this.labelNamespace = labelNamespace ||
-      endpointUrl.split('/').splice(0, 3).join('/')
+    this.labelNamespace = labelNamespace
     this.chunkSize = chunkSize || 30
     this.queue = new PQueue({
       concurrency: concurrency || 2, timeout: timeout || 1000
@@ -47,7 +45,9 @@ class LabelLoader {
 
   labelFilter (pointer, term) {
     if (term.termType === 'NamedNode') {
-      if (term.value.startsWith(this.labelNamespace)) {
+      if (this.labelNamespace
+        ? term.value.startsWith(this.labelNamespace)
+        : true) {
         const terms = pointer.node(term).out(ns.schema.name).terms
         return terms.length === 0
       }
