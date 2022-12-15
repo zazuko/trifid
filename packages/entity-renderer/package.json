@@ -29,7 +29,7 @@
     "hijackresponse": "^5.0.0",
     "p-queue": "^7.3.0",
     "sparql-http-client": "^2.4.1",
-    "rdf-entity-webcomponent": "^0.5.8",
+    "rdf-entity-webcomponent": "^0.5.9",
     "rdf-ext": "^2.1.0"
   },
   "devDependencies": {
