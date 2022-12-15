@@ -16,6 +16,7 @@ class LabelLoader {
     const {
       endpointUrl,
       labelNamespace,
+      labelNamespaces,
       chunkSize,
       concurrency,
       timeout,
@@ -36,7 +37,7 @@ class LabelLoader {
     }
 
     this.client = new ParsingClient(clientOptions)
-    this.labelNamespace = labelNamespace
+    this.labelNamespaces = labelNamespace ? [labelNamespace] : labelNamespaces
     this.chunkSize = chunkSize || 30
     this.queue = new PQueue({
       concurrency: concurrency || 2, timeout: timeout || 1000
@@ -44,10 +45,20 @@ class LabelLoader {
   }
 
   labelFilter (pointer, term) {
+    const inNamespaces = (term) => {
+      if (!this.labelNamespaces || this.labelNamespaces.length === 0) {
+        return true
+      }
+      for (const current of this.labelNamespaces) {
+        if (term.value.startsWith(current)) {
+          return true
+        }
+      }
+      return false
+    }
+
     if (term.termType === 'NamedNode') {
-      if (this.labelNamespace
-        ? term.value.startsWith(this.labelNamespace)
-        : true) {
+      if (inNamespaces(term)) {
         const terms = pointer.node(term).out(ns.schema.name).terms
         return terms.length === 0
       }

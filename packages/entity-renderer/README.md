@@ -34,6 +34,24 @@ middlewares:
       path: file:./some-path/your-template.hbs
 ```
 
+## Rendering options
+
+Under the hood, this plugin uses [rdf-entity-webcomponent](https://github.com/zazuko/rdf-entity-webcomponent), that
+accepts the same configuration options.
+
+Add any of these options under the config section
+
+```yaml
+middlewares:
+  # […]
+  entity-renderer:
+    module: "@zazuko/trifid-renderer-entity"
+    config:
+      compactMode: false
+      technicalCues: true
+      embedNamedNodes: false
+```
+
 ## Run an example instance
 
 ```sh
