@@ -3,12 +3,12 @@ import { Metadata } from './Metadata.js'
 import { Debug } from './Debug.js'
 import { EntityList } from 'rdf-entity-webcomponent'
 
-function TrifidResourceDescription (cf, options) {
-  const debug = options.debug ? Debug(cf, options) : html``
+function TrifidResourceDescription ({ dataset, term }, options) {
+  const debug = options.debug ? Debug(dataset) : html``
   return html`
       <div>
-          ${EntityList(cf, options)}
-          ${Metadata(cf, options)}
+          ${EntityList({ dataset, terms: [term] }, options)}
+          ${Metadata(dataset, options)}
           ${debug}
       </div>
   `

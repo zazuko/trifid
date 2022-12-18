@@ -1,9 +1,9 @@
 import { html } from 'lit'
 import { renderTerm } from './N3Term.js'
 
-function Debug (cf, options) {
+function Debug (dataset) {
   const list = []
-  for (const quad of cf.dataset) {
+  for (const quad of dataset) {
     list.push(html`
         <tr>
             <td>${renderTerm(quad.subject)}</td>

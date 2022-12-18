@@ -1,8 +1,8 @@
 import rdf from 'rdf-ext'
 
-function namedCounts (cf, options) {
+function namedCounts (dataset) {
   const namedGraphs = rdf.termMap()
-  for (const quad of cf.any().dataset) {
+  for (const quad of dataset) {
     if (quad.graph) {
       const count = namedGraphs.get(quad.graph)
       const newCount = count !== undefined ? (count + 1) : 1

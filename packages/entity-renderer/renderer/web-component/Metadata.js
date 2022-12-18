@@ -3,9 +3,9 @@ import { namedCounts } from './counts.js'
 import { renderTerm } from './N3Term.js'
 import rdf from 'rdf-ext'
 
-function Metadata (cf, options) {
+function Metadata (dataset, options) {
   const counts = options.showNamedGraphs
-    ? namedCounts(cf, options)
+    ? namedCounts(dataset)
     : rdf.termMap()
   const list = []
   for (const [key, value] of counts.entries()) {
