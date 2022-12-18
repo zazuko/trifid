@@ -2,7 +2,9 @@ import {
   render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
-import { ResourceDescription } from 'rdf-entity-webcomponent'
+import {
+  TrifidResourceDescription
+} from './web-component/TrifidResourceDescription.js'
 import { LabelLoader } from './labelLoader.js'
 
 const DEFAULTS = {
@@ -103,7 +105,8 @@ function createRenderer ({ options = {} }) {
       const endpointUrl = new URL(endpoint, req.absoluteUrl())
 
       // Add to the metadata
-      rendererConfig.metadata['SPARQL endpoint:'] = rdf.namedNode(`${endpointUrl}`)
+      rendererConfig.metadata['SPARQL endpoint:'] = rdf.namedNode(
+        `${endpointUrl}`)
 
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl })
@@ -113,7 +116,7 @@ function createRenderer ({ options = {} }) {
     }
     rendererConfig.externalLabels = externalLabels
 
-    const resourceWebComponent = ResourceDescription(cf, rendererConfig)
+    const resourceWebComponent = TrifidResourceDescription(cf, rendererConfig)
     const stringIterator = renderWebComponent(resourceWebComponent)
 
     return Array.from(stringIterator).join('')

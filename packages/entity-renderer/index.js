@@ -2,7 +2,7 @@ import hijackResponse from 'hijackresponse'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import rdfFormats from '@rdfjs/formats-common'
-import { createRenderer } from './renderer/clownface.js'
+import { createRenderer } from './renderer/middleware.js'
 import rdf from 'rdf-ext'
 
 const { parsers } = rdfFormats
@@ -19,8 +19,7 @@ const factory = async (trifid) => {
   let ignoredPaths = ignorePaths
   if (!ignorePaths || !Array.isArray(ignorePaths)) {
     ignoredPaths = [
-      '/query'
-    ]
+      '/query']
   }
 
   return async (req, res, next) => {
@@ -50,8 +49,7 @@ const factory = async (trifid) => {
       'application/n-triples',
       'text/n3',
       'text/turtle',
-      'application/rdf+xml'
-    ]
+      'application/rdf+xml']
     if (!hijackFormats.includes(mimeType)) {
       return readable.pipe(writable)
     }
