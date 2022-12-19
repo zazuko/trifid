@@ -100,11 +100,34 @@ export class SparqlHandler {
   }
 
   handle (req, res, next) {
-    if (req.method === 'GET') {
-      this.get(req, res, next, req.iri)
-    } else {
-      next()
+    switch (req.method) {
+      case 'HEAD':
+        return this.head(req, res, next, req.iri)
+      case 'GET':
+        return this.get(req, res, next, req.iri)
     }
+
+    return next()
+  }
+
+  async head (_req, res, next, iri) {
+    iri = encodeURI(iri)
+
+    debug('handle OPTIONS request for IRI <' + iri + '>')
+
+    const isContainer = this.resourceNoSlash && iri.endsWith('/')
+    const queryExist = isContainer ? this.buildContainerExistsQuery(iri) : this.buildResourceExistsQuery(iri)
+
+    const { status, exists } = await this.exists(iri, queryExist)
+
+    if (status !== 200) {
+      res.sendStatus(status)
+      return next()
+    } else if (!exists) {
+      return next()
+    }
+
+    res.sendStatus(status)
   }
 
   async get (req, res, next, iri) {
