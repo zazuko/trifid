@@ -14,7 +14,7 @@ const getAcceptHeader = (req) => {
 
   const supportedQueryStringValues = {
     ttl: 'text/turtle',
-    json: 'application/ld+json',
+    jsonld: 'application/ld+json',
     xml: 'application/rdf+xml'
   }
 
