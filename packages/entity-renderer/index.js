@@ -9,6 +9,22 @@ const { parsers } = rdfFormats
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+const getAcceptHeader = (req) => {
+  const queryStringValue = req.query.format
+
+  const supportedQueryStringValues = {
+    ttl: 'text/turtle',
+    json: 'application/ld+json',
+    xml: 'application/rdf+xml'
+  }
+
+  if (Object.hasOwnProperty.call(supportedQueryStringValues, queryStringValue)) {
+    return supportedQueryStringValues[queryStringValue]
+  }
+
+  return req.headers.accept
+}
+
 const factory = async (trifid) => {
   const { render, logger, config } = trifid
   const renderer = createRenderer({ options: config })
@@ -19,7 +35,8 @@ const factory = async (trifid) => {
   let ignoredPaths = ignorePaths
   if (!ignorePaths || !Array.isArray(ignorePaths)) {
     ignoredPaths = [
-      '/query']
+      '/query'
+    ]
   }
 
   return async (req, res, next) => {
@@ -27,6 +44,9 @@ const factory = async (trifid) => {
     if (ignoredPaths.includes(req.path)) {
       return next()
     }
+
+    // update "Accept" HTTP header depending of the requested type
+    req.headers.accept = getAcceptHeader(req)
 
     // only take care of the rendering if HTML is requested
     const accepts = req.accepts(['text/plain', 'json', 'html'])
