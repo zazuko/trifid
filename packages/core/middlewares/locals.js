@@ -14,16 +14,17 @@ const factory = (trifid) => {
   return (req, res, next) => {
     absoluteUrl.attach(req)
 
+    // export language information for other middlewares
+    res.locals.defaultLanguage = defaultLanguage
+    res.locals.currentLanguage = req?.cookies?.lang || defaultLanguage
+
     // update langage by setting `lang` query parameter
     const lang = req.query.lang
     if (lang && supportedLanguages.includes(lang)) {
       logger.debug(`set default language to '${lang}'`)
       res.cookie('lang', lang, { maxAge: oneMonthMilliseconds })
+      res.locals.currentLanguage = lang
     }
-
-    // export language information for other middlewares
-    res.locals.defaultLanguage = defaultLanguage
-    res.locals.currentLanguage = req?.cookies?.lang || defaultLanguage
 
     // requested resource
     res.locals.iri = req.iri
