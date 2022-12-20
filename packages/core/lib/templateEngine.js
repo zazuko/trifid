@@ -21,6 +21,10 @@ const defaultConfig = {
 }
 
 const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
+  Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+    return (arg1 === arg2) ? options.fn(this) : options.inverse(this)
+  })
+
   const templateOptions = merge({}, defaultConfig, defaultOptions)
 
   const resolvedTemplates = new Map()
@@ -62,7 +66,7 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
     const template = await resolveTemplate(templatePath)
     const body = template(context)
 
-    const renderedOptions = merge({}, templateOptions, options)
+    const renderedOptions = merge({}, context, templateOptions, options)
     const renderedPartials = Object.fromEntries(
       Object.entries(templatesWithoutMain).map(t => [t[0], t[1](renderedOptions)])
     )
