@@ -35,10 +35,13 @@ const factory = (trifid) => {
     }
   }
 
-  return (req, _res, next) => {
+  return (req, res, next) => {
     absoluteUrl.attach(req)
     const url = req.absoluteUrl()
     req.iri = decodeURI(removeSearchParams(url))
+
+    // set current path, so that middlewares can access it
+    res.locals.currentPath = req.path
 
     // update `req.iri` if a value for `datasetBaseUrl` is provided
     if (datasetBaseUrl) {
