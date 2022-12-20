@@ -14,6 +14,9 @@
         --color-white: #ffffff;
         --color-darker-white: #fcfcfc;
         --color-light-grey: #e5e5e5;
+
+        --border: #d1d1d1;
+        --metadata: #4f4f4f;
         font-family: "Roboto Thin", serif;
     }
 
@@ -34,12 +37,6 @@
         margin-left: auto;
         padding-left: 15px;
         padding-right: 15px;
-    }
-
-    .container .entities {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
     }
 
     .navbar-default .navbar-brand {
@@ -79,13 +76,8 @@
     .entity {
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--color-light-grey);
+        border: 1px solid var(--border);
     }
-
-    .entity-root {
-        border: 1px solid var(--color-light-grey);
-    }
-
     .main-header {
         margin-left: auto;
         margin-right: auto;
@@ -99,7 +91,7 @@
         text-align: center;
     }
 
-    .main-header a{
+    .main-header a {
         font-size: 18px;
         color: var(--color-black);
         text-transform: uppercase;
@@ -109,11 +101,10 @@
     .header {
         font-size: 18px;
         padding-left: 10px;
-        border-bottom: 1px dashed var(--color-light-grey);
     }
 
     .header a {
-        color: var(--color-text-on-primary);
+        color: var(--color-black);
     }
 
     .rows {
@@ -122,12 +113,12 @@
     }
 
     .rows > :nth-child(1n) {
-        border-top: 1px solid var(--color-light-grey);
+        border-top: 1px solid var(--border);
     }
 
     .rows > :nth-child(2n) {
-        border-top: 1px solid var(--color-light-grey);
-        background: rgba(0, 0, 0, 0.05);
+        border-top: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.01);
     }
 
     .rows .row {
@@ -171,12 +162,12 @@
     }
 
     div .bringDown {
-        color: var(--color-grey);
+        color: var(--metadata);
         font-size: 0.7rem;
     }
 
     .vocab {
-        color: var(--color-text-on-secondary);
+        color: var(--metadata);
         font-size: 0.7rem;
     }
 
@@ -185,23 +176,23 @@
     }
 
     .language {
-        color: var(--color-text-on-secondary);
+        color: var(--metadata);
         font-size: 0.7rem;
         margin-left: 4px;
     }
 
     .datatype {
-        color: var(--color-text-on-secondary);
+        color: var(--metadata);
         font-size: 0.5rem;
         margin-left: 4px;
     }
 
     .BlankNode {
-        font-size: 10px;
+
     }
 
     .BlankNode a {
-        color: var(--color-grey);
+        color: var(--metadata);
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -209,12 +200,12 @@
     }
 
     .metadata {
-        border: var(--color-grey) solid 1px;
+        /*border: var(--metadata) solid 1px;*/
     }
 
     .metadata h3 {
         text-align: center;
-        color: var(--color-grey);
+        color: var(--metadata);
     }
 
     .metadata table {
