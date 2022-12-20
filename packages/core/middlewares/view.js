@@ -28,7 +28,7 @@ const factory = async (trifid) => {
 
   return async (_req, res, _next) => {
     res.status(200)
-    res.send(await render(path, context, options))
+    res.send(await render(path, { ...context, locals: res.locals }, options))
   }
 }
 
