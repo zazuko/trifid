@@ -31,7 +31,8 @@ const trifidFactory = async (trifid) => {
     const content = await render(view, {
       // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
       endpointUrl: url.resolve(req.absoluteUrl(), endpoint), // eslint-disable-line
-      urlShortener
+      urlShortener,
+      locals: res.locals
     }, { title: 'YASGUI' })
 
     res.send(content)
