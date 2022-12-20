@@ -1,5 +1,6 @@
 import express from 'express'
 import pino from 'pino'
+import cookieParser from 'cookie-parser'
 
 import handler from './lib/config/handler.js'
 import { defaultHost, defaultLogLevel, defaultPort } from './lib/config/default.js'
@@ -68,6 +69,9 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   const fullConfig = await handler(config)
   const server = express()
   server.disable('x-powered-by')
+
+  // add required middlewares
+  server.use(cookieParser())
 
   // configure Express server
   if (fullConfig?.server?.express) {
