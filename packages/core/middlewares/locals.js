@@ -4,8 +4,26 @@ import url from 'url'
 const factory = (trifid) => {
   const { logger } = trifid
 
+  const defaultLanguage = 'en'
+  const supportedLanguages = [
+    'en', 'fr', 'de', 'it'
+  ]
+
+  const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000
+
   return (req, res, next) => {
     absoluteUrl.attach(req)
+
+    // update langage by setting `lang` query parameter
+    const lang = req.query.lang
+    if (lang && supportedLanguages.includes(lang)) {
+      logger.debug(`set default language to '${lang}'`)
+      res.cookie('lang', lang, { maxAge: oneMonthMilliseconds })
+    }
+
+    // export language information for other middlewares
+    res.locals.defaultLanguage = defaultLanguage
+    res.locals.currentLanguage = req?.cookies?.lang || defaultLanguage
 
     // requested resource
     res.locals.iri = req.iri
