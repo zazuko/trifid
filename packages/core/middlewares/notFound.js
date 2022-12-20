@@ -19,7 +19,8 @@ const factory = (trifid) => {
 
       case 'html':
         res.send(await render(`${currentDir}/../views/404.hbs`, {
-          url: req.url
+          url: req.url,
+          locals: res.locals
         }, { title: 'Not Found' }))
         break
 
