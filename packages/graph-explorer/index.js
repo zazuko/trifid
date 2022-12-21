@@ -1,4 +1,5 @@
 import absoluteUrl from 'absolute-url'
+import { resolve } from 'import-meta-resolve'
 import express from 'express'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -52,11 +53,23 @@ function createMiddleWare (options, logger = str => console.log(str)) {
   return router
 }
 
-function trifidFactory (trifid) {
-  const { config, logger } = trifid
+const factory = async (trifid) => {
+  const { server, logger } = trifid
 
-  return createMiddleWare(config, logger)
+  // serve static files for graph-explorer
+  const distPath = await resolve('graph-explorer/dist/', import.meta.url)
+  server.use('/graph-explorer-assets/', express.static(distPath.replace(/^file:\/\//, '')))
+
+  return (req, res, next) => {
+    // …so some things
+
+    // use the logger for example
+    logger.debug('the middleware was called!')
+
+    return next()
+  }
 }
 
-export default trifidFactory
+export default factory
+
 export { createMiddleWare }
