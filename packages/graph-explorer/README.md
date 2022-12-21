@@ -3,89 +3,50 @@
 [Graph Explorer](https://github.com/zazuko/graph-explorer) for [Trifid](https://github.com/zazuko/trifid).
 This middleware does the static file hosting for all Graph Explorer files and renders an index page that points to the given endpoint URL.
 
-# Usage
+## Quick start
+
+Install this Trifid plugin using:
+
+```sh
+npm install trifid-plugin-graph-explorer
+```
+
+And then add in the `config.yaml` file the following part:
+
+```yaml
+middlewares:
+  # […] your other middlewares
+  yasgui:
+    module: trifid-plugin-graph-explorer
+    paths: /graph-explorer
+    config:
+      endpointUrl: https://example.com/query
+      # …other configuration fields
+```
+
+## Configuration
 
 The following options are supported:
 
 - `endpointUrl`: URL to the SPARQL endpoint which will be used in the YASGUI interface
-- `template`: Path to an alternative template (default: `views/index.html`)
+- `template`: Path to an alternative template (default: `views/graph-explorer.hbs`)
 - `acceptBlankNodes`: Show blank nodes
 
-Configuring Trifid to use `trifid-plugin-graph-explorer` is done the same way as `trifid-plugin-yasgui`.
-Since Trifid provides an example config using `trifid-plugin-yasgui`:
-[`config-sparql.json`](https://github.com/zazuko/trifid/blob/1946e324c5a8340b6de5526fae5344e79aa024f2/config-sparql.json),
-here is how to configure `trifid-plugin-graph-explorer` by simply duplicating the YASGUI config parts:
+Example:
 
-```diff
-  "yasgui": {
-    "default": {
-      "path": "/sparql"
-    }
-  },
-+ "graphexplorer": {
-+   "default": {
-+     "path": "/graph-explorer",
-+     "acceptBlankNodes": false,
-+     "dataLabelProperty": "rdfs:label | <http://schema.org/name>",
-+     "schemaLabelProperty": "rdfs:label | <http://schema.org/name>",
-+     "language": "en",
-+     "languages": [
-+       {
-+         "code": "en",
-+         "label": "English"
-+       },
-+       {
-+         "code": "de",
-+         "label": "German"
-+       },
-+       {
-+         "code": "fr",
-+         "label": "French"
-+       },
-+       {
-+         "code": "it",
-+         "label": "Italian"
-+       }
-+     ]
-+   }
-+ },
-  "breakDown": {
-    "handler": {},
-    "handler.root": {},
-    "handler.root.options": {},
-    "handler.root.options.endpointUrl": "sparqlEndpointUrl",
-    "handler.root.options.authentication": "sparqlEndpointAuthentication",
-    "sparqlProxy": {},
-    "sparqlProxy.default": {},
-    "sparqlProxy.default.endpointUrl": "sparqlEndpointUrl",
-    "sparqlProxy.default.authentication": "sparqlEndpointAuthentication",
-    "yasgui": {},
-    "yasgui.default": {},
-    "yasgui.default.endpointUrl": [
-      "sparqlProxy.default.path",
-      "sparqlEndpointUrl"
-    ],
-+   "graphexplorer": {},
-+   "graphexplorer.default": {},
-+   "graphexplorer.default.endpointUrl": [
-+     "sparqlProxy.default.path",
-+     "sparqlEndpointUrl"
-+   ]
-  },
-  "plugins": {
-    "sparqlProxy": {
-      "priority": 115,
-      "module": "trifid-core:./plugins/middleware",
-      "middleware": "sparql-proxy"
-    },
-    "yasgui": {
-      "priority": 115,
-      "module": "trifid-plugin-yasgui"
-    },
-+   "graphexplorer": {
-+     "priority": 115,
-+     "module": "trifid-plugin-graph-explorer"
-+   }
-  }
-}
+```yaml
+config:
+  acceptBlankNodes: false
+  dataLabelProperty: rdfs:label | <http://schema.org/name>
+  schemaLabelProperty: rdfs:label | <http://schema.org/name>
+  language: en
+  languages:
+    - code: en
+      label: English
+    - code: de
+      label: German
+    - code: fr
+      label: French
+    - code: it
+      label: Italian
 ```
