@@ -1,75 +1,70 @@
 import absoluteUrl from 'absolute-url'
 import { resolve } from 'import-meta-resolve'
 import express from 'express'
-import path, { dirname } from 'path'
+import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
-function createMiddleWare (options, logger = str => console.log(str)) {
-  const router = express.Router()
+const factory = async (trifid) => {
+  const { config, server, render } = trifid
+  const {
+    template,
+    endpointUrl,
+    acceptBlankNodes: acceptBlankNodesConfig,
+    dataLabelProperty: dataLabelPropertyConfig,
+    schemaLabelProperty: schemaLabelPropertyConfig,
+    language: languageConfig,
+    languages: languagesConfig
+  } = config
 
-  if (!options || !options.endpointUrl) {
-    return router
-  }
+  const view = !template ? `${currentDir}/views/graph-explorer.hbs` : template
 
-  options.template = options.template || path.join(__dirname, 'views/index.html')
-  options.acceptBlankNodes = !!options.acceptBlankNodes
-  options.dataLabelProperty = options.dataLabelProperty || 'rdfs:label'
-  options.schemaLabelProperty = options.schemaLabelProperty || 'rdfs:label'
-  options.language = options.language || 'en'
-  options.languages = options.languages || [
+  // serve static files for graph-explorer
+  const distPath = await resolve('graph-explorer/dist/', import.meta.url)
+  server.use('/graph-explorer-assets/', express.static(distPath.replace(/^file:\/\//, '')))
+  server.use('/graph-explorer-static/', express.static(`${currentDir}/static/`))
+
+  const endpoint = endpointUrl || '/query'
+  const acceptBlankNodes = !!acceptBlankNodesConfig
+  const dataLabelProperty = dataLabelPropertyConfig || 'rdfs:label'
+  const schemaLabelProperty = schemaLabelPropertyConfig || 'rdfs:label'
+  const language = languageConfig || 'en'
+  const languagesArray = languagesConfig || [
     { code: 'en', label: 'English' },
     { code: 'de', label: 'German' },
     { code: 'fr', label: 'French' },
     { code: 'it', label: 'Italian' }
   ]
+  const languages = JSON.stringify(languagesArray)
 
-  const graphExplorerPath = new URL('node_modules/graph-explorer/dist/', import.meta.url).pathname
-  router.use('/dist/', express.static(graphExplorerPath))
-
-  // render index page
-  router.get('/', (req, res) => {
+  return async (req, res, _next) => {
     absoluteUrl.attach(req)
 
     const urlPathname = new URL(req.originalUrl, req.absoluteUrl()).pathname
 
-    // redirect to trailing slash URL for relative pathes of JS and CSS files
+    // redirect to trailing slash URL
     if (urlPathname.slice(-1) !== '/') {
-      return res.redirect(urlPathname + '/')
+      return res.redirect(`${urlPathname}/`)
     }
 
-    // read SPARQL endpoint URL from options and resolve with absoluteUrl
-    res.locals.endpointUrl = new URL(options.endpointUrl, req.absoluteUrl()).href
-    res.locals.acceptBlankNodes = options.acceptBlankNodes
-    res.locals.dataLabelProperty = options.dataLabelProperty
-    res.locals.schemaLabelProperty = options.schemaLabelProperty
-    res.locals.language = options.language
-    res.locals.languages = JSON.stringify(options.languages)
+    const content = await render(view, {
+      // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
+      endpointUrl: new URL(endpoint, req.absoluteUrl()).href,
 
-    res.render(options.template)
-  })
+      // all other configured options
+      acceptBlankNodes,
+      dataLabelProperty,
+      schemaLabelProperty,
+      language,
+      languages,
 
-  return router
-}
+      // good practice: forward locals to templates
+      locals: res.locals
+    }, { title: 'Graph Explorer' })
 
-const factory = async (trifid) => {
-  const { server, logger } = trifid
-
-  // serve static files for graph-explorer
-  const distPath = await resolve('graph-explorer/dist/', import.meta.url)
-  server.use('/graph-explorer-assets/', express.static(distPath.replace(/^file:\/\//, '')))
-
-  return (req, res, next) => {
-    // …so some things
-
-    // use the logger for example
-    logger.debug('the middleware was called!')
-
-    return next()
+    res.send(content)
   }
 }
 
 export default factory
-
-export { createMiddleWare }
