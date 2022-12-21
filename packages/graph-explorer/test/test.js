@@ -2,7 +2,6 @@ import assert from 'assert'
 import withServer from 'express-as-promise/withServer.js'
 import { describe, it } from 'mocha'
 import trifidFactory from '../index.js'
-// import getStream from 'get-stream'
 
 const createTrifidConfig = (config, server = {}) => {
   const loggerSpy = []
@@ -27,19 +26,4 @@ describe('trifid-plugin-graph-explorer', () => {
       })
     })
   })
-
-  // describe('middleware', () => {
-  //   it('can execute', async () => {
-  //     await withServer(async (server) => {
-  //       const trifidConfig = createTrifidConfig({ endpointUrl: '/test' }, server.app)
-  //       const middleware = trifidFactory(trifidConfig)
-  //       server.app.use(middleware)
-
-  //       const res = await server.fetch('/')
-  //       const bodyStr = await getStream(res.body)
-  //       assert.strictEqual(res.status, 200)
-  //       assert.strictEqual(bodyStr.indexOf('GraphExplorer') > 0, true)
-  //     })
-  //   })
-  // })
 })

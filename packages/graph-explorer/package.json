@@ -25,7 +25,6 @@
   "devDependencies": {
     "c8": "^7.12.0",
     "express-as-promise": "^1.2.0",
-    "get-stream": "^6.0.1",
     "mocha": "^10.2.0",
     "standard": "^17.0.0"
   }
