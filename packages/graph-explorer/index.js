@@ -30,13 +30,12 @@ const factory = async (trifid) => {
   const dataLabelProperty = dataLabelPropertyConfig || 'rdfs:label'
   const schemaLabelProperty = schemaLabelPropertyConfig || 'rdfs:label'
   const language = languageConfig || 'en'
-  const languagesArray = languagesConfig || [
+  const languages = languagesConfig || [
     { code: 'en', label: 'English' },
     { code: 'de', label: 'German' },
     { code: 'fr', label: 'French' },
     { code: 'it', label: 'Italian' }
   ]
-  const languages = JSON.stringify(languagesArray)
 
   return async (req, res, _next) => {
     absoluteUrl.attach(req)
@@ -49,15 +48,18 @@ const factory = async (trifid) => {
     }
 
     const content = await render(view, {
-      // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
-      endpointUrl: new URL(endpoint, req.absoluteUrl()).href,
+      // just forward all the config as a string
+      graphExplorerConfig: JSON.stringify({
+        // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
+        endpointUrl: new URL(endpoint, req.absoluteUrl()).href,
 
-      // all other configured options
-      acceptBlankNodes,
-      dataLabelProperty,
-      schemaLabelProperty,
-      language,
-      languages,
+        // all other configured options
+        acceptBlankNodes,
+        dataLabelProperty,
+        schemaLabelProperty,
+        language,
+        languages
+      }).replace(/'/g, "\\'"),
 
       // good practice: forward locals to templates
       locals: res.locals
