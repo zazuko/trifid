@@ -2,3 +2,5 @@
 .github
 node_modules
 test
+coverage/
+*.tgz
