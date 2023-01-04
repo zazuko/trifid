@@ -1,7 +1,7 @@
 import absoluteUrl from 'absolute-url'
 import express from 'express'
 import path, { dirname } from 'path'
-import url, { fileURLToPath } from 'url'
+import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -34,10 +34,11 @@ const createMiddleWare = (config, render) => {
     absoluteUrl.attach(req)
 
     // Create an absolute URL if a relative URL is provided
-    options.url = (new url.URL(options.url, req.absoluteUrl())).toString()
+    options.url = (new URL(options.url || '/query', req.absoluteUrl())).toString()
 
     res.send(await render(config.template, {
-      options: JSON.stringify(options)
+      options: JSON.stringify(options),
+      locals: res.locals
     }, {
       title: 'SPEX'
     }))
