@@ -70,7 +70,9 @@ const factory = async (trifid) => {
       'application/n-triples',
       'text/n3',
       'text/turtle',
-      'application/rdf+xml']
+      'application/rdf+xml'
+    ]
+
     if (!hijackFormats.includes(mimeType)) {
       return readable.pipe(writable)
     }

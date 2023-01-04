@@ -8,8 +8,8 @@
     "example-instance": "node ./examples/run-instance.js",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "dev-integration-test": "start-server-and-test example-instance http://0.0.0.0:3000 cy:open",
-    "integration-test": "start-server-and-test example-instance http://0.0.0.0:3000 cy:run",
+    "dev-integration-test": "start-server-and-test --expect 200 example-instance http://0.0.0.0:3000 cy:open",
+    "integration-test": "start-server-and-test --expect 200 example-instance http://0.0.0.0:3000 cy:run",
     "test": "standard && npm run integration-test"
   },
   "repository": {
@@ -23,22 +23,22 @@
   },
   "homepage": "https://github.com/zazuko/trifid-renderer-entity#readme",
   "dependencies": {
-    "@lit-labs/ssr": "^2.2.3",
+    "@lit-labs/ssr": "^2.3.0",
     "@rdfjs/formats-common": "^3.1.0",
-    "@rdfjs/to-ntriples": "github:rdfjs/to-ntriples",
+    "@rdfjs/to-ntriples": "^2.0.0",
     "express": "^4.18.2",
     "hijackresponse": "^5.0.0",
     "p-queue": "^7.3.0",
     "rdf-entity-webcomponent": "^0.6.7",
     "rdf-ext": "^2.1.0",
-    "sparql-http-client": "^2.4.1"
+    "sparql-http-client": "^2.4.2"
   },
   "devDependencies": {
-    "cypress": "^11.2.0",
+    "cypress": "^12.3.0",
     "n3": "^1.16.3",
     "standard": "^17.0.0",
-    "start-server-and-test": "^1.14.0",
-    "trifid-core": "^2.1.1",
+    "start-server-and-test": "^1.15.2",
+    "trifid-core": "^2.3.3",
     "trifid-handler-fetch": "^2.0.1"
   },
   "files": [
