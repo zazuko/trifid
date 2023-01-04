@@ -84,7 +84,8 @@ const factory = async (trifid) => {
     try {
       const data = await renderer(req, { dataset })
       const view = await render(entityTemplatePath, {
-        dataset: data
+        dataset: data,
+        locals: res.locals
       })
       contentToForward = view
       res.setHeader('Content-Type', 'text/html')
