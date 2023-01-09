@@ -75,7 +75,9 @@ const factory = async (trifid) => {
       'application/n-triples',
       'text/n3',
       'text/turtle',
-      'application/rdf+xml']
+      'application/rdf+xml'
+    ]
+
     if (!hijackFormats.includes(mimeType)) {
       return readable.pipe(writable)
     }
@@ -89,7 +91,8 @@ const factory = async (trifid) => {
       const metadata = await metadataRenderer(req, { dataset })
       const view = await render(entityTemplatePath, {
         dataset: entity,
-        metadata
+        metadata,
+        locals: res.locals
       })
       contentToForward = view
       res.setHeader('Content-Type', 'text/html')
