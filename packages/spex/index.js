@@ -1,10 +1,12 @@
-const absoluteUrl = require('absolute-url')
-const express = require('express')
-const path = require('path')
-const url = require('url')
+import absoluteUrl from 'absolute-url'
+import express from 'express'
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const defaults = {
-  template: path.join(__dirname, 'views/index.html')
+  template: path.join(__dirname, 'views/index.hbs')
 }
 
 const defaultOptions = {
@@ -16,14 +18,14 @@ const defaultOptions = {
   forceIntrospection: false
 }
 
-function middleware (config) {
+const createMiddleWare = (config, render) => {
   const router = express.Router()
 
   const options = { ...defaultOptions, ...(config.options || {}) }
   config = { ...defaults, ...config, options }
 
   // render index page
-  router.get('/', (req, res) => {
+  router.get('/', async (req, res) => {
     // Enforce trailing slash to ensure that static files are served from the correct URL
     if (!req.originalUrl.endsWith('/')) {
       return res.redirect(req.originalUrl + '/')
@@ -32,23 +34,26 @@ function middleware (config) {
     absoluteUrl.attach(req)
 
     // Create an absolute URL if a relative URL is provided
-    options.url = (new url.URL(options.url, req.absoluteUrl())).toString()
+    options.url = (new URL(options.url || '/query', req.absoluteUrl())).toString()
 
-    res.locals.options = JSON.stringify(options)
-
-    res.render(config.template)
+    res.send(await render(config.template, {
+      options: JSON.stringify(options),
+      locals: res.locals
+    }, {
+      title: 'SPEX'
+    }))
   })
 
   // static files from spex dist folder
-  router.use('/static/', express.static(path.resolve(require.resolve('@zazuko/spex'), '../../dist/')))
-
+  const yasguiPath = new URL('node_modules/@zazuko/spex/dist', import.meta.url).pathname
+  router.use('/static/', express.static(yasguiPath))
   return router
 }
 
-function factory (router, configs) {
-  return this.middleware.mountAll(router, configs, (config) => {
-    return middleware(config)
-  })
+const trifidFactory = (trifid) => {
+  const { config, render } = trifid
+  return createMiddleWare(config, render)
 }
 
-module.exports = factory
+export default trifidFactory
+export { createMiddleWare }
