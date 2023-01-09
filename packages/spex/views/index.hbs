@@ -3,7 +3,6 @@
 </div>
 
 <script type="text/javascript" src="static/spex.umd.min.js"></script>
-<link rel="stylesheet" type="text/css" href="static/spex.css">
 <style type="text/css">
   html,
   body {
@@ -34,8 +33,23 @@
 <script type="text/javascript">
   //<![CDATA[
   window.onload = function () {
-    const options = JSON.parse('{{{ options }}}')
-    window.spex.render('#spex', options)
+    // where to mount the SPEX app (it will be put in a shodow element)
+    const mountPoint = document.createElement("div");
+
+    // create style element in the shadow element to avoid any style conflicts
+    const style = document.createElement("style");
+    style.type = "text/css";
+    style.innerHTML = "@import url('static/spex.css');"
+
+    // create the shadow element and put the style element and the mount point
+    const spexContainer = document.getElementById("spex");
+    const shadowContainer = spexContainer.attachShadow({ mode: "open" });
+    shadowContainer.appendChild(style)
+    shadowContainer.appendChild(mountPoint);
+
+    // render the app with the expected options
+    const options = JSON.parse('{{{ options }}}');
+    window.spex.render(mountPoint, options);
   }
 //]]>
 </script>
