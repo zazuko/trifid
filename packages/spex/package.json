@@ -19,6 +19,10 @@
     "@zazuko/spex": "^0.1.15",
     "absolute-url": "^1.2.2"
   },
+  "files": [
+    "index.js",
+    "views/"
+  ],
   "devDependencies": {
     "c8": "^7.12.0",
     "ejs": "^3.1.8",
