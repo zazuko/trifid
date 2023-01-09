@@ -2,7 +2,7 @@
   "name": "trifid-plugin-spex",
   "description": "Trifid SPEX plugin",
   "type": "module",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid-plugin-spex",
   "repository": {
