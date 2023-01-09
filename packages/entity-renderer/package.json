@@ -8,8 +8,8 @@
     "example-instance": "node ./examples/run-instance.js",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "dev-integration-test": "start-server-and-test --expect 200 example-instance http://0.0.0.0:3000 cy:open",
-    "integration-test": "start-server-and-test --expect 200 example-instance http://0.0.0.0:3000 cy:run",
+    "dev-integration-test": "start-server-and-test example-instance http://0.0.0.0:3000 cy:open",
+    "integration-test": "start-server-and-test example-instance http://0.0.0.0:3000 cy:run",
     "test": "standard && npm run integration-test"
   },
   "repository": {

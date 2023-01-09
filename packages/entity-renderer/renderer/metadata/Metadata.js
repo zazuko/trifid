@@ -7,8 +7,6 @@ function Metadata (dataset, options) {
   const counts = options.showNamedGraphs
     ? namedCounts(dataset)
     : rdf.termMap()
-  console.log('counts', counts, options.showNamedGraphs)
-
   const list = []
   for (const [key, value] of counts.entries()) {
     list.push(html`
