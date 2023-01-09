@@ -28,6 +28,18 @@ describe('trifid-plugin-spex', () => {
   })
 
   describe('middleware', () => {
+    it('should redirect to a version with a trailing slash', async () => {
+      const trifid = createTrifidConfig({
+        endpointUrl: '/test'
+      })
+      const middleware = trifidFactory(trifid)
+
+      const app = express()
+      app.use('/spex', middleware)
+
+      await request(app).get('/spex').expect(302)
+    })
+
     it('can execute', async () => {
       const trifid = createTrifidConfig({
         endpointUrl: '/test'
@@ -38,6 +50,32 @@ describe('trifid-plugin-spex', () => {
       app.use('/spex', middleware)
 
       await request(app).get('/spex/').expect(200)
+    })
+  })
+
+  describe('static assets', () => {
+    it('should be able to provide the static JavaScript file', async () => {
+      const trifid = createTrifidConfig({
+        endpointUrl: '/test'
+      })
+      const middleware = trifidFactory(trifid)
+
+      const app = express()
+      app.use('/spex', middleware)
+
+      await request(app).get('/spex/static/spex.umd.min.js').expect(200)
+    })
+
+    it('should be able to provide the static CSS file', async () => {
+      const trifid = createTrifidConfig({
+        endpointUrl: '/test'
+      })
+      const middleware = trifidFactory(trifid)
+
+      const app = express()
+      app.use('/spex', middleware)
+
+      await request(app).get('/spex/static/spex.css').expect(200)
     })
   })
 })

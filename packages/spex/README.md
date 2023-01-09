@@ -17,7 +17,7 @@ And then add in the `config.yaml` file the following part:
 ```yaml
 middlewares:
   # […] your other middlewares
-  yasgui:
+  spex:
     module: trifid-plugin-spex
     paths: /spex
     config:
