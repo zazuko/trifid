@@ -2,10 +2,10 @@ import {
   render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import rdf from 'rdf-ext'
+import { LabelLoader } from './labels/labelLoader.js'
 import {
   TrifidResourceDescription
 } from './web-component/TrifidResourceDescription.js'
-import { LabelLoader } from './labelLoader.js'
 
 const DEFAULTS = {
   compactMode: true,
@@ -16,8 +16,7 @@ const DEFAULTS = {
   embedNamedNodes: false,
   embedLists: true,
   debug: false,
-  maxLevel: 3,
-  showNamedGraphs: true
+  maxLevel: 3
 }
 
 function toBoolean (val) {
@@ -37,7 +36,7 @@ function toBoolean (val) {
  * @param {*} graph Graph from a handler (JSON object).
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
-function createRenderer ({ options = {} }) {
+function createEntityRenderer ({ options = {} }) {
   return async (req, { dataset }) => {
     const rendererConfig = Object.assign({}, DEFAULTS, options)
 
@@ -70,10 +69,6 @@ function createRenderer ({ options = {} }) {
       rendererConfig.debug = toBoolean(req.query.debug)
     }
 
-    if (req.query.showNamedGraphs !== undefined) {
-      rendererConfig.showNamedGraphs = toBoolean(req.query.showNamedGraphs)
-    }
-
     if (req.query.lang) {
       rendererConfig.preferredLanguages = [
         req.query.lang, ...DEFAULTS.preferredLanguages]
@@ -104,10 +99,6 @@ function createRenderer ({ options = {} }) {
       const endpoint = options.labelLoader.endpointUrl || '/query'
       const endpointUrl = new URL(endpoint, req.absoluteUrl())
 
-      // Add to the metadata
-      rendererConfig.metadata['SPARQL endpoint:'] = rdf.namedNode(
-        `${endpointUrl}`)
-
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl })
       const quadChunks = await labelLoader.tryFetchAll(cf)
@@ -123,4 +114,4 @@ function createRenderer ({ options = {} }) {
   }
 }
 
-export { createRenderer }
+export { createEntityRenderer }

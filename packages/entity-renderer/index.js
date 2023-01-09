@@ -1,9 +1,11 @@
+import rdfFormats from '@rdfjs/formats-common'
 import hijackResponse from 'hijackresponse'
 import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import rdfFormats from '@rdfjs/formats-common'
-import { createRenderer } from './renderer/middleware.js'
+
 import rdf from 'rdf-ext'
+import { fileURLToPath } from 'url'
+import { createEntityRenderer } from './renderer/entity.js'
+import { createMetadataRenderer } from './renderer/metadata.js'
 
 const { parsers } = rdfFormats
 
@@ -19,7 +21,8 @@ const getAcceptHeader = (req) => {
     nt: 'application/n-triples'
   }
 
-  if (Object.hasOwnProperty.call(supportedQueryStringValues, queryStringValue)) {
+  if (Object.hasOwnProperty.call(supportedQueryStringValues,
+    queryStringValue)) {
     return supportedQueryStringValues[queryStringValue]
   }
 
@@ -28,7 +31,9 @@ const getAcceptHeader = (req) => {
 
 const factory = async (trifid) => {
   const { render, logger, config } = trifid
-  const renderer = createRenderer({ options: config })
+  const entityRenderer = createEntityRenderer({ options: config })
+  const metadataRenderer = createMetadataRenderer({ options: config })
+
   const { path, ignorePaths } = config
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
 
@@ -80,9 +85,11 @@ const factory = async (trifid) => {
 
     let contentToForward
     try {
-      const data = await renderer(req, { dataset })
+      const entity = await entityRenderer(req, { dataset })
+      const metadata = await metadataRenderer(req, { dataset })
       const view = await render(entityTemplatePath, {
-        dataset: data
+        dataset: entity,
+        metadata
       })
       contentToForward = view
       res.setHeader('Content-Type', 'text/html')

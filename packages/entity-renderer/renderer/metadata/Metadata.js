@@ -1,38 +1,40 @@
 import { html } from 'lit'
-import { namedCounts } from './counts.js'
-import { renderTerm } from './N3Term.js'
 import rdf from 'rdf-ext'
+import { renderTerm } from '../web-component/N3Term.js'
+import { namedCounts } from './counts.js'
 
 function Metadata (dataset, options) {
   const counts = options.showNamedGraphs
     ? namedCounts(dataset)
     : rdf.termMap()
+  console.log('counts', counts, options.showNamedGraphs)
+
   const list = []
   for (const [key, value] of counts.entries()) {
     list.push(html`
-        <tr>
-            <td>${renderTerm(key)}</td>
-            <td>${renderTerm(value)} quads</td>
-        </tr>`)
+        <div class="metadata-row">
+            <div>${renderTerm(key)}</div>
+            <div>${renderTerm(value)} quads</div>
+        </div>`)
   }
 
   if (options.metadata) {
     for (const [key, value] of Object.entries(options.metadata)) {
       list.push(html`
-          <tr>
-              <td>${renderTerm(key)}</td>
-              <td>${renderTerm(value)}</td>
-          </tr>`)
+          <div class="metadata-row">
+              <div>${renderTerm(key)}</div>
+              <div>${renderTerm(value)}</div>
+          </div>`)
     }
   }
 
   if (list.length) {
     return html`
         <div class="metadata">
-            <h3>Metadata</h3>
-            <table>
+            <div class="metadata-title">Metadata</div>
+            <div class="metadata-table">
                 ${list}
-            </table>
+            </div>
         </div>
     `
   } else {
