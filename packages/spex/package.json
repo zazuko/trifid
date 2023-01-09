@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@zazuko/spex": "^0.1.15",
-    "absolute-url": "^1.2.2"
+    "absolute-url": "^1.2.2",
+    "import-meta-resolve": "^2.2.1"
   },
   "files": [
     "index.js",

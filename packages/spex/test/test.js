@@ -19,9 +19,9 @@ describe('trifid-plugin-spex', () => {
       assert.strictEqual(typeof trifidFactory, 'function')
     })
 
-    it('should create a middleware with factory and default options', () => {
+    it('should create a middleware with factory and default options', async () => {
       const trifid = createTrifidConfig({})
-      const middleware = trifidFactory(trifid)
+      const middleware = await trifidFactory(trifid)
 
       assert.strictEqual(typeof middleware, 'function')
     })
@@ -32,7 +32,7 @@ describe('trifid-plugin-spex', () => {
       const trifid = createTrifidConfig({
         endpointUrl: '/test'
       })
-      const middleware = trifidFactory(trifid)
+      const middleware = await trifidFactory(trifid)
 
       const app = express()
       app.use('/spex', middleware)
@@ -44,7 +44,7 @@ describe('trifid-plugin-spex', () => {
       const trifid = createTrifidConfig({
         endpointUrl: '/test'
       })
-      const middleware = trifidFactory(trifid)
+      const middleware = await trifidFactory(trifid)
 
       const app = express()
       app.use('/spex', middleware)
@@ -58,7 +58,7 @@ describe('trifid-plugin-spex', () => {
       const trifid = createTrifidConfig({
         endpointUrl: '/test'
       })
-      const middleware = trifidFactory(trifid)
+      const middleware = await trifidFactory(trifid)
 
       const app = express()
       app.use('/spex', middleware)
@@ -70,7 +70,7 @@ describe('trifid-plugin-spex', () => {
       const trifid = createTrifidConfig({
         endpointUrl: '/test'
       })
-      const middleware = trifidFactory(trifid)
+      const middleware = await trifidFactory(trifid)
 
       const app = express()
       app.use('/spex', middleware)

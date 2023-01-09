@@ -1,4 +1,5 @@
 import absoluteUrl from 'absolute-url'
+import { resolve } from 'import-meta-resolve'
 import express from 'express'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -18,7 +19,7 @@ const defaultOptions = {
   forceIntrospection: false
 }
 
-const createMiddleWare = (config, render) => {
+const createMiddleWare = async (config, render) => {
   const router = express.Router()
 
   const options = { ...defaultOptions, ...(config || {}) }
@@ -45,14 +46,14 @@ const createMiddleWare = (config, render) => {
   })
 
   // static files from spex dist folder
-  const yasguiPath = new URL('node_modules/@zazuko/spex/dist', import.meta.url).pathname
-  router.use('/static/', express.static(yasguiPath))
+  const distPath = await resolve('@zazuko/spex/dist', import.meta.url)
+  router.use('/static/', express.static(distPath.replace(/^file:\/\//, '')))
   return router
 }
 
-const trifidFactory = (trifid) => {
+const trifidFactory = async (trifid) => {
   const { config, render } = trifid
-  return createMiddleWare(config, render)
+  return await createMiddleWare(config, render)
 }
 
 export default trifidFactory
