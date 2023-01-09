@@ -21,7 +21,7 @@ const defaultOptions = {
 const createMiddleWare = (config, render) => {
   const router = express.Router()
 
-  const options = { ...defaultOptions, ...(config.options || {}) }
+  const options = { ...defaultOptions, ...(config || {}) }
   config = { ...defaults, ...config, options }
 
   // render index page
