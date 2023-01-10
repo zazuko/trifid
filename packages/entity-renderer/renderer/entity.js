@@ -112,7 +112,7 @@ function createEntityRenderer ({ options = {} }) {
     const stringIterator = renderWebComponent(resourceWebComponent)
     const entityHtml = Array.from(stringIterator).join('')
 
-    const entityLabel = getLabel(cf, rendererConfig)?.string
+    const entityLabel = cf.term ? getLabel(cf, rendererConfig)?.string : ''
 
     return {
       entityHtml,
