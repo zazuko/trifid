@@ -1,8 +1,4 @@
-import {
-  render as renderWebComponent
-} from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
-import rdf from 'rdf-ext'
-import { Metadata } from './metadata/Metadata.js'
+import { getNamedGraphsCounts } from './metadata/namedGraphs.js'
 
 const DEFAULTS = {
   showNamedGraphs: true
@@ -19,13 +15,9 @@ function toBoolean (val) {
 }
 
 /**
- * Render HTML.
- *
- * @param {*} req Express request.
- * @param {*} graph Graph from a handler (JSON object).
- * @returns {function(*, *): Promise<string>} Rendered output as string.
+ * Provides a JSON object with metadata to be exposed in the UI
  */
-function createMetadataRenderer ({ options = {} }) {
+function createMetadataProvider ({ options = {} }) {
   return async (req, { dataset }) => {
     const metadataConfig = { ...DEFAULTS, ...options }
 
@@ -33,21 +25,21 @@ function createMetadataRenderer ({ options = {} }) {
       metadataConfig.showNamedGraphs = toBoolean(req.query.showNamedGraphs)
     }
 
-    metadataConfig.metadata = {}
+    const metadata = {}
+
+    if (metadataConfig.showNamedGraphs) {
+      metadata.namedGraphs = getNamedGraphsCounts(dataset)
+    }
 
     // Add endpoint to the metadata
     if (metadataConfig.labelLoader) {
       const endpoint = metadataConfig.labelLoader.endpointUrl || '/query'
       const endpointUrl = new URL(endpoint, req.absoluteUrl())
-      metadataConfig.metadata['SPARQL endpoint:'] = rdf.namedNode(
-        `${endpointUrl}`)
+      metadata.endpoint = `${endpointUrl}`
     }
 
-    const metadata = Metadata(dataset, metadataConfig)
-    const stringIterator = renderWebComponent(metadata)
-
-    return Array.from(stringIterator).join('')
+    return metadata
   }
 }
 
-export { createMetadataRenderer }
+export { createMetadataProvider }

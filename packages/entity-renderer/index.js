@@ -5,7 +5,7 @@ import { dirname } from 'path'
 import rdf from 'rdf-ext'
 import { fileURLToPath } from 'url'
 import { createEntityRenderer } from './renderer/entity.js'
-import { createMetadataRenderer } from './renderer/metadata.js'
+import { createMetadataProvider } from './renderer/metadata.js'
 
 const { parsers } = rdfFormats
 
@@ -32,7 +32,7 @@ const getAcceptHeader = (req) => {
 const factory = async (trifid) => {
   const { render, logger, config } = trifid
   const entityRenderer = createEntityRenderer({ options: config })
-  const metadataRenderer = createMetadataRenderer({ options: config })
+  const metadataProvider = createMetadataProvider({ options: config })
 
   const { path, ignorePaths } = config
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
@@ -87,14 +87,14 @@ const factory = async (trifid) => {
 
     let contentToForward
     try {
-      const entity = await entityRenderer(req, { dataset })
-      const metadata = await metadataRenderer(req, { dataset })
-      const view = await render(entityTemplatePath, {
-        dataset: entity,
-        metadata,
-        locals: res.locals
+      const { entityHtml, entityLabel } = await entityRenderer(req, { dataset })
+      const metadata = await metadataProvider(req, { dataset })
+      contentToForward = await render(entityTemplatePath, {
+        dataset: entityHtml,
+        locals: res.locals,
+        entityLabel,
+        metadata
       })
-      contentToForward = view
       res.setHeader('Content-Type', 'text/html')
     } catch (e) {
       logger.error(e)

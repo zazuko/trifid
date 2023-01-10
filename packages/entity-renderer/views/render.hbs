@@ -78,13 +78,14 @@
         flex-direction: column;
         border: 1px solid var(--border);
     }
+
     .main-header {
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 15px;
     }
 
-    .main-header h2{
+    .main-header h2 {
         margin-top: 15px;
         margin-bottom: 15px;
         font-size: 32px;
@@ -208,9 +209,11 @@
         max-width: 100%;
     }
 
+    /*Metadata CSS*/
+
     .metadata {
         display: table;
-        border: #666666 solid 1px;
+        border: #cac9c9 solid 1px;
         margin-top: 20px;
         margin-left: auto;
         margin-right: auto;
@@ -232,7 +235,7 @@
 
     .metadata-row > div {
         display: table-cell;
-        padding: 10px;
+        padding: 5px;
     }
 
 
@@ -240,7 +243,23 @@
 
 <div class="trifid-content">
     <div class="container">
+        <meta property="dc:title" content="{{entityLabel}}"/>
+
         {{{ dataset }}}
-        {{{ metadata }}}
+
+        {{#if  metadata.namedGraphs}}
+            <div class="metadata">
+                <div class="metadata-title">Named graphs</div>
+                <div class="metadata-table">
+                    {{#each metadata.namedGraphs}}
+                        <div class="metadata-row">
+                            <div>{{this.namedGraphLabel}}</div>
+                            <div>{{this.quadsCount}}</div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+
     </div>
 </div>

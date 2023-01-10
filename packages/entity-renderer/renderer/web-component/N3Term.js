@@ -1,11 +1,6 @@
-import { html } from 'lit'
 import toNT from '@rdfjs/to-ntriples'
-import { splitIfVocab } from 'rdf-entity-webcomponent/src/builder/utils.js'
-
-function shrink (urlStr) {
-  const { vocab, string } = splitIfVocab(urlStr)
-  return vocab ? `${vocab}:${string}` : `${string}`
-}
+import { html } from 'lit'
+import { shrink } from '../common/shrink.js'
 
 function renderTerm (term) {
   if (term.termType === 'NamedNode') {
@@ -23,4 +18,4 @@ function renderTerm (term) {
   return html`${term}`
 }
 
-export { renderTerm }
+export { renderTerm, shrink }

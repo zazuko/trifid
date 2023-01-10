@@ -1,6 +1,7 @@
 import {
   render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
+import { getLabel } from 'rdf-entity-webcomponent/src/builder/labels.js'
 import rdf from 'rdf-ext'
 import { LabelLoader } from './labels/labelLoader.js'
 import {
@@ -109,8 +110,14 @@ function createEntityRenderer ({ options = {} }) {
 
     const resourceWebComponent = TrifidResourceDescription(cf, rendererConfig)
     const stringIterator = renderWebComponent(resourceWebComponent)
+    const entityHtml = Array.from(stringIterator).join('')
 
-    return Array.from(stringIterator).join('')
+    const entityLabel = getLabel(cf, rendererConfig)?.string
+
+    return {
+      entityHtml,
+      entityLabel
+    }
   }
 }
 
