@@ -1,12 +1,12 @@
 import { html } from 'lit'
-import { Debug } from './Debug.js'
 import { EntityList } from 'rdf-entity-webcomponent'
+import { Debug } from './Debug.js'
 
 function TrifidResourceDescription ({ dataset, term }, options) {
   const debug = options.debug ? Debug(dataset) : html``
   return html`
       <div>
-          ${EntityList({ dataset, terms: [term] }, options)}
+          ${EntityList({ dataset, terms: term ? [term] : [] }, options)}
           ${debug}
       </div>
   `
