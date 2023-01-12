@@ -1,15 +1,15 @@
 import {
-  render as renderWebComponent,
+  render as renderWebComponent
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
 import {
-  DEFAULT_LABEL_PROPERTIES,
+  DEFAULT_LABEL_PROPERTIES
 } from 'rdf-entity-webcomponent/src/builder/entityBuilder.js'
 import { getLabel } from 'rdf-entity-webcomponent/src/builder/labels.js'
 import { ns } from 'rdf-entity-webcomponent/src/namespaces.js'
 import rdf from 'rdf-ext'
 import { LabelLoader } from './labels/labelLoader.js'
 import {
-  TrifidResourceDescription,
+  TrifidResourceDescription
 } from './web-component/TrifidResourceDescription.js'
 
 const DEFAULTS = {
@@ -24,7 +24,7 @@ const DEFAULTS = {
   embedNamedNodes: false,
   embedLists: true,
   debug: false,
-  maxLevel: 3,
+  maxLevel: 3
 }
 
 function toBoolean (val) {
