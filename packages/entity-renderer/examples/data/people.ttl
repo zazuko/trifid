@@ -23,8 +23,9 @@ adams:gomez foaf:name "Gomez Addams" ;
             adams:hasPartner adams:morticia ;
             adams:hasBrother adams:uncle ;
             adams:hasChild adams:pugsley, adams:wednesday ;
-            rdfs:label "Gomez Addams" ;
+            rdfs:label "Gomez Addamz" ;
             adams:lives_at [
+                        a schema:PostalAddress ;
                         rdfs:label "Address" ;
                         adams:street "Cemetery Lane" ;
                         adams:number "001" ;

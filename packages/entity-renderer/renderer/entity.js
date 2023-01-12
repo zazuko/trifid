@@ -1,23 +1,30 @@
 import {
-  render as renderWebComponent
+  render as renderWebComponent,
 } from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
+import {
+  DEFAULT_LABEL_PROPERTIES,
+} from 'rdf-entity-webcomponent/src/builder/entityBuilder.js'
 import { getLabel } from 'rdf-entity-webcomponent/src/builder/labels.js'
+import { ns } from 'rdf-entity-webcomponent/src/namespaces.js'
 import rdf from 'rdf-ext'
 import { LabelLoader } from './labels/labelLoader.js'
 import {
-  TrifidResourceDescription
+  TrifidResourceDescription,
 } from './web-component/TrifidResourceDescription.js'
 
 const DEFAULTS = {
   compactMode: true,
   technicalCues: true,
+  simplifiedMode: false,
+  showImages: true,
+  labelProperties: DEFAULT_LABEL_PROPERTIES,
   preferredLanguages: ['en', 'fr', 'de', 'it'],
   highlightLanguage: 'en',
   embedBlankNodes: true,
   embedNamedNodes: false,
   embedLists: true,
   debug: false,
-  maxLevel: 3
+  maxLevel: 3,
 }
 
 function toBoolean (val) {
@@ -39,13 +46,9 @@ function toBoolean (val) {
  */
 function createEntityRenderer ({ options = {} }) {
   return async (req, { dataset }) => {
-    const rendererConfig = Object.assign({}, DEFAULTS, options)
+    const rendererConfig = { ...DEFAULTS, ...options }
 
     // Honor parameters in the request
-    if (req.query.compactMode !== undefined) {
-      rendererConfig.compactMode = toBoolean(req.query.compactMode)
-    }
-
     if (req.query.technicalCues !== undefined) {
       rendererConfig.technicalCues = toBoolean(req.query.technicalCues)
     }
@@ -83,10 +86,25 @@ function createEntityRenderer ({ options = {} }) {
       rendererConfig.highlightLanguage = rendererConfig.preferredLanguages[0]
     }
 
+    if (req.query.compactMode !== undefined) {
+      rendererConfig.compactMode = toBoolean(req.query.compactMode)
+    }
+
     if (rendererConfig.compactMode !== undefined) {
       rendererConfig.groupValuesByProperty = rendererConfig.compactMode
       rendererConfig.groupPropertiesByValue = rendererConfig.compactMode
     }
+
+    if (req.query.simplifiedMode !== undefined) {
+      rendererConfig.simplifiedMode = toBoolean(req.query.simplifiedMode)
+    }
+
+    if (rendererConfig.simplifiedMode) {
+      rendererConfig.ignoreProperties = rdf.termSet(
+        [ns.rdf.type, ...DEFAULT_LABEL_PROPERTIES])
+    }
+
+    // rendererConfig.showImages = true
 
     const term = rdf.namedNode(req.iri)
     const foundQuad = [...dataset].find(quad => quad.subject.equals(term))
@@ -112,11 +130,13 @@ function createEntityRenderer ({ options = {} }) {
     const stringIterator = renderWebComponent(resourceWebComponent)
     const entityHtml = Array.from(stringIterator).join('')
 
-    const entityLabel = cf.term ? getLabel(cf, rendererConfig)?.string : ''
+    const entityLabel = cf.term ? getLabel(cf, rendererConfig)?.value : ''
+    const entityUrl = cf.term?.value
 
     return {
       entityHtml,
-      entityLabel
+      entityLabel,
+      entityUrl
     }
   }
 }

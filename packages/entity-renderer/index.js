@@ -87,12 +87,13 @@ const factory = async (trifid) => {
 
     let contentToForward
     try {
-      const { entityHtml, entityLabel } = await entityRenderer(req, { dataset })
+      const { entityHtml, entityLabel, entityUrl } = await entityRenderer(req, { dataset })
       const metadata = await metadataProvider(req, { dataset })
       contentToForward = await render(entityTemplatePath, {
         dataset: entityHtml,
         locals: res.locals,
         entityLabel,
+        entityUrl,
         metadata
       })
       res.setHeader('Content-Type', 'text/html')
