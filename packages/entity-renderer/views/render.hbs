@@ -3,20 +3,19 @@
     @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
     body {
-        --color-primary: #ffb15e;
-        --color-primary-light: #ffe38d;
-        --color-secondary: #ff441c;
-        --color-secondary-dark: #c30000;
-        --color-text-on-primary: #000000;
-        --color-text-on-secondary: #000000;
-        --color-black: #000000;
-        --color-grey: #4f4f4f;
-        --color-white: #ffffff;
-        --color-darker-white: #fcfcfc;
-        --color-light-grey: #e5e5e5;
-
         --border: #d1d1d1;
         --metadata: #4f4f4f;
+        --color-black: #000000;
+        /*--color-primary: #ffb15e;*/
+        /*--color-primary-light: #ffe38d;*/
+        /*--color-secondary: #ff441c;*/
+        /*--color-secondary-dark: #c30000;*/
+        /*--color-text-on-primary: #000000;*/
+        /*--color-text-on-secondary: #000000;*/
+        /*--color-grey: #4f4f4f;*/
+        /*--color-white: #ffffff;*/
+        /*--color-darker-white: #fcfcfc;*/
+        /*--color-light-grey: #e5e5e5;*/
         font-family: "Roboto Thin", serif;
     }
 
@@ -67,6 +66,7 @@
 
     /*Entity renderer CSS*/
 
+
     .entities {
         display: flex;
         flex-direction: column;
@@ -86,10 +86,12 @@
         flex-direction: column;
     }
 
+    /* Alternate highlighting */
     .rows > :nth-child(1n) {
         border-top: 1px solid var(--border);
     }
 
+    /* Alternate highlighting */
     .rows > :nth-child(2n) {
         border-top: 1px solid var(--border);
         background: rgba(0, 0, 0, 0.01);
@@ -101,9 +103,7 @@
         justify-content: space-around;
     }
 
-    /* Properties */
-
-    .row > :nth-child(1) {
+    .row > .property {
         align-self: flex-start;
         width: 35%;
         word-break: break-all;
@@ -114,8 +114,7 @@
     }
 
     /* Values */
-
-    .row > :nth-child(2) {
+    .row > .value {
         wrap-option: wrap;
         width: 65%;
         word-break: break-all;
@@ -142,9 +141,8 @@
         padding-left: 5px;
     }
 
-    div .bringDown {
+    div .bring-down {
         color: var(--metadata);
-        font-size: 0.7rem;
     }
 
     .vocab {
@@ -168,18 +166,6 @@
         margin-left: 4px;
     }
 
-    .BlankNode {
-
-    }
-
-    .BlankNode a {
-        color: var(--metadata);
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-    }
-
     .img-container {
         margin-left: auto;
         margin-right: auto;
@@ -190,9 +176,6 @@
     }
 
     /* Header CSS */
-
-
-
 
     .main-header {
 
@@ -247,7 +230,6 @@
         padding: 5px;
     }
 
-
 </style>
 
 <div class="trifid-content">
@@ -255,15 +237,15 @@
         <meta property="dc:title" content="{{entityLabel}}"/>
 
         {{#if entityLabel}}
-        <div class="main-header">
-            <h2>{{entityLabel}}</h2>
-            <a href="{{entityUrl}}">{{entityUrl}}</a>
-        </div>
+            <div class="main-header">
+                <h2>{{entityLabel}}</h2>
+                <a href="{{entityUrl}}">{{entityUrl}}</a>
+            </div>
         {{/if}}
 
         {{{ dataset }}}
 
-        {{#if  metadata.namedGraphs}}
+        {{#if metadata.namedGraphs}}
             <div class="metadata">
                 <div class="metadata-title">Named graphs</div>
                 <div class="metadata-table">
