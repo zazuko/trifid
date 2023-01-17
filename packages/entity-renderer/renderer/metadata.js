@@ -31,13 +31,6 @@ function createMetadataProvider ({ options = {} }) {
       metadata.namedGraphs = getNamedGraphsCounts(dataset)
     }
 
-    // Add endpoint to the metadata
-    if (metadataConfig.labelLoader) {
-      const endpoint = metadataConfig.labelLoader.endpointUrl || '/query'
-      const endpointUrl = new URL(endpoint, req.absoluteUrl())
-      metadata.endpoint = `${endpointUrl}`
-    }
-
     return metadata
   }
 }

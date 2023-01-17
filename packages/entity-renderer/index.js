@@ -51,7 +51,7 @@ const factory = async (trifid) => {
       return next()
     }
 
-    // update "Accept" HTTP header depending of the requested type
+    // update "Accept" HTTP header depending on the requested type
     req.headers.accept = getAcceptHeader(req)
 
     // only take care of the rendering if HTML is requested
@@ -94,7 +94,8 @@ const factory = async (trifid) => {
         locals: res.locals,
         entityLabel,
         entityUrl,
-        metadata
+        metadata,
+        config
       })
       res.setHeader('Content-Type', 'text/html')
     } catch (e) {
