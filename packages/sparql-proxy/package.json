@@ -23,6 +23,6 @@
     "standard": "^17.0.0"
   },
   "dependencies": {
-    "@zazuko/sparql-proxy": "^2.4.2"
+    "@zazuko/sparql-proxy": "^2.5.0"
   }
 }
