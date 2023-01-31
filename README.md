@@ -1,8 +1,6 @@
 # Zazuko Trifid - Lightweight Linked Data Server and Proxy
 <img src="https://cdn.rawgit.com/zazuko/trifid/master/logo.svg" width="140px" height="140px" align="right" alt="Trifid-ld Logo"/>
 
-[![Join the chat at https://gitter.im/zazuko/trifid](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazuko/trifid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Trifid provides a lightweight and easy way to access Linked Data URIs via HTTP.
 In the Linked Data world this is often called [dereferencing](http://en.wikipedia.org/wiki/Dereferenceable_Uniform_Resource_Identifier).
 Trifid is inspired by [Pubby](https://www.w3.org/2001/sw/wiki/Pubby) and written in (server side) JavaScript.
