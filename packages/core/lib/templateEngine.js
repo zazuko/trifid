@@ -12,6 +12,7 @@ const defaultConfig = {
     header: `${currentDir}/../views/partials/header.hbs`,
     footer: `${currentDir}/../views/partials/footer.hbs`
   },
+  partials: {},
   title: 'Trifid',
   scripts: [],
   styles: [],
@@ -45,6 +46,14 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
   if (!templateOptions?.files?.main) {
     throw new Error("no 'main' template was defined")
   }
+
+  // register all partials
+  Object.entries(templateOptions.partials).map(async (t) => {
+    const partialName = t[0]
+    const partialPath = t[1]
+    const resolvedPartial = await resolveTemplate(partialPath)
+    Handlebars.registerPartial(partialName, resolvedPartial)
+  })
 
   const templates = Object.fromEntries(
     await Promise.all(
