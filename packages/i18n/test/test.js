@@ -1,12 +1,12 @@
 import { strictEqual } from 'assert'
-import path, { resolve } from 'path'
+import { dirname, resolve } from 'path'
 import { fileURLToPath, URL } from 'url'
 import fetch from 'nodeify-fetch'
 import { describe, it } from 'mocha'
 import withServer from './support/withServer.js'
-import trifidPluginI18n from '../index.js'
+import { middleware as trifidPluginI18n } from '../index.js'
 
-const dirname = path.dirname(fileURLToPath(import.meta.url))
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
 describe('trifid-plugin-i18n', () => {
   it('should be a function', () => {
@@ -14,11 +14,11 @@ describe('trifid-plugin-i18n', () => {
   })
 
   it('should add the .t method to to res to translate a string', async () => {
-    await withServer(async server => {
+    await withServer(async (server) => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(dirname, 'support/locales')
+        directory: resolve(currentDir, 'support/locales')
       })
 
       let t = null
@@ -37,11 +37,11 @@ describe('trifid-plugin-i18n', () => {
   })
 
   it('should translate the string in the default language', async () => {
-    await withServer(async server => {
+    await withServer(async (server) => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(dirname, 'support/locales')
+        directory: resolve(currentDir, 'support/locales')
       })
 
       server.app.get('/', (_req, res) => {
@@ -56,11 +56,11 @@ describe('trifid-plugin-i18n', () => {
   })
 
   it('should translate the string in the language given as query parameter', async () => {
-    await withServer(async server => {
+    await withServer(async (server) => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(dirname, 'support/locales')
+        directory: resolve(currentDir, 'support/locales')
       })
 
       server.app.get('/', (_req, res) => {
@@ -77,11 +77,11 @@ describe('trifid-plugin-i18n', () => {
   })
 
   it('should translate the string in the language given as cookie', async () => {
-    await withServer(async server => {
+    await withServer(async (server) => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(dirname, 'support/locales')
+        directory: resolve(currentDir, 'support/locales')
       })
 
       server.app.get('/', (_req, res) => {
@@ -100,11 +100,11 @@ describe('trifid-plugin-i18n', () => {
   })
 
   it('should send a cookie if the language changed', async () => {
-    await withServer(async server => {
+    await withServer(async (server) => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(dirname, 'support/locales')
+        directory: resolve(currentDir, 'support/locales')
       })
 
       const baseUrl = new URL(await server.listen())

@@ -14,7 +14,7 @@ const defaults = {
   cookieMaxAge: 30 * 24 * 60 * 60 * 1000
 }
 
-function init (router, config) {
+export const middleware = (router, config) => {
   config = { ...defaults, ...config }
 
   i18nConfigure(config)
@@ -28,4 +28,15 @@ function init (router, config) {
   })
 }
 
-export default init
+const factory = (trifid) => {
+  const { server, config } = trifid
+
+  // Force user to define the `directory` parameter
+  if (!config.directory || typeof config.directory !== 'string') {
+    throw new Error("The 'directory' configuration field should be defined string for the i18n plugin.")
+  }
+
+  return middleware(server, config)
+}
+
+export default factory
