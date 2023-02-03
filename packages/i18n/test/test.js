@@ -1,10 +1,10 @@
-import { strictEqual } from 'assert'
+import { strictEqual, throws } from 'assert'
 import { dirname, resolve } from 'path'
 import { fileURLToPath, URL } from 'url'
 import fetch from 'nodeify-fetch'
 import { describe, it } from 'mocha'
 import withServer from './support/withServer.js'
-import { middleware as trifidPluginI18n } from '../index.js'
+import factory, { middleware as trifidPluginI18n } from '../index.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -105,6 +105,44 @@ describe('trifid-plugin-i18n', () => {
         locales: ['en', 'de'],
         defaultLocale: 'en',
         directory: resolve(currentDir, 'support/locales')
+      })
+
+      const baseUrl = new URL(await server.listen())
+      baseUrl.searchParams.append('lang', 'de')
+
+      const res = await fetch(baseUrl)
+
+      strictEqual(res.headers.get('set-cookie').startsWith('i18n=de'), true)
+    })
+  })
+})
+
+describe('Trifid factory', () => {
+  it('should be a function', () => {
+    strictEqual(typeof factory, 'function')
+  })
+
+  it('should throw if no directory is defined', async () => {
+    await withServer(async (server) => {
+      throws(() => factory({
+        server: server.app,
+        config: {
+          locales: ['en', 'de'],
+          defaultLocale: 'en'
+        }
+      }))
+    })
+  })
+
+  it('should work as expected', async () => {
+    await withServer(async (server) => {
+      factory({
+        server: server.app,
+        config: {
+          locales: ['en', 'de'],
+          defaultLocale: 'en',
+          directory: resolve(currentDir, 'support/locales')
+        }
       })
 
       const baseUrl = new URL(await server.listen())

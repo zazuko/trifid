@@ -33,7 +33,7 @@ const factory = (trifid) => {
 
   // Force user to define the `directory` parameter
   if (!config.directory || typeof config.directory !== 'string') {
-    throw new Error("The 'directory' configuration field should be defined string for the i18n plugin.")
+    throw new Error("The 'directory' configuration field should be a non-empty string.")
   }
 
   return middleware(server, config)
