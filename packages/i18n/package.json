@@ -1,6 +1,6 @@
 {
   "name": "trifid-plugin-i18n",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0",
   "description": "Trifid plugin for i18n support",
   "type": "module",
   "main": "index.js",
