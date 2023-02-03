@@ -22,7 +22,17 @@ const defaultConfig = {
 }
 
 const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
-  Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+  /**
+   * Register a new helper.
+   *
+   * @param {string} name Name of the helper.
+   * @param {Function} fn Helper function.
+   */
+  const registerHelper = (name, fn) => {
+    Handlebars.registerHelper(name, fn)
+  }
+
+  registerHelper('ifEquals', (arg1, arg2, options) => {
     return (arg1 === arg2) ? options.fn(this) : options.inverse(this)
   })
 
@@ -69,7 +79,7 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
    * @param {string} templatePath Handlebars template path.
    * @param {Record<string, any>} context Context for the rendered view.
    * @param {Record<string, any>} options Options to pass for the main view.
-   * @returns {string} The rendered view
+   * @returns {string} The rendered view.
    */
   const render = async (templatePath, context, options = {}) => {
     const template = await resolveTemplate(templatePath)
@@ -87,7 +97,7 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
     })
   }
 
-  return render
+  return { render, registerHelper }
 }
 
 export default templateEngine

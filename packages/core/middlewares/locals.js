@@ -16,13 +16,13 @@ const factory = (trifid) => {
 
     // export language information for other middlewares
     res.locals.defaultLanguage = defaultLanguage
-    res.locals.currentLanguage = req?.cookies?.lang || defaultLanguage
+    res.locals.currentLanguage = req?.cookies?.i18n || defaultLanguage
 
     // update langage by setting `lang` query parameter
     const lang = req.query.lang
     if (lang && supportedLanguages.includes(lang)) {
       logger.debug(`set default language to '${lang}'`)
-      res.cookie('lang', lang, { maxAge: oneMonthMilliseconds })
+      res.cookie('i18n', lang, { maxAge: oneMonthMilliseconds })
       res.locals.currentLanguage = lang
     }
 
