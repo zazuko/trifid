@@ -1,5 +1,7 @@
-const i18n = require('i18n')
-const cookieParser = require('cookie-parser')
+import cookieParser from 'cookie-parser'
+import i18n from 'i18n'
+
+const { configure: i18nConfigure, init: i18nInit } = i18n
 
 const defaults = {
   cookie: 'i18n',
@@ -15,9 +17,9 @@ const defaults = {
 function init (router, config) {
   config = { ...defaults, ...config }
 
-  i18n.configure(config)
+  i18nConfigure(config)
 
-  router.use(cookieParser(), i18n.init, (req, res, next) => {
+  router.use(cookieParser(), i18nInit, (req, res, next) => {
     if (req.cookies.i18n !== res.locals.locale) {
       res.cookie(config.cookie, res.locals.locale, { maxAge: config.cookieMaxAge })
     }
@@ -26,4 +28,4 @@ function init (router, config) {
   })
 }
 
-module.exports = init
+export default init

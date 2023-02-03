@@ -1,10 +1,12 @@
-const { strictEqual } = require('assert')
-const { resolve } = require('path')
-const { URL } = require('url')
-const fetch = require('nodeify-fetch')
-const { describe, it } = require('mocha')
-const withServer = require('./support/withServer')
-const trifidPluginI18n = require('..')
+import { strictEqual } from 'assert'
+import path, { resolve } from 'path'
+import { fileURLToPath, URL } from 'url'
+import fetch from 'nodeify-fetch'
+import { describe, it } from 'mocha'
+import withServer from './support/withServer.js'
+import trifidPluginI18n from '../index.js'
+
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('trifid-plugin-i18n', () => {
   it('should be a function', () => {
@@ -16,12 +18,12 @@ describe('trifid-plugin-i18n', () => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(__dirname, 'support/locales')
+        directory: resolve(dirname, 'support/locales')
       })
 
       let t = null
 
-      server.app.get('/', (req, res, next) => {
+      server.app.get('/', (_req, res, next) => {
         t = res.t
 
         next()
@@ -39,10 +41,10 @@ describe('trifid-plugin-i18n', () => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(__dirname, 'support/locales')
+        directory: resolve(dirname, 'support/locales')
       })
 
-      server.app.get('/', (req, res) => {
+      server.app.get('/', (_req, res) => {
         res.end(`${res.t('test')}`)
       })
 
@@ -58,10 +60,10 @@ describe('trifid-plugin-i18n', () => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(__dirname, 'support/locales')
+        directory: resolve(dirname, 'support/locales')
       })
 
-      server.app.get('/', (req, res) => {
+      server.app.get('/', (_req, res) => {
         res.end(`${res.t('test')}`)
       })
 
@@ -79,10 +81,10 @@ describe('trifid-plugin-i18n', () => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(__dirname, 'support/locales')
+        directory: resolve(dirname, 'support/locales')
       })
 
-      server.app.get('/', (req, res) => {
+      server.app.get('/', (_req, res) => {
         res.end(`${res.t('test')}`)
       })
 
@@ -102,7 +104,7 @@ describe('trifid-plugin-i18n', () => {
       trifidPluginI18n(server.app, {
         locales: ['en', 'de'],
         defaultLocale: 'en',
-        directory: resolve(__dirname, 'support/locales')
+        directory: resolve(dirname, 'support/locales')
       })
 
       const baseUrl = new URL(await server.listen())
