@@ -34,14 +34,28 @@ export const middleware = (config) => {
 }
 
 const factory = (trifid) => {
-  const { config } = trifid
+  const { config, registerHelper } = trifid
 
   // Force user to define the `directory` parameter
   if (!config.directory || typeof config.directory !== 'string') {
     throw new Error("The 'directory' configuration field should be a non-empty string.")
   }
 
-  return middleware(config)
+  // Use the middleware
+  trifid.server.use(middleware(config))
+
+  // Register the 'i18n' helper for the template engine
+  return (_req, res, next) => {
+    registerHelper('i18n', (value) => {
+      if (!res.locals.t || typeof res.locals.t !== 'function') {
+        return value
+      }
+
+      return res.locals.t(value)
+    })
+
+    next()
+  }
 }
 
 export default factory
