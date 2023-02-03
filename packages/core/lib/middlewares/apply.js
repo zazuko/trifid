@@ -20,7 +20,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
     const loadedMiddleware = await module({
       config: merge({}, globals, config),
       server,
-      middlewareLogger,
+      logger: middlewareLogger,
       render,
       registerHelper
     })
