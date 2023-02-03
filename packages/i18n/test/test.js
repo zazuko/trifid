@@ -15,11 +15,12 @@ describe('trifid-plugin-i18n', () => {
 
   it('should add the .t method to to res to translate a string', async () => {
     await withServer(async (server) => {
-      trifidPluginI18n(server.app, {
+      const middleware = trifidPluginI18n({
         locales: ['en', 'de'],
         defaultLocale: 'en',
         directory: resolve(currentDir, 'support/locales')
       })
+      server.app.use(middleware)
 
       let t = null
 
@@ -38,11 +39,12 @@ describe('trifid-plugin-i18n', () => {
 
   it('should translate the string in the default language', async () => {
     await withServer(async (server) => {
-      trifidPluginI18n(server.app, {
+      const middleware = trifidPluginI18n({
         locales: ['en', 'de'],
         defaultLocale: 'en',
         directory: resolve(currentDir, 'support/locales')
       })
+      server.app.use(middleware)
 
       server.app.get('/', (_req, res) => {
         res.end(`${res.t('test')}`)
@@ -57,11 +59,12 @@ describe('trifid-plugin-i18n', () => {
 
   it('should translate the string in the language given as query parameter', async () => {
     await withServer(async (server) => {
-      trifidPluginI18n(server.app, {
+      const middleware = trifidPluginI18n({
         locales: ['en', 'de'],
         defaultLocale: 'en',
         directory: resolve(currentDir, 'support/locales')
       })
+      server.app.use(middleware)
 
       server.app.get('/', (_req, res) => {
         res.end(`${res.t('test')}`)
@@ -78,11 +81,12 @@ describe('trifid-plugin-i18n', () => {
 
   it('should translate the string in the language given as cookie', async () => {
     await withServer(async (server) => {
-      trifidPluginI18n(server.app, {
+      const middleware = trifidPluginI18n({
         locales: ['en', 'de'],
         defaultLocale: 'en',
         directory: resolve(currentDir, 'support/locales')
       })
+      server.app.use(middleware)
 
       server.app.get('/', (_req, res) => {
         res.end(`${res.t('test')}`)
@@ -101,11 +105,12 @@ describe('trifid-plugin-i18n', () => {
 
   it('should send a cookie if the language changed', async () => {
     await withServer(async (server) => {
-      trifidPluginI18n(server.app, {
+      const middleware = trifidPluginI18n({
         locales: ['en', 'de'],
         defaultLocale: 'en',
         directory: resolve(currentDir, 'support/locales')
       })
+      server.app.use(middleware)
 
       const baseUrl = new URL(await server.listen())
       baseUrl.searchParams.append('lang', 'de')
@@ -125,7 +130,6 @@ describe('Trifid factory', () => {
   it('should throw if no directory is defined', async () => {
     await withServer(async (server) => {
       throws(() => factory({
-        server: server.app,
         config: {
           locales: ['en', 'de'],
           defaultLocale: 'en'
@@ -136,14 +140,14 @@ describe('Trifid factory', () => {
 
   it('should work as expected', async () => {
     await withServer(async (server) => {
-      factory({
-        server: server.app,
+      const middleware = factory({
         config: {
           locales: ['en', 'de'],
           defaultLocale: 'en',
           directory: resolve(currentDir, 'support/locales')
         }
       })
+      server.app.use(middleware)
 
       const baseUrl = new URL(await server.listen())
       baseUrl.searchParams.append('lang', 'de')
