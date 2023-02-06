@@ -41,8 +41,7 @@ const factory = async (trifid) => {
   let ignoredPaths = ignorePaths
   if (!ignorePaths || !Array.isArray(ignorePaths)) {
     ignoredPaths = [
-      '/query'
-    ]
+      '/query']
   }
 
   return async (req, res, next) => {
@@ -60,6 +59,8 @@ const factory = async (trifid) => {
       return next()
     }
 
+    req.headers.accept = 'application/n-quads'
+
     const { readable, writable } = await hijackResponse(res, next)
 
     const contentType = res.getHeader('Content-Type')
@@ -75,8 +76,7 @@ const factory = async (trifid) => {
       'application/n-triples',
       'text/n3',
       'text/turtle',
-      'application/rdf+xml'
-    ]
+      'application/rdf+xml']
 
     if (!hijackFormats.includes(mimeType)) {
       return readable.pipe(writable)
@@ -87,7 +87,8 @@ const factory = async (trifid) => {
 
     let contentToForward
     try {
-      const { entityHtml, entityLabel, entityUrl } = await entityRenderer(req, { dataset })
+      const { entityHtml, entityLabel, entityUrl } = await entityRenderer(req,
+        { dataset })
       const metadata = await metadataProvider(req, { dataset })
       contentToForward = await render(entityTemplatePath, {
         dataset: entityHtml,
