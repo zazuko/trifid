@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-renderer-entity",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "type": "module",
   "description": "Renders a RDF entity in Trifid",
   "main": "index.js",
