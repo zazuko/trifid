@@ -34,7 +34,7 @@ export const middleware = (config) => {
 }
 
 const factory = (trifid) => {
-  const { config, registerHelper } = trifid
+  const { config, registerTemplateHelper } = trifid
 
   // Force user to define the `directory` parameter
   if (!config.directory || typeof config.directory !== 'string') {
@@ -46,7 +46,7 @@ const factory = (trifid) => {
 
   // Register the 'i18n' helper for the template engine
   return (_req, res, next) => {
-    registerHelper('i18n', (value) => {
+    registerTemplateHelper('i18n', (value) => {
       if (!res.locals.t || typeof res.locals.t !== 'function') {
         return value
       }

@@ -141,7 +141,7 @@ describe('Trifid factory', () => {
   it('should work as expected', async () => {
     await withServer(async (server) => {
       const middleware = factory({
-        registerHelper: (_name, _fn) => { },
+        registerTemplateHelper: (_name, _fn) => { },
         server: server.app,
         config: {
           locales: ['en', 'de'],
