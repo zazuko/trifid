@@ -22,7 +22,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
       server,
       logger: middlewareLogger,
       render,
-      registerHelper
+      registerTemplateHelper: registerHelper
     })
 
     // default path is '/' (see: https://github.com/expressjs/express/blob/d854c43ea177d1faeea56189249fff8c24a764bd/lib/router/index.js#L425)
