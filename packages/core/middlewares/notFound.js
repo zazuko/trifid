@@ -11,12 +11,13 @@ const factory = (trifid) => {
 
     res.status(404)
 
-    const accepts = req.accepts(['text/plain', 'json', 'html'])
+    const accepts = req.accepts(['text/plain', 'json', 'html', 'application/n-quads'])
     switch (accepts) {
       case 'json':
         res.send({ success: false, message: 'Not found', status: 404 })
         break
 
+      case 'application/n-quads':
       case 'html':
         res.send(await render(`${currentDir}/../views/404.hbs`, {
           url: req.url,
