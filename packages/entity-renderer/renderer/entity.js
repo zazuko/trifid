@@ -45,7 +45,7 @@ function toBoolean (val) {
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
 function createEntityRenderer ({ options = {} }) {
-  return async (req, { dataset }) => {
+  return async (req, res, { dataset }) => {
     const rendererConfig = { ...DEFAULTS, ...options }
 
     // Honor parameters in the request
@@ -116,7 +116,8 @@ function createEntityRenderer ({ options = {} }) {
     // If a labelLoader is configured, try to fetch the labels
     if (options.labelLoader) {
       const endpoint = options.labelLoader.endpointUrl || '/query'
-      const endpointUrl = new URL(endpoint, req.absoluteUrl())
+      const absoluteUrl = res.locals.camouflageRewriteOriginalUrl || req.absoluteUrl()
+      const endpointUrl = new URL(endpoint, absoluteUrl)
 
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl })
