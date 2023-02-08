@@ -78,13 +78,8 @@ function createEntityRenderer ({ options = {}, logger }) {
         req.query.lang, ...DEFAULTS.preferredLanguages]
     }
 
-    if (req.query.highlightLanguage !== undefined) {
-      rendererConfig.highlightLanguage = req.query.highlightLanguage
-    }
-
-    if (!rendererConfig.highlightLanguage) {
-      rendererConfig.highlightLanguage = rendererConfig.preferredLanguages[0]
-    }
+    rendererConfig.highlightLanguage = req.query.highlightLanguage ??
+      res.locals.currentLanguage ?? rendererConfig.preferredLanguages[0]
 
     if (req.query.compactMode !== undefined) {
       rendererConfig.compactMode = toBoolean(req.query.compactMode)
@@ -109,6 +104,8 @@ function createEntityRenderer ({ options = {}, logger }) {
 
     const term = rdf.namedNode(entityRoot)
     logger?.debug(`Entity root: ${entityRoot}`)
+    // logger?.debug(
+    //   `Effective renderer config: ${JSON.stringify(rendererConfig, null, 2)}`)
     const foundQuad = [...dataset].find(quad => quad.subject.equals(term))
     const cf = rdf.clownface({ dataset, term: foundQuad ? term : undefined })
 
@@ -118,14 +115,16 @@ function createEntityRenderer ({ options = {}, logger }) {
     // If a labelLoader is configured, try to fetch the labels
     if (options.labelLoader) {
       const endpoint = options.labelLoader.endpointUrl || '/query'
-      const absoluteUrl = res.locals.camouflageRewriteOriginalUrl || req.absoluteUrl()
+      const absoluteUrl = res.locals.camouflageRewriteOriginalUrl ||
+        req.absoluteUrl()
       const endpointUrl = new URL(endpoint, absoluteUrl)
 
       const labelLoader = new LabelLoader(
         { ...options.labelLoader, endpointUrl, logger })
       const quadChunks = await labelLoader.tryFetchAll(cf)
       const labelQuads = quadChunks.filter(notNull => notNull).flat()
-      logger?.debug(`Got ${labelQuads.length} new labels from endpointUrl:${endpointUrl}`)
+      logger?.debug(
+        `Got ${labelQuads.length} new labels from endpointUrl:${endpointUrl}`)
       externalLabels.dataset.addAll(labelQuads)
     }
     rendererConfig.externalLabels = externalLabels
@@ -139,9 +138,7 @@ function createEntityRenderer ({ options = {}, logger }) {
     logger?.debug(`Label for term: ${cf.term?.value}: ${entityLabel}`)
 
     return {
-      entityHtml,
-      entityLabel,
-      entityUrl
+      entityHtml, entityLabel, entityUrl
     }
   }
 }
