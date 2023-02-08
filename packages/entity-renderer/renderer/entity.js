@@ -105,8 +105,10 @@ function createEntityRenderer ({ options = {}, logger }) {
     }
 
     // rendererConfig.showImages = true
+    const entityRoot = res.locals?.camouflageRewriteOriginalUrl ?? req.iri
 
-    const term = rdf.namedNode(req.iri)
+    const term = rdf.namedNode(entityRoot)
+    logger?.debug(`Entity root: ${entityRoot}`)
     const foundQuad = [...dataset].find(quad => quad.subject.equals(term))
     const cf = rdf.clownface({ dataset, term: foundQuad ? term : undefined })
 
@@ -134,6 +136,7 @@ function createEntityRenderer ({ options = {}, logger }) {
 
     const entityLabel = cf.term ? getLabel(cf, rendererConfig)?.value : ''
     const entityUrl = cf.term?.value
+    logger?.debug(`Label for term: ${cf.term?.value}: ${entityLabel}`)
 
     return {
       entityHtml,
