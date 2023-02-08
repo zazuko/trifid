@@ -21,6 +21,13 @@ const factory = (trifid) => {
     rewriteContentValue = rewriteContent
   }
 
+  // skip rewriting if the `datasetBaseUrl` is empty
+  if (!datasetBaseUrl) {
+    return (_req, _res, next) => {
+      next()
+    }
+  }
+
   return camouflageRewrite({
     ...config,
     url: datasetBaseUrl,
