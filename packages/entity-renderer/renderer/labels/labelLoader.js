@@ -21,14 +21,14 @@ class LabelLoader {
       concurrency,
       timeout,
       authentication,
-      logger,
+      logger
     } = options
     if (!endpointUrl) {
       throw Error('requires a endpointUrl')
     }
 
     const clientOptions = {
-      endpointUrl,
+      endpointUrl
     }
     if (authentication?.user) {
       clientOptions.user = authentication.user
@@ -41,7 +41,7 @@ class LabelLoader {
     this.labelNamespaces = labelNamespace ? [labelNamespace] : labelNamespaces
     this.chunkSize = chunkSize || 30
     this.queue = new PQueue({
-      concurrency: concurrency || 2, timeout: timeout || 1000,
+      concurrency: concurrency || 2, timeout: timeout || 1000
     })
     this.logger = logger
   }
