@@ -7,7 +7,10 @@ import trifid from 'trifid-core'
 
 const program = new Command()
 
-program.option('-c, --config <path>', 'configuration file', 'config.yaml')
+const defaultConfigurationFile = process.env.TRIFID_CONFIG ?? 'config.yaml'
+
+program
+  .option('-c, --config <path>', 'configuration file', defaultConfigurationFile)
   .option('-p, --port <port>', 'listener port', parseInt)
   .parse(process.argv)
 

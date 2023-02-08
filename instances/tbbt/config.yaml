@@ -9,6 +9,13 @@ middlewares:
   rewrite:
     module: trifid-core/middlewares/rewrite.js
 
+  welcome:
+    module: trifid-core/middlewares/view.js
+    paths: /
+    methods: GET
+    config:
+      path: file:welcome.hbs
+
   entity-renderer:
     module: "@zazuko/trifid-renderer-entity"
 
