@@ -1,8 +1,0 @@
-{
-  "baseConfig": "trifid:config-base.json",
-  "handler": {
-    "root": {
-      "module": "trifid-handler-fetch"
-    }
-  }
-}
