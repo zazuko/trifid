@@ -13,24 +13,19 @@ ENV SPARQL_PROXY_CACHE_CLEAR_AT_STARTUP="false"
 ENV FETCH_HANDLER_FILE="https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt"
 ENV FETCH_HANDLER_FILE_TYPE="application/n-triples"
 
-WORKDIR /app
-
 # use tini for PID1
 # https://github.com/krallin/tini
 RUN apk add --no-cache tini
 
+# run as node user
+USER 1000:1000
+WORKDIR /app
+
 # copy package.json and install dependencies
 COPY package.json ./
 COPY .npmrc ./
-RUN npm install --omit=dev
+RUN npm install --omit=dev && npm cache clean --force
 COPY . .
-RUN ln -s /app/server.js /usr/local/bin/trifid
-
-# set permissions to directory
-RUN chown -R 1000:1000 /app
-
-# run as node user
-USER 1000:1000
 
 ENTRYPOINT ["tini", "--", "/app/server.js"]
 
