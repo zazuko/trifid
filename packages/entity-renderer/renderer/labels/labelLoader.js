@@ -20,14 +20,15 @@ class LabelLoader {
       chunkSize,
       concurrency,
       timeout,
-      authentication
+      authentication,
+      logger,
     } = options
     if (!endpointUrl) {
       throw Error('requires a endpointUrl')
     }
 
     const clientOptions = {
-      endpointUrl
+      endpointUrl,
     }
     if (authentication?.user) {
       clientOptions.user = authentication.user
@@ -40,8 +41,9 @@ class LabelLoader {
     this.labelNamespaces = labelNamespace ? [labelNamespace] : labelNamespaces
     this.chunkSize = chunkSize || 30
     this.queue = new PQueue({
-      concurrency: concurrency || 2, timeout: timeout || 1000
+      concurrency: concurrency || 2, timeout: timeout || 1000,
     })
+    this.logger = logger
   }
 
   labelFilter (pointer, term) {
@@ -84,6 +86,7 @@ class LabelLoader {
 
   async fetchLabels (iris) {
     const uris = iris.map(x => `<${x.value}> `).join(' ')
+    this.logger?.debug(`Fetching labels for terms without label: ${uris}`)
     return await this.client.query.construct(`
 PREFIX schema: <http://schema.org/>
 

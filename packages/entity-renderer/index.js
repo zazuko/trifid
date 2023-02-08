@@ -31,7 +31,7 @@ const getAcceptHeader = (req) => {
 
 const factory = async (trifid) => {
   const { render, logger, config } = trifid
-  const entityRenderer = createEntityRenderer({ options: config })
+  const entityRenderer = createEntityRenderer({ options: config, logger })
   const metadataProvider = createMetadataProvider({ options: config })
 
   const { path, ignorePaths } = config

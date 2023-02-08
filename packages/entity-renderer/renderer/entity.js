@@ -44,7 +44,7 @@ function toBoolean (val) {
  * @param {*} graph Graph from a handler (JSON object).
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
-function createEntityRenderer ({ options = {} }) {
+function createEntityRenderer ({ options = {}, logger }) {
   return async (req, res, { dataset }) => {
     const rendererConfig = { ...DEFAULTS, ...options }
 
@@ -120,9 +120,10 @@ function createEntityRenderer ({ options = {} }) {
       const endpointUrl = new URL(endpoint, absoluteUrl)
 
       const labelLoader = new LabelLoader(
-        { ...options.labelLoader, endpointUrl })
+        { ...options.labelLoader, endpointUrl, logger })
       const quadChunks = await labelLoader.tryFetchAll(cf)
       const labelQuads = quadChunks.filter(notNull => notNull).flat()
+      logger?.debug(`Got ${labelQuads.length} new labels from endpointUrl:${endpointUrl}`)
       externalLabels.dataset.addAll(labelQuads)
     }
     rendererConfig.externalLabels = externalLabels
