@@ -1,24 +1,31 @@
-FROM docker.io/library/node:16-alpine
+FROM docker.io/library/node:18-alpine
 
 EXPOSE 8080
 
-ENV TRIFID_CONFIG="config-docker.json"
+# configure some default values
+ENV TRIFID_CONFIG="instances/docker-sparql/config.yaml"
+ENV SPARQL_ENDPOINT_USERNAME="public"
+ENV SPARQL_ENDPOINT_PASSWORD="public"
+ENV SPARQL_PROXY_CACHE_PREFIX="default"
+ENV SPARQL_PROXY_CACHE_CLEAR_AT_STARTUP="false"
 
-WORKDIR /app
+# some default values for the 'docker-fetch' instance
+ENV FETCH_HANDLER_FILE="https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt"
+ENV FETCH_HANDLER_FILE_TYPE="application/n-triples"
 
 # use tini for PID1
 # https://github.com/krallin/tini
 RUN apk add --no-cache tini
 
+# run as node user
+USER 1000:1000
+WORKDIR /app
+
 # copy package.json and install dependencies
 COPY package.json ./
 COPY .npmrc ./
-RUN npm install --only=production
+RUN npm install --omit=dev && npm cache clean --force
 COPY . .
-RUN ln -s /app/server.js /usr/local/bin/trifid
-
-# run as nobody
-USER 65534:65534
 
 ENTRYPOINT ["tini", "--", "/app/server.js"]
 

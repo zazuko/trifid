@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export FUSEKI_HOME=/opt/jena-fuseki/
-
-$FUSEKI_HOME/fuseki-server --config=fuseki-config.ttl

@@ -4,6 +4,8 @@
   "version": "2.4.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
+  "type": "module",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/zazuko/trifid.git"
@@ -12,30 +14,26 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "standard"
+    "test": "standard",
+    "help": "node server.js --help",
+    "start:tbbt": "node server.js -c instances/tbbt/config.yaml",
+    "start": "npm run start:tbbt"
   },
   "bin": {
     "trifid": "./server.js"
   },
   "dependencies": {
-    "camouflage-rewrite": "^1.4.0",
-    "commander": "^9.4.1",
-    "compression": "^1.7.4",
-    "debug": "^4.3.4",
-    "format-to-accept": "^1.0.0",
-    "morgan": "^1.10.0",
-    "patch-headers": "^1.1.1",
-    "@zazuko/sparql-proxy": "^2.4.1",
-    "tbbt-ld": "^1.1.0",
-    "trifid-core": "^1.4.0",
-    "trifid-handler-fetch": "^1.3.2",
-    "trifid-handler-sparql": "^1.4.1",
-    "trifid-plugin-cotton-candy": "^1.0.0",
-    "trifid-plugin-hydra-box": "^1.2.0",
-    "trifid-plugin-markdown": "^1.0.0",
-    "trifid-plugin-renderer": "^1.2.0",
-    "trifid-plugin-yasgui": "^1.3.0",
-    "trifid-renderer-simple": "^5.0.1"
+    "@zazuko/trifid-handle-redirects": "^0.1.2",
+    "@zazuko/trifid-plugin-sparql-proxy": "^1.1.0",
+    "@zazuko/trifid-renderer-entity": "^0.4.15",
+    "commander": "^10.0.0",
+    "trifid-core": "^2.5.4",
+    "trifid-handler-fetch": "^2.0.1",
+    "trifid-handler-sparql": "^2.1.1",
+    "trifid-plugin-graph-explorer": "^1.0.2",
+    "trifid-plugin-i18n": "^2.0.1",
+    "trifid-plugin-spex": "^1.0.1",
+    "trifid-plugin-yasgui": "^2.2.1"
   },
   "devDependencies": {
     "standard": "^17.0.0"
