@@ -6,6 +6,9 @@ globals:
   datasetBaseUrl: http://localhost:8080/
 
 middlewares:
+  morgan:
+    module: file:../../middlewares/morgan.js
+
   rewrite:
     module: trifid-core/middlewares/rewrite.js
 
