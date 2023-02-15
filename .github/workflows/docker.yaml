@@ -21,6 +21,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -32,7 +38,7 @@ jobs:
         uses: zazuko/action-docker-meta@main
         id: docker_meta
         with:
-          images: ghcr.io/zazuko/trifid
+          images: ghcr.io/zazuko/trifid,zazuko/trifid
 
       - name: Build and push Docker images
         id: docker_build
