@@ -35,6 +35,7 @@
     "camouflage-rewrite": "^1.5.1",
     "commander": "^10.0.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "handlebars": "^4.7.7",
     "json5": "^2.2.3",

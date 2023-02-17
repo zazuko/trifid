@@ -1,5 +1,6 @@
 import express from 'express'
 import pino from 'pino'
+import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
 import handler from './lib/config/handler.js'
@@ -71,6 +72,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   server.disable('x-powered-by')
 
   // add required middlewares
+  server.use(cors())
   server.use(cookieParser())
 
   // configure Express server
