@@ -12,6 +12,8 @@ const defaultConfigurationFile = process.env.TRIFID_CONFIG ?? 'config.yaml'
 program
   .option('-c, --config <path>', 'configuration file', defaultConfigurationFile)
   .option('-p, --port <port>', 'listener port', parseInt)
+  .option('--sparql-endpoint-url <url>', 'SPARQL endpoint URL')
+  .option('--dataset-base-url <url>', 'the base URL of the dataset to enable rewriting')
   .parse(process.argv)
 
 const opts = program.opts()
@@ -22,6 +24,7 @@ const config = {
   extends: [
     configFile
   ],
+  globals: {},
   server: {
     listener: {}
   }
@@ -30,6 +33,14 @@ const config = {
 // add optional arguments to the configuration
 if (opts.port) {
   config.server.listener.port = opts.port
+}
+if (opts.sparqlEndpointUrl) {
+  config.globals.sparqlEndpoint = {
+    url: opts.sparqlEndpointUrl
+  }
+}
+if (opts.datasetBaseUrl) {
+  config.globals.datasetBaseUrl = opts.datasetBaseUrl
 }
 
 // load the configuration and start the server

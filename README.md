@@ -95,7 +95,6 @@ trifid --sparql-endpoint-url=http://localhost:3030/sparql
 
 The following parameters are available:
 
-- `-v` or `--verbose`: Verbose output will show the actual config after expanding
 - `-c` or `--config`: Expects a path to a config as value, which will be used by Trifid
 - `-p` or `--port`: Expects a port number as value, which will be used by the HTTP listener of Trifid
 - `--sparql-endpoint-url`: Expects a SPARQL HTTP query interface URL value, which will be used by the Trifid SPARQL handler
