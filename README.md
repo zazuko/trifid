@@ -1,57 +1,88 @@
-# Zazuko Trifid - Lightweight Linked Data Server and Proxy
+# Trifid
+
 <img src="https://cdn.rawgit.com/zazuko/trifid/master/logo.svg" width="140px" height="140px" align="right" alt="Trifid-ld Logo"/>
 
-Trifid provides a lightweight and easy way to access Linked Data URIs via HTTP.
-In the Linked Data world this is often called [dereferencing](http://en.wikipedia.org/wiki/Dereferenceable_Uniform_Resource_Identifier).
-Trifid is inspired by [Pubby](https://www.w3.org/2001/sw/wiki/Pubby) and written in (server side) JavaScript.
+## What is Trifid?
 
-### Features
+It's a Web server specialized in Linked Data.
 
-* Provides a Linked Data interface to SPARQL protocol servers
-* Provides a file based interface for testing
-* Provides a customizable HTML renderer with embedded RDF
-* Takes care of content-negotiation
-* Provides a SPARQL proxy and [YASGUI](http://about.yasgui.org/) as web frontend
+The main functionalities of Trifid are:
 
-### Requirements
+### Dereference Linked data entities
 
-* A SPARQL endpoint
-* Or for development some triples in a local file.
+Providing different serializations using content-negotiation of entities in a file or queried using a SPARQL endpoint.
+The serializations include HTML rendering based on customizable templates.
 
-Trifid supports all content-types provided by the SPARQL endpoint and does not do additional format conversion.
+### Using a SPARQL endpoint
 
-### Trifid in the wild
+If a SPARQL endpoint is the source of the RDF data, some additional plugins are enabled by default.
 
-Trifid can be completely themed according to your needs. Example resources using Trifid:
+- SPARQL Proxy: Public access to the configured store.
+- YASGUI: UI to write, execute, and analyze SPARQL queries.
+- Graph Explorer: UI to explore the data in a graph view
+- SPEX: Introspects the data on the endpoint and shows the data model
 
-* Default view: http://lod.opentransportdata.swiss/didok/8500011
-* Customized for one gov entity in Switzerland: https://ld.geo.admin.ch/boundaries/municipality/296
+### Further use
+
+This server can also be extended with plugins, depending on the use case of the deployment.
+[Express](http://expressjs.com/) is used to handle routings and middlewares.
+Any compatible middleware can be added to the configuration.
+
+#### Examples
+
+- [Trifid plugin iiif](https://github.com/zazuko/trifid-plugin-iiif/)
+- [CKAN harvester endpoint](https://github.com/zazuko/trifid-plugin-ckan)
+
+## Who Uses Trifid?
+
+Trifid is open source and meant to work out of the box for data publishers.
+Most users will use only the main features.
+We, or people that dive deeper into the code, maintain and develop instances with additional plugins.
+
+### Installations
+
+Example resources using Trifid:
+
+- Default view: http://lod.opentransportdata.swiss/didok/8500011
+- Customized for one gov entity in Switzerland: https://ld.geo.admin.ch/boundaries/municipality/296
+
+## Trifid objectives
+
+The main [trifid](https://github.com/zazuko/trifid) package provides some default plugins:
+
+- Handlers to read RDF data from the file system and SPARQL endpoints
+- The [handlebars](https://handlebarsjs.com/) template engine
+- A HTML renderer for the RDF data
+- The plugins mentioned [here](#Using a SPARQL endpoint)
+
+## Documentation
+
+- See the [configuration](https://github.com/zazuko/trifid/wiki/Configuration) wiki page for more details on the configuration system.
+- See the [customize-the-templates](https://github.com/zazuko/trifid/wiki/Customize-the-templates) wiki page for more details on the template system.
+
+## Trifid Core
+
+Trifid Core contains the HTTP server component and a configuration system to load plugins.
+Usually, it's not required to use the Trifid Core package.
+The main [trifid](https://github.com/zazuko/trifid) package provides an opinionated setup that works for most use cases.
 
 ## Installation
 
-Trifid is a [Node.js](http://nodejs.org/) based application.
-To install and run it you will need to install [Node.js](http://nodejs.org/) on your system.
+Trifid is a [Node.js](http://nodejs.org/)-based application.
+To install and run it, you will need to install [Node.js](http://nodejs.org/) on your system.
 
-Clone the Github repository and run:
+Install the npm package:
 
 ```sh
-npm install
+npm install -g trifid
 ```
-
-to install all module dependencies.
 
 ## Usage
 
-To start the server execute the following command:
+To start the server, execute the following command:
 
 ```sh
-npm start
-```
-
-The server script is also a command line program which can be called like this:
-
-```
-trifid --config=my-trifid-config.json
+npx trifid
 ```
 
 If you want to run Trifid using a SPARQL endpoint and default settings, you can run it even without a config file:
@@ -64,7 +95,6 @@ trifid --sparql-endpoint-url=http://localhost:3030/sparql
 
 The following parameters are available:
 
-- `-v` or `--verbose`: Verbose output, will show the actual config after expanding
 - `-c` or `--config`: Expects a path to a config as value, which will be used by Trifid
 - `-p` or `--port`: Expects a port number as value, which will be used by the HTTP listener of Trifid
 - `--sparql-endpoint-url`: Expects a SPARQL HTTP query interface URL value, which will be used by the Trifid SPARQL handler
@@ -72,190 +102,51 @@ The following parameters are available:
 
 ## Configuration
 
-Trifid uses JSON configuration files and supports comments in JavaScript style.
+Trifid uses YAML or JSON configuration files.
 One configuration file can use another file as base.
-The `baseConfig` property must point to the other file.
+The `extends` property must point to the other file.
 Values of the base file will be overwritten.
 
 ### Examples
 
 #### Default configuration
 
-The default configuration `config.json` uses the file system handler and a [sample dataset](https://github.com/zazukoians/tbbt-ld) with characters from _The Big Bang Theory_.
-The following command will run it:
+The default configuration uses the file system handler and the [Big Bang Theory dataset](https://github.com/zazukoians/tbbt-ld).
 
-```sh
-npm start
-```
+You will then be able to access its content, e.g. [Amy Farrah Fowler](http://localhost:8080/data/person/amy-farrah-fowler).
 
-You will then be able to access its content, e.g. <http://localhost:8080/data/person/amy-farrah-fowler>.
-
-In a production environment the SPARQL handler may be the better choice.
+In a production environment, the SPARQL handler may be the better choice.
 
 #### SPARQL configuration
 
-For production systems we recommend data access via the [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/) interface.
-`config-sparql.json` can be used as base configuration.
-The following lines defines a configuration using a Fuseki SPARQL endpoint:
+For production systems, we recommend data access via the [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/) interface.
+`instances/docker-sparql/config.yaml` can be used as base configuration.
 
-```json
-{
-  "baseConfig": "trifid:config-sparql.json",
-  "sparqlEndpointUrl": "http://localhost:3030/dataset/sparql"
-}
-```
+##### SPARQL endpoint with self-signed certificate
 
-The `baseConfig` property defines which file should be used as base configuration.
-The `trifid:` prefix prepends the Trifid module path.
-The value of the `sparqlEndpointUrl` property is used in the handler and also the SPARQL proxy.
+Sometimes SPARQL endpoints are running on TLS/SSL but provide an incomplete configuration or a self-signed certificate.
+In that case, one can disable strict certificate checking by setting the environment variable `NODE_TLS_REJECT_UNAUTHORIZED`.
 
-Sometimes SPARQL endpoints are running on TLS/SSL but provide an incomplete configuration or a self-signed certificate. In that case one can disable strict certificate checking by setting the environment variable `NODE_TLS_REJECT_UNAUTHORIZED`. For example:
+For example:
 
 ```sh
-$ export NODE_TLS_REJECT_UNAUTHORIZED=0
+export NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
-
-### Properties
-
-Usually only the following properties must be configured:
-
-- `baseConfig`: Base configuration file for the current configuration file.
-- `sparqlEndpointUrl`: URL of the SPARQL HTTP query interface.
-- `datasetBaseUrl`: If the dataset is stored with a different base URL this property is used to translate the request URL.
-
-The following properties are already defined in the default configurations:
-
-- `listener`: `port` and `host` of the listener.
-- `express`: Express settings as key vale pairs.
-- `patchHeaders`: Settings for the `patch-headers` middleware.
-- `mediaTypeUrl`: Settings for the `format-to-accept` middleware.
-- `rewrite`: Settings for the camouflage-rewrite middleware.
-- `handler`: Settings for the graph handler.
-
-### Prefixes
-
-It is possible to use prefixes in the property values of the configuration.
-These prefixes will be translated to specific paths or environment variable values.
-
-- `cwd`: Prepends the current working directory to the value.
-- `env`: Uses the value of the environment variable with the name matching the value after the prefix.
-  (e.g. `"env:SPARQL_ENDPOINT_URL"` will be replaced with the environment variable value of `$SPARQL_ENDPOINT_URL`)
-- `trifid`: Prepends the Trifid module path to the value.
-
-### Multiple Configurations
-
-Most plugins support multiple configurations to support path or hostname specific configurations.
-These plugins have an additional level in the config with the config name as key and the actual configuration as value.
-Each config can have a `path` property.
-If it's not defined, `/` will be used.
-Also a `hostname` can be specified to use the config only for matching host names.
-The `priority` may be required if multiple configs could match to an URL.
-
-Example:
-
-```json
-"pluginName": {
-  "root": {
-    // "path": "/" will be automatically added if path is not given
-    "priority": 200
-    ...
-  },
-  "otherPath": {
-    "path": "/other/",
-    "priority": 100
-    ...
-  },
-  "otherHostname": {
-    "hostname": "example.org"
-    "priority": 150
-  }
-}
-```
-
-### Static Files
-
-With the `staticFiles` property, folders can be mapped into URL paths for static file hosting.
-This plugin supports multiple configurations.
-The key for a static file hosting can be used to replace values defined in a configuration, which is used as `baseConfig`.
-If the first folder does not contain the requested file, the next folder will be used and so on.
-The `folder` property points to the folder in the file system.
-It's possible to use prefixes in the folder value.
-
-Example:
-
-```json
-"staticFiles": {
-  "rendererFiles": {
-    "hostname": "example.org",
-    "path": "/",
-    "folder": "renderer:public"
-  }
-}
-```
-
-### Handler
-
-The handler plugin supports multiple configurations.
-Properties for the handler configuration:
-
-- `module`: The handler JS file or module.
-- `options`: Handler specific options.
-
-More details about the handler specific options can be found in the documentation of the handlers:
-
-- [Fetch files](https://github.com/zazukoians/trifid-handler-fetch)
-- [SPARQL](https://github.com/zazukoians/trifid-handler-sparql)
-
-### SPARQL Proxy
-
-The SPARQL proxy plugin supports multiple configurations.
-Properties:
-
-- `options`: Options for the SPARQL proxy.
-
-Options:
-
-- `endpointUrl`: URL to the SPARQL HTTP query interface. (default: sparqlEndpointUrl)
-- `authentication`: `user` and `password` for basic authentication.
-
-See `config-virtuoso.json` and `config-stardog.json` for default configuration in case you use either of these stores.
-
-Note that SPARQL is currently not supported by the in-memory store.
-
-### Patch Headers
-
-The patch headers plugin supports multiple configurations.
-See the [patch-headers](https://www.npmjs.com/package/patch-headers) module documentation for more details.
-
-### Rewrite
-
-The rewrite plugin supports multiple configurations.
-See the [camouflage-rewrite](https://www.npmjs.com/package/camouflage-rewrite) module documentation for more details.
-
-Note that this module does _not_ work for most content-types, see the documentation for details. By default it should work for HTML and Turtle. It is merely for testing purposes and should not be active on production.
 
 ## Production Best Practices
 
-Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024). You should use a reverse proxy instead.
+Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024).
+You should use a reverse proxy instead.
 
-### Installing/Using with Docker
+### Using with Docker
 
-Trifid can be installed using Docker. With this method you only need to have Docker installed, see https://docs.docker.com/installation/ for installation instructions for your platform.
-
-Once Docker is installed clone the Github repository and run
-
-```sh
-docker build -t trifid .
-```
-
-This creates an image named `trifid` that you can execute with
+Trifid can be installed using Docker.
+With this method, you only need to have Docker installed.
+See https://docs.docker.com/installation/ for installation instructions for your platform.
 
 ```sh
-docker run --rm -it -p 8080:8080 trifid
+docker run --rm -it -p 8080:8080 ghcr.io/zazuko/trifid
 ```
-
-Once it is started you can access for example http://localhost:8080/data/person/sheldon-cooper .
-An example on using Docker can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
 
 #### Trifid environment variables
 
@@ -267,13 +158,9 @@ You can use the following environment variables:
 - `SPARQL_USER`: the user to use to authenticate against the SPARQL endpoint
 - `SPARQL_PASSWORD`: the password to use to authenticate against the SPARQL endpoint
 
-#### Use the pre built image
+#### Custom build
 
-If you do not want to build your own Docker image, you can pull the official image from the Docker Container Registry:
-
-```sh
-docker pull ghcr.io/zazuko/trifid
-```
+An example of a custom Docker image can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
 
 ### Reverse Proxy
 
@@ -281,9 +168,11 @@ If you run Trifid behind a reverse proxy, the proxy must set the `X-Forwarded-Ho
 
 ## Debugging
 
-This package uses [`debug`](https://www.npmjs.com/package/debug), you can get debug logging via: `DEBUG=trifid:`.
-Trifid plugins should also implement `debug` under the `trifid:` prefix, enabling logging from all packages
-implementing it can be done this way: `DEBUG=trifid:*`.
+The log level can be configured by using the `server.logLevel` property.
+Supported log levels are: `fatal`, `error`, `warn`, `info`, `debug`, `trace` and `silent`.
+
+Some middlewares also uses [`debug`](https://www.npmjs.com/package/debug).
+You can get debug logging via: `DEBUG=trifid:` or `DEBUG=trifid:*`.
 
 ## Support
 
@@ -293,6 +182,6 @@ Pull requests are very welcome.
 
 ## License
 
-Copyright 2015-2019 Zazuko GmbH
+Copyright 2015-2023 Zazuko GmbH
 
 Trifid is licensed under the Apache License, Version 2.0. Please see LICENSE and NOTICE for details.
