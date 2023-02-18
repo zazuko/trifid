@@ -2,8 +2,6 @@
 
 <img src="https://cdn.rawgit.com/zazuko/trifid/master/logo.svg" width="140px" height="140px" align="right" alt="Trifid-ld Logo"/>
 
-[![Join the chat at https://gitter.im/zazuko/trifid](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zazuko/trifid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ## What is Trifid?
 
 It's a Web server specialized in Linked Data.
@@ -45,8 +43,8 @@ We, or people that dive deeper into the code, maintain and develop instances wit
 
 Example resources using Trifid:
 
-* Default view: http://lod.opentransportdata.swiss/didok/8500011
-* Customized for one gov entity in Switzerland: https://ld.geo.admin.ch/boundaries/municipality/296
+- Default view: http://lod.opentransportdata.swiss/didok/8500011
+- Customized for one gov entity in Switzerland: https://ld.geo.admin.ch/boundaries/municipality/296
 
 ## Trifid objectives
 
