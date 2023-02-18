@@ -102,9 +102,9 @@ The following parameters are available:
 
 ## Configuration
 
-Trifid uses JSON configuration files and supports comments in JavaScript style.
+Trifid uses YAML or JSON configuration files.
 One configuration file can use another file as base.
-The `baseConfig` property must point to the other file.
+The `extends` property must point to the other file.
 Values of the base file will be overwritten.
 
 ### Examples
@@ -120,7 +120,7 @@ In a production environment, the SPARQL handler may be the better choice.
 #### SPARQL configuration
 
 For production systems, we recommend data access via the [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/) interface.
-`config-sparql.yaml` can be used as base configuration.
+`instances/docker-sparql/config.yaml` can be used as base configuration.
 
 ##### SPARQL endpoint with self-signed certificate
 
@@ -135,7 +135,8 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 ## Production Best Practices
 
-Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024). You should use a reverse proxy instead.
+Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024).
+You should use a reverse proxy instead.
 
 ### Using with Docker
 
@@ -167,10 +168,11 @@ If you run Trifid behind a reverse proxy, the proxy must set the `X-Forwarded-Ho
 
 ## Debugging
 
-This package uses [`debug`](https://www.npmjs.com/package/debug).
-You can get debug logging via: `DEBUG=trifid:`.
-Trifid plugins should also implement `debug` under the `trifid:` prefix, enabling logging from all packages
-implementing it can be done this way: `DEBUG=trifid:*`.
+The log level can be configured by using the `server.logLevel` property.
+Supported log levels are: `fatal`, `error`, `warn`, `info`, `debug`, `trace` and `silent`.
+
+Some middlewares also uses [`debug`](https://www.npmjs.com/package/debug).
+You can get debug logging via: `DEBUG=trifid:` or `DEBUG=trifid:*`.
 
 ## Support
 
@@ -180,6 +182,6 @@ Pull requests are very welcome.
 
 ## License
 
-Copyright 2015-2019 Zazuko GmbH
+Copyright 2015-2023 Zazuko GmbH
 
 Trifid is licensed under the Apache License, Version 2.0. Please see LICENSE and NOTICE for details.
