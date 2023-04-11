@@ -23,7 +23,15 @@ const createMiddleWare = async (config, render) => {
   const router = express.Router()
 
   const options = { ...defaultOptions, ...(config || {}) }
-  config = { ...defaults, ...config, options }
+  const spexOptions = {
+    sparqlEndpoint: options.url,
+    username: options.user,
+    password: options.password,
+    forceIntrospection: options.forceIntrospection,
+    namedGraph: options.graph,
+    prefixes: options.prefixes
+  }
+  config = { ...defaults, ...config, spexOptions }
 
   // render index page
   router.get('/', async (req, res) => {
@@ -35,10 +43,10 @@ const createMiddleWare = async (config, render) => {
     absoluteUrl.attach(req)
 
     // Create an absolute URL if a relative URL is provided
-    options.url = (new URL(options.url || '/query', req.absoluteUrl())).toString()
+    spexOptions.sparqlEndpoint = (new URL(spexOptions.sparqlEndpoint || '/query', req.absoluteUrl())).toString()
 
     res.send(await render(config.template, {
-      options: JSON.stringify(options),
+      options: JSON.stringify(spexOptions),
       locals: res.locals
     }, {
       title: 'SPEX'
