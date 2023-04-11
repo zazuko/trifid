@@ -28,6 +28,10 @@
 
     overflow: hidden;
   }
+
+  #spex {
+    min-height: 100vh;
+  }
 </style>
 
 <script type="text/javascript">
@@ -50,6 +54,26 @@
     // render the app with the expected options
     const options = JSON.parse('{{{ options }}}');
     window.spex.render(mountPoint, options);
-  }
+    const spexApp = shadowContainer.querySelector('div');
+
+    // render the app with a minimal height
+    spexApp.style.setProperty('position', 'absolute');
+    spexApp.style.setProperty('top', '0');
+    spexApp.style.setProperty('bottom', '0');
+    spexApp.style.setProperty('left', '0');
+    spexApp.style.setProperty('right', '0');
+
+    // specify some values for colors
+    spexApp.style.setProperty('--color-primary-50', '#ffefde');
+    spexApp.style.setProperty('--color-primary-100', '#ffe2c4');
+    spexApp.style.setProperty('--color-primary-200', '#ffca91');
+    spexApp.style.setProperty('--color-primary-300', '#ffb15e');
+    spexApp.style.setProperty('--color-primary-400', '#ff982b');
+    spexApp.style.setProperty('--color-primary-500', '#f77f00');
+    spexApp.style.setProperty('--color-primary-600', '#c46500');
+    spexApp.style.setProperty('--color-primary-700', '#914b00');
+    spexApp.style.setProperty('--color-primary-800', '#5e3000');
+    spexApp.style.setProperty('--color-primary-900', '#2b1600');
+  };
 //]]>
 </script>

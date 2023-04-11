@@ -23,7 +23,7 @@ middlewares:
     config:
       prefixes:
         - prefix: ex
-          url: http://example.org/
+          namespace: http://example.org/
 ```
 
 ## Configuration
@@ -34,4 +34,5 @@ The following options are supported (all of them optional):
 - `user`: User to connect to the SPARQL endpoint
 - `password`: Password to connect to the SPARQL endpoint
 - `graph`: Default graph to display
-- `prefixes`: List of custom prefixes (e.g. `[{ prefix: 'ex', url: 'http://example.org' }]`)
+- `prefixes`: List of custom prefixes (e.g. `[{ prefix: 'ex', namespace: 'http://example.org' }]`)
+- `forceIntrospection`: force introspection
