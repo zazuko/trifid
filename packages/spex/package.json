@@ -14,7 +14,7 @@
     "url": "https://github.com/zazuko/trifid-plugin-spex/issues"
   },
   "scripts": {
-    "test": "standard && mocha",
+    "test": "standard && c8 --reporter=lcov --reporter=text mocha",
     "release": "changeset publish"
   },
   "dependencies": {
