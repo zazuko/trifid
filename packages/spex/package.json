@@ -17,7 +17,7 @@
     "test": "standard && mocha"
   },
   "dependencies": {
-    "@zazuko/spex": "^0.1.15",
+    "@zazuko/spex": "^0.1.19",
     "absolute-url": "^1.2.2",
     "import-meta-resolve": "^2.2.2"
   },
