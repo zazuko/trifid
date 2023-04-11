@@ -19,15 +19,14 @@
   "dependencies": {
     "@zazuko/spex": "^0.1.15",
     "absolute-url": "^1.2.2",
-    "import-meta-resolve": "^2.2.1"
+    "import-meta-resolve": "^2.2.2"
   },
   "files": [
     "index.js",
     "views/"
   ],
   "devDependencies": {
-    "c8": "^7.12.0",
-    "ejs": "^3.1.8",
+    "c8": "^7.13.0",
     "express": "^4.18.2",
     "mocha": "^10.2.0",
     "standard": "^17.0.0",
