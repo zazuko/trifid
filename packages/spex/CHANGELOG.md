@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 1.1.2
+
+### Patch Changes
+
+- bb4119c: Improve style
+
 ## 1.1.1
 
 ### Patch Changes
