@@ -72,7 +72,10 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   server.disable('x-powered-by')
 
   // add required middlewares
-  server.use(cors())
+  server.use(cors({
+    credentials: true,
+    origin: true
+  }))
   server.use(cookieParser())
 
   // configure Express server
