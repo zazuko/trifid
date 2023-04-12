@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 1.1.3
+
+### Patch Changes
+
+- be26d8a: Upgrade @zazuko/spex to 0.1.20
+
 ## 1.1.2
 
 ### Patch Changes
