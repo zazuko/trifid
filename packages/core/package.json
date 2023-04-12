@@ -18,7 +18,8 @@
     "typings": "tsc",
     "clean": "rimraf *.tgz *.d.ts* lib/*.d.ts* lib/**/*.d.ts* middlewares/*.d.ts* middlewares/**/*.d.ts*",
     "prepack": "npm run clean && npm run typings",
-    "postpublish": "npm run clean"
+    "postpublish": "npm run clean",
+    "release": "changeset publish"
   },
   "main": "index.js",
   "types": "./index.d.ts",
@@ -48,6 +49,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
+    "@changesets/cli": "^2.26.1",
     "babel-jest": "^29.4.3",
     "jest": "^29.4.3",
     "nodemon": "^2.0.20",
@@ -62,5 +64,8 @@
       "/node_modules/",
       "/test/"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
