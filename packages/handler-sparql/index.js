@@ -1,9 +1,8 @@
 import debugLib from 'debug'
-import nodeFetch from 'node-fetch'
-import SparqlHttpClient from 'sparql-http-client'
+import ParsingClient from 'sparql-http-client/ParsingClient.js'
+import SimpleClient from 'sparql-http-client/SimpleClient.js'
 
 const debug = debugLib('trifid:handler-sparql')
-SparqlHttpClient.fetch = nodeFetch
 
 const defaults = {
   authentication: false,
@@ -26,7 +25,8 @@ export class SparqlHandler {
     this.resourceGraphQuery = options.resourceGraphQuery
     this.containerExistsQuery = options.containerExistsQuery
     this.containerGraphQuery = options.containerGraphQuery
-    this.client = new SparqlHttpClient({ endpointUrl: options.endpointUrl })
+    this.parsingClient = new ParsingClient({ endpointUrl: options.endpointUrl })
+    this.simpleClient = new SimpleClient({ endpointUrl: options.endpointUrl })
   }
 
   buildQueryOptions () {
@@ -60,29 +60,22 @@ export class SparqlHandler {
   async exists (iri, query) {
     debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
-    const res = await this.client.selectQuery(query, this.buildQueryOptions())
-    const status = res.status
-    if (status !== 200) {
-      return { status, undefined }
+    try {
+      const exists = await this.parsingClient.query.ask(query,
+        this.buildQueryOptions())
+      return { exists, status: 200 }
+    } catch (error) {
+      return { status: error.status }
     }
-    const json = await res.json()
-    const exists = json.boolean
-    return { status, exists }
   }
 
   async graphStream (iri, query, accept) {
     debug('SPARQL query for IRI <' + iri + '> : ' + query)
 
-    const queryOptions = this.buildQueryOptions()
+    const headers = this.buildQueryOptions()
+    headers.accept = accept
 
-    queryOptions.accept = accept
-
-    const res = await this.client.constructQuery(query, queryOptions)
-    if (res.status !== 200) {
-      return { status: res.status }
-    }
-    const headers = {}
-
+    const res = await this.simpleClient.query.construct(query, { headers })
     res.headers.forEach((value, name) => {
       // stream will be decoded by the client -> remove content-encoding header
       if (name === 'content-encoding') {
@@ -111,7 +104,7 @@ export class SparqlHandler {
   async head (_req, res, next, iri) {
     iri = encodeURI(iri)
 
-    debug('handle OPTIONS request for IRI <' + iri + '>')
+    debug('handle HEAD request for IRI <' + iri + '>')
 
     const isContainer = this.resourceNoSlash && iri.endsWith('/')
     const queryExist = isContainer ? this.buildContainerExistsQuery(iri) : this.buildResourceExistsQuery(iri)

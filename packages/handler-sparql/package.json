@@ -19,8 +19,7 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "node-fetch": "^3.3.0",
-    "sparql-http-client": "^1.2.0"
+    "sparql-http-client": "^2.4.2"
   },
   "overrides": {
     "stricter-standard": {
