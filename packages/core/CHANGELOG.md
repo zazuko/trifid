@@ -1,5 +1,14 @@
 # trifid-core
 
+## 2.6.1
+
+### Patch Changes
+
+- 42a309f: Upgrade yaml to 2.2.2
+- 42a309f: Upgrade some dev dependencies
+- 42a309f: Upgrade pino to 8.14.1
+- 42a309f: Upgrade commander to 10.0.1
+
 ## 2.6.0
 
 ### Minor Changes
