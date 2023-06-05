@@ -12,7 +12,7 @@ import ParsingClient from 'sparql-http-client/ParsingClient.js'
  */
 
 class LabelLoader {
-  constructor(options) {
+  constructor (options) {
     const {
       endpointUrl,
       labelNamespace,
