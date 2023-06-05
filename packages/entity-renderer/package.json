@@ -34,11 +34,11 @@
     "sparql-http-client": "^2.4.2"
   },
   "devDependencies": {
-    "cypress": "^12.3.0",
-    "n3": "^1.16.3",
-    "standard": "^17.0.0",
-    "start-server-and-test": "^1.15.2",
-    "trifid-core": "^2.3.3",
+    "cypress": "^12.13.0",
+    "n3": "^1.16.4",
+    "standard": "^17.1.0",
+    "start-server-and-test": "^2.0.0",
+    "trifid-core": "^2.6.1",
     "trifid-handler-fetch": "^2.0.1"
   },
   "files": [
