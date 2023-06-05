@@ -1,4 +1,4 @@
-import { ns } from 'rdf-entity-webcomponent/src/namespaces.js'
+import { ns } from '@zazuko/rdf-entity-webcomponent/src/namespaces.js'
 import rdf from 'rdf-ext'
 import PQueue from 'p-queue'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
@@ -12,7 +12,7 @@ import ParsingClient from 'sparql-http-client/ParsingClient.js'
  */
 
 class LabelLoader {
-  constructor (options) {
+  constructor(options) {
     const {
       endpointUrl,
       labelNamespace,

@@ -1,16 +1,10 @@
-import {
-  render as renderWebComponent
-} from '@lit-labs/ssr/lib/render-with-global-dom-shim.js'
-import {
-  DEFAULT_LABEL_PROPERTIES
-} from 'rdf-entity-webcomponent/src/builder/entityBuilder.js'
-import { getLabel } from 'rdf-entity-webcomponent/src/builder/labels.js'
-import { ns } from 'rdf-entity-webcomponent/src/namespaces.js'
+import { render as renderWebComponent } from '@lit-labs/ssr'
+import { DEFAULT_LABEL_PROPERTIES } from '@zazuko/rdf-entity-webcomponent/src/builder/entityBuilder.js'
+import { getLabel } from '@zazuko/rdf-entity-webcomponent/src/builder/labels.js'
+import { ns } from '@zazuko/rdf-entity-webcomponent/src/namespaces.js'
 import rdf from 'rdf-ext'
 import { LabelLoader } from './labels/labelLoader.js'
-import {
-  TrifidResourceDescription
-} from './web-component/TrifidResourceDescription.js'
+import { TrifidResourceDescription } from './web-component/TrifidResourceDescription.js'
 
 const DEFAULTS = {
   compactMode: true,
