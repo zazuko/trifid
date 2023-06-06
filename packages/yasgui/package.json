@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@openlayers-elements/bundle": "^0.1.0",
-    "@zazuko/yasgui": "^4.2.29",
+    "@zazuko/yasgui": "^4.2.30",
     "express": "^4.18.2",
     "import-meta-resolve": "^2.2.0"
   },
