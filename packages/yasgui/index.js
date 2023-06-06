@@ -13,11 +13,11 @@ const trifidFactory = async (trifid) => {
   const view = !template ? `${currentDir}/views/yasgui.hbs` : template
 
   // serve static files for YASGUI
-  const yasguiPath = await resolve('@zazuko/yasgui/build/', import.meta.url)
+  const yasguiPath = resolve('@zazuko/yasgui/build/', import.meta.url)
   server.use('/yasgui-dist/', express.static(yasguiPath.replace(/^file:\/\//, '')))
 
   // serve static files for openlayers (maps)
-  const olPath = await resolve('@openlayers-elements/bundle/dist/', import.meta.url)
+  const olPath = resolve('@openlayers-elements/bundle/dist/', import.meta.url)
   server.use('/yasgui-ol/', express.static(olPath.replace(/^file:\/\//, '')))
 
   // serve static files for custom plugins
