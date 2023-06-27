@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zazuko/trifid.git",
+    "url": "https://github.com/zazuko/trifid.git",
     "directory": "packages/entity-renderer"
   },
   "author": "Zazuko GmbH",
