@@ -5,7 +5,7 @@
 Install this Trifid plugin using:
 
 ```sh
-npm install @zazuko/trifid-renderer-entity
+npm install @zazuko/trifid-entity-renderer
 ```
 
 And then add in the `config.yaml` file the following part:
@@ -14,7 +14,7 @@ And then add in the `config.yaml` file the following part:
 middlewares:
   # […]
   entity-renderer:
-    module: "@zazuko/trifid-renderer-entity"
+    module: "@zazuko/trifid-entity-renderer"
     config:
       # ignore some specific paths
       ignorePaths:
@@ -23,29 +23,28 @@ middlewares:
 
 ## Define your own css/template
 
-Specify the path where the handlebars template is located
+Specify the path where the handlebars template is located:
 
 ```yaml
 middlewares:
   # […]
   entity-renderer:
-    module: "@zazuko/trifid-renderer-entity"
+    module: "@zazuko/trifid-entity-renderer"
     config:
       path: file:./some-path/your-template.hbs
 ```
 
 ## Rendering options
 
-Under the hood, this plugin uses [rdf-entity-webcomponent](https://github.com/zazuko/rdf-entity-webcomponent), that
-accepts the same configuration options.
+Under the hood, this plugin uses [rdf-entity-webcomponent](https://github.com/zazuko/rdf-entity-webcomponent), that accepts the same configuration options.
 
-Add any of these options under the config section
+Add any of these options under the config section:
 
 ```yaml
 middlewares:
   # […]
   entity-renderer:
-    module: "@zazuko/trifid-renderer-entity"
+    module: "@zazuko/trifid-entity-renderer"
     config:
       compactMode: false
       technicalCues: true
