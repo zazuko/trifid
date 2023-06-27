@@ -93,14 +93,12 @@ class LabelLoader {
 PREFIX schema: <http://schema.org/>
 
 CONSTRUCT {
-      graph ?g {
-        ?uri schema:name ?label .
-      }
-    } where {
-      graph ?g {
-        ?uri schema:name ?label
-        VALUES ?uri { ${uris} }
-      }
+  ?uri schema:name ?label .
+} WHERE {
+  GRAPH ?g {
+    ?uri schema:name ?label
+    VALUES ?uri { ${uris} }
+  }
 }`);
   }
 
