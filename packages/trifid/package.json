@@ -26,7 +26,7 @@
   "dependencies": {
     "@zazuko/trifid-handle-redirects": "^0.1.2",
     "@zazuko/trifid-plugin-sparql-proxy": "^1.1.0",
-    "@zazuko/trifid-renderer-entity": "^0.4.16",
+    "@zazuko/trifid-entity-renderer": "^0.4.17",
     "commander": "^11.0.0",
     "morgan": "^1.10.0",
     "trifid-core": "^2.6.2",
