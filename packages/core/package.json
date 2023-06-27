@@ -55,7 +55,8 @@
     "babel-jest": "^29.5.0",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22",
-    "rimraf": "^5.0.0",
+    "path-scurry": "^1.9.2",
+    "rimraf": "^5.0.1",
     "supertest": "^6.3.3",
     "typescript": "^5.0.4"
   },
