@@ -7,7 +7,8 @@
   "scripts": {
     "lint": "eslint . --quiet --ignore-path .gitignore",
     "test": "npm run test --workspaces",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "prepare": "husky install"
   },
   "workspaces": [
     "packages/*"
