@@ -1,5 +1,11 @@
 # trifid-core
 
+## 2.6.2
+
+### Patch Changes
+
+- 735bf99: Import trifid-core into trifid mono-repo.
+
 ## 2.6.1
 
 ### Patch Changes
