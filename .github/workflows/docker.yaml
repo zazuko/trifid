@@ -2,10 +2,8 @@ name: Build and push Docker image
 
 on:
   push:
-    branches:
-      - "**"
     tags:
-      - "v*.*.*"
+      - "trifid@*.*.*"
 
 jobs:
   docker:
@@ -39,6 +37,7 @@ jobs:
         id: docker_meta
         with:
           images: ghcr.io/zazuko/trifid,zazuko/trifid
+          strip-tag-prefix: "trifid@"
 
       - name: Build and push Docker images
         id: docker_build
