@@ -4,13 +4,14 @@
   "type": "module",
   "version": "2.6.1",
   "license": "MIT",
-  "homepage": "https://github.com/zazuko/trifid-core",
+  "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-core.git"
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/core"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-core/issues"
+    "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
     "test": "standard && node --experimental-vm-modules node_modules/jest/bin/jest.js",
