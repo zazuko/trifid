@@ -8,7 +8,8 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid.git"
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/trifid"
   },
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
