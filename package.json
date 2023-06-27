@@ -1,42 +1,33 @@
 {
-  "name": "trifid",
-  "description": "Trifid - Lightweight Linked Data Server and Proxy",
-  "version": "3.0.0-rc.3",
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/zazuko/trifid",
+  "name": "trifid-root",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Root package to handle all Trifid packages",
   "type": "module",
-  "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zazuko/trifid.git"
-  },
-  "bugs": {
-    "url": "https://github.com/zazuko/trifid/issues"
-  },
   "scripts": {
-    "test": "standard",
-    "help": "node server.js --help",
-    "start:tbbt": "node server.js -c instances/tbbt/config.yaml",
-    "start": "npm run start:tbbt"
+    "lint": "eslint . --quiet --ignore-path .gitignore",
+    "test": "npm run test --workspaces",
+    "release": "changeset publish",
+    "prepare": "husky install"
   },
-  "bin": {
-    "trifid": "./server.js"
+  "workspaces": [
+    "packages/*"
+  ],
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix --quiet"
+    ]
   },
-  "dependencies": {
-    "@zazuko/trifid-handle-redirects": "^0.1.2",
-    "@zazuko/trifid-plugin-sparql-proxy": "^1.1.0",
-    "@zazuko/trifid-renderer-entity": "^0.4.15",
-    "commander": "^10.0.0",
-    "morgan": "^1.10.0",
-    "trifid-core": "^2.5.5",
-    "trifid-handler-fetch": "^2.0.1",
-    "trifid-handler-sparql": "^2.1.1",
-    "trifid-plugin-graph-explorer": "^1.0.2",
-    "trifid-plugin-i18n": "^2.0.1",
-    "trifid-plugin-spex": "^1.0.1",
-    "trifid-plugin-yasgui": "^2.2.1"
+  "engines": {
+    "node": ">=16"
   },
   "devDependencies": {
-    "standard": "^17.0.0"
+    "@changesets/cli": "^2.26.2",
+    "@tpluscode/eslint-config": "^0.4.3",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "2.8.8"
   }
 }

@@ -1,4 +1,4 @@
-import morgan from 'morgan'
+import morgan from "morgan";
 
 /**
  * Log requests.
@@ -12,17 +12,17 @@ import morgan from 'morgan'
  * @returns Express middleware.
  */
 const factory = (trifid) => {
-  const { config } = trifid
-  const format = config.format ?? 'combined'
-  const disabled = `${config.disabled}` === 'true'
+  const { config } = trifid;
+  const format = config.format ?? "combined";
+  const disabled = `${config.disabled}` === "true";
 
   if (disabled) {
     return (_req, _res, next) => {
-      next()
-    }
+      next();
+    };
   }
 
-  return morgan(format)
-}
+  return morgan(format);
+};
 
-export default factory
+export default factory;

@@ -2,10 +2,8 @@ name: Build and push Docker image
 
 on:
   push:
-    branches:
-      - "**"
     tags:
-      - "v*.*.*"
+      - "trifid@*.*.*"
 
 jobs:
   docker:
@@ -39,13 +37,14 @@ jobs:
         id: docker_meta
         with:
           images: ghcr.io/zazuko/trifid,zazuko/trifid
+          strip-tag-prefix: "trifid@"
 
       - name: Build and push Docker images
         id: docker_build
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./packages/trifid
+          file: ./packages/trifid/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
