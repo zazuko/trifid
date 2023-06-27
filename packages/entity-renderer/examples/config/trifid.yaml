@@ -1,0 +1,30 @@
+server:
+  logLevel: debug
+
+middlewares:
+
+  entity-renderer:
+    paths: /
+    module: file:../../index.js
+    config:
+      path: file:../../views/render.hbs
+#      labelLoader:
+#        endpointUrl: https://ld.zazuko.com/query
+#        chunkSize: 30
+#        concurrency: 2
+#        timeout: 1000
+
+  entity-host-web-page:
+    module: trifid-core/middlewares/view.js
+    paths: /
+    methods: GET
+    config:
+      path: file:../views/welcome.hbs
+
+  fetch-handler:
+    module: trifid-handler-fetch
+    config:
+      url: file:../data/people.ttl
+      contentType: application/n-triples
+      split: true
+      cache: true

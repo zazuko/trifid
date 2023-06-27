@@ -1,0 +1,263 @@
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+    body {
+        --border: #d1d1d1;
+        --metadata: #4f4f4f;
+        --color-black: #000000;
+        /*--color-primary: #ffb15e;*/
+        /*--color-primary-light: #ffe38d;*/
+        /*--color-secondary: #ff441c;*/
+        /*--color-secondary-dark: #c30000;*/
+        /*--color-text-on-primary: #000000;*/
+        /*--color-text-on-secondary: #000000;*/
+        /*--color-grey: #4f4f4f;*/
+        /*--color-white: #ffffff;*/
+        /*--color-darker-white: #fcfcfc;*/
+        /*--color-light-grey: #e5e5e5;*/
+        font-family: "Roboto Thin", serif;
+    }
+
+    .navbar-brand {
+        font-size: 24px;
+    }
+
+    .container > .navbar-header,
+    .container-fluid > .navbar-header,
+    .container > .navbar-collapse,
+    .container-fluid > .navbar-collapse {
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .container {
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .navbar-default .navbar-brand {
+        color: #666666;
+    }
+
+    navbar-brand {
+        float: left;
+        padding: 20.5px 15px;
+        font-size: 17px;
+        line-height: 23px;
+        height: 64px;
+    }
+
+    .footer-elements {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-elements .controls {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .footer-elements .bottom {
+        align-self: center;
+    }
+
+    /*Entity renderer CSS*/
+
+
+    .entities {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border-right: 1px solid var(--border);
+    }
+
+    .entity {
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .rows {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Alternate highlighting */
+    .rows > :nth-child(1n) {
+        border-top: 1px solid var(--border);
+    }
+
+    /* Alternate highlighting */
+    .rows > :nth-child(2n) {
+        border-top: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.01);
+    }
+
+    .rows > .row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .row > .property {
+        align-self: flex-start;
+        width: 35%;
+        word-break: break-all;
+        margin-left: 1%;
+        margin-right: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Values */
+    .row > .value {
+        wrap-option: wrap;
+        width: 65%;
+        word-break: break-all;
+        margin-left: 1rem;
+        margin-right: auto;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        gap: 5px;
+        justify-content: center;
+        padding-left: 5px;
+    }
+
+    ol {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: center;
+        padding-left: 5px;
+    }
+
+    div .bring-down {
+        color: var(--metadata);
+    }
+
+    .vocab {
+        color: var(--metadata);
+        font-size: 0.7rem;
+    }
+
+    .vocab::after {
+        content: ':';
+    }
+
+    .language {
+        color: var(--metadata);
+        font-size: 0.7rem;
+        margin-left: 4px;
+    }
+
+    .datatype {
+        color: var(--metadata);
+        font-size: 0.5rem;
+        margin-left: 4px;
+    }
+
+    .img-container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .img-container img {
+        max-width: 200px;
+    }
+
+    /* Header CSS */
+
+    .main-header {
+
+        margin-bottom: 15px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .main-header h2 {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        font-size: 32px;
+        text-align: center;
+    }
+
+    .main-header a {
+        font-size: 18px;
+        color: var(--color-black);
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    /*Metadata CSS*/
+
+    .metadata {
+        display: table;
+        border: #cac9c9 solid 1px;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .metadata-title {
+        display: table-row;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .metadata-table {
+        display: table-row-group;
+    }
+
+    .metadata-row {
+        display: table-row;
+    }
+
+    .metadata-row > div {
+        display: table-cell;
+        padding: 5px;
+    }
+
+</style>
+
+<div class="trifid-content">
+    <div class="container">
+        <meta property="dc:title" content="{{entityLabel}}"/>
+
+        {{#if entityLabel}}
+            <div class="main-header">
+                <h2>{{entityLabel}}</h2>
+                <a href="{{entityUrl}}">{{entityUrl}}</a>
+            </div>
+        {{/if}}
+
+        {{{ dataset }}}
+
+        {{#if metadata.namedGraphs}}
+            <div class="metadata">
+                <div class="metadata-title">Named graphs</div>
+                <div class="metadata-table">
+                    {{#each metadata.namedGraphs}}
+                        <div class="metadata-row">
+                            <div>{{this.namedGraphLabel}}</div>
+                            <div>{{this.quadsCount}}</div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+
+    </div>
+</div>
