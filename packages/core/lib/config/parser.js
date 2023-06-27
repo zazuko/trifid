@@ -1,17 +1,17 @@
-import Ajv from 'ajv'
-import schema from './schema.js'
+import Ajv from "ajv";
+import schema from "./schema.js";
 
-const ajv = new Ajv()
+const ajv = new Ajv();
 
 /**
  * Return the configuration object if it is valid or throw an error in other cases.
  */
 const parser = (data = {}) => {
-  const valid = ajv.validate(schema, data)
+  const valid = ajv.validate(schema, data);
   if (!valid) {
-    throw new Error(ajv.errorsText())
+    throw new Error(ajv.errorsText());
   }
-  return data
-}
+  return data;
+};
 
-export default parser
+export default parser;

@@ -1,25 +1,25 @@
-import fs from 'fs/promises'
-import Handlebars from 'handlebars'
-import merge from 'lodash/merge.js'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import fs from "fs/promises";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import Handlebars from "handlebars";
+import merge from "lodash/merge.js";
 
-const currentDir = dirname(fileURLToPath(import.meta.url))
+const currentDir = dirname(fileURLToPath(import.meta.url));
 
 const defaultConfig = {
   files: {
     main: `${currentDir}/../views/layouts/main.hbs`,
     header: `${currentDir}/../views/partials/header.hbs`,
-    footer: `${currentDir}/../views/partials/footer.hbs`
+    footer: `${currentDir}/../views/partials/footer.hbs`,
   },
   partials: {},
-  title: 'Trifid',
+  title: "Trifid",
   scripts: [],
   styles: [],
-  body: '',
+  body: "",
   disableHeader: false,
-  disableFooter: false
-}
+  disableFooter: false,
+};
 
 const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
   /**
@@ -29,49 +29,54 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
    * @param {Function} fn Helper function.
    */
   const registerHelper = (name, fn) => {
-    Handlebars.registerHelper(name, fn)
-  }
+    Handlebars.registerHelper(name, fn);
+  };
 
-  registerHelper('ifEquals', (arg1, arg2, options) => {
-    return (arg1 === arg2) ? options.fn(this) : options.inverse(this)
-  })
+  registerHelper("ifEquals", (arg1, arg2, options) => {
+    return arg1 === arg2 ? options.fn(this) : options.inverse(this);
+  });
 
-  const templateOptions = merge({}, defaultConfig, defaultOptions)
+  const templateOptions = merge({}, defaultConfig, defaultOptions);
 
-  const resolvedTemplates = new Map()
+  const resolvedTemplates = new Map();
 
   const resolveTemplate = async (path) => {
     if (!resolvedTemplates.has(path) || forceRefresh) {
-      const template = await fs.readFile(path)
-      const compiled = Handlebars.compile(`${template}`)
-      resolvedTemplates.set(path, compiled)
+      const template = await fs.readFile(path);
+      const compiled = Handlebars.compile(`${template}`);
+      resolvedTemplates.set(path, compiled);
     }
-    return resolvedTemplates.get(path)
-  }
+    return resolvedTemplates.get(path);
+  };
 
   if (!templateOptions?.files) {
-    throw new Error('no files defined')
+    throw new Error("no files defined");
   }
 
   if (!templateOptions?.files?.main) {
-    throw new Error("no 'main' template was defined")
+    throw new Error("no 'main' template was defined");
   }
 
   // register all partials
   Object.entries(templateOptions.partials).map(async (t) => {
-    const partialName = t[0]
-    const partialPath = t[1]
-    const resolvedPartial = await resolveTemplate(partialPath)
-    Handlebars.registerPartial(partialName, resolvedPartial)
-  })
+    const partialName = t[0];
+    const partialPath = t[1];
+    const resolvedPartial = await resolveTemplate(partialPath);
+    Handlebars.registerPartial(partialName, resolvedPartial);
+  });
 
   const templates = Object.fromEntries(
     await Promise.all(
-      Object.entries(templateOptions.files).map(async (t) => [t[0], await resolveTemplate(t[1])])
+      Object.entries(templateOptions.files).map(async (t) => [
+        t[0],
+        await resolveTemplate(t[1]),
+      ])
     )
-  )
-  const templatesWithoutMain = Object.fromEntries(Object.entries(templates).filter((t) => t[0] !== 'main'))
-  const mainTemplate = templates.main
+  );
+  const templatesWithoutMain = Object.fromEntries(
+    Object.entries(templates).filter((t) => t[0] !== "main")
+  );
+  const mainTemplate = templates.main;
 
   /**
    * Render the full page.
@@ -82,22 +87,25 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
    * @returns {string} The rendered view.
    */
   const render = async (templatePath, context, options = {}) => {
-    const template = await resolveTemplate(templatePath)
-    const body = template(context)
+    const template = await resolveTemplate(templatePath);
+    const body = template(context);
 
-    const renderedOptions = merge({}, context, templateOptions, options)
+    const renderedOptions = merge({}, context, templateOptions, options);
     const renderedPartials = Object.fromEntries(
-      Object.entries(templatesWithoutMain).map(t => [t[0], t[1](renderedOptions)])
-    )
+      Object.entries(templatesWithoutMain).map((t) => [
+        t[0],
+        t[1](renderedOptions),
+      ])
+    );
 
     return mainTemplate({
       ...renderedOptions,
       ...renderedPartials,
-      body
-    })
-  }
+      body,
+    });
+  };
 
-  return { render, registerHelper }
-}
+  return { render, registerHelper };
+};
 
-export default templateEngine
+export default templateEngine;

@@ -1,4 +1,9 @@
-import { cwdResolver, envResolver, fileCallback, fileResolver } from '../resolvers.js'
+import {
+  cwdResolver,
+  envResolver,
+  fileCallback,
+  fileResolver,
+} from "../resolvers.js";
 
 /**
  *
@@ -7,40 +12,40 @@ import { cwdResolver, envResolver, fileCallback, fileResolver } from '../resolve
  * @returns
  */
 export const extendsResolver = (value, context) => {
-  return value.map(path => {
-    return fileCallback(context)(fileResolver(cwdResolver(path), context))
-  })
-}
+  return value.map((path) => {
+    return fileCallback(context)(fileResolver(cwdResolver(path), context));
+  });
+};
 
 export const applyResolvers = (value, context) => {
-  if (typeof value === 'object') {
-    Object.keys(value).map(k => {
-      value[k] = applyResolvers(value[k], context)
-      return value[k]
-    })
+  if (typeof value === "object") {
+    Object.keys(value).map((k) => {
+      value[k] = applyResolvers(value[k], context);
+      return value[k];
+    });
 
-    return value
+    return value;
   }
 
-  if (typeof value === 'string') {
-    return fileResolver(cwdResolver(envResolver(value)), context)
+  if (typeof value === "string") {
+    return fileResolver(cwdResolver(envResolver(value)), context);
   }
 
-  return value
-}
+  return value;
+};
 
 export const templateResolver = (value, context) => {
-  return applyResolvers(value, context)
-}
+  return applyResolvers(value, context);
+};
 
 export const serverResolver = (value, context) => {
-  return applyResolvers(value, context)
-}
+  return applyResolvers(value, context);
+};
 
 export const globalsResolver = (value, context) => {
-  return applyResolvers(value, context)
-}
+  return applyResolvers(value, context);
+};
 
 export const middlewaresResolver = (value, context) => {
-  return applyResolvers(value, context)
-}
+  return applyResolvers(value, context);
+};

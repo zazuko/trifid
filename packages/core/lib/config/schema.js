@@ -3,92 +3,92 @@
  */
 
 const server = {
-  type: 'object',
+  type: "object",
   properties: {
     listener: {
-      type: 'object',
+      type: "object",
       properties: {
         port: {
           anyOf: [
-            { type: 'number', minimum: 0, maximum: 65535 },
-            { type: 'string', minLength: 1 }
-          ]
+            { type: "number", minimum: 0, maximum: 65535 },
+            { type: "string", minLength: 1 },
+          ],
         },
-        host: { type: 'string', minLength: 1 }
+        host: { type: "string", minLength: 1 },
       },
-      additionalProperties: false
+      additionalProperties: false,
     },
     logLevel: {
-      type: 'string',
-      enum: ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']
+      type: "string",
+      enum: ["fatal", "error", "warn", "info", "debug", "trace", "silent"],
     },
     express: {
-      type: 'object',
-      additionalProperties: true
-    }
+      type: "object",
+      additionalProperties: true,
+    },
   },
-  additionalProperties: false
-}
+  additionalProperties: false,
+};
 
 const globals = {
-  type: 'object',
-  additionalProperties: true
-}
+  type: "object",
+  additionalProperties: true,
+};
 
 const middleware = {
-  type: 'object',
+  type: "object",
   properties: {
-    order: { type: 'number', minimum: 0 },
-    module: { type: 'string', minLength: 1 },
+    order: { type: "number", minimum: 0 },
+    module: { type: "string", minLength: 1 },
     paths: {
       anyOf: [
-        { type: 'string', minLength: 1 },
-        { type: 'array', items: { type: 'string' } }
-      ]
+        { type: "string", minLength: 1 },
+        { type: "array", items: { type: "string" } },
+      ],
     },
     methods: {
       anyOf: [
-        { type: 'string', minLength: 1 },
-        { type: 'array', items: { type: 'string' } }
-      ]
+        { type: "string", minLength: 1 },
+        { type: "array", items: { type: "string" } },
+      ],
     },
     hosts: {
       anyOf: [
-        { type: 'string', minLength: 1 },
-        { type: 'array', items: { type: 'string' } }
-      ]
+        { type: "string", minLength: 1 },
+        { type: "array", items: { type: "string" } },
+      ],
     },
-    config: { type: 'object', additionalProperties: true }
+    config: { type: "object", additionalProperties: true },
   },
-  required: ['module'],
-  additionalProperties: false
-}
+  required: ["module"],
+  additionalProperties: false,
+};
 
 const middlewares = {
-  type: 'object',
+  type: "object",
   patternProperties: {
-    '.*': middleware
-  }
-}
+    ".*": middleware,
+  },
+};
 
 const schema = {
-  type: 'object',
+  type: "object",
   properties: {
     extends: {
-      type: 'array',
+      type: "array",
       items: {
-        type: 'string'
-      }
+        type: "string",
+      },
     },
     server,
     globals,
     middlewares,
     template: {
-      type: 'object',
-      additionalProperties: true
-    }
+      type: "object",
+      additionalProperties: true,
+    },
   },
-  additionalProperties: false
-}
+  additionalProperties: false,
+};
 
-export default schema
+export default schema;
