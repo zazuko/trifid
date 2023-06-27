@@ -1,38 +1,38 @@
-import { getNamedGraphsCounts } from './metadata/namedGraphs.js'
+import { getNamedGraphsCounts } from "./metadata/namedGraphs.js";
 
 const DEFAULTS = {
-  showNamedGraphs: true
-}
+  showNamedGraphs: true,
+};
 
-function toBoolean (val) {
-  if (val === 'false') {
-    return false
+function toBoolean(val) {
+  if (val === "false") {
+    return false;
   }
-  if (val === 'true') {
-    return true
+  if (val === "true") {
+    return true;
   }
-  return undefined
+  return undefined;
 }
 
 /**
  * Provides a JSON object with metadata to be exposed in the UI
  */
-function createMetadataProvider ({ options = {} }) {
+function createMetadataProvider({ options = {} }) {
   return async (req, { dataset }) => {
-    const metadataConfig = { ...DEFAULTS, ...options }
+    const metadataConfig = { ...DEFAULTS, ...options };
 
     if (req.query.showNamedGraphs !== undefined) {
-      metadataConfig.showNamedGraphs = toBoolean(req.query.showNamedGraphs)
+      metadataConfig.showNamedGraphs = toBoolean(req.query.showNamedGraphs);
     }
 
-    const metadata = {}
+    const metadata = {};
 
     if (metadataConfig.showNamedGraphs) {
-      metadata.namedGraphs = getNamedGraphsCounts(dataset)
+      metadata.namedGraphs = getNamedGraphsCounts(dataset);
     }
 
-    return metadata
-  }
+    return metadata;
+  };
 }
 
-export { createMetadataProvider }
+export { createMetadataProvider };

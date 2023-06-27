@@ -1,35 +1,35 @@
-import rdf from 'rdf-ext'
-import { shrink } from '../common/shrink.js'
+import rdf from "rdf-ext";
+import { shrink } from "../common/shrink.js";
 
-function namedCounts (dataset) {
-  const namedGraphs = rdf.termMap()
+function namedCounts(dataset) {
+  const namedGraphs = rdf.termMap();
   for (const quad of dataset) {
     if (quad.graph) {
-      const count = namedGraphs.get(quad.graph)
-      const newCount = count !== undefined ? (count + 1) : 1
-      namedGraphs.set(quad.graph, newCount)
+      const count = namedGraphs.get(quad.graph);
+      const newCount = count !== undefined ? count + 1 : 1;
+      namedGraphs.set(quad.graph, newCount);
     }
   }
-  return namedGraphs
+  return namedGraphs;
 }
 
-function getLabel (term) {
-  if (term.constructor.name === 'DefaultGraph') {
-    return 'Default graph'
+function getLabel(term) {
+  if (term.constructor.name === "DefaultGraph") {
+    return "Default graph";
   }
-  return shrink(term.value)
+  return shrink(term.value);
 }
 
-function getNamedGraphsCounts (dataset) {
-  const namedGraphs = []
+function getNamedGraphsCounts(dataset) {
+  const namedGraphs = [];
   for (const [named, quadsCount] of namedCounts(dataset).entries()) {
     namedGraphs.push({
       namedGraph: named.value,
       namedGraphLabel: getLabel(named),
-      quadsCount
-    })
+      quadsCount,
+    });
   }
-  return namedGraphs
+  return namedGraphs;
 }
 
-export { getNamedGraphsCounts }
+export { getNamedGraphsCounts };
