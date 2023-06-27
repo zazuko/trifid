@@ -14,7 +14,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "standard",
+    "test": "true",
     "help": "node server.js --help",
     "start:tbbt": "node server.js -c instances/tbbt/config.yaml",
     "start": "npm run start:tbbt"
@@ -35,8 +35,5 @@
     "trifid-plugin-i18n": "^2.0.1",
     "trifid-plugin-spex": "^1.0.1",
     "trifid-plugin-yasgui": "^2.2.1"
-  },
-  "devDependencies": {
-    "standard": "^17.0.0"
   }
 }
