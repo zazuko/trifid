@@ -1,0 +1,4 @@
+{
+  "extends": "standard",
+  "ignorePatterns": ["**/*.ts", "**/*.d.ts", "**/*.d.ts.map"]
+}

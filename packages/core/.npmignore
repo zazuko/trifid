@@ -1,0 +1,13 @@
+.eslintrc
+.gitignore
+/node_modules/
+npm-debug.log
+package-lock.json
+*.tgz
+/test/
+/.github/
+/.git/
+/coverage/
+/config*.json
+/config*.yaml
+babel*

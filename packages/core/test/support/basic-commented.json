@@ -1,0 +1,15 @@
+{
+  "middlewares": {
+    "staticFiles": {
+      "order": 100,
+      // name of the module to load
+      "module": "file:./plugins/static-files.js",
+      "config": {
+        "sources": {
+          "path": "/",
+          "folder": "cwd:."
+        }
+      }
+    }
+  }
+}
