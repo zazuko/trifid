@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "chain3.json"
+  ],
+  "globals": {
+    "value2": "chain2",
+    "value1": "chain2",
+    "value": "chain2"
+  }
+}

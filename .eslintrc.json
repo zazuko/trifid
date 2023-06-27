@@ -2,5 +2,6 @@
   "extends": ["@tpluscode/eslint-config/js", "plugin:prettier/recommended"],
   "env": {
     "mocha": true
-  }
+  },
+  "ignorePatterns": ["**/*.ts", "**/*.d.ts", "**/*.d.ts.map"]
 }

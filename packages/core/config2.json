@@ -1,0 +1,16 @@
+{
+  "globals": {
+    "value": "config2",
+    "config2": "config2"
+  },
+  "middlewares": {
+    "tests": {
+      "order": 120,
+      "module": "file:./middlewares/static.js",
+      "paths": "/tests-dir",
+      "config": {
+        "directory": "cwd:./test"
+      }
+    }
+  }
+}
