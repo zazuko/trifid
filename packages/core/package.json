@@ -14,7 +14,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "standard && node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "standard && node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "watch": "nodemon server.js",
     "typings": "tsc",
     "clean": "rimraf *.tgz *.d.ts* lib/*.d.ts* lib/**/*.d.ts* middlewares/*.d.ts* middlewares/**/*.d.ts*",
