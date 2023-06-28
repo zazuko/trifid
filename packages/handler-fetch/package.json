@@ -1,0 +1,39 @@
+{
+  "name": "trifid-handler-fetch",
+  "description": "Fetch handler for Trifid",
+  "type": "module",
+  "version": "2.0.1",
+  "license": "MIT",
+  "main": "index.js",
+  "homepage": "https://github.com/zazuko/trifid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/handler-fetch"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid/issues"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "@rdfjs/express-handler": "^1.2.2",
+    "@rdfjs/formats-common": "^2.2.0",
+    "@rdfjs/serializer-jsonld-ext": "^3.0.0",
+    "file-fetch": "^1.7.0",
+    "@rdfjs/fetch": "^3.1.0",
+    "nodeify-fetch": "^3.0.0",
+    "proto-fetch": "^1.0.0",
+    "rdf-ext": "^2.0.1",
+    "rdfjs": "^0.0.1"
+  },
+  "devDependencies": {
+    "bluebird": "^3.7.2",
+    "express": "^4.18.2",
+    "mocha": "^10.0.0",
+    "nock": "^13.2.9",
+    "supertest": "^6.2.4",
+    "tbbt-ld": "^1.1.0"
+  }
+}
