@@ -1,0 +1,79 @@
+<div id="container">
+  <div id="spex"></div>
+</div>
+
+<script type="text/javascript" src="static/spex.umd.min.js"></script>
+<style type="text/css">
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #container {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+  }
+
+  #container > * {
+    flex-grow: 1;
+
+    overflow: hidden;
+  }
+
+  #spex {
+    min-height: 100vh;
+  }
+</style>
+
+<script type="text/javascript">
+  //<![CDATA[
+  window.onload = function () {
+    // where to mount the SPEX app (it will be put in a shodow element)
+    const mountPoint = document.createElement("div");
+
+    // create style element in the shadow element to avoid any style conflicts
+    const style = document.createElement("style");
+    style.type = "text/css";
+    style.innerHTML = "@import url('static/spex.css');"
+
+    // create the shadow element and put the style element and the mount point
+    const spexContainer = document.getElementById("spex");
+    const shadowContainer = spexContainer.attachShadow({ mode: "open" });
+    shadowContainer.appendChild(style)
+    shadowContainer.appendChild(mountPoint);
+
+    // render the app with the expected options
+    const options = JSON.parse('{{{ options }}}');
+    window.spex.render(mountPoint, options);
+    const spexApp = shadowContainer.querySelector('div');
+
+    // render the app with a minimal height
+    spexApp.style.setProperty('position', 'absolute');
+    spexApp.style.setProperty('top', '0');
+    spexApp.style.setProperty('bottom', '0');
+    spexApp.style.setProperty('left', '0');
+    spexApp.style.setProperty('right', '0');
+
+    // specify some values for colors
+    spexApp.style.setProperty('--color-primary-50', '#ffefde');
+    spexApp.style.setProperty('--color-primary-100', '#ffe2c4');
+    spexApp.style.setProperty('--color-primary-200', '#ffca91');
+    spexApp.style.setProperty('--color-primary-300', '#ffb15e');
+    spexApp.style.setProperty('--color-primary-400', '#ff982b');
+    spexApp.style.setProperty('--color-primary-500', '#f77f00');
+    spexApp.style.setProperty('--color-primary-600', '#c46500');
+    spexApp.style.setProperty('--color-primary-700', '#914b00');
+    spexApp.style.setProperty('--color-primary-800', '#5e3000');
+    spexApp.style.setProperty('--color-primary-900', '#2b1600');
+  };
+//]]>
+</script>
