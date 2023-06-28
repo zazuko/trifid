@@ -5,13 +5,14 @@
   "version": "2.2.3",
   "license": "MIT",
   "main": "index.js",
-  "homepage": "https://github.com/zazuko/trifid-plugin-yasgui",
+  "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-plugin-yasgui.git"
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/yasgui"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-plugin-yasgui/issues"
+    "url": "https://github.com/zazuko/trifid/issues"
   },
   "files": [
     "test",
@@ -20,7 +21,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "standard && mocha"
+    "test": "mocha"
   },
   "dependencies": {
     "@openlayers-elements/bundle": "^0.1.0",
@@ -32,7 +33,6 @@
     "absolute-url": "^1.2.2",
     "c8": "^7.14.0",
     "mocha": "^10.2.0",
-    "standard": "^17.1.0",
     "supertest": "^6.3.3"
   }
 }
