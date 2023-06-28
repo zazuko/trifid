@@ -5,16 +5,17 @@
   "version": "2.0.1",
   "license": "MIT",
   "main": "index.js",
-  "homepage": "https://github.com/zazuko/trifid-handler-fetch",
+  "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-handler-fetch.git"
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/handler-fetch"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-handler-fetch/issues"
+    "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "standard && mocha"
+    "test": "mocha"
   },
   "dependencies": {
     "@rdfjs/express-handler": "^1.2.2",
@@ -29,10 +30,9 @@
   },
   "devDependencies": {
     "bluebird": "^3.7.2",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "mocha": "^10.0.0",
     "nock": "^13.2.9",
-    "standard": "^17.0.0",
     "supertest": "^6.2.4",
     "tbbt-ld": "^1.1.0"
   }
