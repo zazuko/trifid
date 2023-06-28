@@ -53,7 +53,7 @@ The main [trifid](https://github.com/zazuko/trifid) package provides some defaul
 - Handlers to read RDF data from the file system and SPARQL endpoints
 - The [handlebars](https://handlebarsjs.com/) template engine
 - A HTML renderer for the RDF data
-- The plugins mentioned [here](#Using a SPARQL endpoint)
+- The plugins mentioned [here](#using-a-sparql-endpoint)
 
 ## Documentation
 
@@ -174,9 +174,23 @@ Supported log levels are: `fatal`, `error`, `warn`, `info`, `debug`, `trace` and
 Some middlewares also uses [`debug`](https://www.npmjs.com/package/debug).
 You can get debug logging via: `DEBUG=trifid:` or `DEBUG=trifid:*`.
 
+## Monorepo
+
+To improve the maintenability of the whole project, we decided to use a monorepo architecture.
+
+Here is the list of all packages that are maintained here:
+
+| Package                                                        | Latest version                                                                                                      |                                       |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [`trifid`](./packages/trifid)                                  | [![](https://badge.fury.io/js/trifid.svg)](https://npm.im/trifid)                                                   | Bundle with commonly used middlewares |
+| [`trifid-core`](./packages/core)                               | [![](https://badge.fury.io/js/trifid-core.svg)](https://npm.im/trifid-core)                                         | Core package                          |
+| [`@zazuko/trifid-entity-renderer`](./packages/entity-renderer) | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-entity-renderer.svg)](https://npm.im/@zazuko/trifid-entity-renderer) | Entity renderer                       |
+
+More to come as we gradually consolidate other, initially separate repositories.
+
 ## Support
 
-Issues & feature requests should be reported on Github.
+Issues & feature requests should be reported on GitHub.
 
 Pull requests are very welcome.
 
@@ -184,4 +198,4 @@ Pull requests are very welcome.
 
 Copyright 2015-2023 Zazuko GmbH
 
-Trifid is licensed under the Apache License, Version 2.0. Please see LICENSE and NOTICE for details.
+Trifid is licensed under the [Apache License, Version 2.0](./LICENSE).
