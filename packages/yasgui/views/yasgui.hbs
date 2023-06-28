@@ -1,0 +1,44 @@
+<div class="trifid-content">
+  <style type="text/css">
+    @import url("/yasgui-dist/yasgui.min.css");
+  </style>
+
+  <div id="yasgui"></div>
+  <p>
+    <a href="https://triply.cc/docs/yasgui-api" target="_blank" rel="noreferrer noopener">About YASGUI</a>
+    -
+    <a href="https://github.com/zazuko/trifid-plugin-yasgui" target="_blank" rel="noreferrer noopener">Trifid plugin</a>
+  </p>
+
+  <script src="/yasgui-dist/yasgui.min.js"></script>
+  <script src="/yasgui-ol/ol-map.js" type="module"></script>
+  <script src="/yasgui-ol/ol-layer-openstreetmap.js" type="module"></script>
+  <script src="/yasgui-ol/ol-layer-wkt.js" type="module"></script>
+  <script src="/yasgui-plugins/map.js"></script>
+
+  <script>
+    const config = {
+      "api": {}
+    }
+  </script>
+
+  {{#if urlShortener }}
+  <script>
+    config.yasqe = {
+      createShortLink: function(yasqe, longString) {
+        return yasqe.superagent
+          .post('{{ urlShortener }}')
+          .send({ url: longString })
+          .then(function(resp) {
+            return resp.text
+          });
+      }
+    }
+  </script>
+  {{/if}}
+
+  <script>
+    Yasgui.defaults.requestConfig.endpoint = '{{ endpointUrl }}'
+    const yasgui = new Yasgui(document.getElementById('yasgui'), config)
+  </script>
+</div>
