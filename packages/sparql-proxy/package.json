@@ -4,25 +4,23 @@
   "description": "Trifid plugin for sparql-proxy",
   "main": "index.js",
   "type": "module",
-  "homepage": "https://github.com/zazuko/trifid-plugin-sparql-proxy",
+  "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-plugin-sparql-proxy.git"
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/sparql-proxy"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-plugin-sparql-proxy/issues"
+    "url": "https://github.com/zazuko/trifid/issues"
   },
   "license": "MIT",
   "files": [
     "index.js"
   ],
   "scripts": {
-    "test": "standard"
-  },
-  "devDependencies": {
-    "standard": "^17.0.0"
+    "test": "true"
   },
   "dependencies": {
-    "@zazuko/sparql-proxy": "^2.5.0"
+    "@zazuko/sparql-proxy": "^2.6.7"
   }
 }
