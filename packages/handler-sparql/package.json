@@ -1,0 +1,40 @@
+{
+  "name": "trifid-handler-sparql",
+  "description": "SPARQL handler for Trifid",
+  "type": "module",
+  "version": "2.1.1",
+  "license": "MIT",
+  "main": "index.js",
+  "homepage": "https://github.com/zazuko/trifid-handler-sparql",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid-handler-sparql.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid-handler-sparql/issues"
+  },
+  "scripts": {
+    "coverage": "codecov",
+    "test": "stricter-standard && c8 --reporter=lcov --reporter=text mocha"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "sparql-http-client": "^2.4.2"
+  },
+  "overrides": {
+    "stricter-standard": {
+      "json5": "^1.0.2"
+    }
+  },
+  "devDependencies": {
+    "c8": "^7.12.0",
+    "codecov": "^3.8.3",
+    "express-as-promise": "^1.2.0",
+    "mocha": "^10.2.0",
+    "stricter-standard": "^0.2.0"
+  },
+  "files": [
+    "index.js",
+    "test"
+  ]
+}
