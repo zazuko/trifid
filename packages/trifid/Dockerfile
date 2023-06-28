@@ -23,7 +23,6 @@ WORKDIR /app
 
 # copy package.json and install dependencies
 COPY package.json ./
-COPY .npmrc ./
 RUN npm install --omit=dev && npm cache clean --force
 COPY . .
 
