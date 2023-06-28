@@ -8,23 +8,21 @@
   "author": {
     "name": "Zazuko GmbH"
   },
-  "homepage": "https://github.com/zazuko/trifid-handle-redirects",
+  "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zazuko/trifid-handle-redirects.git"
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/redirects"
   },
   "bugs": {
-    "url": "https://github.com/zazuko/trifid-handle-redirects/issues"
+    "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "standard"
+    "test": "true"
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "rdf-ext": "^2.1.0",
-    "sparql-http-client": "^2.4.1"
-  },
-  "devDependencies": {
-    "standard": "^17.0.0"
+    "rdf-ext": "^2.2.0",
+    "sparql-http-client": "^2.4.2"
   }
 }
