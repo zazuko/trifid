@@ -37,7 +37,7 @@
     "trifid-core": "^2.6.2"
   },
   "devDependencies": {
-    "cypress": "^12.13.0",
+    "cypress": "^12.17.3",
     "n3": "^1.16.4",
     "start-server-and-test": "^2.0.0",
     "trifid-handler-fetch": "^2.0.1"
