@@ -1,5 +1,13 @@
 # trifid
 
+## 4.0.1
+
+### Patch Changes
+
+- 8d1f155: Fix build of Docker image
+- Updated dependencies [db20277]
+  - trifid-plugin-yasgui@2.2.4
+
 ## 4.0.0
 
 ### Major Changes
