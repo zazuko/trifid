@@ -1,7 +1,7 @@
-import rdf from "rdf-ext";
+import rdf from "../../env.js";
 import { shrink } from "../common/shrink.js";
 
-function namedCounts(dataset) {
+const namedCounts = (dataset) => {
   const namedGraphs = rdf.termMap();
   for (const quad of dataset) {
     if (quad.graph) {
@@ -11,16 +11,16 @@ function namedCounts(dataset) {
     }
   }
   return namedGraphs;
-}
+};
 
-function getLabel(term) {
+const getLabel = (term) => {
   if (term.constructor.name === "DefaultGraph") {
     return "Default graph";
   }
   return shrink(term.value);
-}
+};
 
-function getNamedGraphsCounts(dataset) {
+const getNamedGraphsCounts = (dataset) => {
   const namedGraphs = [];
   for (const [named, quadsCount] of namedCounts(dataset).entries()) {
     namedGraphs.push({
@@ -30,6 +30,6 @@ function getNamedGraphsCounts(dataset) {
     });
   }
   return namedGraphs;
-}
+};
 
 export { getNamedGraphsCounts };

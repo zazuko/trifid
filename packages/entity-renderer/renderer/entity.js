@@ -2,7 +2,7 @@ import { render as renderWebComponent } from "@lit-labs/ssr";
 import { DEFAULT_LABEL_PROPERTIES } from "@zazuko/rdf-entity-webcomponent/src/builder/entityBuilder.js";
 import { getLabel } from "@zazuko/rdf-entity-webcomponent/src/builder/labels.js";
 import { ns } from "@zazuko/rdf-entity-webcomponent/src/namespaces.js";
-import rdf from "rdf-ext";
+import rdf from "../env.js";
 import { LabelLoader } from "./labels/labelLoader.js";
 import { TrifidResourceDescription } from "./web-component/TrifidResourceDescription.js";
 
@@ -21,7 +21,7 @@ const DEFAULTS = {
   maxLevel: 3,
 };
 
-function toBoolean(val) {
+const toBoolean = (val) => {
   if (val === "false") {
     return false;
   }
@@ -29,7 +29,7 @@ function toBoolean(val) {
     return true;
   }
   return undefined;
-}
+};
 
 /**
  * Render HTML.
@@ -38,7 +38,7 @@ function toBoolean(val) {
  * @param {*} graph Graph from a handler (JSON object).
  * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
-function createEntityRenderer({ options = {}, logger }) {
+const createEntityRenderer = ({ options = {}, logger }) => {
   return async (req, res, { dataset }) => {
     const rendererConfig = { ...DEFAULTS, ...options };
 
@@ -147,6 +147,6 @@ function createEntityRenderer({ options = {}, logger }) {
       entityUrl,
     };
   };
-}
+};
 
 export { createEntityRenderer };

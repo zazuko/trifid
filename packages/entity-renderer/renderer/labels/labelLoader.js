@@ -1,8 +1,8 @@
 import { ns } from "@zazuko/rdf-entity-webcomponent/src/namespaces.js";
-import rdf from "rdf-ext";
 // eslint-disable-next-line import/no-unresolved
 import PQueue from "p-queue";
 import ParsingClient from "sparql-http-client/ParsingClient.js";
+import rdf from "../../env.js";
 
 /**
  * endpointUrl: From where the labels are retrieved
