@@ -1,4 +1,4 @@
-import rdf from "rdf-ext";
+import rdf from "@zazuko/env";
 
 const ns = {
   http: rdf.namespace("http://www.w3.org/2011/http#"),

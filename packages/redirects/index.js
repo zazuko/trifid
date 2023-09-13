@@ -1,7 +1,7 @@
 import debugLib from "debug";
 import ParsingClient from "sparql-http-client/ParsingClient.js";
 
-const debug = debugLib("trifid-handler-http-in-rdf");
+const debug = debugLib("trifid-handle-redirects");
 
 const defaults = {
   authentication: false,
