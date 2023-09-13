@@ -16,7 +16,6 @@
         /*--color-white: #ffffff;*/
         /*--color-darker-white: #fcfcfc;*/
         /*--color-light-grey: #e5e5e5;*/
-        font-family: "Roboto Thin", serif;
     }
 
     .navbar-brand {
@@ -176,29 +175,24 @@
     }
 
     /* Header CSS */
-
-    .main-header {
-
-        margin-bottom: 15px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
+    .trifid-entity-renderer {
+      padding: 100px 0;
+      text-align: center;
+      background: #fcfcfc;
+      border-bottom: 1px solid #e5e5e5;
+      margin-bottom: 100px;
+      font-family: "Roboto", sans-serif;
     }
-
-    .main-header h2 {
-        margin-top: 15px;
-        margin-bottom: 15px;
-        font-size: 32px;
-        text-align: center;
+    .trifid-entity-renderer h1 {
+      font-size: 50px;
+      line-height: 50px;
+      padding-bottom: 16px;
+      font-weight: 700;
+      font-family: "Playfair Display", serif;
     }
-
-    .main-header a {
-        font-size: 18px;
-        color: var(--color-black);
-        text-transform: uppercase;
-        text-align: center;
+    .trifid-entity-renderer p {
+      font-size: 24px;
+      line-height: 28px;
     }
 
     /*Metadata CSS*/
@@ -232,32 +226,35 @@
 
 </style>
 
-<div class="trifid-content">
-    <div class="container">
-        <meta property="dc:title" content="{{entityLabel}}"/>
-
-        {{#if entityLabel}}
-            <div class="main-header">
-                <h2>{{entityLabel}}</h2>
-                <a href="{{entityUrl}}">{{entityUrl}}</a>
-            </div>
-        {{/if}}
-
-        {{{ dataset }}}
-
-        {{#if metadata.namedGraphs}}
-            <div class="metadata">
-                <div class="metadata-title">Named graphs</div>
-                <div class="metadata-table">
-                    {{#each metadata.namedGraphs}}
-                        <div class="metadata-row">
-                            <div>{{this.namedGraphLabel}}</div>
-                            <div>{{this.quadsCount}}</div>
-                        </div>
-                    {{/each}}
-                </div>
-            </div>
-        {{/if}}
-
+{{#if entityLabel}}
+  <div class="trifid-entity-renderer">
+    <div class="trifid-content">
+      <div class="container">
+        <h1>{{entityLabel}}</h1>
+        <p><a href="{{entityUrl}}">{{entityUrl}}</a></p>
+      </div>
     </div>
+  </div>
+{{/if}}
+
+<div class="trifid-content">
+  <div class="container">
+    <meta property="dc:title" content="{{entityLabel}}" />
+
+    {{{ dataset }}}
+
+    {{#if metadata.namedGraphs}}
+      <div class="metadata">
+        <div class="metadata-title">Named graphs</div>
+        <div class="metadata-table">
+          {{#each metadata.namedGraphs}}
+            <div class="metadata-row">
+              <div>{{this.namedGraphLabel}}</div>
+              <div>{{this.quadsCount}}</div>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+  </div>
 </div>
