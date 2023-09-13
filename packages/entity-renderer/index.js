@@ -1,13 +1,11 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import rdfFormats from "@rdfjs/formats-common";
+import { parsers } from "@rdfjs/formats-common";
 import hijackResponse from "hijackresponse";
 
 import rdf from "./env.js";
 import { createEntityRenderer } from "./renderer/entity.js";
 import { createMetadataProvider } from "./renderer/metadata.js";
-
-const { parsers } = rdfFormats;
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
