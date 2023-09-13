@@ -159,7 +159,7 @@ describe("trifid-handler-fetch", () => {
     assert(jsonld.length > 0);
     assert.equal(
       jsonld[0]["@id"],
-      "http://localhost:8080/data/person/amy-farrah-fowler"
+      "http://localhost:8080/data/person/amy-farrah-fowler",
     );
   });
 

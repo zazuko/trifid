@@ -31,8 +31,8 @@ const factory = (trifid) => {
               url: req.url,
               locals: res.locals,
             },
-            { title: "Not Found" }
-          )
+            { title: "Not Found" },
+          ),
         );
         break;
 

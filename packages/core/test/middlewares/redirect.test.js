@@ -25,7 +25,7 @@ describe("redirect middleware", () => {
         logger: {
           debug: (_) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/redirect").expect(302);
@@ -43,7 +43,7 @@ describe("redirect middleware", () => {
         logger: {
           debug: (_) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/non-existant-route").expect(404);

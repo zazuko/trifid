@@ -43,7 +43,7 @@ class Fetcher {
   static spreadDataset(inputDataset, outputDataset, options) {
     if (options.resource) {
       outputDataset.addAll(
-        rdf.dataset(inputDataset, rdf.namedNode(options.resource))
+        rdf.dataset(inputDataset, rdf.namedNode(options.resource)),
       );
     } else if (options.split) {
       outputDataset.addAll(splitIntoGraphs(inputDataset));
@@ -56,7 +56,7 @@ class Fetcher {
         resources[quad.graph.value] = true;
 
         return resources;
-      }, {})
+      }, {}),
     );
 
     return outputDataset;

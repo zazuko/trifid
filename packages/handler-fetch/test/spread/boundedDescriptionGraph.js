@@ -48,7 +48,7 @@ describe("resource", () => {
       rdf.quad(
         rdf.namedNode("http://example.org/node#fragment"),
         ex.predicate,
-        blankNode
+        blankNode,
       ),
     ]);
 

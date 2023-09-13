@@ -18,11 +18,11 @@ import { defaultPort, maxDepth } from "./default.js";
 const resolveConfig = async (
   rawConfig,
   fileFullPath = undefined,
-  depth = 0
+  depth = 0,
 ) => {
   if (depth >= maxDepth) {
     throw new Error(
-      "reached max configuration depth, maybe you went in an infinite loop. Please check the extends values from your configuration file recursively"
+      "reached max configuration depth, maybe you went in an infinite loop. Please check the extends values from your configuration file recursively",
     );
   }
 
@@ -41,8 +41,8 @@ const resolveConfig = async (
     config.extends = extendsResolver(config.extends, context);
     configs = await Promise.all(
       config.extends.map((configPath) =>
-        resolveConfigFile(configPath, depth + 1)
-      )
+        resolveConfigFile(configPath, depth + 1),
+      ),
     );
   }
 

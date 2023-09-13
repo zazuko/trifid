@@ -80,7 +80,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     cors({
       credentials: true,
       origin: true,
-    })
+    }),
   );
   server.use(cookieParser());
 
@@ -89,7 +89,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     for (const expressSettingKey in fullConfig.server.express) {
       server.set(
         expressSettingKey,
-        fullConfig.server.express[expressSettingKey]
+        fullConfig.server.express[expressSettingKey],
       );
     }
   }
@@ -115,14 +115,14 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   const templateEngineInstance = await templateEngine(template);
   const middlewares = await middlewaresAssembler(
     fullConfig,
-    additionalMiddlewares
+    additionalMiddlewares,
   );
   await applyMiddlewares(
     server,
     fullConfig.globals,
     middlewares,
     logger,
-    templateEngineInstance
+    templateEngineInstance,
   );
 
   const start = () => {

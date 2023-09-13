@@ -43,7 +43,7 @@ export class SparqlHandler {
       queryOptions.headers = {
         Authorization: authBasicHeader(
           this.authentication.user,
-          this.authentication.password
+          this.authentication.password,
         ),
       };
     }
@@ -73,7 +73,7 @@ export class SparqlHandler {
     try {
       const exists = await this.parsingClient.query.ask(
         query,
-        this.buildQueryOptions()
+        this.buildQueryOptions(),
       );
       return { exists, status: 200 };
     } catch (error) {
@@ -160,7 +160,7 @@ export class SparqlHandler {
       const { status, headers, stream } = await this.graphStream(
         iri,
         query,
-        req.headers.accept
+        req.headers.accept,
       );
 
       if (!stream) {

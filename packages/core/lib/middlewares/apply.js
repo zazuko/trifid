@@ -41,7 +41,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
         // keeping this to be called without 'vhost' is needed for the error handler to work
         methods.map((method) => {
           logger.debug(
-            `mount '${name}' middleware (method=${method}, path=${path})`
+            `mount '${name}' middleware (method=${method}, path=${path})`,
           );
           return server[method](path, loadedMiddleware);
         });
@@ -49,7 +49,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
         hosts.map((host) => {
           return methods.map((method) => {
             logger.debug(
-              `mount '${name}' middleware (method=${method}, path=${path}, host=${host})`
+              `mount '${name}' middleware (method=${method}, path=${path}, host=${host})`,
             );
             return server[method](path, vhost(host, loadedMiddleware));
           });

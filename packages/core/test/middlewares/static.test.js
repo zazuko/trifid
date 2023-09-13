@@ -22,7 +22,7 @@ describe("static middleware", () => {
         config: {
           directory: `${currentDir}/../support/`,
         },
-      })
+      }),
     ).not.toThrow();
   });
 
@@ -35,7 +35,7 @@ describe("static middleware", () => {
         config: {
           directory: `${currentDir}/../support`,
         },
-      })
+      }),
     );
 
     return request(app)
@@ -54,7 +54,7 @@ describe("static middleware", () => {
         config: {
           directory: `${currentDir}/../support/`,
         },
-      })
+      }),
     );
 
     return request(app).get("/test-not-exist.txt").expect(404);

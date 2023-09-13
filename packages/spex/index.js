@@ -45,7 +45,7 @@ const createMiddleWare = async (config, render) => {
     // Create an absolute URL if a relative URL is provided
     spexOptions.sparqlEndpoint = new URL(
       spexOptions.sparqlEndpoint || "/query",
-      req.absoluteUrl()
+      req.absoluteUrl(),
     ).toString();
 
     res.send(
@@ -57,8 +57,8 @@ const createMiddleWare = async (config, render) => {
         },
         {
           title: "SPEX",
-        }
-      )
+        },
+      ),
     );
   });
 

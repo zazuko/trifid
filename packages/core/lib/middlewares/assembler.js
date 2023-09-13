@@ -15,7 +15,7 @@ const assembler = async (config, additionalMiddlewares = {}) => {
   return sort(
     Object.entries(middlewares).map((m) => {
       return [m[0], standardize(m[1])];
-    })
+    }),
   );
 };
 

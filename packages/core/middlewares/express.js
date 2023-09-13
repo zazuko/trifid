@@ -15,7 +15,7 @@ const factory = async (trifid) => {
   const { module, options } = config;
   if (!module) {
     throw new Error(
-      "configuration requires 'module' field, specifying the Express middleware NPM module to load"
+      "configuration requires 'module' field, specifying the Express middleware NPM module to load",
     );
   }
 

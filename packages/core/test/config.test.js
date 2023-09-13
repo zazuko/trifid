@@ -24,7 +24,7 @@ describe("config", () => {
         globals: {},
         server: {},
         middlewares: {},
-      })
+      }),
     ).not.toThrow();
   });
 
@@ -32,19 +32,19 @@ describe("config", () => {
     expect(() =>
       parser({
         extends: [],
-      })
+      }),
     ).not.toThrow();
 
     expect(() =>
       parser({
         extends: ["path"],
-      })
+      }),
     ).not.toThrow();
 
     expect(() =>
       parser({
         extends: ["path1", "path2", "path3"],
-      })
+      }),
     ).not.toThrow();
   });
 

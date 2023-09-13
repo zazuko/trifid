@@ -137,7 +137,7 @@ describe("Trifid factory", () => {
             locales: ["en", "de"],
             defaultLocale: "en",
           },
-        })
+        }),
       );
     });
   });

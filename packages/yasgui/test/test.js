@@ -16,7 +16,7 @@ const createTrifidConfig = (app, config) => {
         options,
       },
       null,
-      2
+      2,
     );
   };
 

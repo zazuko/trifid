@@ -24,11 +24,11 @@ const factory = async (trifid) => {
   const distPath = await resolve("graph-explorer/dist/", import.meta.url);
   server.use(
     "/graph-explorer-assets/",
-    express.static(distPath.replace(/^file:\/\//, ""))
+    express.static(distPath.replace(/^file:\/\//, "")),
   );
   server.use(
     "/graph-explorer-static/",
-    express.static(`${currentDir}/static/`)
+    express.static(`${currentDir}/static/`),
   );
 
   const endpoint = endpointUrl || "/query";
@@ -72,7 +72,7 @@ const factory = async (trifid) => {
         // good practice: forward locals to templates
         locals: res.locals,
       },
-      { title: "Graph Explorer" }
+      { title: "Graph Explorer" },
     );
 
     res.send(content);

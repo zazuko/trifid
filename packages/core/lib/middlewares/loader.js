@@ -32,7 +32,7 @@ const load = async (config) => {
       }
 
       middlewares[m].module = await loader(middlewares[m].module);
-    })
+    }),
   );
 
   return middlewares;

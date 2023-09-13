@@ -12,13 +12,13 @@ function boundedDescriptionGraph(inputDataset, subject) {
 
   const descriptionWithBlankNodes = rdf.traverser(
     ({ dataset, level, quad }) =>
-      level === 0 || quad.subject.termType === "BlankNode"
+      level === 0 || quad.subject.termType === "BlankNode",
   );
 
   const result = rdf.dataset();
   siblings.forEach((subject) => {
     result.addAll(
-      descriptionWithBlankNodes.match({ term: subject, dataset: input })
+      descriptionWithBlankNodes.match({ term: subject, dataset: input }),
     );
   });
   return result;

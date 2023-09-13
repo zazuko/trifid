@@ -33,7 +33,7 @@ const factory = (trifid) => {
       new URL(datasetBaseUrl); // eslint-disable-line no-new
     } catch (_e) {
       throw new Error(
-        `The current value you have for 'datasetBaseUrl' is '${datasetBaseUrl}', which is not a valid URL.`
+        `The current value you have for 'datasetBaseUrl' is '${datasetBaseUrl}', which is not a valid URL.`,
       );
     }
   }

@@ -19,7 +19,7 @@ function onWorkspaceMounted(workspace) {
         imagePropertyUris: ["http://xmlns.com/foaf/0.1/img"],
         queryMethod: GraphExplorer.SparqlQueryMethod.GET,
       },
-      SparqlDialect
+      SparqlDialect,
     ),
   });
 
@@ -72,5 +72,5 @@ const props = {
 
 ReactDOM.render(
   React.createElement(GraphExplorer.Workspace, props),
-  document.getElementById("trifid-plugin-graph-explorer")
+  document.getElementById("trifid-plugin-graph-explorer"),
 );

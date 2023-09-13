@@ -26,8 +26,8 @@ function splitIntoGraphs(inputDataset) {
 
     result.addAll(
       resourceTriples.map((quad) =>
-        rdf.quad(quad.subject, quad.predicate, quad.object, resourceNode)
-      )
+        rdf.quad(quad.subject, quad.predicate, quad.object, resourceNode),
+      ),
     );
   });
 

@@ -57,7 +57,7 @@ export class FetchHandler {
           null,
           null,
           null,
-          rdf.namedNode(req.iri)
+          rdf.namedNode(req.iri),
         );
 
         if (dataset.size === 0) {

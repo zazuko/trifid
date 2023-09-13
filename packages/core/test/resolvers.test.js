@@ -25,7 +25,7 @@ describe("resolvers", () => {
 
   test("env should not resolve to anything if it is another prefix", () => {
     expect(envResolver("something:TEST_VARIABLE")).toEqual(
-      "something:TEST_VARIABLE"
+      "something:TEST_VARIABLE",
     );
   });
 
@@ -68,10 +68,10 @@ describe("resolvers", () => {
     expect(cwdResolver("cwd:./test.js")).toEqual(`${process.cwd()}/test.js`);
     expect(cwdResolver("cwd:test.js")).toEqual(`${process.cwd()}/test.js`);
     expect(cwdResolver("cwd:././././test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(cwdResolver("cwd:./a/.././test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(cwdResolver("cwd:/test.js")).toEqual("/test.js");
     expect(cwdResolver("cwd:/a/b/c/test.js")).toEqual("/a/b/c/test.js");
@@ -84,10 +84,10 @@ describe("resolvers", () => {
     expect(fileCallback()("./test.js")).toEqual(`${process.cwd()}/test.js`);
     expect(fileCallback()("test.js")).toEqual(`${process.cwd()}/test.js`);
     expect(fileCallback()("././././test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(fileCallback()("./a/.././test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(fileCallback()("/test.js")).toEqual("/test.js");
     expect(fileCallback()("/a/b/c/test.js")).toEqual("/a/b/c/test.js");
@@ -95,16 +95,16 @@ describe("resolvers", () => {
     // test with explicit 'undefined' base
     expect(fileCallback(undefined)(".")).toEqual(process.cwd());
     expect(fileCallback(undefined)("./test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(fileCallback(undefined)("test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(fileCallback(undefined)("././././test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(fileCallback(undefined)("./a/.././test.js")).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(fileCallback(undefined)("/test.js")).toEqual("/test.js");
     expect(fileCallback(undefined)("/a/b/c/test.js")).toEqual("/a/b/c/test.js");
@@ -122,18 +122,18 @@ describe("resolvers", () => {
     expect(fileCallback("/path/test")("../../..")).toEqual("/");
     expect(fileCallback("/path/test")("../../../")).toEqual("/");
     expect(fileCallback("/path/test")("./test.js")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
     expect(fileCallback("/path/test")("test.js")).toEqual("/path/test/test.js");
     expect(fileCallback("/path/test")("././././test.js")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
     expect(fileCallback("/path/test")("./a/.././test.js")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
     expect(fileCallback("/path/test")("/test.js")).toEqual("/test.js");
     expect(fileCallback("/path/test")("/a/b/c/test.js")).toEqual(
-      "/a/b/c/test.js"
+      "/a/b/c/test.js",
     );
   });
 
@@ -144,10 +144,10 @@ describe("resolvers", () => {
   test("file resolver should resolve on the file prefix", () => {
     expect(fileResolver("file:test.js")).toEqual(`${process.cwd()}/test.js`);
     expect(fileResolver("file:test.js", undefined)).toEqual(
-      `${process.cwd()}/test.js`
+      `${process.cwd()}/test.js`,
     );
     expect(fileResolver("file:test.js", "/path/test")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
   });
 
@@ -163,20 +163,20 @@ describe("resolvers", () => {
     expect(fileResolver("file:../../..", "/path/test")).toEqual("/");
     expect(fileResolver("file:../../../", "/path/test")).toEqual("/");
     expect(fileResolver("file:./test.js", "/path/test")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
     expect(fileResolver("file:test.js", "/path/test")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
     expect(fileResolver("file:././././test.js", "/path/test")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
     expect(fileResolver("file:./a/.././test.js", "/path/test")).toEqual(
-      "/path/test/test.js"
+      "/path/test/test.js",
     );
     expect(fileResolver("file:/test.js", "/path/test")).toEqual("/test.js");
     expect(fileResolver("file:/a/b/c/test.js", "/path/test")).toEqual(
-      "/a/b/c/test.js"
+      "/a/b/c/test.js",
     );
   });
 });

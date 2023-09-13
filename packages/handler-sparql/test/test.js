@@ -97,15 +97,15 @@ describe("trifid-handler-sparql", () => {
 
             strictEqual(
               endpoint.queries[0],
-              `ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${input.iri}") }`
+              `ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${input.iri}") }`,
             );
             strictEqual(
               endpoint.queries[1],
-              `CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^${input.iri}") }`
+              `CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^${input.iri}") }`,
             );
           });
         });
-      }
+      },
     );
   });
 
@@ -126,7 +126,7 @@ describe("trifid-handler-sparql", () => {
 
       strictEqual(
         endpoint.queries[0],
-        "ASK { <http://localhost/test%3Ctest> ?p ?o }"
+        "ASK { <http://localhost/test%3Ctest> ?p ?o }",
       );
     });
   });
@@ -148,7 +148,7 @@ describe("trifid-handler-sparql", () => {
 
       strictEqual(
         endpoint.queries[1],
-        "DESCRIBE <http://localhost/test%3Ctest>"
+        "DESCRIBE <http://localhost/test%3Ctest>",
       );
     });
   });
@@ -171,7 +171,7 @@ describe("trifid-handler-sparql", () => {
 
       strictEqual(
         endpoint.queries[0],
-        'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^http://localhost/test%3Ctest/") }'
+        'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^http://localhost/test%3Ctest/") }',
       );
     });
   });
@@ -194,7 +194,7 @@ describe("trifid-handler-sparql", () => {
 
       strictEqual(
         endpoint.queries[1],
-        'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^http://localhost/test%3Ctest/") }'
+        'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^http://localhost/test%3Ctest/") }',
       );
     });
   });
@@ -222,7 +222,7 @@ describe("trifid-handler-sparql", () => {
 
       strictEqual(
         endpoint.requestHeaders[0].authorization,
-        "Basic Ym9iOnBhc3N3b3Jk"
+        "Basic Ym9iOnBhc3N3b3Jk",
       );
     });
   });
@@ -286,7 +286,7 @@ describe("trifid-handler-sparql", () => {
             strictEqual(res.status, status);
           });
         });
-      }
+      },
     );
   });
 });

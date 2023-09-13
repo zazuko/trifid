@@ -15,7 +15,7 @@ program
   .option("--sparql-endpoint-url <url>", "SPARQL endpoint URL")
   .option(
     "--dataset-base-url <url>",
-    "the base URL of the dataset to enable rewriting"
+    "the base URL of the dataset to enable rewriting",
   )
   .parse(process.argv);
 

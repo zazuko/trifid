@@ -41,7 +41,7 @@ export class HttpInRDFHandler {
       queryOptions.headers = {
         Authorization: authBasicHeader(
           this.authentication.user,
-          this.authentication.password
+          this.authentication.password,
         ),
       };
     }
@@ -53,7 +53,7 @@ export class HttpInRDFHandler {
     debug("SPARQL redirect query for IRI <" + iri + "> : " + redirectQuery);
     const bindings = await this.client.query.select(
       redirectQuery,
-      this.buildQueryOptions()
+      this.buildQueryOptions(),
     );
     if (bindings.length) {
       return bindings[0];

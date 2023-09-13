@@ -30,7 +30,7 @@ describe("Fetcher", () => {
         Fetcher.isCached({
           cache: true,
           fetched: new Date(),
-        })
+        }),
       );
     });
   });
@@ -114,13 +114,13 @@ describe("Fetcher", () => {
           rdf.namedNode("http://example.org/subject1"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph")
+          rdf.namedNode("http://example.org/graph"),
         ),
         rdf.quad(
           rdf.namedNode("http://example.org/subject2"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph")
+          rdf.namedNode("http://example.org/graph"),
         ),
       ]);
 
@@ -139,13 +139,13 @@ describe("Fetcher", () => {
           rdf.namedNode("http://example.org/subject1"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph")
+          rdf.namedNode("http://example.org/graph"),
         ),
         rdf.quad(
           rdf.namedNode("http://example.org/subject2"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph")
+          rdf.namedNode("http://example.org/graph"),
         ),
       ]);
 
@@ -156,13 +156,13 @@ describe("Fetcher", () => {
           rdf.namedNode("http://example.org/subject1"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode(resource)
+          rdf.namedNode(resource),
         ),
         rdf.quad(
           rdf.namedNode("http://example.org/subject2"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode(resource)
+          rdf.namedNode(resource),
         ),
       ]);
 
@@ -177,13 +177,13 @@ describe("Fetcher", () => {
           rdf.namedNode("http://example.org/subject1"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph")
+          rdf.namedNode("http://example.org/graph"),
         ),
         rdf.quad(
           rdf.namedNode("http://example.org/subject2"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph")
+          rdf.namedNode("http://example.org/graph"),
         ),
       ]);
 
@@ -194,13 +194,13 @@ describe("Fetcher", () => {
           rdf.namedNode("http://example.org/subject1"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/subject1")
+          rdf.namedNode("http://example.org/subject1"),
         ),
         rdf.quad(
           rdf.namedNode("http://example.org/subject2"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/subject2")
+          rdf.namedNode("http://example.org/subject2"),
         ),
       ]);
 
@@ -215,13 +215,13 @@ describe("Fetcher", () => {
           rdf.namedNode("http://example.org/subject1"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph1")
+          rdf.namedNode("http://example.org/graph1"),
         ),
         rdf.quad(
           rdf.namedNode("http://example.org/subject2"),
           rdf.namedNode("http://example.org/predicate"),
           rdf.literal("object"),
-          rdf.namedNode("http://example.org/graph2")
+          rdf.namedNode("http://example.org/graph2"),
         ),
       ]);
 

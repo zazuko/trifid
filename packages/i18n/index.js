@@ -41,7 +41,7 @@ const factory = (trifid) => {
   // Force user to define the `directory` parameter
   if (!config.directory || typeof config.directory !== "string") {
     throw new Error(
-      "The 'directory' configuration field should be a non-empty string."
+      "The 'directory' configuration field should be a non-empty string.",
     );
   }
 

@@ -70,11 +70,11 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
       Object.entries(templateOptions.files).map(async (t) => [
         t[0],
         await resolveTemplate(t[1]),
-      ])
-    )
+      ]),
+    ),
   );
   const templatesWithoutMain = Object.fromEntries(
-    Object.entries(templates).filter((t) => t[0] !== "main")
+    Object.entries(templates).filter((t) => t[0] !== "main"),
   );
   const mainTemplate = templates.main;
 
@@ -95,7 +95,7 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
       Object.entries(templatesWithoutMain).map((t) => [
         t[0],
         t[1](renderedOptions),
-      ])
+      ]),
     );
 
     return mainTemplate({

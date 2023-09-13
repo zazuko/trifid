@@ -127,7 +127,7 @@ function createEntityRenderer({ options = {}, logger }) {
       const quadChunks = await labelLoader.tryFetchAll(cf);
       const labelQuads = quadChunks.filter((notNull) => notNull).flat();
       logger?.debug(
-        `Got ${labelQuads.length} new labels from endpointUrl:${endpointUrl}`
+        `Got ${labelQuads.length} new labels from endpointUrl:${endpointUrl}`,
       );
       externalLabels.dataset.addAll(labelQuads);
     }

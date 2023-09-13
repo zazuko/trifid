@@ -22,7 +22,7 @@ describe("errors middleware", () => {
         logger: {
           error: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/").expect(500);
@@ -41,7 +41,7 @@ describe("errors middleware", () => {
         logger: {
           error: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/").expect(502);
@@ -60,7 +60,7 @@ describe("errors middleware", () => {
         logger: {
           error: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/").expect("");

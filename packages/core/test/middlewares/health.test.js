@@ -18,7 +18,7 @@ describe("health middleware", () => {
         logger: {
           debug: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app)
@@ -35,7 +35,7 @@ describe("health middleware", () => {
         logger: {
           debug: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/health").expect("ok");
@@ -50,7 +50,7 @@ describe("health middleware", () => {
         logger: {
           debug: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/health").expect(200);
@@ -65,7 +65,7 @@ describe("health middleware", () => {
         logger: {
           debug: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app)
@@ -84,7 +84,7 @@ describe("health middleware", () => {
         logger: {
           debug: (_msg) => {},
         },
-      })
+      }),
     );
 
     return request(app).get("/non-existant-route").expect(404);

@@ -16,7 +16,7 @@ const trifidFactory = async (trifid) => {
   const yasguiPath = resolve("@zazuko/yasgui/build/", import.meta.url);
   server.use(
     "/yasgui-dist/",
-    express.static(yasguiPath.replace(/^file:\/\//, ""))
+    express.static(yasguiPath.replace(/^file:\/\//, "")),
   );
 
   // serve static files for openlayers (maps)
@@ -39,7 +39,7 @@ const trifidFactory = async (trifid) => {
         urlShortener,
         locals: res.locals,
       },
-      { title: "YASGUI" }
+      { title: "YASGUI" },
     );
 
     res.send(content);
