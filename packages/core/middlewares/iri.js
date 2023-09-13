@@ -4,11 +4,10 @@ import absoluteUrl from "absolute-url";
 /**
  * Replacement for `url.format` which is deprecated.
  *
- * @param {*} urlObject The URL object.
+ * @param {URL} urlObject The URL object.
  * @returns {string} URL as a string.
  */
-const urlFrom = (urlObject) =>
-  String(Object.assign(new URL("http://example.com"), urlObject));
+const urlFrom = (urlObject) => urlObject.toString();
 
 /**
  * Remove the searchParams part of a URL.
