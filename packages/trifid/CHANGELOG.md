@@ -1,5 +1,18 @@
 # trifid
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [cb227a3]
+- Updated dependencies [9e2019c]
+- Updated dependencies [3a13457]
+- Updated dependencies [1937f67]
+- Updated dependencies [141786b]
+  - trifid-core@2.6.3
+  - @zazuko/trifid-entity-renderer@0.5.0
+  - @zazuko/trifid-plugin-sparql-proxy@1.1.1
+
 ## 4.0.1
 
 ### Patch Changes

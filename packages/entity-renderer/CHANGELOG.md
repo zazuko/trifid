@@ -1,5 +1,19 @@
 # @zazuko/trifid-renderer-entity
 
+## 0.5.0
+
+### Minor Changes
+
+- 9e2019c: Improve the default header
+
+### Patch Changes
+
+- 3a13457: Upgrade @zazuko/rdf-entity-webcomponent to 0.7.7
+- 1937f67: Use @zazuko/env and upgrade dependencies
+- Updated dependencies [cb227a3]
+- Updated dependencies [141786b]
+  - trifid-core@2.6.3
+
 ## 0.4.18
 
 ### Patch Changes
