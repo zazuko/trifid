@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 0.5.1
+
+### Patch Changes
+
+- c283b93: Include env.js file in the package
+
 ## 0.5.0
 
 ### Minor Changes
