@@ -1,5 +1,12 @@
 # trifid-core
 
+## 2.6.3
+
+### Patch Changes
+
+- cb227a3: Use toString method to convert IRI URL into a string
+- 141786b: Upgrade dependencies
+
 ## 2.6.2
 
 ### Patch Changes
