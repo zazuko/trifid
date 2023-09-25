@@ -21,6 +21,7 @@ middlewares:
     module: "@zazuko/trifid-plugin-sparql-proxy"
     paths: /query
     config:
+      enableProxy: true # enable support for `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` environment variables
       sparqlEndpoint:
         url: https://example.com/query
         username: admin

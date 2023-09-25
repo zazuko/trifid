@@ -1,4 +1,5 @@
 import sparqlProxy from "@zazuko/sparql-proxy";
+import { ProxyAgent } from "proxy-agent";
 
 const factory = (trifid) => {
   const { config } = trifid;
@@ -6,6 +7,7 @@ const factory = (trifid) => {
   const {
     endpointUrl: _e, // ignore this field
     authentication: _a, // ignore this field
+    enableProxy, // enable/disable the support for `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` environment variables
     sparqlEndpoint, // get the configuration about the endpoint
     ...proxyConfig // rest of the configuration
   } = config;
@@ -28,6 +30,10 @@ const factory = (trifid) => {
         password: sparqlEndpoint.password,
       };
     }
+  }
+
+  if (enableProxy && enableProxy !== "false") {
+    proxyConfig.agent = new ProxyAgent();
   }
 
   return sparqlProxy(proxyConfig);

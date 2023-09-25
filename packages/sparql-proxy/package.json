@@ -21,6 +21,7 @@
     "test": "true"
   },
   "dependencies": {
-    "@zazuko/sparql-proxy": "^2.6.8"
+    "@zazuko/sparql-proxy": "^2.6.8",
+    "proxy-agent": "^6.3.1"
   }
 }
