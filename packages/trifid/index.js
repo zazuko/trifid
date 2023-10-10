@@ -1,11 +1,18 @@
 // @ts-check
 import Fastify from 'fastify'
+import cors from '@fastify/cors'
+
 import healthMiddleware from './middlewares/health.js'
 
 const server = Fastify({
   logger: {
     level: 'debug',
   },
+})
+
+await server.register(cors, {
+  origin: '*',
+  credentials: true,
 })
 
 // Health check
