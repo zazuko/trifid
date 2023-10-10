@@ -24,10 +24,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@tpluscode/eslint-config": "^0.4.4",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
-    "prettier": "^3.0.3"
+    "lint-staged": "^14.0.1"
   }
 }

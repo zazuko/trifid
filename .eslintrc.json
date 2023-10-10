@@ -1,7 +1,10 @@
 {
-  "extends": ["@tpluscode/eslint-config/js", "plugin:prettier/recommended"],
+  "extends": ["@tpluscode/eslint-config/js"],
   "env": {
     "mocha": true
   },
-  "ignorePatterns": ["**/*.ts", "**/*.d.ts", "**/*.d.ts.map"]
+  "ignorePatterns": ["**/*.ts", "**/*.d.ts", "**/*.d.ts.map"],
+  "rules": {
+    "space-before-function-paren": "off"
+  }
 }
