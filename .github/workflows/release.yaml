@@ -15,13 +15,13 @@ jobs:
       # This allow GitHub Actions to trigger the jobs for tags if needed
       - name: Generate token
         id: generate_token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{ secrets.GH_APP_ID }}
           private_key: ${{ secrets.GH_PRIVATE_KEY }}
 
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
