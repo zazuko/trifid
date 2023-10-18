@@ -15,6 +15,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
+    "dev": "node --watch index.js",
     "test": "true",
     "help": "node server.js --help",
     "start:tbbt": "node server.js -c instances/tbbt/config.yaml",
@@ -25,6 +26,9 @@
   },
   "dependencies": {
     "@fastify/cors": "^8.4.0",
-    "fastify": "^4.23.2"
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/view": "^8.2.0",
+    "fastify": "^4.23.2",
+    "handlebars": "^4.7.8"
   }
 }
