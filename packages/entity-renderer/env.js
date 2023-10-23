@@ -1,4 +1,3 @@
-import { create } from "@zazuko/env";
-import DatasetFactory from "rdf-ext/DatasetFactory.js";
+import { create } from '@zazuko/env'
 
-export default create(DatasetFactory);
+export default create()
