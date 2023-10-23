@@ -18,6 +18,6 @@
     "xmlbuilder2": "^3.0.2"
   },
   "devDependencies": {
-    "standard": "^17.0.0"
+    "standard": "^17.1.0"
   }
 }
