@@ -1,5 +1,6 @@
+// @ts-check
 import { createAPI } from './ckan.js'
-import rdf from 'rdf-ext'
+import rdf from '@zazuko/env'
 
 const factory = (trifid) => {
   const { config, logger } = trifid

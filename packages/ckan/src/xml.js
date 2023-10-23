@@ -1,6 +1,6 @@
-import rdf from 'rdf-ext'
+import rdf from '@zazuko/env'
 import * as ns from './namespace.js'
-import { prefixes, shrink } from '@zazuko/rdf-vocabularies'
+import { prefixes, shrink } from '@zazuko/vocabularies'
 import { create as createXml } from 'xmlbuilder2'
 
 function toXML (dataset) {

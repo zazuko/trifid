@@ -1,5 +1,5 @@
-import _rdf from 'rdf-ext'
-import { prefixes } from '@zazuko/rdf-vocabularies'
+import _rdf from '@zazuko/env'
+import { prefixes } from '@zazuko/vocabularies'
 
 export const dcat = _rdf.namespace(prefixes.dcat)
 export const dcterms = _rdf.namespace(prefixes.dcterms)
