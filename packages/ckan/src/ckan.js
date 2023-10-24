@@ -1,14 +1,13 @@
 // @ts-check
-import { toXML } from './xml.js'
-
-import { datasetsQuery } from './query.js'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
+import { toXML } from './xml.js'
+import { datasetsQuery } from './query.js'
 
 export function createAPI (config) {
   const client = new ParsingClient({
     endpointUrl: config.endpointUrl,
     user: config.user,
-    password: config.password
+    password: config.password,
   })
 
   async function fetchDatasets (organizationId) {
@@ -18,6 +17,6 @@ export function createAPI (config) {
 
   return {
     fetchDatasets,
-    toXML
+    toXML,
   }
 }

@@ -5,8 +5,17 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "standard"
+    "test": "true"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/ckan"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid/issues"
+  },
+  "homepage": "https://github.com/zazuko/trifid#readme",
   "author": "Zazuko GmbH",
   "license": "UNLICENSED",
   "dependencies": {
@@ -16,8 +25,5 @@
     "dotenv": "^16.3.1",
     "sparql-http-client": "^2.4.2",
     "xmlbuilder2": "^3.1.1"
-  },
-  "devDependencies": {
-    "standard": "^17.1.0"
   }
 }

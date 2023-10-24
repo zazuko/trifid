@@ -90,7 +90,6 @@ Configuring Trifid to use `@zazuko/trifid-plugin-ckan` is easy, just add the fol
 
 ```yaml
 middlewares:
-
   # …other middlewares
 
   ckan:

@@ -1,7 +1,7 @@
 import rdf from '@zazuko/env'
-import * as ns from './namespace.js'
 import prefixes, { shrink } from '@zazuko/prefixes'
 import { create as createXml } from 'xmlbuilder2'
+import * as ns from './namespace.js'
 
 function toXML (dataset) {
   const pointer = rdf.clownface({ dataset: rdf.dataset(dataset) })
@@ -19,8 +19,8 @@ function toXML (dataset) {
       rdf: prefixes.rdf,
       dcat: prefixes.dcat,
       dcterms: prefixes.dcterms,
-      vcard: prefixes.vcard
-    }
+      vcard: prefixes.vcard,
+    },
   }, {
     'rdf:RDF': {
       '@': pf,
@@ -29,6 +29,7 @@ function toXML (dataset) {
           // Verify that identifiers is CKAN-valid, ignore the dataset otherwise
           const identifiers = dataset.out(ns.dcterms.identifier)
           if (!identifiers.value) {
+            // eslint-disable-next-line no-console
             console.error(`Ignoring dataset ${dataset.value} because it has no or multiple identifiers`)
             return null
           }
@@ -48,11 +49,11 @@ function toXML (dataset) {
           const legalBasisPointer = dataset.out(ns.dcterms.license)
           const legalBasis = legalBasisPointer.term
             ? {
-                'rdf:Description': {
-                  '@': { 'rdf:about': legalBasisPointer.value },
-                  'rdfs:label': 'legal_basis'
-                }
-              }
+              'rdf:Description': {
+                '@': { 'rdf:about': legalBasisPointer.value },
+                'rdfs:label': 'legal_basis',
+              },
+            }
             : null
 
           const distributions = dataset.out(ns.schema.workExample)
@@ -64,15 +65,15 @@ function toXML (dataset) {
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
                 'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
                 'dcterms:rights': serializeTerm(copyright),
-                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) }
-              }
+                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
+              },
             }))
 
           const publishers = dataset.out(ns.dcterms.publisher)
             .map(publisher => ({
               'rdf:Description': {
-                'rdfs:label': publisher.value
-              }
+                'rdfs:label': publisher.value,
+              },
             }))
 
           // Datasets contain a mix of legacy (DC) frequencies and new (EU) frequencies.
@@ -102,12 +103,12 @@ function toXML (dataset) {
               'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
-              'dcat:distribution': distributions
-            }
+              'dcat:distribution': distributions,
+            },
           }
-        }).filter(Boolean)
-      }
-    }
+        }).filter(Boolean),
+      },
+    },
   }).doc().end({ prettyPrint: true })
 }
 
@@ -150,13 +151,13 @@ function serializeLiteral ({ term }) {
 
   return {
     '@': attrs,
-    '#': term.value
+    '#': term.value,
   }
 }
 
 function serializeNamedNode ({ value }) {
   return {
-    '@': { 'rdf:resource': value }
+    '@': { 'rdf:resource': value },
   }
 }
 
@@ -173,13 +174,14 @@ function serializeBlankNode (pointer) {
     ({ ...acc, [shrink(property.value)]: serializeTerm(pointer.out(property)) }), {})
 
   return {
-    [shrink(type)]: resource
+    [shrink(type)]: resource,
   }
 }
 
 function distributionFormatFromEncoding (encodingPointer) {
   const encoding = encodingPointer.values[0] || ''
 
+  /* eslint-disable indent */
   switch (encoding) {
     case 'text/html': {
       return 'HTML'
@@ -191,6 +193,7 @@ function distributionFormatFromEncoding (encodingPointer) {
       return 'UNKNOWN'
     }
   }
+  /* eslint-enable indent */
 }
 
 export { toXML }

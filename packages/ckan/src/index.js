@@ -1,6 +1,6 @@
 // @ts-check
-import { createAPI } from './ckan.js'
 import rdf from '@zazuko/env'
+import { createAPI } from './ckan.js'
 
 const factory = (trifid) => {
   const { config, logger } = trifid
@@ -13,7 +13,7 @@ const factory = (trifid) => {
     const { fetchDatasets, toXML } = createAPI({
       endpointUrl: endpoint,
       user,
-      password
+      password,
     })
 
     const organization = req?.query?.organization
