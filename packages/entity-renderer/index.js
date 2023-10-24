@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url'
 import { parsers } from '@rdfjs/formats-common'
 import hijackResponse from 'hijackresponse'
 
-import rdf from './env.js'
+import rdf from '@zazuko/env'
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
 

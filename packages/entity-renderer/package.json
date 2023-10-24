@@ -43,7 +43,6 @@
   },
   "files": [
     "index.js",
-    "env.js",
     "renderer",
     "views"
   ],

@@ -1,4 +1,4 @@
-import rdf from '../../env.js'
+import rdf from '@zazuko/env'
 import { shrink } from '../common/shrink.js'
 
 const namedCounts = (dataset) => {

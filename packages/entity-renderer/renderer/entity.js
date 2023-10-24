@@ -2,7 +2,7 @@ import { render as renderWebComponent } from '@lit-labs/ssr'
 import { DEFAULT_LABEL_PROPERTIES } from '@zazuko/rdf-entity-webcomponent/src/builder/entityBuilder.js'
 import { getLabel } from '@zazuko/rdf-entity-webcomponent/src/builder/labels.js'
 import { ns } from '@zazuko/rdf-entity-webcomponent/src/namespaces.js'
-import rdf from '../env.js'
+import rdf from '@zazuko/env'
 import { LabelLoader } from './labels/labelLoader.js'
 import { TrifidResourceDescription } from './web-component/TrifidResourceDescription.js'
 
