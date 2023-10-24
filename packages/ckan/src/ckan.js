@@ -1,3 +1,4 @@
+// @ts-check
 import { toXML } from './xml.js'
 
 import { datasetsQuery } from './query.js'

@@ -10,12 +10,12 @@
   "author": "Zazuko GmbH",
   "license": "UNLICENSED",
   "dependencies": {
-    "@tpluscode/rdf-string": "^0.2.26",
-    "@zazuko/rdf-vocabularies": "2022.11.28",
-    "dotenv": "^16.0.3",
-    "rdf-ext": "^2.1.0",
-    "sparql-http-client": "^2.4.1",
-    "xmlbuilder2": "^3.0.2"
+    "@tpluscode/rdf-string": "^1.1.0",
+    "@zazuko/env": "^1.9.0",
+    "@zazuko/prefixes": "^2.1.0",
+    "dotenv": "^16.3.1",
+    "sparql-http-client": "^2.4.2",
+    "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
     "standard": "^17.1.0"
