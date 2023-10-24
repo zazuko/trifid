@@ -1,21 +1,21 @@
-import toNT from "@rdfjs/to-ntriples";
-import { html } from "lit";
-import { shrink } from "../common/shrink.js";
+import toNT from '@rdfjs/to-ntriples'
+import { html } from 'lit'
+import { shrink } from '@zazuko/prefixes'
 
-function renderTerm(term) {
-  if (term.termType === "NamedNode") {
-    return html`<a href="${term.value}">${shrink(term.value)}</a>`;
+function renderTerm (term) {
+  if (term.termType === 'NamedNode') {
+    return html`<a href="${term.value}">${shrink(term.value)}</a>`
   }
-  if (term.constructor.name === "DefaultGraph") {
-    return html`Default graph`;
+  if (term.constructor.name === 'DefaultGraph') {
+    return html`Default graph`
   }
   if (term.termType) {
-    return html`${toNT(term)}`;
+    return html`${toNT(term)}`
   }
   if (term.value) {
-    return html`${term.value}`;
+    return html`${term.value}`
   }
-  return html`${term}`;
+  return html`${term}`
 }
 
-export { renderTerm, shrink };
+export { renderTerm, shrink }
