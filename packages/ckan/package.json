@@ -12,7 +12,7 @@
   "dependencies": {
     "@tpluscode/rdf-string": "^1.1.0",
     "@zazuko/env": "^1.8.0",
-    "@zazuko/vocabularies": "^2.0.3",
+    "@zazuko/prefixes": "^2.1.0",
     "dotenv": "^16.3.1",
     "sparql-http-client": "^2.4.2",
     "xmlbuilder2": "^3.1.1"
