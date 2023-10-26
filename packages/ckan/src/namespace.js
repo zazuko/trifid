@@ -1,8 +1,5 @@
-import _rdf from '@zazuko/env'
-import prefixes from '@zazuko/prefixes'
+import rdf from '@zazuko/env'
 
-export const dcat = _rdf.namespace(prefixes.dcat)
-export const dcterms = _rdf.namespace(prefixes.dcterms)
-export const rdf = _rdf.namespace(prefixes.rdf)
-export const schema = _rdf.namespace(prefixes.schema)
-export const skos = _rdf.namespace(prefixes.skos)
+const { dcat, dcterms, rdf, schema, skos } = rdf.ns
+
+export { dcat, dcterms, rdf, schema, skos }
