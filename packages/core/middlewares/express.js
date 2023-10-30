@@ -1,4 +1,4 @@
-import { loader } from "../lib/middlewares/loader.js";
+import { loader } from '../lib/middlewares/loader.js'
 
 /**
  * Import a plain Express middleware.
@@ -11,17 +11,17 @@ import { loader } from "../lib/middlewares/loader.js";
  * @returns Express middleware.
  */
 const factory = async (trifid) => {
-  const { config } = trifid;
-  const { module, options } = config;
+  const { config } = trifid
+  const { module, options } = config
   if (!module) {
     throw new Error(
       "configuration requires 'module' field, specifying the Express middleware NPM module to load",
-    );
+    )
   }
 
-  const middleware = await loader(module);
+  const middleware = await loader(module)
 
-  return middleware(options);
-};
+  return middleware(options)
+}
 
-export default factory;
+export default factory

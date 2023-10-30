@@ -1,29 +1,29 @@
-import assert from "assert";
-import withServer from "express-as-promise/withServer.js";
-import { describe, it } from "mocha";
-import trifidFactory from "../index.js";
+import assert from 'assert'
+import withServer from 'express-as-promise/withServer.js'
+import { describe, it } from 'mocha'
+import trifidFactory from '../index.js'
 
 const createTrifidConfig = (config, server = {}) => {
-  const loggerSpy = [];
+  const loggerSpy = []
 
   return {
     logger: (str) => loggerSpy.push(str),
     server,
     config,
-  };
-};
+  }
+}
 
-describe("trifid-plugin-graph-explorer", () => {
-  describe("trifid factory", () => {
-    it("should be a factory", () => {
-      assert.strictEqual(typeof trifidFactory, "function");
-    });
+describe('trifid-plugin-graph-explorer', () => {
+  describe('trifid factory', () => {
+    it('should be a factory', () => {
+      assert.strictEqual(typeof trifidFactory, 'function')
+    })
 
-    it("should create a middleware with factory and default options", async () => {
+    it('should create a middleware with factory and default options', async () => {
       await withServer(async (server) => {
-        const trifid = createTrifidConfig({}, server.app);
-        trifidFactory(trifid);
-      });
-    });
-  });
-});
+        const trifid = createTrifidConfig({}, server.app)
+        trifidFactory(trifid)
+      })
+    })
+  })
+})

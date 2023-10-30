@@ -1,23 +1,23 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from '@jest/globals'
 
-import schema from "../lib/config/schema.js";
-import parser from "../lib/config/parser.js";
+import schema from '../lib/config/schema.js'
+import parser from '../lib/config/parser.js'
 
-describe("config", () => {
-  test("should be an object", () => {
-    expect(typeof schema).toEqual("object");
-  });
+describe('config', () => {
+  test('should be an object', () => {
+    expect(typeof schema).toEqual('object')
+  })
 
-  test("should not throw if the configuration is empty", () => {
-    expect(() => parser()).not.toThrow();
-    expect(() => parser({})).not.toThrow();
-  });
+  test('should not throw if the configuration is empty', () => {
+    expect(() => parser()).not.toThrow()
+    expect(() => parser({})).not.toThrow()
+  })
 
-  test("sould throw if we add some non-supported fields", () => {
-    expect(() => parser({ thisFieldIsNotSupported: true })).toThrow();
-  });
+  test('sould throw if we add some non-supported fields', () => {
+    expect(() => parser({ thisFieldIsNotSupported: true })).toThrow()
+  })
 
-  test("should not throw if supported properties are empty", () => {
+  test('should not throw if supported properties are empty', () => {
     expect(() =>
       parser({
         extends: [],
@@ -25,51 +25,51 @@ describe("config", () => {
         server: {},
         middlewares: {},
       }),
-    ).not.toThrow();
-  });
+    ).not.toThrow()
+  })
 
-  test("should not throw on valid values for extends", () => {
+  test('should not throw on valid values for extends', () => {
     expect(() =>
       parser({
         extends: [],
       }),
-    ).not.toThrow();
+    ).not.toThrow()
 
     expect(() =>
       parser({
-        extends: ["path"],
+        extends: ['path'],
       }),
-    ).not.toThrow();
+    ).not.toThrow()
 
     expect(() =>
       parser({
-        extends: ["path1", "path2", "path3"],
+        extends: ['path1', 'path2', 'path3'],
       }),
-    ).not.toThrow();
-  });
+    ).not.toThrow()
+  })
 
-  test("should throw on invalid values for extends", () => {
+  test('should throw on invalid values for extends', () => {
     // this is a string instead of an array of strings
     expect(() => {
       parser({
-        extends: "this is a string instead of an array",
-      });
-    }).toThrow();
+        extends: 'this is a string instead of an array',
+      })
+    }).toThrow()
 
     // this is not an array of strings, but an array of integers
     expect(() => {
       parser({
         extends: [1, 2, 3],
-      });
-    }).toThrow();
-  });
+      })
+    }).toThrow()
+  })
 
-  test("should not throw on valid values for server", () => {
+  test('should not throw on valid values for server', () => {
     expect(() => {
       parser({
         server: {},
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
@@ -77,8 +77,8 @@ describe("config", () => {
           listener: {},
           express: {},
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
@@ -86,8 +86,8 @@ describe("config", () => {
           listener: {},
           express: {},
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
@@ -97,8 +97,8 @@ describe("config", () => {
           },
           express: {},
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
@@ -107,20 +107,20 @@ describe("config", () => {
             port: 8080,
           },
           express: {
-            foo: "bar",
+            foo: 'bar',
           },
         },
-      });
-    }).not.toThrow();
-  });
+      })
+    }).not.toThrow()
+  })
 
-  test("should throw on invalid values for server", () => {
+  test('should throw on invalid values for server', () => {
     // this is a string instead of an object
     expect(() => {
       parser({
-        server: "this is a string instead of an object",
-      });
-    }).toThrow();
+        server: 'this is a string instead of an object',
+      })
+    }).toThrow()
 
     // unsupported field
     expect(() => {
@@ -130,8 +130,8 @@ describe("config", () => {
           express: {},
           unsupportedField: true,
         },
-      });
-    }).toThrow();
+      })
+    }).toThrow()
 
     // invalid port number
     expect(() => {
@@ -142,8 +142,8 @@ describe("config", () => {
           },
           express: {},
         },
-      });
-    }).toThrow();
+      })
+    }).toThrow()
 
     // unsupported listener property
     expect(() => {
@@ -155,101 +155,101 @@ describe("config", () => {
           },
           express: {},
         },
-      });
-    }).toThrow();
-  });
+      })
+    }).toThrow()
+  })
 
-  test("should not throw on valid values for globals", () => {
+  test('should not throw on valid values for globals', () => {
     expect(() => {
       parser({
         globals: {},
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
         globals: {
-          foo: "bar",
+          foo: 'bar',
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
         globals: {
-          foo: "bar",
-          jon: "doe",
+          foo: 'bar',
+          jon: 'doe',
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     // multi-level globals
     expect(() => {
       parser({
         globals: {
           foo: {
-            bar: "baz",
+            bar: 'baz',
           },
         },
-      });
-    }).not.toThrow();
-  });
+      })
+    }).not.toThrow()
+  })
 
-  test("should throw on invalid values for globals", () => {
+  test('should throw on invalid values for globals', () => {
     // this is a string instead of an object
     expect(() => {
       parser({
-        globals: "this is a string instead of an object",
-      });
-    }).toThrow();
-  });
+        globals: 'this is a string instead of an object',
+      })
+    }).toThrow()
+  })
 
-  test("should not throw on valid values for middlewares", () => {
+  test('should not throw on valid values for middlewares', () => {
     expect(() => {
       parser({
         middlewares: {},
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
         middlewares: {
           module: {
             order: 42,
-            module: "module",
+            module: 'module',
           },
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
         middlewares: {
           module: {
             order: 42,
-            module: "module",
+            module: 'module',
             config: {
-              foo: "bar",
+              foo: 'bar',
             },
           },
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     expect(() => {
       parser({
         middlewares: {
           module: {
             order: 42,
-            module: "module",
+            module: 'module',
             config: {
-              foo: "bar",
+              foo: 'bar',
               baz: null,
             },
           },
         },
-      });
-    }).not.toThrow();
+      })
+    }).not.toThrow()
 
     // allow complex config object
     expect(() => {
@@ -257,35 +257,35 @@ describe("config", () => {
         middlewares: {
           module: {
             order: 42,
-            module: "module",
+            module: 'module',
             config: {
               foo: {
-                bar: "baz",
+                bar: 'baz',
               },
             },
           },
         },
-      });
-    }).not.toThrow();
-  });
+      })
+    }).not.toThrow()
+  })
 
-  test("should throw on invalid values for middlewares", () => {
+  test('should throw on invalid values for middlewares', () => {
     // this is a string instead of an object
     expect(() => {
       parser({
-        middlewares: "this is a string instead of an object",
-      });
-    }).toThrow();
+        middlewares: 'this is a string instead of an object',
+      })
+    }).toThrow()
 
     // not scoped into an object per middleware
     expect(() => {
       parser({
         middlewares: {
           order: 42,
-          name: "module",
+          name: 'module',
         },
-      });
-    }).toThrow();
+      })
+    }).toThrow()
 
     // missing "module" property
     expect(() => {
@@ -295,7 +295,7 @@ describe("config", () => {
             order: 42,
           },
         },
-      });
-    }).toThrow();
-  });
-});
+      })
+    }).toThrow()
+  })
+})

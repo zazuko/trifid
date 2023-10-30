@@ -10,26 +10,26 @@
  * @returns Express middleware.
  */
 const factory = async (trifid) => {
-  const { config, render } = trifid;
-  const { path } = config;
-  let { context, options } = config;
+  const { config, render } = trifid
+  const { path } = config
+  let { context, options } = config
 
   if (!path) {
-    throw new Error("configuration is missing 'path' field");
+    throw new Error("configuration is missing 'path' field")
   }
 
   if (!context) {
-    context = {};
+    context = {}
   }
 
   if (!options) {
-    options = {};
+    options = {}
   }
 
   return async (_req, res, _next) => {
-    res.status(200);
-    res.send(await render(path, { ...context, locals: res.locals }, options));
-  };
-};
+    res.status(200)
+    res.send(await render(path, { ...context, locals: res.locals }, options))
+  }
+}
 
-export default factory;
+export default factory

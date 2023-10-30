@@ -1,4 +1,4 @@
-import camouflageRewrite from "camouflage-rewrite";
+import camouflageRewrite from 'camouflage-rewrite'
 
 /**
  * Rewrite the dataset base URL.
@@ -13,26 +13,26 @@ import camouflageRewrite from "camouflage-rewrite";
  * @returns Express middleware.
  */
 const factory = (trifid) => {
-  const { config } = trifid;
-  const { rewriteContent, datasetBaseUrl } = config;
+  const { config } = trifid
+  const { rewriteContent, datasetBaseUrl } = config
 
-  let rewriteContentValue = true;
+  let rewriteContentValue = true
   if (rewriteContent !== undefined) {
-    rewriteContentValue = rewriteContent;
+    rewriteContentValue = rewriteContent
   }
 
   // skip rewriting if the `datasetBaseUrl` is empty
   if (!datasetBaseUrl) {
     return (_req, _res, next) => {
-      next();
-    };
+      next()
+    }
   }
 
   return camouflageRewrite({
     ...config,
     url: datasetBaseUrl,
     rewriteContent: rewriteContentValue,
-  });
-};
+  })
+}
 
-export default factory;
+export default factory
