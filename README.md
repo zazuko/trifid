@@ -31,7 +31,7 @@ Any compatible middleware can be added to the configuration.
 #### Examples
 
 - [Trifid plugin iiif](https://github.com/zazuko/trifid-plugin-iiif/)
-- [CKAN harvester endpoint](https://github.com/zazuko/trifid-plugin-ckan)
+- [CKAN harvester endpoint](./packages/ckan/)
 
 ## Who Uses Trifid?
 
@@ -180,11 +180,20 @@ To improve the maintenability of the whole project, we decided to use a monorepo
 
 Here is the list of all packages that are maintained here:
 
-| Package                                                        | Latest version                                                                                                      |                                       |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| [`trifid`](./packages/trifid)                                  | [![](https://badge.fury.io/js/trifid.svg)](https://npm.im/trifid)                                                   | Bundle with commonly used middlewares |
-| [`trifid-core`](./packages/core)                               | [![](https://badge.fury.io/js/trifid-core.svg)](https://npm.im/trifid-core)                                         | Core package                          |
-| [`@zazuko/trifid-entity-renderer`](./packages/entity-renderer) | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-entity-renderer.svg)](https://npm.im/@zazuko/trifid-entity-renderer) | Entity renderer                       |
+| Package                                                         | Latest version                                                                                                              |                                       |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [`trifid`](./packages/trifid)                                   | [![](https://badge.fury.io/js/trifid.svg)](https://npm.im/trifid)                                                           | Bundle with commonly used middlewares |
+| [`trifid-core`](./packages/core)                                | [![](https://badge.fury.io/js/trifid-core.svg)](https://npm.im/trifid-core)                                                 | Core package                          |
+| [`@zazuko/trifid-entity-renderer`](./packages/entity-renderer)  | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-entity-renderer.svg)](https://npm.im/@zazuko/trifid-entity-renderer)         | Entity renderer                       |
+| [`trifid-plugin-graph-explorer`](./packages/graph-explorer)     | [![](https://badge.fury.io/js/trifid-plugin-graph-explorer.svg)](https://npm.im/trifid-plugin-graph-explorer)               | Graph Explorer plugin                 |
+| [`@zazuko/trifid-plugin-ckan`](./packages/ckan)                 | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-plugin-ckan.svg)](https://npm.im/@zazuko/trifid-plugin-ckan)                 | CKAN harvester endpoint               |
+| [`trifid-handler-fetch`](./packages/handler-fetch)              | [![](https://badge.fury.io/js/trifid-handler-fetch.svg)](https://npm.im/trifid-handler-fetch)                               | Fetch handler for Trifid              |
+| [`trifid-handler-sparql`](./packages/handler-sparql)            | [![](https://badge.fury.io/js/trifid-handler-sparql.svg)](https://npm.im/trifid-handler-sparql)                             | SPARQL handler for Trifid             |
+| [`trifid-plugin-i18n`](./packages/i18n)                         | [![](https://badge.fury.io/js/trifid-plugin-i18n.svg)](https://npm.im/trifid-plugin-i18n)                                   | i18n support for Trifid               |
+| [`@zazuko/trifid-handle-redirects`](./packages/redirects)       | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-handle-redirects.svg)](https://npm.im/@zazuko/trifid-handle-redirects)       | Handle HTTP redirects                 |
+| [`@zazuko/trifid-plugin-sparql-proxy`](./packages/sparql-proxy) | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-plugin-sparql-proxy.svg)](https://npm.im/@zazuko/trifid-plugin-sparql-proxy) | Trifid plugin for SPARQL proxy        |
+| [`trifid-plugin-spex`](./packages/spex)                         | [![](https://badge.fury.io/js/trifid-plugin-spex.svg)](https://npm.im/trifid-plugin-spex)                                   | SPEX plugin for Trifid                |
+| [`trifid-plugin-yasgui`](./packages/yasgui)                     | [![](https://badge.fury.io/js/trifid-plugin-yasgui.svg)](https://npm.im/trifid-plugin-yasgui)                               | YASGUI plugin for Trifid              |
 
 More to come as we gradually consolidate other, initially separate repositories.
 
