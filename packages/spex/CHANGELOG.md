@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 1.1.4
+
+### Patch Changes
+
+- 7940ded: Upgrade `import-meta-resolve` to v3.0.0
+
 ## 1.1.3
 
 ### Patch Changes
