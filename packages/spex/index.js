@@ -63,7 +63,7 @@ const createMiddleWare = async (config, render) => {
   })
 
   // static files from spex dist folder
-  const distPath = await resolve('@zazuko/spex/dist', import.meta.url)
+  const distPath = resolve('@zazuko/spex/dist', import.meta.url)
   router.use('/static/', express.static(distPath.replace(/^file:\/\//, '')))
   return router
 }
