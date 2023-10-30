@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 0.6.0
+
+### Minor Changes
+
+- 8b9d0dd: Replace the use of `rdf-ext` with `@zazuko/env`
+
 ## 0.5.1
 
 ### Patch Changes

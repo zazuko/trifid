@@ -1,5 +1,14 @@
 # trifid
 
+## 4.0.3
+
+### Patch Changes
+
+- Updated dependencies [7940ded]
+- Updated dependencies [8b9d0dd]
+  - trifid-plugin-spex@1.1.4
+  - @zazuko/trifid-entity-renderer@0.6.0
+
 ## 4.0.2
 
 ### Patch Changes
