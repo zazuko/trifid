@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "true"
+    "test": "c8 --reporter=lcov --reporter=text mocha"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,11 @@
     "dotenv": "^16.3.1",
     "sparql-http-client": "^2.4.2",
     "xmlbuilder2": "^3.1.1"
+  },
+  "devDependencies": {
+    "c8": "^8.0.1",
+    "express-as-promise": "^1.2.0",
+    "mocha": "^10.2.0",
+    "oxigraph": "^0.3.20"
   }
 }
