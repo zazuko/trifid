@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "c8": "^8.0.1",
-    "express-as-promise": "^1.2.0",
     "mocha": "^10.2.0",
     "oxigraph": "^0.3.20"
   }
