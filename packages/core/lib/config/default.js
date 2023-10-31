@@ -1,3 +1,5 @@
+// @ts-check
+
 // some default configuration
 
 export const maxDepth = 50

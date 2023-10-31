@@ -5,6 +5,7 @@
   },
   "ignorePatterns": ["**/*.ts", "**/*.d.ts", "**/*.d.ts.map"],
   "rules": {
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "indent": ["error", 2, { "SwitchCase": 1 }]
   }
 }

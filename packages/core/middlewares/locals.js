@@ -1,6 +1,8 @@
+// @ts-check
 import url from 'url'
 import absoluteUrl from 'absolute-url'
 
+/** @type {import('../types/index.d.ts').TrifidMiddleware} */
 const factory = (trifid) => {
   const { logger } = trifid
 

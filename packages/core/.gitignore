@@ -4,4 +4,5 @@ node_modules
 npm-debug.log
 *.tgz
 *.d.ts
+!types/*.d.ts
 *.d.ts.map

@@ -1,8 +1,11 @@
+// @ts-check
+
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+/** @type {import('../types/index.d.ts').TrifidMiddleware} */
 const factory = (trifid) => {
   const { logger, render } = trifid
 
@@ -18,27 +21,27 @@ const factory = (trifid) => {
       'application/n-quads',
     ])
     switch (accepts) {
-    case 'json':
-      res.send({ success: false, message: 'Not found', status: 404 })
-      break
+      case 'json':
+        res.send({ success: false, message: 'Not found', status: 404 })
+        break
 
-    case 'application/n-quads':
-    case 'html':
-      res.send(
-        await render(
-          `${currentDir}/../views/404.hbs`,
-          {
-            url: req.url,
-            locals: res.locals,
-          },
-          { title: 'Not Found' },
-        ),
-      )
-      break
+      case 'application/n-quads':
+      case 'html':
+        res.send(
+          await render(
+            `${currentDir}/../views/404.hbs`,
+            {
+              url: req.url,
+              locals: res.locals,
+            },
+            { title: 'Not Found' },
+          ),
+        )
+        break
 
-    default:
-      res.send('Not Found\n')
-      break
+      default:
+        res.send('Not Found\n')
+        break
     }
   }
 }

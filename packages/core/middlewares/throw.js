@@ -1,3 +1,6 @@
+// @ts-check
+
+/** @type {import('../types/index.d.ts').TrifidMiddleware} */
 const factory = (trifid) => {
   const { message } = trifid.config
 

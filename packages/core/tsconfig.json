@@ -1,6 +1,6 @@
 {
   // Change this to match your project
-  "include": ["*.js", "lib/**/*.js", "middlewares/**/*.js"],
+  "include": ["*.js", "lib/**/*.js", "middlewares/**/*.js", "types/index.d.ts"],
   "exclude": ["coverage", "test", "node_modules"],
   "compilerOptions": {
     // Tells TypeScript to read JS files, as
@@ -15,6 +15,9 @@
     // "outDir": "dist",
     // go to js file when using IDE functions like
     // "Go to Definition" in VSCode
-    "declarationMap": true
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext"
   }
 }

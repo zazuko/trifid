@@ -1,3 +1,5 @@
+// @ts-check
+
 import { URL } from 'url'
 import absoluteUrl from 'absolute-url'
 
@@ -22,6 +24,7 @@ const removeSearchParams = (originalUrl) => {
   return urlFrom(url)
 }
 
+/** @type {import('../types/index.d.ts').TrifidMiddleware} */
 const factory = (trifid) => {
   const { config, logger } = trifid
   const { datasetBaseUrl } = config

@@ -1,3 +1,4 @@
+// @ts-check
 import fs from 'fs/promises'
 import { dirname } from 'path'
 import merge from 'lodash/merge.js'
@@ -39,11 +40,13 @@ const resolveConfig = async (
   let configs = []
   if (Array.isArray(config.extends) && config.extends.length > 0) {
     config.extends = extendsResolver(config.extends, context)
-    configs = await Promise.all(
-      config.extends.map((configPath) =>
-        resolveConfigFile(configPath, depth + 1),
-      ),
-    )
+    if (Array.isArray(config.extends)) {
+      configs = await Promise.all(
+        config.extends.map((configPath) =>
+          resolveConfigFile(configPath, depth + 1),
+        ),
+      )
+    }
   }
 
   // merge all fields
@@ -78,7 +81,7 @@ const resolveConfig = async (
 const resolveConfigFile = async (filePath, depth = 0) => {
   // read config file
   const fileFullPath = cwdCallback(filePath)
-  const fileContent = await fs.readFile(fileFullPath)
+  const fileContent = await fs.readFile(fileFullPath, 'utf-8')
 
   let parsed
 
@@ -94,12 +97,16 @@ const resolveConfigFile = async (filePath, depth = 0) => {
 
 /**
  * Add default fields for a configuration.
+ * Warning: this function mutates the config object.
  *
- * @param {*} config
+ * @param {import('../../types/index.js').TrifidConfig} config Trifid configuration.
+ * @return {void}
  */
 const addDefaultFields = (config) => {
   if (!config.server) {
-    config.server = {}
+    config.server = {
+      listener: {},
+    }
   }
 
   if (!config.globals) {
@@ -113,8 +120,10 @@ const addDefaultFields = (config) => {
 
 /**
  * Add the default port for the server configuration.
+ * Warning: this function mutates the config object.
  *
- * @param {*} config
+ * @param {import('../../types/index.js').TrifidConfig} config Trifid configuration.
+ * @return {void}
  */
 const addDefaultPort = (config) => {
   if (!config.server.listener) {
@@ -127,8 +136,10 @@ const addDefaultPort = (config) => {
 
 /**
  * Add some default Express settings for the server configuration.
+ * Warning: this function mutates the config object.
  *
- * @param {*} config
+ * @param {import('../../types/index.js').TrifidConfig} config Trifid configuration.
+ * @return {void}
  */
 const addDefaultExpressSettings = (config) => {
   if (!config.server.express) {
@@ -140,6 +151,12 @@ const addDefaultExpressSettings = (config) => {
   }
 }
 
+/**
+ * Expand configuration and add default fields.
+ *
+ * @param {string | import('../../types/index.js').TrifidConfigWithExtends} configFile
+ * @returns {Promise<import('../../types/index.js').TrifidConfig>}
+ */
 const handler = async (configFile) => {
   let config = {}
   if (typeof configFile === 'string') {

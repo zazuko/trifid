@@ -9,8 +9,8 @@ import camouflageRewrite from 'camouflage-rewrite'
  *
  * Other available options are documented here: https://github.com/zazuko/camouflage-rewrite#usage
  *
- * @param {*} trifid Trifid object containing the configuration, and other utility functions.
- * @returns Express middleware.
+ * @param {import('../types/index.d.ts').TrifidMiddlewareArgument} trifid Trifid object containing the configuration, and other utility functions.
+ * @returns {Promise<import('../types/index.d.ts').ExpressMiddleware>} Express middleware.
  */
 const factory = (trifid) => {
   const { config } = trifid
