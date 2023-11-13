@@ -23,10 +23,6 @@ describe('trifid-handler-fetch', () => {
     next()
   }
 
-  it('should be a constructor', () => {
-    assert.equal(typeof Handler, 'function')
-  })
-
   it('should assign url option', () => {
     const iri = 'http://example.org/dataset'
 

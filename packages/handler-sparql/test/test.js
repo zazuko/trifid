@@ -16,10 +16,6 @@ const defaults = {
 /* eslint-enable no-template-curly-in-string */
 
 describe('trifid-handler-sparql', () => {
-  it('should be a constructor', () => {
-    strictEqual(typeof SparqlHandler, 'function')
-  })
-
   describe('uses the resourceExistsQuery to check if the requested IRI exists', async () => {
     [
       { iri: 'http://localhost/test', resourceNoSlash: undefined },
@@ -211,7 +207,7 @@ describe('trifid-handler-sparql', () => {
       const handler = new SparqlHandler({
         ...defaults,
         endpointUrl: endpoint.url,
-        authentication: authentication,
+        authentication,
       })
 
       server.app.use(setIri('http://localhost/test'))

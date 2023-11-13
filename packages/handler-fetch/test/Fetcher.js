@@ -13,10 +13,6 @@ describe('Fetcher', () => {
   const fileUrlDataset = `file://${require.resolve('tbbt-ld/dist/tbbt.nq')}`
 
   describe('.isCached', () => {
-    it('should be a method', () => {
-      assert.equal(typeof Fetcher.isCached, 'function')
-    })
-
     it('should return false if caching is not enabled', () => {
       assert(!Fetcher.isCached({}))
     })
@@ -36,10 +32,6 @@ describe('Fetcher', () => {
   })
 
   describe('.fetchDataset', () => {
-    it('should be a method', () => {
-      assert.equal(typeof Fetcher.fetchDataset, 'function')
-    })
-
     it('should load a dataset from a file URL', async () => {
       const options = {
         url: fileUrlDataset,
@@ -104,10 +96,6 @@ describe('Fetcher', () => {
   })
 
   describe('.spreadDataset', () => {
-    it('should be a method', () => {
-      assert.equal(typeof Fetcher.spreadDataset, 'function')
-    })
-
     it('should forward the dataset if no options are given', () => {
       const input = rdf.dataset([
         rdf.quad(

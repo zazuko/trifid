@@ -34,11 +34,7 @@ const createTrifidInstance = async () => {
 }
 
 describe('@zazuko/trifid-plugin-ckan', () => {
-  describe('trifid factory', () => {
-    it('should be a factory', () => {
-      strictEqual(typeof ckanTrifidPlugin, 'function')
-    })
-
+  describe('basic tests', () => {
     it('should create a middleware with factory and default options', async () => {
       const trifidInstance = await createTrifidInstance()
       const trifidListener = await trifidInstance.start()

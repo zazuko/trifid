@@ -1,13 +1,8 @@
 import { describe, expect, test } from '@jest/globals'
 
-import schema from '../lib/config/schema.js'
 import parser from '../lib/config/parser.js'
 
 describe('config', () => {
-  test('should be an object', () => {
-    expect(typeof schema).toEqual('object')
-  })
-
   test('should not throw if the configuration is empty', () => {
     expect(() => parser()).not.toThrow()
     expect(() => parser({})).not.toThrow()

@@ -1,4 +1,3 @@
-import assert from 'assert'
 import withServer from 'express-as-promise/withServer.js'
 import { describe, it } from 'mocha'
 import trifidFactory from '../index.js'
@@ -15,10 +14,6 @@ const createTrifidConfig = (config, server = {}) => {
 
 describe('trifid-plugin-graph-explorer', () => {
   describe('trifid factory', () => {
-    it('should be a factory', () => {
-      assert.strictEqual(typeof trifidFactory, 'function')
-    })
-
     it('should create a middleware with factory and default options', async () => {
       await withServer(async (server) => {
         const trifid = createTrifidConfig({}, server.app)

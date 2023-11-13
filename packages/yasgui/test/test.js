@@ -30,10 +30,6 @@ const createTrifidConfig = (app, config) => {
 
 describe('trifid-plugin-yasgui', () => {
   describe('trifid factory', () => {
-    it('should be a factory', () => {
-      assert.strictEqual(typeof trifidFactory, 'function')
-    })
-
     it('should create a middleware with factory and default options', async () => {
       const app = express()
       const trifid = createTrifidConfig(app, {})

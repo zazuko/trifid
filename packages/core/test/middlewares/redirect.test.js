@@ -5,10 +5,6 @@ import { describe, expect, test } from '@jest/globals'
 import redirectMiddleware from '../../middlewares/redirect.js'
 
 describe('redirect middleware', () => {
-  test('should be a function', () => {
-    expect(typeof redirectMiddleware).toEqual('function')
-  })
-
   test('should throw if the target parameter is not set', () => {
     expect(() => redirectMiddleware({ config: {} })).toThrow()
   })
@@ -23,7 +19,7 @@ describe('redirect middleware', () => {
           target: '/',
         },
         logger: {
-          debug: (_) => {},
+          debug: (_) => { },
         },
       }),
     )
@@ -41,7 +37,7 @@ describe('redirect middleware', () => {
           target: '/',
         },
         logger: {
-          debug: (_) => {},
+          debug: (_) => { },
         },
       }),
     )

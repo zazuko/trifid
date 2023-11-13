@@ -9,10 +9,6 @@ import withServer from './support/withServer.js'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 describe('trifid-plugin-i18n', () => {
-  it('should be a function', () => {
-    strictEqual(typeof trifidPluginI18n, 'function')
-  })
-
   it('should add the .t method to to res to translate a string', async () => {
     await withServer(async (server) => {
       const middleware = trifidPluginI18n({
@@ -125,10 +121,6 @@ describe('trifid-plugin-i18n', () => {
 })
 
 describe('Trifid factory', () => {
-  it('should be a function', () => {
-    strictEqual(typeof factory, 'function')
-  })
-
   it('should throw if no directory is defined', async () => {
     await withServer(async (server) => {
       throws(() =>
@@ -145,7 +137,7 @@ describe('Trifid factory', () => {
   it('should work as expected', async () => {
     await withServer(async (server) => {
       const middleware = factory({
-        registerTemplateHelper: (_name, _fn) => {},
+        registerTemplateHelper: (_name, _fn) => { },
         server: server.app,
         config: {
           locales: ['en', 'de'],

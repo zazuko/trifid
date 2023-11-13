@@ -1,14 +1,10 @@
 import express from 'express'
 import request from 'supertest'
-import { describe, expect, test } from '@jest/globals'
+import { describe, test } from '@jest/globals'
 
 import errorsMiddleware from '../../middlewares/errors.js'
 
 describe('errors middleware', () => {
-  test('should be a function', () => {
-    expect(typeof errorsMiddleware).toEqual('function')
-  })
-
   test('should return a 500 status code', async () => {
     const app = express()
 
@@ -20,7 +16,7 @@ describe('errors middleware', () => {
     app.use(
       errorsMiddleware({
         logger: {
-          error: (_msg) => {},
+          error: (_msg) => { },
         },
       }),
     )
@@ -39,7 +35,7 @@ describe('errors middleware', () => {
     app.use(
       errorsMiddleware({
         logger: {
-          error: (_msg) => {},
+          error: (_msg) => { },
         },
       }),
     )
@@ -58,7 +54,7 @@ describe('errors middleware', () => {
     app.use(
       errorsMiddleware({
         logger: {
-          error: (_msg) => {},
+          error: (_msg) => { },
         },
       }),
     )

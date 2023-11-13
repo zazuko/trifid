@@ -7,10 +7,6 @@ import { describe, expect, test } from '@jest/globals'
 import staticMiddleware from '../../middlewares/static.js'
 
 describe('static middleware', () => {
-  test('should be a function', () => {
-    expect(typeof staticMiddleware).toEqual('function')
-  })
-
   test('should throw if the directory parameter is not set', () => {
     expect(() => staticMiddleware({ config: {} })).toThrow()
   })

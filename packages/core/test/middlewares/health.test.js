@@ -1,14 +1,10 @@
 import express from 'express'
 import request from 'supertest'
-import { describe, expect, test } from '@jest/globals'
+import { describe, test } from '@jest/globals'
 
 import healthMiddleware from '../../middlewares/health.js'
 
 describe('health middleware', () => {
-  test('should be a function', () => {
-    expect(typeof healthMiddleware).toEqual('function')
-  })
-
   test('should return expected content-type', async () => {
     const app = express()
 
@@ -16,7 +12,7 @@ describe('health middleware', () => {
       '/health',
       healthMiddleware({
         logger: {
-          debug: (_msg) => {},
+          debug: (_msg) => { },
         },
       }),
     )
@@ -33,7 +29,7 @@ describe('health middleware', () => {
       '/health',
       healthMiddleware({
         logger: {
-          debug: (_msg) => {},
+          debug: (_msg) => { },
         },
       }),
     )
@@ -48,7 +44,7 @@ describe('health middleware', () => {
       '/health',
       healthMiddleware({
         logger: {
-          debug: (_msg) => {},
+          debug: (_msg) => { },
         },
       }),
     )
@@ -63,7 +59,7 @@ describe('health middleware', () => {
       '/health',
       healthMiddleware({
         logger: {
-          debug: (_msg) => {},
+          debug: (_msg) => { },
         },
       }),
     )
@@ -82,7 +78,7 @@ describe('health middleware', () => {
       '/health',
       healthMiddleware({
         logger: {
-          debug: (_msg) => {},
+          debug: (_msg) => { },
         },
       }),
     )
