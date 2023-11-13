@@ -40,13 +40,11 @@ const resolveConfig = async (
   let configs = []
   if (Array.isArray(config.extends) && config.extends.length > 0) {
     config.extends = extendsResolver(config.extends, context)
-    if (Array.isArray(config.extends)) {
-      configs = await Promise.all(
-        config.extends.map((configPath) =>
-          resolveConfigFile(configPath, depth + 1),
-        ),
-      )
-    }
+    configs = await Promise.all(
+      config.extends.map((configPath) =>
+        resolveConfigFile(configPath, depth + 1),
+      ),
+    )
   }
 
   // merge all fields
