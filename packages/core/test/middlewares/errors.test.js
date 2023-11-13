@@ -43,7 +43,7 @@ describe('errors middleware', () => {
     return request(app).get('/').expect(502)
   })
 
-  test('should return an empty body', async () => {
+  test('should return a body containing the description of the status code', async () => {
     const app = express()
 
     const throwingMiddleware = (_req, _res, _next) => {
@@ -59,6 +59,6 @@ describe('errors middleware', () => {
       }),
     )
 
-    return request(app).get('/').expect('')
+    return request(app).get('/').expect('Internal Server Error')
   })
 })
