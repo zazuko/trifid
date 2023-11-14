@@ -155,7 +155,7 @@ const performOxigraphQuery = async (store, query) => {
   return await handleOxigraphResult(results, isConstructQuery)
 }
 
-/** @type {import('../../../core/types/index.d.ts').TrifidMiddleware} */
+/** @type {import('trifid-core/types/index.d.ts').TrifidMiddleware} */
 export const storeMiddleware = async (_trifid) => {
   // read quads from file
   const data = await readFile(new URL('./data.ttl', import.meta.url))

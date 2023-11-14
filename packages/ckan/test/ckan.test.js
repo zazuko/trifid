@@ -3,7 +3,7 @@ import { strictEqual } from 'assert'
 import { readFile } from 'fs/promises'
 import { describe, it } from 'mocha'
 
-import trifidCore from '../../core/index.js'
+import trifidCore from 'trifid-core'
 import ckanTrifidPlugin from '../src/index.js'
 import { storeMiddleware } from './support/store.js'
 import { getListenerURL } from './support/utils.js'
