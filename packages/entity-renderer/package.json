@@ -6,11 +6,7 @@
   "main": "index.js",
   "scripts": {
     "example-instance": "node ./examples/run-instance.js",
-    "cy:run": "cypress run",
-    "cy:open": "cypress open",
-    "dev-integration-test": "start-server-and-test example-instance http://0.0.0.0:3000 cy:open",
-    "integration-test": "start-server-and-test example-instance http://0.0.0.0:3000 cy:run",
-    "test": "npm run integration-test"
+    "test": "c8 --reporter=lcov --reporter=text mocha"
   },
   "repository": {
     "type": "git",
@@ -35,11 +31,11 @@
     "lit": "^3.0.2",
     "p-queue": "^7.4.1",
     "sparql-http-client": "^2.4.2",
-    "trifid-core": "^2.6.3"
+    "trifid-core": "^2.7.0"
   },
   "devDependencies": {
-    "cypress": "^13.5.0",
-    "start-server-and-test": "^2.0.2",
+    "c8": "^8.0.1",
+    "mocha": "^10.2.0",
     "trifid-handler-fetch": "^2.0.1"
   },
   "files": [
