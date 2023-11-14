@@ -72,7 +72,7 @@ class LabelLoader {
 
   getTermsWithoutLabel (pointer) {
     const result = rdf.termSet()
-    pointer.dataset.forEach((quad) => {
+    pointer.dataset.map((quad) => {
       if (this.labelFilter(pointer, quad.subject)) {
         result.add(quad.subject)
       }
@@ -82,6 +82,7 @@ class LabelLoader {
       if (this.labelFilter(pointer, quad.object)) {
         result.add(quad.object)
       }
+      return quad
     })
     return result
   }
