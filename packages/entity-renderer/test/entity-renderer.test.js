@@ -26,6 +26,30 @@ describe('@zazuko/trifid-plugin-ckan', () => {
         const entityUrl = `${getListenerURL(trifidListener)}/person/amy-farrah-fowler`
         const res = await fetch(entityUrl)
         strictEqual(res.status, 200)
+        const resText = await res.text()
+        strictEqual(resText.toLocaleLowerCase().includes('amy'), true)
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should be able to load a rendered entity using HTML', async () => {
+      const trifidInstance = await createTrifidInstance(trifidConfigUrl, 'warn')
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const entityUrl = `${getListenerURL(trifidListener)}/person/amy-farrah-fowler`
+        const res = await fetch(entityUrl, {
+          headers: {
+            accept: 'text/html',
+          },
+        })
+        strictEqual(res.status, 200)
+        const resText = await res.text()
+        strictEqual(resText.toLocaleLowerCase().includes('<html'), true)
+        strictEqual(resText.toLocaleLowerCase().includes('amy'), true)
       } catch (e) {
         throw e
       } finally {
