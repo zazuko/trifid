@@ -1,9 +1,3 @@
 node_modules/
 coverage/
-yarn.lock
 *.tgz
-videos
-screenshots
-downloads
-playground
-.idea
