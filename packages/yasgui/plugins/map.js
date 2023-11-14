@@ -1,13 +1,13 @@
 /* global Yasr */
 
 class YasguiMap {
-  priority = 10;
+  priority = 10
 
-  hideFromSelection = false;
+  hideFromSelection = false
 
   // eslint-disable-next-line space-before-function-paren
   constructor(yasr) {
-    this.yasr = yasr;
+    this.yasr = yasr
   }
 
   getResults() {
@@ -18,78 +18,78 @@ class YasguiMap {
       !this.yasr.results.json.results ||
       !this.yasr.results.json.results.bindings
     ) {
-      return [];
+      return []
     }
 
-    const results = this.yasr.results.json.results.bindings;
+    const results = this.yasr.results.json.results.bindings
 
     if (results.length < 1) {
-      return [];
+      return []
     }
 
-    const wktData = [];
+    const wktData = []
 
     // eslint-disable-next-line array-callback-return
     results.map((result) => {
       if (!result) {
-        return null;
+        return null
       }
 
       // eslint-disable-next-line array-callback-return
       Object.entries(result).map((entry) => {
         if (!entry[1]) {
-          return null;
+          return null
         }
-        const value = entry[1];
-        if (!value.type || value.type !== "literal") {
-          return null;
+        const value = entry[1]
+        if (!value.type || value.type !== 'literal') {
+          return null
         }
         if (
           !value.datatype ||
-          value.datatype !== "http://www.opengis.net/ont/geosparql#wktLiteral"
+          value.datatype !== 'http://www.opengis.net/ont/geosparql#wktLiteral'
         ) {
-          return null;
+          return null
         }
         if (!value.value) {
-          return null;
+          return null
         }
 
         wktData.push({
           id: `results-map-wkt-${entry[0]}`,
           wkt: value.value,
-        });
-      });
-    });
+        })
+      })
+    })
 
-    return wktData;
+    return wktData
   }
 
   draw() {
-    const results = this.getResults();
-    const el = document.createElement("ol-map");
-    const osm = document.createElement("ol-layer-openstreetmap");
-    const wkt = document.createElement("ol-layer-wkt");
-    osm.appendChild(wkt);
-    el.appendChild(osm);
-    this.yasr.resultsEl.appendChild(el);
+    const results = this.getResults()
+    const el = document.createElement('ol-map')
+    const osm = document.createElement('ol-layer-openstreetmap')
+    const wkt = document.createElement('ol-layer-wkt')
+    osm.appendChild(wkt)
+    el.appendChild(osm)
+    this.yasr.resultsEl.appendChild(el)
 
-    wkt.featureData = results;
+    wkt.featureData = results
 
     setTimeout(() => {
-      wkt.fit();
-    }, 200);
+      wkt.fit()
+    }, 200)
   }
 
   canHandleResults() {
-    const results = this.getResults();
-    return results.length > 0;
+    const results = this.getResults()
+    return results.length > 0
   }
 
   getIcon() {
-    const textIcon = document.createElement("div");
-    textIcon.innerText = "🌐";
-    return textIcon;
+    const textIcon = document.createElement('div')
+    textIcon.innerText = '🌐'
+    return textIcon
   }
 }
 
-Yasr.registerPlugin("Map", YasguiMap);
+Yasr.registerPlugin('Map', YasguiMap)

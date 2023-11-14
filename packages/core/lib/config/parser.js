@@ -1,17 +1,23 @@
-import Ajv from "ajv";
-import schema from "./schema.js";
+// @ts-check
+import Ajv from 'ajv'
+import schema from './schema.js'
 
-const ajv = new Ajv();
+// @ts-ignore
+const ajv = new Ajv()
 
 /**
  * Return the configuration object if it is valid or throw an error in other cases.
+ *
+ * @param {import('../../types/index.js').TrifidConfigWithExtends} config Configuration to validate.
+ * @returns {import('../../types/index.js').TrifidConfigWithExtends} Valid configuration.
  */
-const parser = (data = {}) => {
-  const valid = ajv.validate(schema, data);
+const parser = (config) => {
+  const data = !config ? {} : config
+  const valid = ajv.validate(schema, data)
   if (!valid) {
-    throw new Error(ajv.errorsText());
+    throw new Error(ajv.errorsText())
   }
-  return data;
-};
+  return data
+}
 
-export default parser;
+export default parser

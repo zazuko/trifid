@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Render a specific template file.
  *
@@ -6,30 +8,30 @@
  *  - context (object, optional): context to give to this specific template file (some variables)
  *  - options (object, optional): options to pass to the Trifid render function (change the title of the page, …)
  *
- * @param {*} trifid Trifid object containing the configuration, and other utility functions.
+ * @param {import('../types/index.d.ts').TrifidMiddlewareArgument} trifid Trifid object containing the configuration, and other utility functions.
  * @returns Express middleware.
  */
 const factory = async (trifid) => {
-  const { config, render } = trifid;
-  const { path } = config;
-  let { context, options } = config;
+  const { config, render } = trifid
+  const { path } = config
+  let { context, options } = config
 
   if (!path) {
-    throw new Error("configuration is missing 'path' field");
+    throw new Error("configuration is missing 'path' field")
   }
 
   if (!context) {
-    context = {};
+    context = {}
   }
 
   if (!options) {
-    options = {};
+    options = {}
   }
 
   return async (_req, res, _next) => {
-    res.status(200);
-    res.send(await render(path, { ...context, locals: res.locals }, options));
-  };
-};
+    res.status(200)
+    res.send(await render(path, { ...context, locals: res.locals }, options))
+  }
+}
 
-export default factory;
+export default factory

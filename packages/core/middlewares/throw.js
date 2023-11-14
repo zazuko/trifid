@@ -1,14 +1,17 @@
-const factory = (trifid) => {
-  const { message } = trifid.config;
+// @ts-check
 
-  let messageToThrow = "Oops, something went wrong :-(";
+/** @type {import('../types/index.d.ts').TrifidMiddleware} */
+const factory = (trifid) => {
+  const { message } = trifid.config
+
+  let messageToThrow = 'Oops, something went wrong :-('
   if (message) {
-    messageToThrow = `${message}`;
+    messageToThrow = `${message}`
   }
 
   return (_req, _res, _next) => {
-    throw new Error(messageToThrow);
-  };
-};
+    throw new Error(messageToThrow)
+  }
+}
 
-export default factory;
+export default factory

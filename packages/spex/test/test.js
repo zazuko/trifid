@@ -15,10 +15,6 @@ const createTrifidConfig = (config) => {
 
 describe('trifid-plugin-spex', () => {
   describe('trifid factory', () => {
-    it('should be a factory', () => {
-      assert.strictEqual(typeof trifidFactory, 'function')
-    })
-
     it('should create a middleware with factory and default options', async () => {
       const trifid = createTrifidConfig({})
       const middleware = await trifidFactory(trifid)

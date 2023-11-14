@@ -109,7 +109,7 @@ function toXML (dataset) {
         }).filter(Boolean),
       },
     },
-  }).doc().end({ prettyPrint: true })
+  }).doc().end({ prettyPrint: true }).concat('\n')
 }
 
 function serializeTerm (pointer) {
