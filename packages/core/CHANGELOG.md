@@ -1,5 +1,12 @@
 # trifid-core
 
+## 2.7.1
+
+### Patch Changes
+
+- 371f4f8: Do not display a body in case of errors.
+  This is not possible without breaking components that are using hijackresponse for now.
+
 ## 2.7.0
 
 ### Minor Changes

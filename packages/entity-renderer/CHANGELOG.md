@@ -1,5 +1,14 @@
 # @zazuko/trifid-renderer-entity
 
+## 0.6.1
+
+### Patch Changes
+
+- fae8107: Use map instead of forEach in label loader.
+- 56e7977: Upgrade dependencies, update example and improve tests.
+- Updated dependencies [371f4f8]
+  - trifid-core@2.7.1
+
 ## 0.6.0
 
 ### Minor Changes
