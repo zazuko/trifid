@@ -29,6 +29,7 @@
   "devDependencies": {
     "c8": "^8.0.1",
     "mocha": "^10.2.0",
-    "oxigraph": "^0.3.20"
+    "oxigraph": "^0.3.20",
+    "trifid-core": "^2.6.3"
   }
 }

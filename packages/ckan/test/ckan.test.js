@@ -1,9 +1,12 @@
 // @ts-check
+
+/* eslint-disable no-useless-catch */
+
 import { strictEqual } from 'assert'
 import { readFile } from 'fs/promises'
 import { describe, it } from 'mocha'
 
-import trifidCore from '../../core/index.js'
+import trifidCore from 'trifid-core'
 import ckanTrifidPlugin from '../src/index.js'
 import { storeMiddleware } from './support/store.js'
 import { getListenerURL } from './support/utils.js'
@@ -44,41 +47,56 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     it('should answer with a 400 status code if the organization parameter is missing', async () => {
       const trifidInstance = await createTrifidInstance()
       const trifidListener = await trifidInstance.start()
-      const ckanUrl = `${getListenerURL(trifidListener)}/ckan`
 
-      const res = await fetch(ckanUrl)
-      strictEqual(res.status, 400)
-      trifidListener.close()
+      try {
+        const ckanUrl = `${getListenerURL(trifidListener)}/ckan`
+        const res = await fetch(ckanUrl)
+        strictEqual(res.status, 400)
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
     })
 
     it('should get an empty result for an unknown organization', async () => {
       const trifidInstance = await createTrifidInstance()
       const trifidListener = await trifidInstance.start()
-      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/unkown-org`
 
-      const res = await fetch(ckanUrl)
-      const body = await res.text()
-      const expectedResult = await readFile(new URL('./support/empty-result.xml', import.meta.url), 'utf8')
+      try {
+        const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/unkown-org`
 
-      strictEqual(res.status, 200)
-      strictEqual(body, expectedResult)
+        const res = await fetch(ckanUrl)
+        const body = await res.text()
+        const expectedResult = await readFile(new URL('./support/empty-result.xml', import.meta.url), 'utf8')
 
-      trifidListener.close()
+        strictEqual(res.status, 200)
+        strictEqual(body, expectedResult)
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
     })
 
     it('should get a basic result for a known organization', async () => {
       const trifidInstance = await createTrifidInstance()
       const trifidListener = await trifidInstance.start()
-      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/my-org`
 
-      const res = await fetch(ckanUrl)
-      const body = await res.text()
-      const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
+      try {
+        const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/my-org`
 
-      strictEqual(res.status, 200)
-      strictEqual(body, expectedResult)
+        const res = await fetch(ckanUrl)
+        const body = await res.text()
+        const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
 
-      trifidListener.close()
+        strictEqual(res.status, 200)
+        strictEqual(body, expectedResult)
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
     })
   })
 })
