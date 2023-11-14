@@ -1,5 +1,16 @@
 # trifid-core
 
+## 2.7.0
+
+### Minor Changes
+
+- a94543c: Improve types in general.
+
+  `trifid.start` now returns a `Promise<import('http').Server>` instead of `void`.
+  This allows to wait for the server to be ready before doing anything else.
+
+- 552ecf9: The errors middleware is now returning the description of the status code in the body.
+
 ## 2.6.3
 
 ### Patch Changes
