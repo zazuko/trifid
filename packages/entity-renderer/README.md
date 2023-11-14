@@ -56,3 +56,5 @@ middlewares:
 ```sh
 npm run example-instance
 ```
+
+And go to http://localhost:3000/ to see the result.
