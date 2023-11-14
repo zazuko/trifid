@@ -7,13 +7,13 @@ const factory = (trifid) => {
   return (err, _req, res, _next) => {
     logger.error(err.stack)
 
-    let status = res.statusCode || 500
+    res.statusCode = res.statusCode || 500
     // handle the case where there is an error, but no specific status code has been set
-    if (status < 400) {
-      status = 500
+    if (res.statusCode < 400) {
+      res.statusCode = 500
     }
 
-    res.sendStatus(status)
+    res.end()
   }
 }
 
