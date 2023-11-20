@@ -12,16 +12,13 @@ function toXML (dataset) {
     .filter(([prefix]) => prefix !== 'xml')
     .reduce((acc, [prefix, url]) => ({ ...acc, [`xmlns:${prefix}`]: url }), {})
 
-  // add the `dct` prefix as an alias for `dcterms`
-  pf['xmlns:dct'] = pf['xmlns:dcterms']
-
   return createXml({
     version: '1.0',
     encoding: 'utf-8',
     namespaceAlias: {
       rdf: prefixes.rdf,
       dcat: prefixes.dcat,
-      dct: prefixes.dcterms,
+      dcterms: prefixes.dcterms,
       vcard: prefixes.vcard,
     },
   }, {
@@ -63,12 +60,12 @@ function toXML (dataset) {
             .filter(workExample => workExample.out(ns.schema.encodingFormat).terms.length > 0)
             .map(workExample => ({
               'dcat:Distribution': {
-                'dct:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
+                'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
                 'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
-                'dct:title': serializeTerm(workExample.out(ns.schema.name)),
-                'dct:rights': serializeTerm(copyright),
-                'dct:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
+                'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
+                'dcterms:rights': serializeTerm(copyright),
+                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
               },
             }))
 
@@ -89,23 +86,23 @@ function toXML (dataset) {
           return {
             'dcat:Dataset': {
               '@': { 'rdf:about': dataset.value },
-              'dct:identifier': { '#': identifier },
-              'dct:title': serializeTerm(dataset.out(ns.dcterms.title)),
-              'dct:description': serializeTerm(dataset.out(ns.dcterms.description)),
-              'dct:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
-              'dct:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
-              'dct:publisher': publishers,
-              'dct:creator': serializeTerm(creators),
+              'dcterms:identifier': { '#': identifier },
+              'dcterms:title': serializeTerm(dataset.out(ns.dcterms.title)),
+              'dcterms:description': serializeTerm(dataset.out(ns.dcterms.description)),
+              'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
+              'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
+              'dcterms:publisher': publishers,
+              'dcterms:creator': serializeTerm(creators),
               'dcat:contactPoint': serializeTerm(dataset.out(ns.dcat.contactPoint)),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
-              'dct:language': serializeTerm(dataset.out(ns.dcterms.language)),
-              'dct:relation': legalBasis,
+              'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
+              'dcterms:relation': legalBasis,
               'dcat:keyword': serializeTerm(keywords),
               'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
-              'dct:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
-              'dct:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
-              'dct:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
-              'dct:accrualPeriodicity': serializeTerm(accrualPeriodicity),
+              'dcterms:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
+              'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
+              'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
+              'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
               'dcat:distribution': distributions,
             },
           }
