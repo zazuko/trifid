@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 2.2.1
+
+### Patch Changes
+
+- 239752a: Use rdf:datatype instead of xml:datatype
+
 ## 2.2.0
 
 ### Minor Changes
