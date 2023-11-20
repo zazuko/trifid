@@ -149,7 +149,7 @@ function serializeLiteral ({ term }) {
   }
 
   if (term.datatype) {
-    attrs['xml:datatype'] = term.datatype.value
+    attrs['rdf:datatype'] = term.datatype.value
   }
 
   return {
