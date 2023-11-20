@@ -4,16 +4,16 @@
     <dcat:dataset>
       <dcat:Dataset rdf:about="http://example.com/dataset1">
         <dct:identifier>dataset1@my-org</dct:identifier>
-        <dct:title xml:lang="de" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Titel</dct:title>
-        <dct:title xml:lang="en" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Title</dct:title>
-        <dct:title xml:lang="fr" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Titre</dct:title>
-        <dct:title xml:lang="it" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Titolo</dct:title>
-        <dct:description xml:lang="de" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
-        <dct:description xml:lang="en" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
-        <dct:description xml:lang="fr" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
-        <dct:description xml:lang="it" xml:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
-        <dct:issued xml:datatype="http://www.w3.org/2001/XMLSchema#date">2023-10-31</dct:issued>
-        <dct:modified xml:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-10-31T:15:15.000Z</dct:modified>
+        <dct:title xml:lang="de" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Titel</dct:title>
+        <dct:title xml:lang="en" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Title</dct:title>
+        <dct:title xml:lang="fr" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Titre</dct:title>
+        <dct:title xml:lang="it" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Titolo</dct:title>
+        <dct:description xml:lang="de" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
+        <dct:description xml:lang="en" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
+        <dct:description xml:lang="fr" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
+        <dct:description xml:lang="it" rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString">Dataset 1 - Description</dct:description>
+        <dct:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2023-10-31</dct:issued>
+        <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-10-31T:15:15.000Z</dct:modified>
         <dct:creator rdf:resource="http://example.com/my-org"/>
       </dcat:Dataset>
     </dcat:dataset>
