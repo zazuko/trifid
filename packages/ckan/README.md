@@ -58,7 +58,7 @@ The following properties are populated by the endpoint:
 
   Supports both DC (http://purl.org/cld/freq/) and EU
   (http://publications.europa.eu/ontology/euvoc#Frequency) frequencies.
-  Transforms EU frequencies to DC ones using their `skos:exactMatch`.
+  DC frequencies are transformed into EU ones.
 
 - `dcat:distribution`
 

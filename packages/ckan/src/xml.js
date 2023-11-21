@@ -86,15 +86,15 @@ const toXML = (dataset) => {
 
           // Datasets contain a mix of legacy (DC) frequencies and new (EU) frequencies.
           // The query makes sure we get both legacy and new ones, we only
-          // provide the legacy ones to CKAN.
-          const legacyFreqPrefix = 'http://purl.org/cld/freq/'
+          // provide the new ones to CKAN, by converting legacy ones if needed.
+          const legacyFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency/'
           const accrualPeriodicity = dataset.out(ns.dcterms.accrualPeriodicity)
             .map((t) => {
               if (!t.term || !t.term.value) {
                 return t
               }
-              // If the frequency is not a EU frequency, it is returned unchanged.
-              t.term.value = convertEUFrequencyToLegacy(t.term.value)
+              // If the frequency is not a legacy frequency, it is returned unchanged.
+              t.term.value = convertLegacyFrequency(t.term.value)
               return t
             })
             .filter(({ term }) => term.value.startsWith(legacyFreqPrefix))
@@ -213,51 +213,51 @@ const distributionFormatFromEncoding = (encodingPointer) => {
 }
 
 /**
- * Convert EU frequency to legacy frequency if possible.
- * If the frequency is not a EU frequency, it is returned unchanged.
- * If there is no mapping for the EU frequency, it is returned unchanged.
+ * Convert legacy frequency to EU frequency if possible.
+ * If the frequency is not a legacy frequency, it is returned unchanged.
  *
  * @param {string} frequency Frequency to convert.
  * @returns {string} Converted frequency.
  */
-const convertEUFrequencyToLegacy = (frequency) => {
+export const convertLegacyFrequency = (frequency) => {
   const legacyFreqPrefix = 'http://purl.org/cld/freq'
   const euFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency'
+
   switch (frequency) {
-    case `${euFreqPrefix}/ANNUAL`:
-      return `${legacyFreqPrefix}/annual`
-    case `${euFreqPrefix}/ANNUAL_2`:
-      return `${legacyFreqPrefix}/semiannual`
-    case `${euFreqPrefix}/ANNUAL_3`:
-      return `${legacyFreqPrefix}/threeTimesAYear`
-    case `${euFreqPrefix}/BIENNIAL`:
-      return `${legacyFreqPrefix}/biennial`
-    case `${euFreqPrefix}/BIMONTHLY`:
-      return `${legacyFreqPrefix}/bimonthly`
-    case `${euFreqPrefix}/BIWEEKLY`:
-      return `${legacyFreqPrefix}/biweekly`
-    case `${euFreqPrefix}/CONT`:
-      return `${legacyFreqPrefix}/continuous`
-    case `${euFreqPrefix}/DAILY`:
-      return `${legacyFreqPrefix}/daily`
-    case `${euFreqPrefix}/IRREG`:
-      return `${legacyFreqPrefix}/irregular`
-    case `${euFreqPrefix}/MONTHLY`:
-      return `${legacyFreqPrefix}/monthly`
-    case `${euFreqPrefix}/MONTHLY_2`:
-      return `${legacyFreqPrefix}/semimonthly`
-    case `${euFreqPrefix}/MONTHLY_3`:
-      return `${legacyFreqPrefix}/threeTimesAMonth`
-    case `${euFreqPrefix}/QUARTERLY`:
-      return `${legacyFreqPrefix}/quarterly`
-    case `${euFreqPrefix}/TRIENNIAL`:
-      return `${legacyFreqPrefix}/triennial`
-    case `${euFreqPrefix}/WEEKLY`:
-      return `${legacyFreqPrefix}/weekly`
-    case `${euFreqPrefix}/WEEKLY_2`:
-      return `${legacyFreqPrefix}/semiweekly`
-    case `${euFreqPrefix}/WEEKLY_3`:
-      return `${legacyFreqPrefix}/threeTimesAWeek`
+    case `${legacyFreqPrefix}/annual`:
+      return `${euFreqPrefix}/ANNUAL`
+    case `${legacyFreqPrefix}/semiannual`:
+      return `${euFreqPrefix}/ANNUAL_2`
+    case `${legacyFreqPrefix}/threeTimesAYear`:
+      return `${euFreqPrefix}/ANNUAL_3`
+    case `${legacyFreqPrefix}/biennial`:
+      return `${euFreqPrefix}/BIENNIAL`
+    case `${legacyFreqPrefix}/bimonthly`:
+      return `${euFreqPrefix}/BIMONTHLY`
+    case `${legacyFreqPrefix}/biweekly`:
+      return `${euFreqPrefix}/BIWEEKLY`
+    case `${legacyFreqPrefix}/continuous`:
+      return `${euFreqPrefix}/CONT`
+    case `${legacyFreqPrefix}/daily`:
+      return `${euFreqPrefix}/DAILY`
+    case `${legacyFreqPrefix}/irregular`:
+      return `${euFreqPrefix}/IRREG`
+    case `${legacyFreqPrefix}/monthly`:
+      return `${euFreqPrefix}/MONTHLY`
+    case `${legacyFreqPrefix}/semimonthly`:
+      return `${euFreqPrefix}/MONTHLY_2`
+    case `${legacyFreqPrefix}/threeTimesAMonth`:
+      return `${euFreqPrefix}/MONTHLY_3`
+    case `${legacyFreqPrefix}/quarterly`:
+      return `${euFreqPrefix}/QUARTERLY`
+    case `${legacyFreqPrefix}/triennial`:
+      return `${euFreqPrefix}/TRIENNIAL`
+    case `${legacyFreqPrefix}/weekly`:
+      return `${euFreqPrefix}/WEEKLY`
+    case `${legacyFreqPrefix}/semiweekly`:
+      return `${euFreqPrefix}/WEEKLY_2`
+    case `${legacyFreqPrefix}/threeTimesAWeek`:
+      return `${euFreqPrefix}/WEEKLY_3`
   }
   return frequency
 }
