@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 2.4.0
+
+### Minor Changes
+
+- a9e92c4: Convert legacy frequency to EU frequency
+
 ## 2.3.0
 
 ### Minor Changes
