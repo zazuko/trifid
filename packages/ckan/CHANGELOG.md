@@ -1,5 +1,15 @@
 # @zazuko/trifid-plugin-ckan
 
+## 2.3.0
+
+### Minor Changes
+
+- 8bc9dfc: Improve the way frequencies are handled.
+
+### Patch Changes
+
+- 2938434: Use `dcterms` prefix instead of `dct`
+
 ## 2.2.1
 
 ### Patch Changes
