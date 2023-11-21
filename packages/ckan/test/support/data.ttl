@@ -11,8 +11,9 @@
   rdf:type <http://www.w3.org/ns/dcat#Dataset> ;
   rdf:type <http://rdfs.org/ns/void#Dataset> ;
   dcterms:issued "2023-10-31"^^xsd:date ;
-  dcterms:modified "2023-10-31T:15:15.000Z"^^xsd:dateTime ;
+  dcterms:modified "2023-10-31T15:15:15Z"^^xsd:dateTime ;
   dcterms:identifier "dataset1" ;
+  dcterms:accrualPeriodicity <http://purl.org/cld/freq/irregular> ;
   dcterms:creator <my-org> ;
   schema:workExample <https://ld.admin.ch/application/opendataswiss> ;
   schema:creativeWorkStatus <https://ld.admin.ch/vocabulary/CreativeWorkStatus/Published> ;
@@ -32,5 +33,36 @@
   schema:description "Dataset 1 - Description"@fr ;
   schema:description "Dataset 1 - Description"@it ;
   schema:description "Dataset 1 - Description"@de ;
+  schema:version "1"^^xsd:integer ;
+  .
+
+<dataset2>
+  rdf:type schema:Dataset ;
+  rdf:type <https://cube.link/Cube> ;
+  rdf:type <http://www.w3.org/ns/dcat#Dataset> ;
+  rdf:type <http://rdfs.org/ns/void#Dataset> ;
+  dcterms:issued "2023-11-21"^^xsd:date ;
+  dcterms:modified "2023-11-21T11:12:13Z"^^xsd:dateTime ;
+  dcterms:identifier "dataset2" ;
+  dcterms:accrualPeriodicity <http://publications.europa.eu/resource/authority/frequency/ANNUAL_2> ;
+  dcterms:creator <my-org> ;
+  schema:workExample <https://ld.admin.ch/application/opendataswiss> ;
+  schema:creativeWorkStatus <https://ld.admin.ch/vocabulary/CreativeWorkStatus/Published> ;
+  dcterms:title "Dataset 2 - Title"@en ;
+  dcterms:title "Dataset 2 - Titre"@fr ;
+  dcterms:title "Dataset 2 - Titolo"@it ;
+  dcterms:title "Dataset 2 - Titel"@de ;
+  schema:name "Dataset 2 - Title"@en ;
+  schema:name "Dataset 2 - Titre"@fr ;
+  schema:name "Dataset 2 - Titolo"@it ;
+  schema:name "Dataset 2 - Titel"@de ;
+  dcterms:description "Dataset 2 - Description"@en ;
+  dcterms:description "Dataset 2 - Description"@fr ;
+  dcterms:description "Dataset 2 - Description"@it ;
+  dcterms:description "Dataset 2 - Description"@de ;
+  schema:description "Dataset 2 - Description"@en ;
+  schema:description "Dataset 2 - Description"@fr ;
+  schema:description "Dataset 2 - Description"@it ;
+  schema:description "Dataset 2 - Description"@de ;
   schema:version "1"^^xsd:integer ;
   .
