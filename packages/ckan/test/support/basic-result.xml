@@ -15,7 +15,7 @@
         <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2023-10-31</dcterms:issued>
         <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-10-31T15:15:15Z</dcterms:modified>
         <dcterms:creator rdf:resource="http://example.com/my-org"/>
-        <dcterms:accrualPeriodicity rdf:resource="http://purl.org/cld/freq/irregular"/>
+        <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/IRREG"/>
       </dcat:Dataset>
     </dcat:dataset>
     <dcat:dataset>
@@ -32,7 +32,7 @@
         <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2023-11-21</dcterms:issued>
         <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-11-21T11:12:13Z</dcterms:modified>
         <dcterms:creator rdf:resource="http://example.com/my-org"/>
-        <dcterms:accrualPeriodicity rdf:resource="http://purl.org/cld/freq/semiannual"/>
+        <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/ANNUAL_2"/>
       </dcat:Dataset>
     </dcat:dataset>
   </dcat:Catalog>
