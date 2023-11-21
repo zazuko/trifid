@@ -1,9 +1,16 @@
+// @ts-check
 import rdf from '@zazuko/env'
 import prefixes, { shrink } from '@zazuko/prefixes'
 import { create as createXml } from 'xmlbuilder2'
 import * as ns from './namespace.js'
 
-function toXML (dataset) {
+/**
+ * Generate a CKAN-compatible XML representation of the dataset.
+ *
+ * @param {any[]} dataset Dataset to convert.
+ * @returns {string} XML representation of the dataset.
+ */
+const toXML = (dataset) => {
   const pointer = rdf.clownface({ dataset: rdf.dataset(dataset) })
   const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
 
@@ -42,6 +49,7 @@ function toXML (dataset) {
             : `${identifiers.value}@${creatorSlug}`
 
           // Ignore keywords without a language specified because CKAN rejects them
+          // @ts-ignore
           const keywords = dataset.out(ns.dcat.keyword).filter(({ term: { language } }) => !!language)
 
           const copyright = dataset.out(ns.dcterms.rights).out(ns.schema.identifier)
@@ -81,6 +89,14 @@ function toXML (dataset) {
           // provide the legacy ones to CKAN.
           const legacyFreqPrefix = 'http://purl.org/cld/freq/'
           const accrualPeriodicity = dataset.out(ns.dcterms.accrualPeriodicity)
+            .map((t) => {
+              if (!t.term || !t.term.value) {
+                return t
+              }
+              // If the frequency is not a EU frequency, it is returned unchanged.
+              t.term.value = convertEUFrequencyToLegacy(t.term.value)
+              return t
+            })
             .filter(({ term }) => term.value.startsWith(legacyFreqPrefix))
 
           return {
@@ -112,7 +128,7 @@ function toXML (dataset) {
   }).doc().end({ prettyPrint: true }).concat('\n')
 }
 
-function serializeTerm (pointer) {
+const serializeTerm = (pointer) => {
   return pointer.map((value) => {
     if (isLiteral(value)) {
       return serializeLiteral(value)
@@ -126,19 +142,19 @@ function serializeTerm (pointer) {
   })
 }
 
-function isLiteral (pointer) {
+const isLiteral = (pointer) => {
   return pointer.term.termType === 'Literal'
 }
 
-function isNamedNode (pointer) {
+const isNamedNode = (pointer) => {
   return pointer.term.termType === 'NamedNode'
 }
 
-function isBlankNode (pointer) {
+const isBlankNode = (pointer) => {
   return pointer.term.termType === 'BlankNode'
 }
 
-function serializeLiteral ({ term }) {
+const serializeLiteral = ({ term }) => {
   const attrs = {}
 
   if (term.language) {
@@ -155,13 +171,13 @@ function serializeLiteral ({ term }) {
   }
 }
 
-function serializeNamedNode ({ value }) {
+const serializeNamedNode = ({ value }) => {
   return {
     '@': { 'rdf:resource': value },
   }
 }
 
-function serializeBlankNode (pointer) {
+const serializeBlankNode = (pointer) => {
   const type = pointer.out(ns.rdf.type).value
 
   if (!type) return {}
@@ -178,7 +194,7 @@ function serializeBlankNode (pointer) {
   }
 }
 
-function distributionFormatFromEncoding (encodingPointer) {
+const distributionFormatFromEncoding = (encodingPointer) => {
   const encoding = encodingPointer.values[0] || ''
 
   /* eslint-disable indent */
@@ -194,6 +210,56 @@ function distributionFormatFromEncoding (encodingPointer) {
     }
   }
   /* eslint-enable indent */
+}
+
+/**
+ * Convert EU frequency to legacy frequency if possible.
+ * If the frequency is not a EU frequency, it is returned unchanged.
+ * If there is no mapping for the EU frequency, it is returned unchanged.
+ *
+ * @param {string} frequency Frequency to convert.
+ * @returns {string} Converted frequency.
+ */
+const convertEUFrequencyToLegacy = (frequency) => {
+  const legacyFreqPrefix = 'http://purl.org/cld/freq'
+  const euFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency'
+  switch (frequency) {
+    case `${euFreqPrefix}/ANNUAL`:
+      return `${legacyFreqPrefix}/annual`
+    case `${euFreqPrefix}/ANNUAL_2`:
+      return `${legacyFreqPrefix}/semiannual`
+    case `${euFreqPrefix}/ANNUAL_3`:
+      return `${legacyFreqPrefix}/threeTimesAYear`
+    case `${euFreqPrefix}/BIENNIAL`:
+      return `${legacyFreqPrefix}/biennial`
+    case `${euFreqPrefix}/BIMONTHLY`:
+      return `${legacyFreqPrefix}/bimonthly`
+    case `${euFreqPrefix}/BIWEEKLY`:
+      return `${legacyFreqPrefix}/biweekly`
+    case `${euFreqPrefix}/CONT`:
+      return `${legacyFreqPrefix}/continuous`
+    case `${euFreqPrefix}/DAILY`:
+      return `${legacyFreqPrefix}/daily`
+    case `${euFreqPrefix}/IRREG`:
+      return `${legacyFreqPrefix}/irregular`
+    case `${euFreqPrefix}/MONTHLY`:
+      return `${legacyFreqPrefix}/monthly`
+    case `${euFreqPrefix}/MONTHLY_2`:
+      return `${legacyFreqPrefix}/semimonthly`
+    case `${euFreqPrefix}/MONTHLY_3`:
+      return `${legacyFreqPrefix}/threeTimesAMonth`
+    case `${euFreqPrefix}/QUARTERLY`:
+      return `${legacyFreqPrefix}/quarterly`
+    case `${euFreqPrefix}/TRIENNIAL`:
+      return `${legacyFreqPrefix}/triennial`
+    case `${euFreqPrefix}/WEEKLY`:
+      return `${legacyFreqPrefix}/weekly`
+    case `${euFreqPrefix}/WEEKLY_2`:
+      return `${legacyFreqPrefix}/semiweekly`
+    case `${euFreqPrefix}/WEEKLY_3`:
+      return `${legacyFreqPrefix}/threeTimesAWeek`
+  }
+  return frequency
 }
 
 export { toXML }

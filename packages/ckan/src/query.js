@@ -8,7 +8,7 @@ function datasetsQuery (organizationId) {
       ?dataset ?p ?o .
       ?o ?nestedP ?nestedO .
       ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
-      ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicityExactMatch .
+      ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
     }
     WHERE {
       GRAPH ?graph {
@@ -35,9 +35,6 @@ function datasetsQuery (organizationId) {
 
         OPTIONAL {
           ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
-          GRAPH ?frequencyGraph {
-            ?accrualPeriodicity ${ns.skos.exactMatch} ?accrualPeriodicityExactMatch .
-          }
         }
       }
     }
