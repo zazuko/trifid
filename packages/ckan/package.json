@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-plugin-ckan",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Endpoint for opendata.swiss CKAN harvester",
   "main": "src/index.js",
   "type": "module",
