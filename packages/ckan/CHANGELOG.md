@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 2.4.1
+
+### Patch Changes
+
+- 9a55769: Remove rdf:datatype for langString
+
 ## 2.4.0
 
 ### Minor Changes
