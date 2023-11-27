@@ -161,7 +161,7 @@ const serializeLiteral = ({ term }) => {
     attrs['xml:lang'] = term.language
   }
 
-  if (term.datatype) {
+  if (term.datatype && !term.datatype.equals(ns.rdf.langString)) {
     attrs['rdf:datatype'] = term.datatype.value
   }
 
