@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 0.6.2
+
+### Patch Changes
+
+- c0576e5: Fix issue where graph name label was not shown if it is not a known prefix (closes #213)
+
 ## 0.6.1
 
 ### Patch Changes
