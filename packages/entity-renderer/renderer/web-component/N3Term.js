@@ -4,7 +4,7 @@ import { shrink } from '@zazuko/prefixes'
 
 function renderTerm (term) {
   if (term.termType === 'NamedNode') {
-    return html`<a href="${term.value}">${shrink(term.value)}</a>`
+    return html`<a href="${term.value}">${shrink(term.value) || term.value}</a>`
   }
   if (term.constructor.name === 'DefaultGraph') {
     return html`Default graph`

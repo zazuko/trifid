@@ -17,7 +17,7 @@ const getLabel = (term) => {
   if (term.constructor.name === 'DefaultGraph') {
     return 'Default graph'
   }
-  return shrink(term.value)
+  return shrink(term.value) || term.value
 }
 
 const getNamedGraphsCounts = (dataset) => {
