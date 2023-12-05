@@ -2,8 +2,6 @@ name: Build and push Docker image
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "trifid@*.*.*"
 
@@ -42,7 +40,6 @@ jobs:
             ghcr.io/zazuko/trifid
             zazuko/trifid
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=semver,prefix=trifid@,pattern={{version}}
             type=semver,prefix=trifid@,pattern={{major}}.{{minor}}
