@@ -16,5 +16,3 @@ jobs:
         with:
           project-url: https://github.com/orgs/zazuko/projects/23
           github-token: ${{ secrets.BACKLOG_PAT }}
-          labeled: dependencies
-          label-operator: NOT
