@@ -41,9 +41,9 @@ jobs:
             zazuko/trifid
           tags: |
             type=ref,event=branch
-            type=semver,prefix=trifid@,pattern={{version}}
-            type=semver,prefix=trifid@,pattern={{major}}.{{minor}}
-            type=semver,prefix=trifid@,pattern={{major}}
+            type=match,prefix=v,pattern=trifid@(\d+\.\d+\.\d+),group=1
+            type=match,prefix=v,pattern=trifid@(\d+\.\d+),group=1
+            type=match,prefix=v,pattern=trifid@(\d+),group=1
             type=sha
 
       - name: Build and push Docker images
