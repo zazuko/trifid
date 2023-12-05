@@ -33,11 +33,19 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Docker meta
-        uses: zazuko/action-docker-meta@main
         id: docker_meta
+        uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/zazuko/trifid,zazuko/trifid
-          strip-tag-prefix: "trifid@"
+          images: |
+            ghcr.io/zazuko/trifid
+            zazuko/trifid
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=semver,prefix=trifid@,pattern={{version}}
+            type=semver,prefix=trifid@,pattern={{major}}.{{minor}}
+            type=semver,prefix=trifid@,pattern={{major}}
+            type=sha
 
       - name: Build and push Docker images
         id: docker_build
