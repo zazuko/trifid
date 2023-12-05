@@ -27,10 +27,6 @@
   "bin": {
     "trifid-core": "./server.js"
   },
-  "engines": {
-    "node": ">=16",
-    "npm": ">=8"
-  },
   "dependencies": {
     "absolute-url": "^1.2.2",
     "ajv": "^8.12.0",
