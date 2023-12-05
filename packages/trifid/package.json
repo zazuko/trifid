@@ -24,17 +24,17 @@
     "trifid": "./server.js"
   },
   "dependencies": {
-    "@zazuko/trifid-handle-redirects": "^0.1.2",
-    "@zazuko/trifid-plugin-sparql-proxy": "^1.1.1",
-    "@zazuko/trifid-entity-renderer": "^0.6.0",
-    "commander": "^11.0.0",
+    "@zazuko/trifid-handle-redirects": "^0.1.3",
+    "@zazuko/trifid-plugin-sparql-proxy": "^1.2.0",
+    "@zazuko/trifid-entity-renderer": "^0.6.2",
+    "commander": "^11.1.0",
     "morgan": "^1.10.0",
-    "trifid-core": "^2.6.3",
+    "trifid-core": "^2.7.1",
     "trifid-handler-fetch": "^2.0.1",
     "trifid-handler-sparql": "^2.1.1",
     "trifid-plugin-graph-explorer": "^1.0.2",
     "trifid-plugin-i18n": "^2.0.1",
     "trifid-plugin-spex": "^1.1.4",
-    "trifid-plugin-yasgui": "^2.2.4"
+    "trifid-plugin-yasgui": "^2.2.5"
   }
 }
