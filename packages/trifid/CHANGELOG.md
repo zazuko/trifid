@@ -1,5 +1,11 @@
 # trifid
 
+## 4.1.0
+
+### Minor Changes
+
+- 83487f9: The Docker image now uses node 20 as base
+
 ## 4.0.3
 
 ### Patch Changes
