@@ -270,4 +270,60 @@ describe('@zazuko/trifid-markdown-content', () => {
       }
     })
   })
+
+  describe('features', () => {
+    it('should use the configured classes', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+        classes: {
+          h1: 'h1-class',
+        },
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/h1-class/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should use the configured idPrefix', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+        idPrefix: 'custom-prefix-',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/custom-prefix-title/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+  })
 })
