@@ -1,5 +1,11 @@
 # trifid
 
+## 4.1.1
+
+### Patch Changes
+
+- 7c1c443: Fix build issue where tags were not created the expected way.
+
 ## 4.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 2.4.2
+
+### Patch Changes
+
+- 900e1d3: Upgrade @zazuko/prefixes to 2.1.1.
+
 ## 2.4.1
 
 ### Patch Changes
