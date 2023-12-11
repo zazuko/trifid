@@ -31,9 +31,9 @@ middlewares:
     module: "@zazuko/trifid-markdown-content"
     order: 80
     config:
-      namespace: custom-content
       directory: file:content/custom
       mountPath: /content/
+      namespace: custom-content
 ```
 
 This will create a new `custom-content` namespace that will serve the content located in the `content/custom` directory.
@@ -41,11 +41,13 @@ The content will be available with the `/content/` prefix.
 
 ## Configuration
 
-The following options are supported
+The following options are supported:
 
-- `namespace`: The namespace of the content. This is used to separate the content from other namespaces.
-- `directory`: The directory where the content is located. This should be a local directory.
-- `mountPath`: The path where the content should be mounted. This should be a path that is not used by other middlewares.
+- `directory`: The directory where the content is located. This should be a local directory (required).
+- `mountPath`: The path where the content should be mounted. This should be a path that is not used by other middlewares (required).
+- `namespace`: The namespace of the content. This is used to separate the content from other namespaces (default: `default`).
+- `idPrefix`: The prefix to use for the generated IDs for headings (default: `markdown-content-`).
+- `classes`: The classes to add to the generated HTML (default: `{}`). Keys should be the CSS selectors, values should be the classes to add.
 
 ## Content
 
@@ -86,9 +88,9 @@ middlewares:
     module: "@zazuko/trifid-markdown-content"
     order: 80
     config:
-      namespace: root-content
       directory: file:content
       mountPath: /
+      namespace: root-content
 ```
 
 That way, you will have two new endpoints:

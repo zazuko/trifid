@@ -20,17 +20,18 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 /**
  * Return a HTML string from a Markdown string.
  *
- * @param {string} markdownString
+ * @param {string} markdownString Markdown string
+ * @param {Record<string, any>} config configuration
  * @returns HTML string
  */
-const convertToHtml = async (markdownString) => {
+const convertToHtml = async (markdownString, config) => {
   const html = await unified()
     .use(remarkParse)
     .use(remarkFrontmatter)
     .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeSlug, {
-      prefix: 'markdown-content-',
+      prefix: config.idPrefix,
     })
     .use(rehypeAutolinkHeadings, {
       behavior: 'wrap',
@@ -38,14 +39,7 @@ const convertToHtml = async (markdownString) => {
         class: 'headers-autolink',
       },
     })
-    .use(addClasses, {
-      h1: 'h1',
-      h2: 'h2',
-      h3: 'h3',
-      h4: 'h4',
-      h5: 'h5',
-      table: 'table',
-    })
+    .use(addClasses, config.classes)
     .use(rehypeStringify)
     .process(markdownString)
 
@@ -81,9 +75,10 @@ const getItems = async (path) => {
  * Read all markdown files from a directory and convert them in HTML format.
  *
  * @param {string} path path of the directory to read
+ * @param {Record<string, any>} config configuration
  * @returns list of files that are in that directory
  */
-const getContent = async (path) => {
+const getContent = async (path, config) => {
   const files = []
 
   const pathContent = await fs.readdir(path, { withFileTypes: true })
@@ -98,7 +93,7 @@ const getContent = async (path) => {
     }
 
     const content = await fs.readFile(fullPath, 'utf-8')
-    const html = await convertToHtml(content)
+    const html = await convertToHtml(content, config)
     files.push({
       language: item.name.replace(/\.md*/, ''),
       path: fullPath,
@@ -165,7 +160,7 @@ const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, ne
 
 const factory = async (trifid) => {
   const { config, logger, server, render } = trifid
-  const { namespace, directory, mountPath } = config
+  const { namespace, directory, mountPath, idPrefix, classes } = config
 
   // check config
   const configuredNamespace = namespace ?? 'default'
@@ -174,11 +169,19 @@ const factory = async (trifid) => {
   }
   const mountAtPath = mountPath || false
 
+  const configuredIdPrefix = idPrefix || 'markdown-content-'
+  const configuredClasses = classes || {}
+
+  const contentConfiguration = {
+    idPrefix: configuredIdPrefix,
+    classes: configuredClasses,
+  }
+
   const store = {}
   const items = await getItems(directory)
 
   for (const item of items) {
-    store[item.name] = await getContent(item.path)
+    store[item.name] = await getContent(item.path, contentConfiguration)
   }
 
   // apply the middleware in all cases
