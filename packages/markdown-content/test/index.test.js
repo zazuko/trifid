@@ -351,5 +351,84 @@ describe('@zazuko/trifid-markdown-content', () => {
         trifidListener.close()
       }
     })
+
+    it('should use autoLink', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+        autoLink: true,
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/ href="#markdown-content-title"/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should use autoLink and custom idPrefix', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+        autoLink: true,
+        idPrefix: 'custom-prefix-',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/ href="#custom-prefix-title"/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should not insert links if autoLink=false', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+        autoLink: false,
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/ href="#markdown-content-title"/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, false)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
   })
 })
