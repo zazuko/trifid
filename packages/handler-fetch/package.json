@@ -18,7 +18,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@rdfjs/express-handler": "^1.2.2",
+    "@rdfjs/express-handler": "^2.0.0",
     "@rdfjs/formats-common": "^2.2.0",
     "@rdfjs/serializer-jsonld-ext": "^3.0.0",
     "file-fetch": "^1.7.0",
