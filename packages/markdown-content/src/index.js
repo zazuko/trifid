@@ -17,6 +17,8 @@ import addClasses from './addClasses.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+const LOCALS_PLUGIN_KEY = 'markdown-content-plugin'
+
 /**
  * Return a HTML string from a Markdown string.
  *
@@ -160,13 +162,13 @@ const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, ne
   logger.debug(`loaded store into '${namespace}' namespace`)
 
   // just make sure that the `content-plugin` entry exists
-  if (!res.locals['content-plugin']) {
-    res.locals['content-plugin'] = {}
+  if (!res.locals[LOCALS_PLUGIN_KEY]) {
+    res.locals[LOCALS_PLUGIN_KEY] = {}
   }
 
   // add all configured entries for the specified namespace
   const lang = res?.locals?.currentLanguage || 'en'
-  res.locals['content-plugin'][namespace] = entriesForLanguage(store, lang)
+  res.locals[LOCALS_PLUGIN_KEY][namespace] = entriesForLanguage(store, lang)
 
   // let's forward all of this to other middlewares
   return next()
@@ -211,7 +213,7 @@ const factory = async (trifid) => {
     for (const item of items) {
       server.get(`${mountAtPathSlash}${item.name}`, async (_req, res, _next) => {
         return res.send(await render(configuredTemplate, {
-          content: res.locals['content-plugin'][configuredNamespace][item.name] || '',
+          content: res.locals[LOCALS_PLUGIN_KEY][configuredNamespace][item.name] || '',
           locals: res.locals,
         }))
       })
