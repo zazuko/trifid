@@ -20,9 +20,16 @@
     "remark-rehype": "^11.0.0",
     "unified": "^11.0.4"
   },
+  "files": [
+    "src",
+    "views"
+  ],
   "devDependencies": {
     "c8": "^8.0.1",
     "mocha": "^10.2.0",
     "trifid-core": "^2.7.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
