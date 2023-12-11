@@ -25,23 +25,37 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
  * @returns HTML string
  */
 const convertToHtml = async (markdownString, config) => {
-  const html = await unified()
-    .use(remarkParse)
-    .use(remarkFrontmatter)
-    .use(remarkGfm)
-    .use(remarkRehype)
-    .use(rehypeSlug, {
+  const processors = [
+    [remarkParse],
+    [remarkFrontmatter],
+    [remarkGfm],
+    [remarkRehype],
+    [rehypeSlug, {
       prefix: config.idPrefix,
-    })
-    .use(rehypeAutolinkHeadings, {
+    }],
+  ]
+
+  if (config.autoLink) {
+    // @ts-ignore
+    processors.push([rehypeAutolinkHeadings, {
+      // @ts-ignore
       behavior: 'wrap',
       properties: {
         class: 'headers-autolink',
       },
-    })
-    .use(addClasses, config.classes)
-    .use(rehypeStringify)
-    .process(markdownString)
+    }])
+  }
+
+  processors.push([addClasses, config.classes])
+  processors.push([rehypeStringify])
+
+  const processor = unified()
+  for (const [plugin, options] of processors) {
+    // @ts-ignore
+    processor.use(plugin, options)
+  }
+
+  const html = await processor.process(markdownString)
 
   return html.toString()
 }
@@ -160,7 +174,7 @@ const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, ne
 
 const factory = async (trifid) => {
   const { config, logger, server, render } = trifid
-  const { namespace, directory, mountPath, idPrefix, classes } = config
+  const { namespace, directory, mountPath, idPrefix, classes, autoLink } = config
 
   // check config
   const configuredNamespace = namespace ?? 'default'
@@ -171,10 +185,12 @@ const factory = async (trifid) => {
 
   const configuredIdPrefix = idPrefix || 'markdown-content-'
   const configuredClasses = classes || {}
+  const configuredAutolink = !!autoLink || autoLink === 'true'
 
   const contentConfiguration = {
     idPrefix: configuredIdPrefix,
     classes: configuredClasses,
+    autoLink: configuredAutolink,
   }
 
   const store = {}
