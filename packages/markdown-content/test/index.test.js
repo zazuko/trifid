@@ -1,9 +1,273 @@
-// import { strictEqual } from 'assert'
+import { strictEqual, notEqual } from 'assert'
 import { describe, it } from 'mocha'
 
+import trifidCore from 'trifid-core'
+import markdownContentTrifidPlugin from '../src/index.js'
+import { getListenerURL } from './support/utils.js'
+
+const createTrifidInstance = async (config) => {
+  return await trifidCore({
+    server: {
+      listener: {
+        port: 4242,
+      },
+      logLevel: 'warn',
+    },
+  }, {
+    ckan: {
+      module: markdownContentTrifidPlugin,
+      methods: ['GET'],
+      config,
+    },
+  })
+}
+
 describe('@zazuko/trifid-markdown-content', () => {
-  describe('basic tests', () => {
-    it('should create a middleware with factory and default options', async () => {
+  describe('bad configuration', () => {
+    it('should throw if there is no configuration', async () => {
+      const trifidInstance = createTrifidInstance()
+      let trifidListener
+
+      try {
+        await trifidInstance
+        trifidListener = await trifidInstance.start()
+        throw new Error('should have thrown')
+      } catch (e) {
+        notEqual(e.message, 'should have thrown')
+        strictEqual(e.message, "'directory' should be a non-empty string")
+      } finally {
+        if (trifidListener) {
+          trifidListener.close()
+        }
+      }
+    })
+
+    it('should throw if the configured directory is not existing', async () => {
+      const trifidInstance = createTrifidInstance({
+        directory: 'non-existing-directory',
+      })
+      let trifidListener
+
+      try {
+        await trifidInstance
+        trifidListener = await trifidInstance.start()
+        throw new Error('should have thrown')
+      } catch (e) {
+        notEqual(e.message, 'should have thrown')
+        notEqual(e.message, "'directory' should be a non-empty string")
+      } finally {
+        if (trifidListener) {
+          trifidListener.close()
+        }
+      }
+    })
+  })
+
+  describe('content with "fr" and "en" defined, no fallback (no "default.md" file)', () => {
+    it('should display english content by default', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/This is a test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should display the English version when lang=en', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/This is a test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should display the French version when lang=fr', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=fr`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/Ceci est un test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should display empty content if there is no "default.md" file when we request another language', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=de`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const matchFR = body.match(/Ceci est un test/) || false
+        const matchEN = body.match(/This is a test/) || false
+        const matchDE = body.match(/Das ist ein Test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(matchEN && matchEN.length > 0, false)
+        strictEqual(matchFR && matchFR.length > 0, false)
+        strictEqual(matchDE && matchDE.length > 0, false)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+  })
+
+  describe('content with "fr" and "en" defined, with fallback (a "default.md" file exists)', () => {
+    it('should display english content by default', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/This is a test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should display the English version when lang=en', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/This is a test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should display the French version when lang=fr', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default?lang=fr`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/Ceci est un test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should display default content (default.md)', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default?lang=de`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/Das ist ein Test/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
     })
   })
 })

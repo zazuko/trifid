@@ -2,7 +2,7 @@
   "name": "@zazuko/trifid-markdown-content",
   "version": "0.0.0",
   "description": "Trifid plugin to handle Markdown files",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "c8 --reporter=lcov --reporter=text mocha"
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "c8": "^8.0.1",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "trifid-core": "^2.7.1"
   }
 }

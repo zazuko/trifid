@@ -190,8 +190,8 @@ const factory = async (trifid) => {
 
     for (const item of items) {
       server.get(`${mountAtPathSlash}${item.name}`, async (_req, res, _next) => {
-        res.send(await render(`${currentDir}/views/content.hbs`, {
-          content: res.locals['content-plugin'][namespace][item.name] || '',
+        return res.send(await render(`${currentDir}/../views/content.hbs`, {
+          content: res.locals['content-plugin'][configuredNamespace][item.name] || '',
           locals: res.locals,
         }))
       })
@@ -200,7 +200,7 @@ const factory = async (trifid) => {
 
   // just return a dummy middleware
   return (_req, _res, next) => {
-    next()
+    return next()
   }
 }
 
