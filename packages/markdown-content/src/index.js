@@ -30,7 +30,7 @@ const convertToHtml = async (markdownString) => {
     .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeSlug, {
-      prefix: 'content-',
+      prefix: 'markdown-content-',
     })
     .use(rehypeAutolinkHeadings, {
       behavior: 'wrap',
