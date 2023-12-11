@@ -32,7 +32,7 @@ export class SparqlHandler {
     this.simpleClient = new SimpleClient({ endpointUrl: options.endpointUrl })
   }
 
-  buildQueryOptions() {
+  buildQueryOptions () {
     const queryOptions = {}
 
     if (
@@ -51,23 +51,23 @@ export class SparqlHandler {
     return queryOptions
   }
 
-  buildResourceExistsQuery(iri) {
+  buildResourceExistsQuery (iri) {
     return this.resourceExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  buildResourceGraphQuery(iri) {
+  buildResourceGraphQuery (iri) {
     return this.resourceGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  buildContainerExistsQuery(iri) {
+  buildContainerExistsQuery (iri) {
     return this.containerExistsQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  buildContainerGraphQuery(iri) {
+  buildContainerGraphQuery (iri) {
     return this.containerGraphQuery.split('${iri}').join(iri) // eslint-disable-line no-template-curly-in-string
   }
 
-  async exists(iri, query) {
+  async exists (iri, query) {
     debug('SPARQL exists query for IRI <' + iri + '> : ' + query)
 
     try {
@@ -81,7 +81,7 @@ export class SparqlHandler {
     }
   }
 
-  async graphStream(iri, query, accept) {
+  async graphStream (iri, query, accept) {
     debug('SPARQL query for IRI <' + iri + '> : ' + query)
 
     const headers = this.buildQueryOptions()
@@ -97,23 +97,23 @@ export class SparqlHandler {
     })
     return {
       status: res.status,
-      headers: headers,
+      headers,
       stream: res.body,
     }
   }
 
-  handle(req, res, next) {
+  handle (req, res, next) {
     switch (req.method) {
-    case 'HEAD':
-      return this.head(req, res, next, req.iri)
-    case 'GET':
-      return this.get(req, res, next, req.iri)
+      case 'HEAD':
+        return this.head(req, res, next, req.iri)
+      case 'GET':
+        return this.get(req, res, next, req.iri)
     }
 
     return next()
   }
 
-  async head(_req, res, next, iri) {
+  async head (_req, res, next, iri) {
     iri = encodeURI(iri)
 
     debug('handle HEAD request for IRI <' + iri + '>')
@@ -135,7 +135,7 @@ export class SparqlHandler {
     res.sendStatus(status)
   }
 
-  async get(req, res, next, iri) {
+  async get (req, res, next, iri) {
     iri = encodeURI(iri)
 
     debug('handle GET request for IRI <' + iri + '>')
