@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "c8": "^8.0.1",
-    "codecov": "^3.8.3",
     "express-as-promise": "^1.2.0",
     "mocha": "^10.2.0"
   },
