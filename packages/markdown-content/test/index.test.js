@@ -325,5 +325,31 @@ describe('@zazuko/trifid-markdown-content', () => {
         trifidListener.close()
       }
     })
+
+    it('should use the configured template', async () => {
+      const trifidInstance = await createTrifidInstance({
+        directory: './test/support/content/',
+        mountPath: '/content',
+        template: './test/support/custom.hbs',
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/This is using custom template/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
   })
 })

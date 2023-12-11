@@ -174,7 +174,7 @@ const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, ne
 
 const factory = async (trifid) => {
   const { config, logger, server, render } = trifid
-  const { namespace, directory, mountPath, idPrefix, classes, autoLink } = config
+  const { namespace, directory, mountPath, idPrefix, classes, autoLink, template } = config
 
   // check config
   const configuredNamespace = namespace ?? 'default'
@@ -186,6 +186,7 @@ const factory = async (trifid) => {
   const configuredIdPrefix = idPrefix || 'markdown-content-'
   const configuredClasses = classes || {}
   const configuredAutolink = !!autoLink || autoLink === 'true'
+  const configuredTemplate = template || `${currentDir}/../views/content.hbs`
 
   const contentConfiguration = {
     idPrefix: configuredIdPrefix,
@@ -209,7 +210,7 @@ const factory = async (trifid) => {
 
     for (const item of items) {
       server.get(`${mountAtPathSlash}${item.name}`, async (_req, res, _next) => {
-        return res.send(await render(`${currentDir}/../views/content.hbs`, {
+        return res.send(await render(configuredTemplate, {
           content: res.locals['content-plugin'][configuredNamespace][item.name] || '',
           locals: res.locals,
         }))
