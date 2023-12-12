@@ -14,6 +14,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 
 import addClasses from './addClasses.js'
+import { defaultValue } from './utils.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -176,47 +177,53 @@ const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, ne
 
 const factory = async (trifid) => {
   const { config, logger, server, render } = trifid
-  const { namespace, directory, mountPath, idPrefix, classes, autoLink, template } = config
+  const entries = config?.entries || {}
+  const defaults = config?.defaults || {}
 
-  // check config
-  const configuredNamespace = namespace ?? 'default'
-  if (!directory || typeof directory !== 'string') {
-    throw new Error('\'directory\' should be a non-empty string')
-  }
-  const mountAtPath = mountPath || false
+  // Default configuration
+  const idPrefix = defaultValue('idPrefix', defaults, 'markdown-content-')
+  const classes = defaultValue('classes', defaults, {})
+  const autoLink = defaultValue('autoLink', defaults, true)
+  const template = defaultValue('template', defaults, `${currentDir}/../views/content.hbs`)
 
-  const configuredIdPrefix = idPrefix || 'markdown-content-'
-  const configuredClasses = classes || {}
-  const configuredAutolink = !!autoLink || autoLink === 'true'
-  const configuredTemplate = template || `${currentDir}/../views/content.hbs`
+  // Iterate over all configured entries
+  for (const [namespace, entry] of Object.entries(entries)) {
+    const directory = entry?.directory
+    const mountPath = entry?.mountPath || false
 
-  const contentConfiguration = {
-    idPrefix: configuredIdPrefix,
-    classes: configuredClasses,
-    autoLink: configuredAutolink,
-  }
+    // check config
+    if (!directory || typeof directory !== 'string') {
+      throw new Error('\'directory\' should be a non-empty string')
+    }
 
-  const store = {}
-  const items = await getItems(directory)
+    const contentConfiguration = {
+      idPrefix: defaultValue('idPrefix', entry, idPrefix),
+      classes: defaultValue('classes', entry, classes),
+      autoLink: defaultValue('autoLink', entry, autoLink),
+    }
 
-  for (const item of items) {
-    store[item.name] = await getContent(item.path, contentConfiguration)
-  }
-
-  // apply the middleware in all cases
-  server.use(contentMiddleware({ logger, namespace: configuredNamespace, store }))
-
-  // create a route for each entry
-  if (mountAtPath) {
-    const mountAtPathSlash = mountAtPath.endsWith('/') ? mountAtPath : `${mountAtPath}/`
+    const store = {}
+    const items = await getItems(directory)
 
     for (const item of items) {
-      server.get(`${mountAtPathSlash}${item.name}`, async (_req, res, _next) => {
-        return res.send(await render(configuredTemplate, {
-          content: res.locals[LOCALS_PLUGIN_KEY][configuredNamespace][item.name] || '',
-          locals: res.locals,
-        }))
-      })
+      store[item.name] = await getContent(item.path, contentConfiguration)
+    }
+
+    // apply the middleware in all cases
+    server.use(contentMiddleware({ logger, namespace, store }))
+
+    // create a route for each entry
+    if (mountPath) {
+      const mountAtPathSlash = mountPath.endsWith('/') ? mountPath : `${mountPath}/`
+
+      for (const item of items) {
+        server.get(`${mountAtPathSlash}${item.name}`, async (_req, res, _next) => {
+          return res.send(await render(defaultValue('template', entry, template), {
+            content: res.locals[LOCALS_PLUGIN_KEY][namespace][item.name] || '',
+            locals: res.locals,
+          }))
+        })
+      }
     }
   }
 
