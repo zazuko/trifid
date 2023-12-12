@@ -28,7 +28,7 @@
     "trifid-core": "./server.js"
   },
   "dependencies": {
-    "absolute-url": "^1.2.2",
+    "absolute-url": "^2.0.0",
     "ajv": "^8.12.0",
     "camouflage-rewrite": "^1.5.1",
     "commander": "^11.0.0",
