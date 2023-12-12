@@ -1,5 +1,11 @@
 # @zazuko/trifid-markdown-content
 
+## 1.0.1
+
+### Patch Changes
+
+- 20681d2: Change default value for `idPrefix` from `markdown-content-` to `content-`.
+
 ## 1.0.0
 
 ### Major Changes
