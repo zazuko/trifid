@@ -485,4 +485,201 @@ describe('@zazuko/trifid-markdown-content', () => {
       }
     })
   })
+
+  describe('features, using defaults', () => {
+    it('should use the configured classes', async () => {
+      const trifidInstance = await createTrifidInstance({
+        defaults: {
+          classes: {
+            h1: 'h1-class',
+          },
+        },
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/h1-class/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should use the configured idPrefix', async () => {
+      const trifidInstance = await createTrifidInstance({
+        defaults: {
+          idPrefix: 'custom-prefix-',
+        },
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/custom-prefix-title/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should use the configured template', async () => {
+      const trifidInstance = await createTrifidInstance({
+        defaults: {
+          template: './test/support/custom.hbs',
+        },
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/This is using custom template/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should use autoLink', async () => {
+      const trifidInstance = await createTrifidInstance({
+        defaults: {
+          autoLink: true,
+        },
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/ href="#markdown-content-title"/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should use autoLink and custom idPrefix', async () => {
+      const trifidInstance = await createTrifidInstance({
+        defaults: {
+          autoLink: true,
+          idPrefix: 'custom-prefix-',
+        },
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/ href="#custom-prefix-title"/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, true)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+
+    it('should not insert links if autoLink=false', async () => {
+      const trifidInstance = await createTrifidInstance({
+        defaults: {
+          autoLink: false,
+        },
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
+      })
+      const trifidListener = await trifidInstance.start()
+
+      try {
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+
+        const res = await fetch(pluginUrl)
+        const body = await res.text()
+        const match = body.match(/ href="#markdown-content-title"/) || false
+
+        strictEqual(res.status, 200)
+        strictEqual(match && match.length > 0, false)
+
+        // eslint-disable-next-line no-useless-catch
+      } catch (e) {
+        throw e
+      } finally {
+        trifidListener.close()
+      }
+    })
+  })
 })
