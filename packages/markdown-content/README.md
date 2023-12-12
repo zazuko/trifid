@@ -27,7 +27,7 @@ And then add in the `config.yaml` file the following part:
 ```yaml
 middlewares:
   # […] your other middlewares
-  spex:
+  markdown-content:
     module: "@zazuko/trifid-markdown-content"
     order: 80
     config:
@@ -73,7 +73,7 @@ This is a more complete example on how this plugin can be used:
 ```yaml
 middlewares:
   # […] your other middlewares
-  spex:
+  markdown-content:
     module: "@zazuko/trifid-markdown-content"
     order: 80
     config:
@@ -93,9 +93,9 @@ middlewares:
           directory: file:content/root
           mountPath: /
         about-content:
-          directory: file:content/custom
-          mountPath: /content/
-          autoLink: false
+          directory: file:content/about
+          mountPath: /about/
+          autoLink: false # override the default value
 ```
 
 ## Content
@@ -133,7 +133,7 @@ If you want to create the pages directly at the root of your Trifid instance, yo
 ```yaml
 middlewares:
   # […] your other middlewares
-  spex:
+  markdown-content:
     module: "@zazuko/trifid-markdown-content"
     order: 80
     config:

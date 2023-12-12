@@ -24,17 +24,15 @@ const createTrifidInstance = async (config) => {
 
 describe('@zazuko/trifid-markdown-content', () => {
   describe('bad configuration', () => {
-    it('should throw if there is no configuration', async () => {
-      const trifidInstance = createTrifidInstance()
+    it('should not throw if there is no configuration', async () => {
+      const trifidInstance = await createTrifidInstance()
       let trifidListener
 
       try {
-        await trifidInstance
         trifidListener = await trifidInstance.start()
         throw new Error('should have thrown')
       } catch (e) {
-        notEqual(e.message, 'should have thrown')
-        strictEqual(e.message, "'directory' should be a non-empty string")
+        strictEqual(e.message, 'should have thrown')
       } finally {
         if (trifidListener) {
           trifidListener.close()
@@ -66,8 +64,12 @@ describe('@zazuko/trifid-markdown-content', () => {
   describe('content with "fr" and "en" defined, no fallback (no "default.md" file)', () => {
     it('should display english content by default', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -91,8 +93,12 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should display the English version when lang=en', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -116,8 +122,12 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should display the French version when lang=fr', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -141,8 +151,12 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should display empty content if there is no "default.md" file when we request another language', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -172,8 +186,12 @@ describe('@zazuko/trifid-markdown-content', () => {
   describe('content with "fr" and "en" defined, with fallback (a "default.md" file exists)', () => {
     it('should display english content by default', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -197,8 +215,12 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should display the English version when lang=en', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -222,8 +244,12 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should display the French version when lang=fr', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -247,8 +273,12 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should display default content (default.md)', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -274,10 +304,14 @@ describe('@zazuko/trifid-markdown-content', () => {
   describe('features', () => {
     it('should use the configured classes', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
-        classes: {
-          h1: 'h1-class',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+            classes: {
+              h1: 'h1-class',
+            },
+          },
         },
       })
       const trifidListener = await trifidInstance.start()
@@ -302,9 +336,13 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should use the configured idPrefix', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
-        idPrefix: 'custom-prefix-',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+            idPrefix: 'custom-prefix-',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -328,9 +366,13 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should use the configured template', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
-        template: './test/support/custom.hbs',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+            template: './test/support/custom.hbs',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -354,9 +396,13 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should use autoLink', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
-        autoLink: true,
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+            autoLink: true,
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -380,10 +426,14 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should use autoLink and custom idPrefix', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
-        autoLink: true,
-        idPrefix: 'custom-prefix-',
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+            autoLink: true,
+            idPrefix: 'custom-prefix-',
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
@@ -407,9 +457,13 @@ describe('@zazuko/trifid-markdown-content', () => {
 
     it('should not insert links if autoLink=false', async () => {
       const trifidInstance = await createTrifidInstance({
-        directory: './test/support/content/',
-        mountPath: '/content',
-        autoLink: false,
+        entries: {
+          default: {
+            directory: './test/support/content/',
+            mountPath: '/content',
+            autoLink: false,
+          },
+        },
       })
       const trifidListener = await trifidInstance.start()
 
