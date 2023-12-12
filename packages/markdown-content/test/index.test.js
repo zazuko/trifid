@@ -411,7 +411,7 @@ describe('@zazuko/trifid-markdown-content', () => {
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
-        const match = body.match(/ href="#markdown-content-title"/) || false
+        const match = body.match(/ href="#content-title"/) || false
 
         strictEqual(res.status, 200)
         strictEqual(match && match.length > 0, true)
@@ -472,7 +472,7 @@ describe('@zazuko/trifid-markdown-content', () => {
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
-        const match = body.match(/ href="#markdown-content-title"/) || false
+        const match = body.match(/ href="#content-title"/) || false
 
         strictEqual(res.status, 200)
         strictEqual(match && match.length > 0, false)
@@ -604,7 +604,7 @@ describe('@zazuko/trifid-markdown-content', () => {
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
-        const match = body.match(/ href="#markdown-content-title"/) || false
+        const match = body.match(/ href="#content-title"/) || false
 
         strictEqual(res.status, 200)
         strictEqual(match && match.length > 0, true)
@@ -669,7 +669,7 @@ describe('@zazuko/trifid-markdown-content', () => {
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
-        const match = body.match(/ href="#markdown-content-title"/) || false
+        const match = body.match(/ href="#content-title"/) || false
 
         strictEqual(res.status, 200)
         strictEqual(match && match.length > 0, false)
