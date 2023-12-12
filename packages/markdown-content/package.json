@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-markdown-content",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Trifid plugin to handle Markdown files",
   "main": "src/index.js",
   "type": "module",
