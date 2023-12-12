@@ -181,7 +181,7 @@ const factory = async (trifid) => {
   const defaults = config?.defaults || {}
 
   // Default configuration
-  const idPrefix = defaultValue('idPrefix', defaults, 'markdown-content-')
+  const idPrefix = defaultValue('idPrefix', defaults, 'content-')
   const classes = defaultValue('classes', defaults, {})
   const autoLink = defaultValue('autoLink', defaults, true)
   const template = defaultValue('template', defaults, `${currentDir}/../views/content.hbs`)

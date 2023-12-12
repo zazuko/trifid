@@ -54,7 +54,7 @@ The following options are supported:
 You can define them in the `defaults` section or in specific entries in the `entries` section.
 Those options are all optional.
 
-- `idPrefix`: The prefix to use for the generated IDs for headings (default: `markdown-content-`).
+- `idPrefix`: The prefix to use for the generated IDs for headings (default: `content-`).
 - `classes`: The classes to add to the generated HTML (default: `{}`). Keys should be the CSS selectors, and values should be the classes to add.
 - `autoLink`: If `true`, will automatically add links to headings (default: `true`).
 - `template`: Path to an alternative template (default: `views/content.hbs`).
@@ -78,7 +78,7 @@ middlewares:
     order: 80
     config:
       defaults:
-        idPrefix: markdown-content-
+        idPrefix: content-
         classes:
           h1: custom-h1
           h2: custom-h2
