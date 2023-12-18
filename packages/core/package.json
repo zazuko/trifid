@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
-    "@babel/preset-env": "^7.22.15",
+    "@babel/preset-env": "^7.23.6",
     "@jest/globals": "^29.7.0",
     "@types/express": "^4.17.20",
     "@types/node": "^20.10.4",
