@@ -1,14 +1,14 @@
 /* global describe, it */
 
-import assert from 'assert'
-import fs from 'fs'
-import path, { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { createRequire } from 'module'
-import Promise from 'bluebird'
+import assert from 'node:assert'
+import fs from 'node:fs'
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { createRequire } from 'node:module'
 
 import request from 'supertest'
 import express from 'express'
+
 import { FetchHandler as Handler } from '../index.js'
 
 const require = createRequire(import.meta.url)
@@ -128,7 +128,8 @@ describe('trifid-handler-fetch', () => {
     await request(app)
       .get('/data/person/amy-farrah-fowler')
       .set('accept', 'text/turtle')
-    await Promise.delay(500)
+
+    await new Promise(resolve => setTimeout(resolve, 500))
     assert(!touched)
   })
 
