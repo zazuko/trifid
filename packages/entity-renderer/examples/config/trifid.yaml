@@ -11,8 +11,9 @@ middlewares:
 
   fetch-handler:
     module: trifid-handler-fetch
+    paths: /query
     config:
       url: file:../data/people.ttl
-      contentType: application/n-triples
-      split: true
-      cache: true
+      contentType: text/turtle
+      baseIRI: http://example.com
+      graphName: http://example.com/graph
