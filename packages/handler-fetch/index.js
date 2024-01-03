@@ -1,91 +1,58 @@
-import path from 'path'
-import url from 'url'
-import formats from '@rdfjs/formats-common/index.js'
-import rdf from 'rdf-ext'
-import rdfHandler from '@rdfjs/express-handler'
+/* eslint-disable no-console */
+import { readFile } from 'node:fs/promises'
+import { resolve as pathResolve } from 'node:path'
 
-import SerializerJsonld from '@rdfjs/serializer-jsonld-ext'
-import Fetcher from './lib/Fetcher.js'
+import oxigraph from 'oxigraph'
 
-// @TODO discuss what are the best serialization options.
-const jsonLdSerializer = new SerializerJsonld({
-  encoding: 'string',
-  // compact: true,
-  // flatten: true
-})
+import { performOxigraphQuery } from './lib/query.js'
 
-formats.serializers.set('application/json', jsonLdSerializer)
-formats.serializers.set('application/ld+json', jsonLdSerializer)
+/**
+ * Fetch file content from URL or path.
+ *
+ * @param {string} url URL or path to file to fetch.
+ * @returns {Promise<string>} File content.
+ */
+const getContent = async (url) => {
+  let content
 
-const guessProtocol = (candidate) => {
-  try {
-    return new url.URL(candidate).protocol
-  } catch (error) {
-    return undefined
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    const response = await fetch(url)
+    content = await response.text()
+  } else {
+    const resolvedPath = pathResolve(url)
+    content = await readFile(resolvedPath, 'utf8')
   }
+
+  return content
 }
 
-export class FetchHandler {
-  constructor(options) {
-    this.dataset = rdf.dataset()
-    this.url = options.url
-    this.cache = options.cache
-    this.contentType = options.contentType
-    this.options = options.options || {}
-    this.resource = options.resource
-    this.split = options.split
+export const storeMiddleware = async (trifid) => {
+  const { config, logger } = trifid
+  const { contentType, url, baseIri, graphName } = config
 
-    // add file:// and resolve with cwd if no protocol was given
-    if (this.url && !guessProtocol(this.url)) {
-      this.url = 'file://' + path.resolve(this.url)
+  // read data from file or URL
+  const data = await getContent(url)
+  logger.debug(`Loaded ${data.length} bytes of data from ${url}`)
+
+  // create a store and load the data
+  const store = new oxigraph.Store()
+  store.load(data, contentType, baseIri, oxigraph.namedNode(graphName))
+  logger.debug('Loaded data into store')
+
+  return async (req, res, _next) => {
+    let query
+    if (req.method === 'GET') {
+      query = req.query.query
+    } else if (req.method === 'POST') {
+      query = req.body.query || req.body
     }
 
-    this.handle = this._handle.bind(this)
+    if (!query) {
+      return res.status(400).send('Missing query parameter')
+    }
 
-    // legacy interface
-    this.get = this._get.bind(this)
-  }
-
-  _handle(req, res, next) {
-    rdfHandler
-      .attach(req, res, { formats })
-      .then(() => {
-        return Fetcher.load(this.dataset, this)
-      })
-      .then(async () => {
-        const dataset = this.dataset.match(
-          null,
-          null,
-          null,
-          rdf.namedNode(req.iri),
-        )
-
-        if (dataset.size === 0) {
-          next()
-          return null
-        }
-
-        await res.dataset(dataset)
-      })
-      .catch(next)
-  }
-
-  // legacy interface
-  _get(req, res, next, iri) {
-    req.iri = iri
-
-    this.handle(req, res, next)
+    const { response, contentType } = await performOxigraphQuery(store, query)
+    res.set('Content-Type', contentType)
+    return res.status(200).send(response)
   }
 }
-
-const factory = (trifid) => {
-  const { config } = trifid
-
-  const handler = new FetchHandler(config)
-
-  return (req, res, next) => {
-    handler.handle(req, res, next)
-  }
-}
-
-export default factory

@@ -1,6 +1,4 @@
-.github/
 node_modules/
-.eslintrc
 .gitignore
 yarn.lock
 *.tgz
