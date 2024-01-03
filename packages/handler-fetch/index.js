@@ -26,7 +26,7 @@ const getContent = async (url) => {
   return content
 }
 
-export const storeMiddleware = async (trifid) => {
+export const factory = async (trifid) => {
   const { config, logger } = trifid
   const { contentType, url, baseIri, graphName } = config
 
@@ -56,3 +56,5 @@ export const storeMiddleware = async (trifid) => {
     return res.status(200).send(response)
   }
 }
+
+export default factory
