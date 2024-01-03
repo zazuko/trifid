@@ -48,7 +48,7 @@ export type ExpressMiddleware =
 
 /** Trifid Middleware Argument */
 export type TrifidMiddlewareArgument = {
-  logger: any;
+  logger: import("pino").Logger;
   server: import("express").Express;
   config: Record<string, any>;
   render: (
@@ -56,9 +56,15 @@ export type TrifidMiddlewareArgument = {
     context: Record<string, any>,
     options: Record<string, any>
   ) => Promise<string>;
+  query: TrifidQuery;
 };
 
 /** Trifid Middleware */
 export type TrifidMiddleware = (
   trifid: TrifidMiddlewareArgument
 ) => Promise<ExpressMiddleware> | ExpressMiddleware;
+
+export type TrifidQuery = (
+  query: string,
+  options?: Record<string, any>
+) => Promise<any>;

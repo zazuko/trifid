@@ -1,5 +1,6 @@
 import merge from 'lodash/merge.js'
 import vhost from 'vhost'
+import { querySparql } from '../query.js'
 
 const apply = async (server, globals, middlewares, logger, templateEngine) => {
   for (const middleware of middlewares) {
@@ -15,6 +16,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
     delete m.module
 
     const middlewareLogger = logger.child({ name })
+    const query = querySparql(logger.child({ name: `${name}:query` }))
 
     const { render, registerHelper } = templateEngine
     const loadedMiddleware = await module({
@@ -22,6 +24,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
       server,
       logger: middlewareLogger,
       render,
+      query,
       registerTemplateHelper: registerHelper,
     })
 
