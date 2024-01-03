@@ -1,6 +1,5 @@
 // @ts-check
 import url from 'url'
-import absoluteUrl from 'absolute-url'
 
 /** @type {import('../types/index.d.ts').TrifidMiddleware} */
 const factory = (trifid) => {
@@ -12,8 +11,6 @@ const factory = (trifid) => {
   const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000
 
   return (req, res, next) => {
-    absoluteUrl.attach(req)
-
     // export language information for other middlewares
     res.locals.defaultLanguage = defaultLanguage
     res.locals.currentLanguage = req?.cookies?.i18n || defaultLanguage

@@ -1,7 +1,6 @@
 // @ts-check
 
 import { URL } from 'url'
-import absoluteUrl from 'absolute-url'
 
 /**
  * Replacement for `url.format` which is deprecated.
@@ -41,7 +40,6 @@ const factory = (trifid) => {
   }
 
   return (req, res, next) => {
-    absoluteUrl.attach(req)
     const url = req.absoluteUrl()
     req.iri = decodeURI(removeSearchParams(url))
 

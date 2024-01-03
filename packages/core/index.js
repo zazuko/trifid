@@ -3,6 +3,7 @@ import express from 'express'
 import { pino } from 'pino'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import { middleware as absoluteUrl } from 'absolute-url'
 
 import handler from './lib/config/handler.js'
 import {
@@ -45,6 +46,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     }),
   )
   server.use(cookieParser())
+  server.use(absoluteUrl())
 
   // configure Express server
   if (fullConfig?.server?.express) {
