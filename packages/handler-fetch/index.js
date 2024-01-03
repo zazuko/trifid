@@ -51,9 +51,14 @@ export const factory = async (trifid) => {
       return res.status(400).send('Missing query parameter')
     }
 
-    const { response, contentType } = await performOxigraphQuery(store, query)
-    res.set('Content-Type', contentType)
-    return res.status(200).send(response)
+    try {
+      const { response, contentType } = await performOxigraphQuery(store, query)
+      res.set('Content-Type', contentType)
+      return res.status(200).send(response)
+    } catch (error) {
+      logger.error(error)
+      return res.status(500).send(error.message)
+    }
   }
 }
 
