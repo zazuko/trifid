@@ -1,5 +1,15 @@
 # @zazuko/trifid-renderer-entity
 
+## 0.6.3
+
+### Patch Changes
+
+- 3131369: Remove `Content-Disposition` header from response from the SPARQL endpoint.
+  This header was triggering the download of the response as a file instead of displaying it in the browser.
+  This was affecting Blazegraph and RDF4J as reported by some users.
+
+  Thanks to @Tomvbe for providing the fix.
+
 ## 0.6.2
 
 ### Patch Changes
