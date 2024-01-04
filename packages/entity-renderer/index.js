@@ -101,6 +101,8 @@ const factory = async (trifid) => {
         config,
       })
       res.setHeader('Content-Type', 'text/html')
+
+      // Without this, the browser will try to download the HTML file if the `Content-Disposition` header is set by the SPARQL endpoint
       res.removeHeader('Content-Disposition')
     } catch (e) {
       logger.error(e)
