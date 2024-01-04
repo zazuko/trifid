@@ -101,6 +101,7 @@ const factory = async (trifid) => {
         config,
       })
       res.setHeader('Content-Type', 'text/html')
+      res.removeHeader('Content-Disposition')
     } catch (e) {
       logger.error(e)
       return readable.pipe(writable)
