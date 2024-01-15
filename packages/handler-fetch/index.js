@@ -28,7 +28,12 @@ const getContent = async (url) => {
 
 export const factory = async (trifid) => {
   const { config, logger } = trifid
-  const { contentType, url, baseIri, graphName } = config
+  const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
+
+  let graphNameIri = graphName
+  if ((typeof unionDefaultGraph === 'boolean' && unionDefaultGraph) || unionDefaultGraph === 'true') {
+    graphNameIri = oxigraph.defaultGraph()
+  }
 
   // read data from file or URL
   const data = await getContent(url)
@@ -36,7 +41,7 @@ export const factory = async (trifid) => {
 
   // create a store and load the data
   const store = new oxigraph.Store()
-  store.load(data, contentType, baseIri, oxigraph.namedNode(graphName))
+  store.load(data, contentType, baseIri, graphNameIri)
   logger.debug('Loaded data into store')
 
   return async (req, res, _next) => {
@@ -51,9 +56,12 @@ export const factory = async (trifid) => {
       return res.status(400).send('Missing query parameter')
     }
 
+    logger.debug(`Received query: ${query}`)
+
     try {
       const { response, contentType } = await performOxigraphQuery(store, query)
       res.set('Content-Type', contentType)
+      logger.debug(`Sending the following ${contentType} response: ${response}`)
       return res.status(200).send(response)
     } catch (error) {
       logger.error(error)

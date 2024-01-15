@@ -40,6 +40,7 @@ middlewares:
 - `contentType`: the format of the serialization. See below for the supported formats.
 - `baseIRI`: the base IRI to use to resolve the relative IRIs in the serialization.
 - `graphName`: for triple serialization formats, the name of the named graph the triple should be loaded to.
+- `unionDefaultGraph`: for triple serialization formats, if the triples should be loaded to the default graph or to the named graph specified in `graphName`. This impacts also the need or not to query a specific graph in SPARQL queries. Defaults to `false`.
 
 Supported formats:
 
