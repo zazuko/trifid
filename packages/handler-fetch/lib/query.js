@@ -4,7 +4,7 @@
  * @param {string} termType Oxigraph termType value
  * @returns {string} SPARQL termType value
  */
-const convertTermType = (termType) => {
+export const convertTermType = (termType) => {
   switch (termType) {
     case 'Literal':
       return 'literal'
@@ -29,7 +29,7 @@ const convertTermType = (termType) => {
  *   type: 'ASK' | 'SELECT' | 'CONSTRUCT';
  * }>} SPARQL response.
  */
-const handleOxigraphResult = async (results, isConstructQuery = false) => {
+export const handleOxigraphResult = async (results, isConstructQuery = false) => {
   let sparqlResponse = {}
 
   // Handle ASK queries
