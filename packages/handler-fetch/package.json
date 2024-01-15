@@ -22,7 +22,7 @@
     "test": "c8 --reporter=lcov --reporter=text mocha"
   },
   "dependencies": {
-    "oxigraph": "^0.4.0-alpha.1"
+    "oxigraph": "^0.4.0-alpha.2"
   },
   "devDependencies": {
     "c8": "^9.1.0",
