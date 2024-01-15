@@ -36,7 +36,9 @@
   "devDependencies": {
     "c8": "^8.0.1",
     "mocha": "^10.2.0",
-    "trifid-handler-fetch": "^2.0.1"
+    "trifid-handler-fetch": "^2.0.1",
+    "trifid-handler-sparql": "^2.1.1",
+    "trifid-plugin-yasgui": "^2.2.5"
   },
   "files": [
     "index.js",

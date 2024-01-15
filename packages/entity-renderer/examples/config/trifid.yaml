@@ -9,6 +9,10 @@ middlewares:
     config:
       path: file:../views/welcome.hbs
 
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths: /sparql
+
   fetch-handler:
     module: trifid-handler-fetch
     paths: /query
@@ -17,3 +21,11 @@ middlewares:
       contentType: text/turtle
       baseIRI: http://example.com
       graphName: http://example.com/graph
+
+  sparql-handler:
+    module: trifid-handler-sparql
+    config:
+      resourceExistsQuery: "ASK { GRAPH ?g { <${iri}> ?p ?o }}"
+      resourceGraphQuery: "#pragma describe.strategy cbd\nDESCRIBE <${iri}>"
+      containerExistsQuery: "ASK { GRAPH ?g { <${iri}> ?p ?o }}"
+      containerGraphQuery: "#pragma describe.strategy cbd\nDESCRIBE <${iri}>"

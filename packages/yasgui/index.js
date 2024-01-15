@@ -31,11 +31,16 @@ const trifidFactory = async (trifid) => {
   return async (req, res, _next) => {
     logger.debug('Yasgui plugin was called')
 
+    let fullUrl = req.absoluteUrl()
+    if (typeof fullUrl !== 'string' && fullUrl.toString) {
+      fullUrl = fullUrl.toString()
+    }
+
     const content = await render(
       view,
       {
         // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
-      endpointUrl: url.resolve(req.absoluteUrl(), endpoint), // eslint-disable-line
+        endpointUrl: url.resolve(fullUrl, endpoint), // eslint-disable-line
         urlShortener,
         locals: res.locals,
       },
