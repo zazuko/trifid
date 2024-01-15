@@ -15,9 +15,13 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "c8 --reporter=lcov --reporter=text mocha"
   },
   "dependencies": {
     "oxigraph": "^0.4.0-alpha.1"
+  },
+  "devDependencies": {
+    "c8": "^9.1.0",
+    "mocha": "^10.2.0"
   }
 }
