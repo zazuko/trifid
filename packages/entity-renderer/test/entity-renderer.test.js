@@ -10,7 +10,7 @@ import { getListenerURL } from './support/utils.js'
 
 const trifidConfigUrl = './examples/config/trifid.yaml'
 
-describe('@zazuko/trifid-plugin-ckan', () => {
+describe('@zazuko/trifid-entity-renderer', () => {
   describe('basic tests', () => {
     it('should create a middleware with factory and default options', async () => {
       const trifidInstance = await createTrifidInstance(trifidConfigUrl, 'warn')
