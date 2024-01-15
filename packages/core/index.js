@@ -38,17 +38,25 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   const server = express()
   server.disable('x-powered-by')
 
-  // add required middlewares
+  // Add required middlewares
   server.use(
     cors({
       credentials: true,
       origin: true,
     }),
   )
+
+  // Add support for JSON-encoded and URL-encoded bodies
+  server.use(express.json())
+  server.use(express.urlencoded({ extended: true }))
+
+  // Add support for cookies
   server.use(cookieParser())
+
+  // Add support for absolute URLs, so that we can use `req.absoluteUrl()` in any middleware to get the absolute URL
   server.use(absoluteUrl())
 
-  // configure Express server
+  // Configure Express server
   if (fullConfig?.server?.express) {
     for (const expressSettingKey in fullConfig.server.express) {
       server.set(
@@ -58,15 +66,15 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     }
   }
 
-  // dynamic server configuration
+  // Dynamic server configuration
   const port = fullConfig?.server?.listener?.port || defaultPort
   const host = fullConfig?.server?.listener?.host || defaultHost
   const portNumber = typeof port === 'string' ? parseInt(port, 10) : port
 
-  // logger configuration
+  // Logger configuration
   const logLevel = fullConfig?.server?.logLevel || defaultLogLevel
 
-  // template configuration
+  // Template configuration
   const template = fullConfig?.template || {}
 
   const logger = pino({
