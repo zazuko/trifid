@@ -91,6 +91,7 @@ const factory = async (trifid) => {
         res,
         { dataset },
       )
+
       const metadata = await metadataProvider(req, { dataset })
       contentToForward = await render(entityTemplatePath, {
         dataset: entityHtml,
