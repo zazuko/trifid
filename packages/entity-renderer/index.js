@@ -1,7 +1,10 @@
+/* eslint-disable no-template-curly-in-string */
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { parsers } from '@rdfjs/formats-common'
-import hijackResponse from 'hijackresponse'
+import absoluteUrl from 'absolute-url'
+import ParsingClient from 'sparql-http-client/ParsingClient.js'
+import SimpleClient from 'sparql-http-client/SimpleClient.js'
 
 import rdf from '@zazuko/env'
 import { createEntityRenderer } from './renderer/entity.js'
@@ -28,6 +31,10 @@ const getAcceptHeader = (req) => {
   return req.headers.accept
 }
 
+const replaceIriInQuery = (query, iri) => {
+  return query.split('{{iri}}').join(iri)
+}
+
 const factory = async (trifid) => {
   const { render, logger, config } = trifid
   const entityRenderer = createEntityRenderer({ options: config, logger })
@@ -48,70 +55,66 @@ const factory = async (trifid) => {
       return next()
     }
 
-    // update "Accept" HTTP header depending on the requested type
-    req.headers.accept = getAcceptHeader(req)
+    // @TODO: make sure the results is from the specified type
+    // eslint-disable-next-line no-unused-vars
+    const acceptHeader = getAcceptHeader(req)
 
-    // only take care of the rendering if HTML is requested
-    const accepts = req.accepts(['text/plain', 'json', 'html'])
-    if (accepts !== 'html') {
+    // Generate the IRI we expect
+    const iriUrl = new URL(encodeURI(absoluteUrl(req)))
+    iriUrl.search = ''
+    iriUrl.searchParams.forEach((_value, key) => iriUrl.searchParams.delete(key))
+    const iri = iriUrl.toString()
+    logger.debug(`IRI value: ${iri}`)
+
+    // @TODO: allow the user to configure the endpoint URL
+    const endpointUrl = new URL('/query', absoluteUrl(req))
+    const endpointUrlAsString = endpointUrl.toString()
+
+    const sparqlClientAsk = new ParsingClient({ endpointUrl: endpointUrlAsString })
+    const sparqlClient = new SimpleClient({ endpointUrl: endpointUrlAsString })
+
+    // Check if the IRI exists in the dataset
+    // @TODO: allow the user to configure the query
+    const askQuery = 'ASK { <{{iri}}> ?p ?o }'
+    const exists = await sparqlClientAsk.query.ask(replaceIriInQuery(askQuery, iri))
+    if (!exists) {
       return next()
     }
 
-    req.headers.accept = 'application/n-quads'
-
-    const { readable, writable } = await hijackResponse(res, next)
-
-    const contentType = res.getHeader('Content-Type')
-    if (!contentType) {
-      return readable.pipe(writable)
-    }
-
-    const mimeType = contentType.toLowerCase().split(';')[0].trim()
-    const hijackFormats = [
-      'application/ld+json',
-      'application/trig',
-      'application/n-quads',
-      'application/n-triples',
-      'text/n3',
-      'text/turtle',
-      'application/rdf+xml',
-    ]
-
-    if (!hijackFormats.includes(mimeType)) {
-      return readable.pipe(writable)
-    }
-
-    const quadStream = parsers.import(mimeType, readable)
-    const dataset = await rdf.dataset().import(quadStream)
-
-    let contentToForward
     try {
+      // Get the entity from the dataset
+      // @TODO: allow the user to configure the query
+      const describeQuery = 'DESCRIBE <{{iri}}>'
+      const entity = await sparqlClient.query.construct(replaceIriInQuery(describeQuery, iri))
+      const entityContentType = entity.headers.get('Content-Type') || 'application/n-triples'
+      const entityStream = entity.body
+
+      // Make sure the Content-Type is lower case and without parameters (e.g. charset)
+      const fixedContentType = entityContentType.split(';')[0].trim().toLocaleLowerCase()
+
+      const quadStream = parsers.import(fixedContentType, entityStream)
+      const dataset = await rdf.dataset().import(quadStream)
+
       const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
         req,
         res,
         { dataset },
       )
-
       const metadata = await metadataProvider(req, { dataset })
-      contentToForward = await render(entityTemplatePath, {
+
+      res.setHeader('Content-Type', 'text/html')
+      res.send(await render(entityTemplatePath, {
         dataset: entityHtml,
         locals: res.locals,
         entityLabel,
         entityUrl,
         metadata,
         config,
-      })
-      res.setHeader('Content-Type', 'text/html')
-
-      // Without this, the browser will try to download the HTML file if the `Content-Disposition` header is set by the SPARQL endpoint
-      res.removeHeader('Content-Disposition')
+      }))
     } catch (e) {
       logger.error(e)
-      return readable.pipe(writable)
+      return next()
     }
-
-    writable.write(contentToForward)
-    writable.end()
   }
 }
 

@@ -23,10 +23,10 @@ middlewares:
       graphName: http://example.com/graph
       unionDefaultGraph: true
 
-  sparql-handler:
-    module: trifid-handler-sparql
-    config:
-      resourceExistsQuery: "ASK { <${iri}> ?p ?o }"
-      resourceGraphQuery: "DESCRIBE <${iri}>"
-      containerExistsQuery: "ASK { <${iri}> ?p ?o }"
-      containerGraphQuery: "DESCRIBE <${iri}>"
+  # sparql-handler:
+  #   module: trifid-handler-sparql
+  #   config:
+  #     resourceExistsQuery: "ASK { <${iri}> ?p ?o }"
+  #     resourceGraphQuery: "DESCRIBE <${iri}>"
+  #     containerExistsQuery: "ASK { <${iri}> ?p ?o }"
+  #     containerGraphQuery: "DESCRIBE <${iri}>"
