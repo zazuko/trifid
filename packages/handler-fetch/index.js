@@ -61,7 +61,7 @@ export const factory = async (trifid) => {
     try {
       const { response, contentType } = await performOxigraphQuery(store, query)
       res.set('Content-Type', contentType)
-      logger.debug(`Sending the following ${contentType} response: ${response}`)
+      logger.debug(`Sending the following ${contentType} response:\n${response}`)
       return res.status(200).send(response)
     } catch (error) {
       logger.error(error)
