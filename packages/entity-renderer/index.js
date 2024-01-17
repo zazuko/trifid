@@ -2,6 +2,7 @@
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { parsers } from '@rdfjs/formats-common'
+import formats from '@rdfjs-elements/formats-pretty'
 import absoluteUrl from 'absolute-url'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import SimpleClient from 'sparql-http-client/SimpleClient.js'
@@ -12,6 +13,14 @@ import { createMetadataProvider } from './renderer/metadata.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+const supportedTypes = [
+  'application/ld+json',
+  'application/n-triples',
+  'application/rdf+xml',
+  'text/turtle',
+  'application/trig',
+]
+
 const getAcceptHeader = (req) => {
   const queryStringValue = req.query.format
 
@@ -20,6 +29,7 @@ const getAcceptHeader = (req) => {
     jsonld: 'application/ld+json',
     xml: 'application/rdf+xml',
     nt: 'application/n-triples',
+    trig: 'application/trig',
   }
 
   if (
@@ -28,11 +38,29 @@ const getAcceptHeader = (req) => {
     return supportedQueryStringValues[queryStringValue]
   }
 
-  return req.headers.accept
+  return `${req.headers.accept || ''}`.toLocaleLowerCase()
 }
 
 const replaceIriInQuery = (query, iri) => {
   return query.split('{{iri}}').join(iri)
+}
+
+/**
+ * Serialize a formatted stream to a string.
+ *
+ * @param {import('@rdfjs/types').Stream<import('@rdfjs/types').Quad> | null} quadStream
+ * @returns {Promise<string>} The serialized string.
+ */
+const serializeFormattedStream = async (quadStream) => {
+  if (quadStream === null) {
+    throw new Error('No quad stream available')
+  }
+
+  let serialized = ''
+  for await (const chunk of quadStream) {
+    serialized += chunk
+  }
+  return serialized
 }
 
 const factory = async (trifid) => {
@@ -50,13 +78,12 @@ const factory = async (trifid) => {
   }
 
   return async (req, res, next) => {
-    // check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
+    // Check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
     if (ignoredPaths.includes(req.path)) {
       return next()
     }
 
-    // @TODO: make sure the results is from the specified type
-    // eslint-disable-next-line no-unused-vars
+    // Get the expected format from the Accept header or from the `format` query parameter
     const acceptHeader = getAcceptHeader(req)
 
     // Generate the IRI we expect
@@ -88,11 +115,27 @@ const factory = async (trifid) => {
       const entity = await sparqlClient.query.construct(replaceIriInQuery(describeQuery, iri))
       const entityContentType = entity.headers.get('Content-Type') || 'application/n-triples'
       const entityStream = entity.body
+      if (!entityStream) {
+        return next()
+      }
 
       // Make sure the Content-Type is lower case and without parameters (e.g. charset)
       const fixedContentType = entityContentType.split(';')[0].trim().toLocaleLowerCase()
 
       const quadStream = parsers.import(fixedContentType, entityStream)
+
+      if (supportedTypes.includes(acceptHeader)) {
+        const formatted = formats.serializers.import(acceptHeader, quadStream)
+        let serialized = await serializeFormattedStream(formatted)
+        // Pretty print JSON-LD
+        if (acceptHeader === 'application/ld+json') {
+          serialized = JSON.stringify(JSON.parse(serialized), null, 2)
+        }
+        res.setHeader('Content-Type', acceptHeader)
+        res.send(serialized)
+        return
+      }
+
       const dataset = await rdf.dataset().import(quadStream)
 
       const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
