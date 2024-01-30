@@ -19,6 +19,7 @@ const supportedTypes = [
   'application/rdf+xml',
   'text/turtle',
   'application/trig',
+  'text/csv',
 ]
 
 const getAcceptHeader = (req) => {
@@ -30,6 +31,7 @@ const getAcceptHeader = (req) => {
     xml: 'application/rdf+xml',
     nt: 'application/n-triples',
     trig: 'application/trig',
+    csv: 'text/csv',
   }
 
   if (
@@ -39,6 +41,46 @@ const getAcceptHeader = (req) => {
   }
 
   return `${req.headers.accept || ''}`.toLocaleLowerCase()
+}
+
+/**
+ * Convert a JSON-LD object to a CSV string.
+ * Works for simple JSON-LD objects got from a DESCRIBE query.
+ *
+ * @param {Object} jsonLD JSON-LD object to convert to CSV
+ * @returns {string} CSV string
+ */
+const jsonLDToCSV = (jsonLD) => {
+  const rows = ['"key","value"']
+
+  // Process a value and add it to the rows array
+  const processValue = (key, value) => {
+    if (Array.isArray(value)) {
+      // For each array item, check if it's an object with '@id', else use the item directly
+      value.forEach(item => {
+        const itemValue = (item && typeof item === 'object' && item['@id']) ? item['@id'] : item
+        rows.push(`"${key.replace(/"/g, '""')}","${itemValue.toString().replace(/"/g, '""')}"`)
+      })
+    } else if (value && typeof value === 'object' && value['@id']) {
+      // Handle object with '@id'
+      rows.push(`"${key.replace(/"/g, '""')}","${value['@id'].replace(/"/g, '""')}"`)
+    } else {
+      // Handle other values (null/undefined will become empty strings)
+      rows.push(`"${key.replace(/"/g, '""')}","${(value || '').toString().replace(/"/g, '""')}"`)
+    }
+  }
+
+  // Process each entry of the JSON-LD object
+  for (const key in jsonLD) {
+    if (Object.prototype.hasOwnProperty.call(jsonLD, key)) {
+      processValue(key, jsonLD[key])
+    }
+  }
+
+  // Add an empty row to make sure the CSV is ending with a blank line
+  rows.push('')
+
+  return rows.join('\n')
 }
 
 const replaceIriInQuery = (query, iri) => {
@@ -125,11 +167,16 @@ const factory = async (trifid) => {
       const quadStream = parsers.import(fixedContentType, entityStream)
 
       if (supportedTypes.includes(acceptHeader)) {
-        const formatted = formats.serializers.import(acceptHeader, quadStream)
+        const isCsv = acceptHeader === 'text/csv'
+        const serializerMimeType = isCsv ? 'application/ld+json' : acceptHeader
+        const formatted = formats.serializers.import(serializerMimeType, quadStream)
         let serialized = await serializeFormattedStream(formatted)
         // Pretty print JSON-LD
-        if (acceptHeader === 'application/ld+json') {
+        if (serializerMimeType === 'application/ld+json') {
           serialized = JSON.stringify(JSON.parse(serialized), null, 2)
+        }
+        if (isCsv) {
+          serialized = jsonLDToCSV(JSON.parse(serialized))
         }
         res.setHeader('Content-Type', acceptHeader)
         res.send(serialized)
