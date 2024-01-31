@@ -91,7 +91,7 @@ const factory = async (trifid) => {
       const quadStream = parsers.import(fixedContentType, entityStream)
 
       if (sparqlSupportedTypes.includes(acceptHeader)) {
-        const serialized = await sparqlSerializeQuadStream(acceptHeader, quadStream)
+        const serialized = await sparqlSerializeQuadStream(quadStream, acceptHeader)
         res.setHeader('Content-Type', acceptHeader)
         res.send(serialized)
         return
