@@ -2,23 +2,14 @@
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { parsers } from '@rdfjs/formats-common'
-import formats from '@rdfjs-elements/formats-pretty'
 import absoluteUrl from 'absolute-url'
 
 import rdf from '@zazuko/env'
+import { sparqlSerializeQuadStream, sparqlSupportedTypes } from 'trifid-core'
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
-
-const supportedTypes = [
-  'application/ld+json',
-  'application/n-triples',
-  'application/rdf+xml',
-  'text/turtle',
-  'application/trig',
-  'text/csv',
-]
 
 const getAcceptHeader = (req) => {
   const queryStringValue = req.query.format
@@ -41,66 +32,8 @@ const getAcceptHeader = (req) => {
   return `${req.headers.accept || ''}`.toLocaleLowerCase()
 }
 
-/**
- * Convert a JSON-LD object to a CSV string.
- * Works for simple JSON-LD objects got from a DESCRIBE query.
- *
- * @param {Object} jsonLD JSON-LD object to convert to CSV
- * @returns {string} CSV string
- */
-const jsonLDToCSV = (jsonLD) => {
-  const rows = ['"key","value"']
-
-  // Process a value and add it to the rows array
-  const processValue = (key, value) => {
-    if (Array.isArray(value)) {
-      // For each array item, check if it's an object with '@id', else use the item directly
-      value.forEach(item => {
-        const itemValue = (item && typeof item === 'object' && item['@id']) ? item['@id'] : item
-        rows.push(`"${key.replace(/"/g, '""')}","${itemValue.toString().replace(/"/g, '""')}"`)
-      })
-    } else if (value && typeof value === 'object' && value['@id']) {
-      // Handle object with '@id'
-      rows.push(`"${key.replace(/"/g, '""')}","${value['@id'].replace(/"/g, '""')}"`)
-    } else {
-      // Handle other values (null/undefined will become empty strings)
-      rows.push(`"${key.replace(/"/g, '""')}","${(value || '').toString().replace(/"/g, '""')}"`)
-    }
-  }
-
-  // Process each entry of the JSON-LD object
-  for (const key in jsonLD) {
-    if (Object.prototype.hasOwnProperty.call(jsonLD, key)) {
-      processValue(key, jsonLD[key])
-    }
-  }
-
-  // Add an empty row to make sure the CSV is ending with a blank line
-  rows.push('')
-
-  return rows.join('\n')
-}
-
 const replaceIriInQuery = (query, iri) => {
   return query.split('{{iri}}').join(iri)
-}
-
-/**
- * Serialize a formatted stream to a string.
- *
- * @param {import('@rdfjs/types').Stream<import('@rdfjs/types').Quad> | null} quadStream
- * @returns {Promise<string>} The serialized string.
- */
-const serializeFormattedStream = async (quadStream) => {
-  if (quadStream === null) {
-    throw new Error('No quad stream available')
-  }
-
-  let serialized = ''
-  for await (const chunk of quadStream) {
-    serialized += chunk
-  }
-  return serialized
 }
 
 const factory = async (trifid) => {
@@ -133,10 +66,6 @@ const factory = async (trifid) => {
     const iri = iriUrl.toString()
     logger.debug(`IRI value: ${iri}`)
 
-    // // @TODO: allow the user to configure the endpoint URL
-    // const endpointUrl = new URL('/query', absoluteUrl(req))
-    // const endpointUrlAsString = endpointUrl.toString()
-
     // Check if the IRI exists in the dataset
     // @TODO: allow the user to configure the query
     const askQuery = 'ASK { <{{iri}}> ?p ?o }'
@@ -161,18 +90,8 @@ const factory = async (trifid) => {
 
       const quadStream = parsers.import(fixedContentType, entityStream)
 
-      if (supportedTypes.includes(acceptHeader)) {
-        const isCsv = acceptHeader === 'text/csv'
-        const serializerMimeType = isCsv ? 'application/ld+json' : acceptHeader
-        const formatted = formats.serializers.import(serializerMimeType, quadStream)
-        let serialized = await serializeFormattedStream(formatted)
-        // Pretty print JSON-LD
-        if (serializerMimeType === 'application/ld+json') {
-          serialized = JSON.stringify(JSON.parse(serialized), null, 2)
-        }
-        if (isCsv) {
-          serialized = jsonLDToCSV(JSON.parse(serialized))
-        }
+      if (sparqlSupportedTypes.includes(acceptHeader)) {
+        const serialized = await sparqlSerializeQuadStream(acceptHeader, quadStream)
         res.setHeader('Content-Type', acceptHeader)
         res.send(serialized)
         return

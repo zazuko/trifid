@@ -21,7 +21,6 @@
   "homepage": "https://github.com/zazuko/trifid#readme",
   "dependencies": {
     "@lit-labs/ssr": "^3.1.9",
-    "@rdfjs-elements/formats-pretty": "^0.6.5",
     "@rdfjs/formats-common": "^3.1.0",
     "@rdfjs/to-ntriples": "^2.0.0",
     "@zazuko/env": "^1.10.1",
