@@ -4,7 +4,7 @@ server:
 globals:
   endpoints:
     default:
-      url: http://0.0.0.0:3000/query
+      url: /query
 
 middlewares:
   entity-host-web-page:
