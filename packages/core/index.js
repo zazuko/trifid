@@ -15,6 +15,13 @@ import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
 import templateEngine from './lib/templateEngine.js'
 
+// Export some useful functions to work with SPARQL
+export {
+  supportedTypes as sparqlSupportedTypes,
+  serializeFormattedStream as sparqlSerializeFormattedStream,
+  serializeQuadStream as sparqlSerializeQuadStream,
+} from './lib/sparql.js'
+
 /**
  * Create a new Trifid instance.
  *
@@ -96,6 +103,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     middlewares,
     logger,
     templateEngineInstance,
+    `http://${host}:${portNumber}/`,
   )
 
   const start = async () => {

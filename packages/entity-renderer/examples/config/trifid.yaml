@@ -1,6 +1,11 @@
 server:
   logLevel: debug
 
+globals:
+  endpoints:
+    default:
+      url: http://0.0.0.0:3000/query
+
 middlewares:
   entity-host-web-page:
     module: trifid-core/middlewares/view.js

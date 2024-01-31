@@ -4,8 +4,6 @@ import { fileURLToPath } from 'url'
 import { parsers } from '@rdfjs/formats-common'
 import formats from '@rdfjs-elements/formats-pretty'
 import absoluteUrl from 'absolute-url'
-import ParsingClient from 'sparql-http-client/ParsingClient.js'
-import SimpleClient from 'sparql-http-client/SimpleClient.js'
 
 import rdf from '@zazuko/env'
 import { createEntityRenderer } from './renderer/entity.js'
@@ -106,7 +104,7 @@ const serializeFormattedStream = async (quadStream) => {
 }
 
 const factory = async (trifid) => {
-  const { render, logger, config } = trifid
+  const { render, logger, config, query } = trifid
   const entityRenderer = createEntityRenderer({ options: config, logger })
   const metadataProvider = createMetadataProvider({ options: config })
 
@@ -135,17 +133,14 @@ const factory = async (trifid) => {
     const iri = iriUrl.toString()
     logger.debug(`IRI value: ${iri}`)
 
-    // @TODO: allow the user to configure the endpoint URL
-    const endpointUrl = new URL('/query', absoluteUrl(req))
-    const endpointUrlAsString = endpointUrl.toString()
-
-    const sparqlClientAsk = new ParsingClient({ endpointUrl: endpointUrlAsString })
-    const sparqlClient = new SimpleClient({ endpointUrl: endpointUrlAsString })
+    // // @TODO: allow the user to configure the endpoint URL
+    // const endpointUrl = new URL('/query', absoluteUrl(req))
+    // const endpointUrlAsString = endpointUrl.toString()
 
     // Check if the IRI exists in the dataset
     // @TODO: allow the user to configure the query
     const askQuery = 'ASK { <{{iri}}> ?p ?o }'
-    const exists = await sparqlClientAsk.query.ask(replaceIriInQuery(askQuery, iri))
+    const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
     if (!exists) {
       return next()
     }
@@ -154,9 +149,9 @@ const factory = async (trifid) => {
       // Get the entity from the dataset
       // @TODO: allow the user to configure the query
       const describeQuery = 'DESCRIBE <{{iri}}>'
-      const entity = await sparqlClient.query.construct(replaceIriInQuery(describeQuery, iri))
-      const entityContentType = entity.headers.get('Content-Type') || 'application/n-triples'
-      const entityStream = entity.body
+      const entity = await query(replaceIriInQuery(describeQuery, iri), { ask: false })
+      const entityContentType = entity.contentType || 'application/n-triples'
+      const entityStream = entity.response
       if (!entityStream) {
         return next()
       }

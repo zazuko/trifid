@@ -28,6 +28,8 @@
     "trifid-core": "./server.js"
   },
   "dependencies": {
+    "@rdfjs-elements/formats-pretty": "^0.6.7",
+    "@types/sparql-http-client": "^2.2.15",
     "absolute-url": "^2.0.0",
     "ajv": "^8.12.0",
     "camouflage-rewrite": "^1.5.1",
@@ -40,6 +42,7 @@
     "lodash": "^4.17.21",
     "pino": "^8.17.1",
     "pino-pretty": "^10.3.1",
+    "sparql-http-client": "^2.4.2",
     "vhost": "^3.0.2",
     "yaml": "^2.3.2"
   },
@@ -47,6 +50,7 @@
     "@babel/core": "^7.22.17",
     "@babel/preset-env": "^7.23.6",
     "@jest/globals": "^29.7.0",
+    "@rdfjs/types": "^1.1.0",
     "@types/express": "^4.17.20",
     "@types/node": "^20.10.6",
     "babel-jest": "^29.7.0",

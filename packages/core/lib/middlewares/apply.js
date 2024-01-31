@@ -1,8 +1,10 @@
 import merge from 'lodash/merge.js'
 import vhost from 'vhost'
-import { querySparql } from '../query.js'
+import { initQuery } from '../sparql.js'
 
-const apply = async (server, globals, middlewares, logger, templateEngine) => {
+const apply = async (server, globals, middlewares, logger, templateEngine, instanceHostname) => {
+  const { query: querySparql } = initQuery(logger, globals.endpoints, instanceHostname)
+
   for (const middleware of middlewares) {
     const name = middleware[0]
     const m = middleware[1]
