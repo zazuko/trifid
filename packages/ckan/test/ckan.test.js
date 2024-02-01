@@ -2,15 +2,21 @@
 
 /* eslint-disable no-useless-catch */
 
-import { strictEqual } from 'assert'
+import { strictEqual } from 'node:assert'
 import { readFile } from 'fs/promises'
+import { expect } from 'chai'
+import * as chai from 'chai'
+import chaiSubset from 'chai-subset'
+import * as xml from 'xml2js'
+import xpath from 'xml2js-xpath'
 import { describe, it } from 'mocha'
-
 import trifidCore from 'trifid-core'
 import ckanTrifidPlugin from '../src/index.js'
 import { convertLegacyFrequency } from '../src/xml.js'
 import { storeMiddleware } from './support/store.js'
 import { getListenerURL } from './support/utils.js'
+
+chai.use(chaiSubset)
 
 const createTrifidInstance = async () => {
   return await trifidCore({
@@ -38,66 +44,44 @@ const createTrifidInstance = async () => {
 }
 
 describe('@zazuko/trifid-plugin-ckan', () => {
+  let trifidListener
+
+  beforeEach(async () => {
+    const trifidInstance = await createTrifidInstance()
+    trifidListener = await trifidInstance.start()
+  })
+
+  afterEach(() => {
+    trifidListener.close()
+  })
+
   describe('basic tests', () => {
-    it('should create a middleware with factory and default options', async () => {
-      const trifidInstance = await createTrifidInstance()
-      const trifidListener = await trifidInstance.start()
-      trifidListener.close()
-    })
-
     it('should answer with a 400 status code if the organization parameter is missing', async () => {
-      const trifidInstance = await createTrifidInstance()
-      const trifidListener = await trifidInstance.start()
-
-      try {
-        const ckanUrl = `${getListenerURL(trifidListener)}/ckan`
-        const res = await fetch(ckanUrl)
-        strictEqual(res.status, 400)
-      } catch (e) {
-        throw e
-      } finally {
-        trifidListener.close()
-      }
+      const ckanUrl = `${getListenerURL(trifidListener)}/ckan`
+      const res = await fetch(ckanUrl)
+      strictEqual(res.status, 400)
     })
 
     it('should get an empty result for an unknown organization', async () => {
-      const trifidInstance = await createTrifidInstance()
-      const trifidListener = await trifidInstance.start()
+      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/unkown-org`
 
-      try {
-        const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/unkown-org`
+      const res = await fetch(ckanUrl)
+      const body = await res.text()
+      const expectedResult = await readFile(new URL('./support/empty-result.xml', import.meta.url), 'utf8')
 
-        const res = await fetch(ckanUrl)
-        const body = await res.text()
-        const expectedResult = await readFile(new URL('./support/empty-result.xml', import.meta.url), 'utf8')
-
-        strictEqual(res.status, 200)
-        strictEqual(body, expectedResult)
-      } catch (e) {
-        throw e
-      } finally {
-        trifidListener.close()
-      }
+      strictEqual(res.status, 200)
+      strictEqual(body, expectedResult)
     })
 
     it('should get a basic result for a known organization', async () => {
-      const trifidInstance = await createTrifidInstance()
-      const trifidListener = await trifidInstance.start()
+      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/my-org`
 
-      try {
-        const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/my-org`
+      const res = await fetch(ckanUrl)
+      const body = await res.text()
+      const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
 
-        const res = await fetch(ckanUrl)
-        const body = await res.text()
-        const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
-
-        strictEqual(res.status, 200)
-        strictEqual(body, expectedResult)
-      } catch (e) {
-        throw e
-      } finally {
-        trifidListener.close()
-      }
+      strictEqual(res.status, 200)
+      strictEqual(body, expectedResult)
     })
 
     it('should convert legacy frequency to EU frequency if possible', async () => {
@@ -143,6 +127,27 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       strictEqual(convertLegacyFrequency(`${euFreqPrefix}/WEEKLY`), `${euFreqPrefix}/WEEKLY`)
       strictEqual(convertLegacyFrequency(`${euFreqPrefix}/WEEKLY_2`), `${euFreqPrefix}/WEEKLY_2`)
       strictEqual(convertLegacyFrequency(`${euFreqPrefix}/WEEKLY_3`), `${euFreqPrefix}/WEEKLY_3`)
+    })
+  })
+
+  describe('BLW tests', () => {
+    const parser = new xml.Parser({
+      explicitArray: false,
+    })
+
+    it('should get a correct contactPoint', async () => {
+      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw`
+
+      const res = await fetch(ckanUrl)
+      const body = await parser.parseStringPromise(await res.text(), { explicitArray: false })
+      const contactPoint = xpath.evalFirst(body, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:contactPoint')
+
+      const expected = await parser.parseStringPromise(`
+        <vcard:Organization>
+          <vcard:fn>Bundesamt für Landwirtschaft, Fachbereich Marktanalysen</vcard:fn>
+          <vcard:hasEmail rdf:resource="mailto:marktanalysen@blw.admin.ch"/>
+        </vcard:Organization>`)
+      expect(contactPoint).to.containSubset(expected)
     })
   })
 })

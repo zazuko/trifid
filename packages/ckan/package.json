@@ -26,14 +26,19 @@
     "@zazuko/env": "^1.11.0",
     "@zazuko/prefixes": "^2.1.1",
     "dotenv": "^16.3.1",
+    "is-graph-pointer": "^2.1.0",
     "sparql-http-client": "^2.4.2",
     "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
     "c8": "^8.0.1",
+    "chai": "^5.0.3",
+    "chai-subset": "^1.6.0",
     "mocha": "^10.2.0",
     "oxigraph": "^0.3.22",
     "trifid-core": "^2.7.1",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "xml2js": "^0.6.2",
+    "xml2js-xpath": "^0.13.0"
   }
 }

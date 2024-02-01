@@ -4,6 +4,12 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix cube: <https://cube.link/> .
+@prefix admin: <https://ld.admin.ch/> .
+@prefix category: <https://register.ld.admin.ch/opendataswiss/category/> .
+@prefix theme: <http://publications.europa.eu/resource/authority/data-theme/> .
 
 <dataset1>
   rdf:type schema:Dataset ;
@@ -66,3 +72,80 @@
   schema:description "Dataset 2 - Description"@de ;
   schema:version "1"^^xsd:integer ;
   .
+
+#########################################
+#
+# BLW Example
+#
+#########################################
+
+<https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month> a dcat:Dataset, cube:Cube ;
+  dcterms:identifier "F_MilkDairyProducts_Production__Quantity_Month" ;
+  dcterms:creator <https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw> ;
+  dcterms:title
+    "Marktzahlen Milch und Milchprodukte"@de,
+    "Market figures milk and dairy products"@en,
+    "Chiffres du marché du lait et des produits laitiers"@fr,
+    "Cifre di mercato latte e latticini"@it ;
+  dcterms:issued "2024-02-01"^^xsd:date ;
+  dcterms:description
+    "Monatliche Mengenangaben zur vermarkteten Rohmilch auf der Wertschöpfungsstufe Produktion"@de,
+    "Monthly quantity on marketed raw milk at production stage of the value chain"@en,
+    "Quantités moyennes mensuelles de lait cru commercialisé à l’échelon de création de valeur Production"@fr,
+    "Volumi mensili di latte crudo commercializzato a livello della catena del valore produzione"@it ;
+  dcterms:publisher <https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw> ;
+  schema:name
+    "Marktzahlen Milch und Milchprodukte"@de,
+    "Market figures milk and dairy products"@en,
+    "Chiffres du marché du lait et des produits laitiers"@fr,
+    "Cifre di mercato latte e latticini"@it ;
+  dcat:keyword "price"@en, "market data"@en ;
+  schema:dateCreated "2024-02-01"^^xsd:date ;
+  schema:dateModified "2024-02-01"^^xsd:date ;
+  schema:alternateName "Milch"@de, "Milk"@en, "Lait"@fr, "Latte"@it ;
+  schema:description
+    "Monatliche Mengenangaben zur vermarkteten Rohmilch auf der Wertschöpfungsstufe Produktion"@de,
+    "Monthly quantity on marketed raw milk at production stage of the value chain"@en,
+    "Quantités moyennes mensuelles de lait cru commercialisé à l’échelon de création de valeur Production"@fr,
+    "Volumi mensili di latte crudo commercializzato a livello della catena del valore produzione"@it ;
+  schema:creator <https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw> ;
+  schema:contributor <https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw> ;
+  schema:publisher <https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw> ;
+  schema:contactPoint _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 ;
+  schema:datePublished "2024-02-01"^^xsd:date ;
+  dcat:landingPage
+    <https://agrarmarktdaten.admin.ch>,
+    <https://donnees-agrimarche.admin.ch>,
+    <https://dati-agrimercato.admin.ch>,
+    <https://agrimarketdata.admin.ch> ;
+  schema:workExample
+    <https://ld.admin.ch/application/opendataswiss>,
+    <https://ld.admin.ch/application/visualize>,
+    [
+      rdf:type schema:CreativeWork ;
+      schema:name
+        "SPARQL Endpoint mit Vorauswahl des Graph"@de,
+        "SPARQL Endpoint with graph preselection"@en,
+        "SPARQL Endpoint avec présélection du graphe"@fr ;
+      schema:url
+        <http://test.lindas.admin.ch/sparql#query=DESCRIBE+%3Fcube%0A%0AFROM+%3Chttps%3A%2F%2Flindas.admin.ch%2Ffoag%2Fagricultural-market-data%3E%0AWHERE+%7B%0A%3Chttps%3A%2F%2Fagriculture.ld.admin.ch%2Ffoag%2Fcube%2FMilkDairyProducts%2FProduction_Quantity_Month%3E+a+%3Chttps%3A%2F%2Fcube.link%2FCube%3E+.%0A%7D%0A%0A&endpoint=http%3A%2F%2Ftest.lindas.admin.ch%2Fquery> ;
+      schema:encodingFormat "application/sparql-query" ;
+    ] ;
+  schema:creativeWorkStatus <https://ld.admin.ch/vocabulary/CreativeWorkStatus/Published> ;
+  dcterms:rights <https://ld.admin.ch/vocabulary/TermsOfUse/Provide-the-Source> ;
+  dcterms:license <https://www.fedlex.admin.ch/eli/cc/1998/3033_3033_3033/de#art_27> ;
+  dcterms:accrualPeriodicity <http://publications.europa.eu/resource/authority/frequency/MONTHLY> ;
+  dcat:contactPoint _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 ;
+  dcat:theme category:administration, category:agriculture, category:national-economy, category:prices ;
+  cube:observationSet
+    <https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/observation/> ;
+  cube:observationConstraint
+    <https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/shape> ;
+  admin:euDataTheme theme:AGRI, theme:ECON .
+
+_:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 a schema:ContactPoint, vcard:Organization ;
+  dcterms:title "Bundesamt für Landwirtschaft, Fachbereich Marktanalysen" ;
+  schema:name "Bundesamt für Landwirtschaft, Fachbereich Marktanalysen" ;
+  schema:email "marktanalysen@blw.admin.ch" ;
+  vcard:fn "Bundesamt für Landwirtschaft, Fachbereich Marktanalysen" ;
+  vcard:hasEmail <mailto:marktanalysen@blw.admin.ch> .
