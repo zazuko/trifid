@@ -5,7 +5,10 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha"
+    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "prebuild": "rimraf src/*.d.ts",
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "repository": {
     "type": "git",
