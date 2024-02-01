@@ -33,6 +33,7 @@
     "c8": "^8.0.1",
     "mocha": "^10.2.0",
     "oxigraph": "^0.3.22",
-    "trifid-core": "^2.7.1"
+    "trifid-core": "^2.7.1",
+    "typescript": "5.3.3"
   }
 }
