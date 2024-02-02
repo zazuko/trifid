@@ -113,7 +113,6 @@ const toXML = (dataset) => {
               'dcat:contactPoint': serializeBlankNode(
                 dataset.out(ns.dcat.contactPoint),
                 [ns.vcard.Organization, ns.vcard.Individual],
-                [ns.vcard.fn, ns.vcard.hasEmail],
               ),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
               'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
