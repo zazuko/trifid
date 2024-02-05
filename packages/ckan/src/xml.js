@@ -138,6 +138,12 @@ const serializeTerm = (pointer) => {
   })
 }
 
+/**
+ * Serialize a literal.
+ *
+ * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @return {Record<string, unknown>} Serialized literal.
+ */
 const serializeLiteral = (pointer) => {
   if (!isLiteral(pointer)) return null
 
@@ -158,6 +164,12 @@ const serializeLiteral = (pointer) => {
   }
 }
 
+/**
+ * Serialize a named node.
+ *
+ * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @return {Record<string, unknown>} Serialized named node.
+ */
 const serializeNamedNode = (pointer) => {
   if (!isNamedNode(pointer)) return null
 
@@ -167,10 +179,11 @@ const serializeNamedNode = (pointer) => {
 }
 
 /**
+ * Serialize a blank node.
  *
- * @param {import('clownface').MultiPointer} pointer
- * @param {Array<import('@rdfjs/types').NamedNode>} [allowedTypesArr]
- * @return {Record<string, unknown>}
+ * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @param {Array<import('@rdfjs/types').NamedNode>} [allowedTypesArr] Allowed types for the blank node.
+ * @return {Record<string, unknown>} Serialized blank node.
  */
 const serializeBlankNode = (pointer, allowedTypesArr = []) => {
   if (!isBlankNode(pointer)) return null
@@ -193,10 +206,15 @@ const serializeBlankNode = (pointer, allowedTypesArr = []) => {
   }
 }
 
+/**
+ * Convert encoding format to distribution format.
+ *
+ * @param {import('clownface').MultiPointer} encodingPointer Pointer to encoding format.
+ * @return {string} Distribution format.
+ */
 const distributionFormatFromEncoding = (encodingPointer) => {
   const encoding = encodingPointer.values[0] || ''
 
-  /* eslint-disable indent */
   switch (encoding) {
     case 'text/html': {
       return 'HTML'
@@ -208,7 +226,6 @@ const distributionFormatFromEncoding = (encodingPointer) => {
       return 'UNKNOWN'
     }
   }
-  /* eslint-enable indent */
 }
 
 /**

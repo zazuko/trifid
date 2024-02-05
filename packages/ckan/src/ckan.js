@@ -3,14 +3,14 @@ import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import { toXML } from './xml.js'
 import { datasetsQuery } from './query.js'
 
-export function createAPI (config) {
+export const createAPI = (config) => {
   const client = new ParsingClient({
     endpointUrl: config.endpointUrl,
     user: config.user,
     password: config.password,
   })
 
-  async function fetchDatasets (organizationId) {
+  const fetchDatasets = async (organizationId) => {
     const query = datasetsQuery(organizationId)
     return await client.query.construct(query.toString())
   }

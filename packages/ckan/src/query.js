@@ -2,7 +2,13 @@
 import { sparql } from '@tpluscode/rdf-string'
 import * as ns from './namespace.js'
 
-function datasetsQuery (organizationId) {
+/**
+ * Query to retrieve all datasets for a given organization.
+ *
+ * @param {string} organizationId The organization identifier.
+ * @returns {import('@tpluscode/rdf-string').SparqlTemplateResult}
+ */
+const datasetsQuery = (organizationId) => {
   return sparql`
     CONSTRUCT {
       ?dataset ?p ?o .
