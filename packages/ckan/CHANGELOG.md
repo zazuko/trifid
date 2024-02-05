@@ -1,5 +1,12 @@
 # @zazuko/trifid-plugin-ckan
 
+## 2.4.3
+
+### Patch Changes
+
+- 5948029: Add type declarations to package
+- 0ef3d8f: Correctly serialize `dcat:contactPoint` which have RDF types in addition to `vcard:Individual` or `vcard:Organization`.
+
 ## 2.4.2
 
 ### Patch Changes
