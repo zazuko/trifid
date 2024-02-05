@@ -1,7 +1,5 @@
 // @ts-check
 
-/* eslint-disable no-useless-catch */
-
 import { strictEqual } from 'node:assert'
 import { readFile } from 'fs/promises'
 import { expect } from 'chai'
@@ -139,7 +137,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw`
 
       const res = await fetch(ckanUrl)
-      const body = await parser.parseStringPromise(await res.text(), { explicitArray: false })
+      const body = await parser.parseStringPromise(await res.text())
       const contactPoint = xpath.evalFirst(body, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:contactPoint')
 
       const expected = await parser.parseStringPromise(`
