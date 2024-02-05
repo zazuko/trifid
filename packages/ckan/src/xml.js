@@ -2,6 +2,7 @@
 import rdf from '@zazuko/env'
 import prefixes, { shrink } from '@zazuko/prefixes'
 import { create as createXml } from 'xmlbuilder2'
+import { isBlankNode, isLiteral, isNamedNode } from 'is-graph-pointer'
 import * as ns from './namespace.js'
 
 /**
@@ -109,7 +110,10 @@ const toXML = (dataset) => {
               'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
               'dcterms:publisher': publishers,
               'dcterms:creator': serializeTerm(creators),
-              'dcat:contactPoint': serializeTerm(dataset.out(ns.dcat.contactPoint)),
+              'dcat:contactPoint': serializeBlankNode(
+                dataset.out(ns.dcat.contactPoint),
+                [ns.vcard.Organization, ns.vcard.Individual],
+              ),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
               'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
               'dcterms:relation': legalBasis,
@@ -130,38 +134,27 @@ const toXML = (dataset) => {
 
 const serializeTerm = (pointer) => {
   return pointer.map((value) => {
-    if (isLiteral(value)) {
-      return serializeLiteral(value)
-    } else if (isNamedNode(value)) {
-      return serializeNamedNode(value)
-    } else if (isBlankNode(value)) {
-      return serializeBlankNode(value)
-    } else {
-      return {}
-    }
+    return serializeLiteral(value) || serializeNamedNode(value) || serializeBlankNode(value) || {}
   })
 }
 
-const isLiteral = (pointer) => {
-  return pointer.term.termType === 'Literal'
-}
+/**
+ * Serialize a literal.
+ *
+ * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @return {Record<string, unknown>} Serialized literal.
+ */
+const serializeLiteral = (pointer) => {
+  if (!isLiteral(pointer)) return null
 
-const isNamedNode = (pointer) => {
-  return pointer.term.termType === 'NamedNode'
-}
-
-const isBlankNode = (pointer) => {
-  return pointer.term.termType === 'BlankNode'
-}
-
-const serializeLiteral = ({ term }) => {
+  const { term } = pointer
   const attrs = {}
 
   if (term.language) {
     attrs['xml:lang'] = term.language
   }
 
-  if (term.datatype && !term.datatype.equals(ns.rdf.langString)) {
+  if (term.datatype && !term.datatype.equals(ns.rdf.langString) && !term.datatype.equals(ns.xsd.string)) {
     attrs['rdf:datatype'] = term.datatype.value
   }
 
@@ -171,14 +164,33 @@ const serializeLiteral = ({ term }) => {
   }
 }
 
-const serializeNamedNode = ({ value }) => {
+/**
+ * Serialize a named node.
+ *
+ * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @return {Record<string, unknown>} Serialized named node.
+ */
+const serializeNamedNode = (pointer) => {
+  if (!isNamedNode(pointer)) return null
+
   return {
-    '@': { 'rdf:resource': value },
+    '@': { 'rdf:resource': pointer.value },
   }
 }
 
-const serializeBlankNode = (pointer) => {
-  const type = pointer.out(ns.rdf.type).value
+/**
+ * Serialize a blank node.
+ *
+ * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @param {Array<import('@rdfjs/types').NamedNode>} [allowedTypesArr] Allowed types for the blank node.
+ * @return {Record<string, unknown>} Serialized blank node.
+ */
+const serializeBlankNode = (pointer, allowedTypesArr = []) => {
+  if (!isBlankNode(pointer)) return null
+
+  const allowedTypes = rdf.termSet(allowedTypesArr)
+  const types = pointer.out(ns.rdf.type).terms
+  const type = types.find((term) => !allowedTypes.size || allowedTypes.has(term))
 
   if (!type) return {}
 
@@ -190,14 +202,19 @@ const serializeBlankNode = (pointer) => {
     ({ ...acc, [shrink(property.value)]: serializeTerm(pointer.out(property)) }), {})
 
   return {
-    [shrink(type)]: resource,
+    [shrink(type.value)]: resource,
   }
 }
 
+/**
+ * Convert encoding format to distribution format.
+ *
+ * @param {import('clownface').MultiPointer} encodingPointer Pointer to encoding format.
+ * @return {string} Distribution format.
+ */
 const distributionFormatFromEncoding = (encodingPointer) => {
   const encoding = encodingPointer.values[0] || ''
 
-  /* eslint-disable indent */
   switch (encoding) {
     case 'text/html': {
       return 'HTML'
@@ -209,7 +226,6 @@ const distributionFormatFromEncoding = (encodingPointer) => {
       return 'UNKNOWN'
     }
   }
-  /* eslint-enable indent */
 }
 
 /**
