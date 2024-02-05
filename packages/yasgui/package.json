@@ -33,6 +33,6 @@
     "absolute-url": "^1.2.2",
     "c8": "^8.0.1",
     "mocha": "^10.2.0",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.4"
   }
 }
