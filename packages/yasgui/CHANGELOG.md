@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 2.2.6
+
+### Patch Changes
+
+- 34b3ffb: Upgrade @zazuko/yasgui to v4.2.34
+
 ## 2.2.5
 
 ### Patch Changes
