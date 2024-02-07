@@ -1,3 +1,5 @@
+// @ts-check
+
 import { describe, expect, test } from '@jest/globals'
 
 import parser from '../lib/config/parser.js'

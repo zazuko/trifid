@@ -1,4 +1,5 @@
 // @ts-check
+
 import { sparql } from '@tpluscode/rdf-string'
 import * as ns from './namespace.js'
 

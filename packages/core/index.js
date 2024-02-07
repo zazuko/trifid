@@ -28,7 +28,7 @@ export {
  * @param {import('./types/index.js').TrifidConfigWithExtends?} config Trifid configuration.
  * @param {Record<string, {
  *   order?: number,
- *   module: import('./types/index.d.ts').TrifidMiddleware,
+ *   module: import('./types/index.js').TrifidMiddleware,
  *   paths?: string | string[];
  *   methods?: string | string[];
  *   hosts?: string | string[];

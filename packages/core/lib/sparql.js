@@ -175,7 +175,7 @@ export const generateClient = (sparqlEndpoint, options) => {
  * @param {import('pino').Logger} logger Logger instance.
  * @param {Record<string, SPARQLEndpointConfig>} configuredEndpoints Configured endpoints.
  * @param {string} instanceHostname Instance hostname, used to resolve relative URLs.
- * @returns {{endpoints: Record<string, SPARQLClient>, query: (middlewareLogger: import('pino').Logger) => import('../types/index.d.ts').TrifidQuery}} Query function.
+ * @returns {{endpoints: Record<string, SPARQLClient>, query: (middlewareLogger: import('pino').Logger) => import('../types/index.js').TrifidQuery}} Query function.
  */
 export const initQuery = (logger, configuredEndpoints = {}, instanceHostname) => {
   const endpoints = Object.fromEntries(Object.entries(configuredEndpoints).map(([name, options]) => {

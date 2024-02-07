@@ -1,7 +1,7 @@
 // @ts-check
 import url from 'url'
 
-/** @type {import('../types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../types/index.js').TrifidMiddleware} */
 const factory = (trifid) => {
   const { logger } = trifid
 
@@ -16,7 +16,7 @@ const factory = (trifid) => {
     res.locals.currentLanguage = req?.cookies?.i18n || defaultLanguage
 
     // update langage by setting `lang` query parameter
-    const lang = req.query.lang
+    const lang = req.query.lang.toString()
     if (lang && supportedLanguages.includes(lang)) {
       logger.debug(`set default language to '${lang}'`)
       res.cookie('i18n', lang, { maxAge: oneMonthMilliseconds })

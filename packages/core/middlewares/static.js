@@ -1,7 +1,7 @@
 // @ts-check
 import express from 'express'
 
-/** @type {import('../types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../types/index.js').TrifidMiddleware} */
 const factory = (trifid) => {
   const { directory } = trifid.config
   if (!directory) {

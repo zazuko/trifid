@@ -1,4 +1,5 @@
 // @ts-check
+
 import rdf from '@zazuko/env'
 import prefixes, { shrink } from '@zazuko/prefixes'
 import { create as createXml } from 'xmlbuilder2'

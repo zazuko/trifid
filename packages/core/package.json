@@ -17,13 +17,26 @@
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "watch": "nodemon server.js",
     "typings": "tsc",
-    "clean": "rimraf *.tgz *.d.ts* lib/*.d.ts* lib/**/*.d.ts* middlewares/*.d.ts* middlewares/**/*.d.ts*",
+    "clean": "rimraf *.tgz dist/",
     "prepack": "npm run clean && npm run typings",
     "postpublish": "npm run clean",
     "release": "changeset publish"
   },
+  "files": [
+    "dist/",
+    "lib/",
+    "middlewares/",
+    "static/",
+    "views/",
+    "config.yaml",
+    "config2.json",
+    "logo.svg",
+    "index.js",
+    "server.js",
+    "CHANGELOG.md"
+  ],
   "main": "index.js",
-  "types": "./index.d.ts",
+  "types": "./dist/index.d.ts",
   "bin": {
     "trifid-core": "./server.js"
   },

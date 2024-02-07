@@ -1,3 +1,5 @@
+// @ts-check
+
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { describe, expect, test } from '@jest/globals'

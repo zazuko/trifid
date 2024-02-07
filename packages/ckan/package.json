@@ -3,13 +3,19 @@
   "version": "2.4.3",
   "description": "Endpoint for opendata.swiss CKAN harvester",
   "main": "src/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
     "test": "c8 --reporter=lcov --reporter=text mocha",
-    "prebuild": "rimraf src/*.d.ts src/*.d.ts.map",
+    "prebuild": "rimraf dist/",
     "build": "tsc",
     "prepack": "npm run build"
   },
+  "files": [
+    "dist",
+    "src",
+    "CHANGELOG.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/zazuko/trifid.git",
