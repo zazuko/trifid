@@ -1,3 +1,5 @@
+// @ts-check
+
 import { strictEqual, deepEqual } from 'node:assert'
 import { describe, it } from 'mocha'
 import { convertTermType, handleOxigraphResult } from '../lib/query.js'
@@ -20,6 +22,9 @@ describe('trifid-handler-fetch', () => {
     it('should handle ASK queries', async () => {
       const results = true
       const { raw, response, contentType, type } = await handleOxigraphResult(results)
+      if (typeof raw === 'string' || Array.isArray(raw)) {
+        throw new Error('raw should be an object, not a string or an array')
+      }
       strictEqual(raw.boolean, results)
       strictEqual(response, JSON.stringify(raw, null, 2))
       strictEqual(contentType, 'application/sparql-results+json')

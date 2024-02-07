@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Convert Oxigraph termType to SPARQL termType.
  *

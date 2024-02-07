@@ -5,6 +5,7 @@
   "version": "2.0.1",
   "license": "MIT",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
@@ -15,17 +16,24 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "files": [
+    "dist",
+    "lib",
     "index.js",
-    "lib"
+    "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha"
+    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "prebuild": "rimraf dist/",
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "oxigraph": "^0.4.0-alpha.2"
   },
   "devDependencies": {
     "c8": "^9.1.0",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
   }
 }

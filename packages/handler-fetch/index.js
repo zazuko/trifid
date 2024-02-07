@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+// @ts-check
+
 import { readFile } from 'node:fs/promises'
 import { resolve as pathResolve } from 'node:path'
 
@@ -26,6 +27,7 @@ const getContent = async (url) => {
   return content
 }
 
+/** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
 export const factory = async (trifid) => {
   const { config, logger } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
