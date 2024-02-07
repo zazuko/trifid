@@ -16,7 +16,8 @@ const factory = (trifid) => {
     res.locals.currentLanguage = req?.cookies?.i18n || defaultLanguage
 
     // update langage by setting `lang` query parameter
-    const lang = req.query.lang.toString()
+    const langQuery = req.query.lang || ''
+    const lang = typeof langQuery === 'string' ? langQuery : langQuery.toString()
     if (lang && supportedLanguages.includes(lang)) {
       logger.debug(`set default language to '${lang}'`)
       res.cookie('i18n', lang, { maxAge: oneMonthMilliseconds })
