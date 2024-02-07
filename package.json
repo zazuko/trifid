@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint . --quiet --ignore-path .gitignore",
-    "test": "npm run test --workspaces",
+    "test": "npx wsrun --report -msc test",
     "release": "changeset publish",
     "prepare": "husky install"
   },
