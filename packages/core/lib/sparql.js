@@ -64,7 +64,7 @@ const jsonLDToCSV = (jsonLD) => {
 /**
  * Serialize a formatted stream to a string.
  *
- * @param {import('@rdfjs/types').Stream<import('@rdfjs/types').Quad> | null} quadStream
+ * @param {import('@rdfjs/types').Stream<import('@rdfjs/types').Quad> | import('node:stream').EventEmitter | null} quadStream
  * @returns {Promise<string>} The serialized string.
  */
 export const serializeFormattedStream = async (quadStream) => {
