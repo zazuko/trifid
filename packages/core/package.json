@@ -59,7 +59,7 @@
     "path-scurry": "^1.10.1",
     "rimraf": "^5.0.5",
     "supertest": "^6.3.4",
-    "typescript": "5.3.3"
+    "typescript": "^5.3.3"
   },
   "jest": {
     "collectCoverage": true,
