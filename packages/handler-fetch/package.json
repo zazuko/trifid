@@ -28,9 +28,11 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "oxigraph": "^0.4.0-alpha.2"
+    "oxigraph": "^0.4.0-alpha.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.8",
     "c8": "^9.1.0",
     "mocha": "^10.2.0",
     "rimraf": "^5.0.5",

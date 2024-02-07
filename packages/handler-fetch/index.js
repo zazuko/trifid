@@ -1,50 +1,58 @@
 // @ts-check
 
-import { readFile } from 'node:fs/promises'
-import { resolve as pathResolve } from 'node:path'
-
-import oxigraph from 'oxigraph'
-
-import { performOxigraphQuery } from './lib/query.js'
-
-/**
- * Fetch file content from URL or path.
- *
- * @param {string} url URL or path to file to fetch.
- * @returns {Promise<string>} File content.
- */
-const getContent = async (url) => {
-  let content
-
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    const response = await fetch(url)
-    content = await response.text()
-  } else {
-    const resolvedPath = pathResolve(url)
-    content = await readFile(resolvedPath, 'utf8')
-  }
-
-  return content
-}
+import { Worker } from 'node:worker_threads'
+import { v4 as uuidv4 } from 'uuid'
 
 /** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
 export const factory = async (trifid) => {
   const { config, logger } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
 
-  let graphNameIri = graphName
-  if ((typeof unionDefaultGraph === 'boolean' && unionDefaultGraph) || unionDefaultGraph === 'true') {
-    graphNameIri = oxigraph.defaultGraph()
+  const workerUrl = new URL('./lib/worker.js', import.meta.url)
+  const worker = new Worker(workerUrl)
+
+  worker.on('message', async (message) => {
+    const { type, data } = JSON.parse(`${message}`)
+    if (type === 'log') {
+      logger.debug(data)
+    }
+  })
+
+  worker.on('error', (error) => {
+    logger.error(`Error from worker: ${error.message}`)
+  })
+
+  worker.on('exit', (code) => {
+    logger.info(`Worker exited with code ${code}`)
+  })
+
+  worker.postMessage(JSON.stringify({
+    type: 'config',
+    data: {
+      contentType, url, baseIri, graphName, unionDefaultGraph,
+    },
+  }))
+
+  const handleQuery = async (query) => {
+    return new Promise((resolve, _reject) => {
+      const queryId = uuidv4()
+
+      worker.postMessage(JSON.stringify({
+        type: 'query',
+        data: {
+          queryId,
+          query,
+        },
+      }))
+
+      worker.on('message', (message) => {
+        const { type, data } = JSON.parse(`${message}`)
+        if (type === 'query' && data.queryId === queryId) {
+          resolve(data)
+        }
+      })
+    })
   }
-
-  // read data from file or URL
-  const data = await getContent(url)
-  logger.debug(`Loaded ${data.length} bytes of data from ${url}`)
-
-  // create a store and load the data
-  const store = new oxigraph.Store()
-  store.load(data, contentType, baseIri, graphNameIri)
-  logger.debug('Loaded data into store')
 
   return async (req, res, _next) => {
     let query
@@ -61,7 +69,7 @@ export const factory = async (trifid) => {
     logger.debug(`Received query: ${query}`)
 
     try {
-      const { response, contentType } = await performOxigraphQuery(store, query)
+      const { response, contentType } = await handleQuery(query)
       res.set('Content-Type', contentType)
       logger.debug(`Sending the following ${contentType} response:\n${response}`)
       return res.status(200).send(response)
