@@ -148,7 +148,7 @@ export const handleOxigraphResult = async (results, isConstructQuery = false) =>
  * }>} SPARQL response.
  */
 export const performOxigraphQuery = async (store, query) => {
-  const results = await store.query(query)
+  const results = store.query(query)
   const isConstructQuery = query.toUpperCase().includes('CONSTRUCT')
   return await handleOxigraphResult(results, isConstructQuery)
 }
