@@ -37,8 +37,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - run: npx wsrun --report -mc prepack
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build of each package (prepack script, mostly for typings)
+        run: npm run build
