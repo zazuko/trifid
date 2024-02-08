@@ -6,7 +6,7 @@ import { waitForVariableToBeTrue } from './lib/utils.js'
 
 /** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
 export const factory = async (trifid) => {
-  const { config, logger } = trifid
+  const { config, logger, trifidEvents } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
 
   const queryTimeout = 30000
@@ -16,6 +16,18 @@ export const factory = async (trifid) => {
   worker.unref()
 
   let ready = false
+
+  logger.warn('Listening to Trifid events…')
+
+  trifidEvents.on('ready', async () => {
+    logger.warn('Got "ready" event from Trifid')
+  })
+
+  trifidEvents.on('close', async () => {
+    logger.warn('Got "close" event from Trifid ; closing worker…')
+    await worker.terminate()
+    logger.debug('Worker terminated')
+  })
 
   worker.on('message', async (message) => {
     const { type, data } = message

@@ -1,4 +1,5 @@
 // @ts-check
+import EventEmitter from 'node:events'
 import express from 'express'
 import { pino } from 'pino'
 import cors from 'cors'
@@ -41,6 +42,7 @@ export {
  * }>} Trifid instance.
  */
 const trifid = async (config, additionalMiddlewares = {}) => {
+  const trifidEvents = new EventEmitter()
   const fullConfig = await handler(config)
   const server = express()
   server.disable('x-powered-by')
@@ -62,6 +64,15 @@ const trifid = async (config, additionalMiddlewares = {}) => {
 
   // Add support for absolute URLs, so that we can use `req.absoluteUrl()` in any middleware to get the absolute URL
   server.use(absoluteUrl())
+
+  // Forward server events to the Trifid middlewares
+  server.on('ready', () => {
+    trifidEvents.emit('ready')
+  })
+
+  server.on('close', () => {
+    trifidEvents.emit('close')
+  })
 
   // Configure Express server
   if (fullConfig?.server?.express) {
@@ -104,6 +115,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     logger,
     templateEngineInstance,
     `http://${host}:${portNumber}/`,
+    trifidEvents,
   )
 
   const start = async () => {

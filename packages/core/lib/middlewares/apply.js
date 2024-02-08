@@ -2,7 +2,7 @@ import merge from 'lodash/merge.js'
 import vhost from 'vhost'
 import { initQuery } from '../sparql.js'
 
-const apply = async (server, globals, middlewares, logger, templateEngine, instanceHostname) => {
+const apply = async (server, globals, middlewares, logger, templateEngine, instanceHostname, trifidEvents) => {
   const { query: querySparql } = initQuery(logger, globals.endpoints, instanceHostname)
 
   for (const middleware of middlewares) {
@@ -28,6 +28,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine, insta
       render,
       query,
       registerTemplateHelper: registerHelper,
+      trifidEvents,
     })
 
     // default path is '/' (see: https://github.com/expressjs/express/blob/d854c43ea177d1faeea56189249fff8c24a764bd/lib/router/index.js#L425)
