@@ -175,6 +175,7 @@ const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, ne
   return next()
 }
 
+/** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
 const factory = async (trifid) => {
   const { config, logger, server, render } = trifid
   const entries = config?.entries || {}

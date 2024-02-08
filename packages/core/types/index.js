@@ -72,7 +72,7 @@
  * @property {import("pino").Logger} logger The logger instance.
  * @property {import("express").Express} server The Express server.
  * @property {Object.<string, any>} config The Trifid configuration.
- * @property {(templatePath: string, context: Object.<string, any>, options: Object.<string, any>) => Promise<string>} render The render function.
+ * @property {(templatePath: string, context: Object.<string, any>, options?: Object.<string, any>) => Promise<string>} render The render function.
  * @property {TrifidQuery} query The SPARQL query function.
  * @property {import('node:events').EventEmitter} trifidEvents The Trifid events emitter.
  */
