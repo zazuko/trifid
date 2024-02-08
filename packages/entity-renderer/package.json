@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@rdfjs/types": "^1.1.0",
-    "c8": "^8.0.1",
+    "c8": "^9.1.0",
     "mocha": "^10.2.0",
     "trifid-handler-fetch": "^2.0.1",
     "trifid-plugin-yasgui": "^2.2.5"

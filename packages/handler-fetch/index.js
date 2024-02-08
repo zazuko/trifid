@@ -11,8 +11,11 @@ export const factory = async (trifid) => {
 
   const workerUrl = new URL('./lib/worker.js', import.meta.url)
   const worker = new Worker(workerUrl)
+  worker.unref()
 
   let ready = false
+
+  worker.on('online', () => worker.unref())
 
   worker.on('message', async (message) => {
     const { type, data } = message

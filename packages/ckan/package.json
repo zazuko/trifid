@@ -37,7 +37,7 @@
     "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
-    "c8": "^8.0.1",
+    "c8": "^9.1.0",
     "chai": "^5.0.3",
     "chai-subset": "^1.6.0",
     "mocha": "^10.2.0",
