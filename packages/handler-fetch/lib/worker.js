@@ -30,10 +30,10 @@ const getContent = async (url) => {
 
 // Create a store
 const store = new oxigraph.Store()
-parentPort.postMessage(JSON.stringify({
+parentPort.postMessage({
   type: 'log',
   data: 'Created store',
-}))
+})
 
 // Handle configuration
 const handleConfig = async (config) => {
@@ -45,49 +45,50 @@ const handleConfig = async (config) => {
 
   // Read data from file or URL
   const data = await getContent(url)
-  parentPort.postMessage(JSON.stringify({
+  parentPort.postMessage({
     type: 'log',
     data: `Loaded ${data.length} bytes of data from ${url}`,
-  }))
+  })
 
   // Load the data into the store
   store.load(data, contentType, baseIri, graphNameIri)
-  parentPort.postMessage(JSON.stringify({
+  parentPort.postMessage({
     type: 'log',
     data: 'Loaded data into store',
-  }))
+  })
+
+  // Tell the parent that the worker is ready to handle queries
+  parentPort.postMessage({
+    type: 'ready',
+    data: true,
+  })
 }
 
 // Handle query
 const handleQuery = async (data) => {
   const { query, queryId } = data
   const { response, contentType } = await performOxigraphQuery(store, query)
-  parentPort.postMessage(JSON.stringify({
+  parentPort.postMessage({
     type: 'query',
     data: {
       queryId,
       response,
       contentType,
     },
-  }))
+  })
 }
 
 parentPort.on('message', async (event) => {
-  if (!event) {
+  if (!event || !event.type) {
     return
   }
 
-  const parsedData = JSON.parse(`${event}`)
-  if (!parsedData || !parsedData.type) {
-    return
-  }
-
-  switch (parsedData.type) {
+  switch (event.type) {
     case 'config':
-      await handleConfig(parsedData.data)
+      await handleConfig(event.data)
       break
     case 'query':
-      await handleQuery(parsedData.data)
+      await handleQuery(event.data)
       break
   }
 })

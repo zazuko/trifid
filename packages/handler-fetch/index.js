@@ -2,6 +2,7 @@
 
 import { Worker } from 'node:worker_threads'
 import { v4 as uuidv4 } from 'uuid'
+import { waitForVariableToBeTrue } from './lib/utils.js'
 
 /** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
 export const factory = async (trifid) => {
@@ -11,10 +12,15 @@ export const factory = async (trifid) => {
   const workerUrl = new URL('./lib/worker.js', import.meta.url)
   const worker = new Worker(workerUrl)
 
+  let ready = false
+
   worker.on('message', async (message) => {
-    const { type, data } = JSON.parse(`${message}`)
+    const { type, data } = message
     if (type === 'log') {
       logger.debug(data)
+    }
+    if (type === 'ready') {
+      ready = true
     }
   })
 
@@ -26,33 +32,50 @@ export const factory = async (trifid) => {
     logger.info(`Worker exited with code ${code}`)
   })
 
-  worker.postMessage(JSON.stringify({
+  worker.postMessage({
     type: 'config',
     data: {
       contentType, url, baseIri, graphName, unionDefaultGraph,
     },
-  }))
+  })
 
+  /**
+   * Send the query to the worker and wait for the response.
+   *
+   * @param {string} query The SPARQL query
+   * @returns {Promise<{ response: string, contentType: string }>} The response and its content type
+   */
   const handleQuery = async (query) => {
     return new Promise((resolve, _reject) => {
       const queryId = uuidv4()
 
-      worker.postMessage(JSON.stringify({
+      worker.postMessage({
         type: 'query',
         data: {
           queryId,
           query,
         },
-      }))
+      })
 
-      worker.on('message', (message) => {
-        const { type, data } = JSON.parse(`${message}`)
+      const messageHandler = (message) => {
+        const { type, data } = message
         if (type === 'query' && data.queryId === queryId) {
+          worker.off('message', messageHandler)
           resolve(data)
         }
-      })
+      }
+
+      worker.on('message', messageHandler)
     })
   }
+
+  // Wait for the worker to become ready, so we can be sure it can handle queries
+  await waitForVariableToBeTrue(
+    () => ready,
+    30000,
+    20,
+    'Worker did not become ready within 30 seconds',
+  )
 
   return async (req, res, _next) => {
     let query
