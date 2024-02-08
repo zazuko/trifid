@@ -9,13 +9,13 @@ export const factory = async (trifid) => {
   const { config, logger } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
 
+  const queryTimeout = 30000
+
   const workerUrl = new URL('./lib/worker.js', import.meta.url)
   const worker = new Worker(workerUrl)
   worker.unref()
 
   let ready = false
-
-  worker.on('online', () => worker.unref())
 
   worker.on('message', async (message) => {
     const { type, data } = message
@@ -28,10 +28,12 @@ export const factory = async (trifid) => {
   })
 
   worker.on('error', (error) => {
+    ready = false
     logger.error(`Error from worker: ${error.message}`)
   })
 
   worker.on('exit', (code) => {
+    ready = false
     logger.info(`Worker exited with code ${code}`)
   })
 
@@ -49,8 +51,17 @@ export const factory = async (trifid) => {
    * @returns {Promise<{ response: string, contentType: string }>} The response and its content type
    */
   const handleQuery = async (query) => {
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve, reject) => {
+      if (!ready) {
+        return reject(new Error('Worker is not ready'))
+      }
+
       const queryId = uuidv4()
+
+      const timeoutId = setTimeout(() => {
+        worker.off('message', messageHandler)
+        reject(new Error(`Query timed out after ${queryTimeout / 1000} seconds`))
+      }, queryTimeout)
 
       worker.postMessage({
         type: 'query',
@@ -63,6 +74,7 @@ export const factory = async (trifid) => {
       const messageHandler = (message) => {
         const { type, data } = message
         if (type === 'query' && data.queryId === queryId) {
+          clearTimeout(timeoutId)
           worker.off('message', messageHandler)
           resolve(data)
         }
