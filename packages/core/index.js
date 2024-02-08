@@ -65,15 +65,6 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   // Add support for absolute URLs, so that we can use `req.absoluteUrl()` in any middleware to get the absolute URL
   server.use(absoluteUrl())
 
-  // Forward server events to the Trifid middlewares
-  server.on('ready', () => {
-    trifidEvents.emit('ready')
-  })
-
-  server.on('close', () => {
-    trifidEvents.emit('close')
-  })
-
   // Configure Express server
   if (fullConfig?.server?.express) {
     for (const expressSettingKey in fullConfig.server.express) {
@@ -124,6 +115,14 @@ const trifid = async (config, additionalMiddlewares = {}) => {
         if (err) {
           return reject(err)
         }
+
+        // Forward server events to the Trifid middlewares
+        listener.on('ready', () => {
+          trifidEvents.emit('ready')
+        })
+        listener.on('close', () => {
+          trifidEvents.emit('close')
+        })
 
         logger.info(`Trifid instance listening on: http://${host}:${portNumber}/`)
         resolve(listener)

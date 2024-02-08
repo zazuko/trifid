@@ -11,16 +11,21 @@
  */
 export const waitForVariableToBeTrue = async (getValueFunction, timeoutMs = 30000, checkIntervalMs = 20, errorMessage = 'Reached Timeout') => {
   return new Promise((resolve, reject) => {
+    let timeoutId = null
+
     // Check the variable's value periodically
     const interval = setInterval(() => {
       if (getValueFunction()) {
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+        }
         clearInterval(interval)
         resolve()
       }
     }, checkIntervalMs)
 
     // Set a timeout to reject the promise if the time exceeds the specified duration
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       clearInterval(interval)
       reject(new Error(errorMessage))
     }, timeoutMs)

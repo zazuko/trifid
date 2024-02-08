@@ -13,18 +13,11 @@ export const factory = async (trifid) => {
 
   const workerUrl = new URL('./lib/worker.js', import.meta.url)
   const worker = new Worker(workerUrl)
-  worker.unref()
 
   let ready = false
 
-  logger.warn('Listening to Trifid events…')
-
-  trifidEvents.on('ready', async () => {
-    logger.warn('Got "ready" event from Trifid')
-  })
-
   trifidEvents.on('close', async () => {
-    logger.warn('Got "close" event from Trifid ; closing worker…')
+    logger.debug('Got "close" event from Trifid ; closing worker…')
     await worker.terminate()
     logger.debug('Worker terminated')
   })
