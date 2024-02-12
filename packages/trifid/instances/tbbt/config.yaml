@@ -2,8 +2,8 @@
 # Start this example by running: `npm run start:tbbt`
 # Example of a working URL: http://localhost:8080/data/person/amy-farrah-fowler
 
-server:
-  logLevel: debug
+# server:
+#   logLevel: debug
 
 globals:
   datasetBaseUrl: http://localhost:8080/

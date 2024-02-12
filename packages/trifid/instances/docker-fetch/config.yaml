@@ -1,3 +1,6 @@
+# server:
+#   logLevel: debug
+
 globals:
   datasetBaseUrl: env:DATASET_BASE_URL
 
@@ -12,15 +15,16 @@ middlewares:
     config:
       directory: file:static
 
-  rewrite:
-    module: trifid-core/middlewares/rewrite.js
-
   welcome:
     module: trifid-core/middlewares/view.js
     paths: /
     methods: GET
     config:
       path: file:welcome.hbs
+
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths: /sparql
 
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
@@ -30,5 +34,6 @@ middlewares:
     config:
       url: env:FETCH_HANDLER_FILE
       contentType: env:FETCH_HANDLER_FILE_TYPE
-      split: true
-      cache: true
+      baseIRI: http://localhost:8080
+      graphName: http://example.com/graph
+      unionDefaultGraph: true

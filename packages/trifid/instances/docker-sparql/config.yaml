@@ -1,3 +1,6 @@
+# server:
+#   logLevel: debug
+
 globals:
   datasetBaseUrl: env:DATASET_BASE_URL
   sparqlEndpoint:
@@ -15,9 +18,6 @@ middlewares:
     paths: /static-assets
     config:
       directory: file:static
-
-  rewrite:
-    module: trifid-core/middlewares/rewrite.js
 
   welcome:
     module: trifid-core/middlewares/view.js
@@ -59,12 +59,5 @@ middlewares:
         url: env:SPARQL_PROXY_CACHE_URL
         clearAtStartup: env:SPARQL_PROXY_CACHE_CLEAR_AT_STARTUP
 
-  handle-redirects-demo:
+  handle-redirects:
     module: "@zazuko/trifid-handle-redirects"
-
-  sparql-handler:
-    module: trifid-handler-sparql
-    config:
-      containerExistsQuery: 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }'
-      resourceGraphQuery: "#pragma describe.strategy cbd\nDESCRIBE <${iri}>"
-      containerGraphQuery: 'CONSTRUCT { ?s a ?o. ?s <http://www.w3.org/2000/01/rdf-schema#label> ?label. } WHERE { ?s a ?o. OPTIONAL {?s <http://www.w3.org/2000/01/rdf-schema#label> ?label.} FILTER REGEX(STR(?s), "^${iri}") }'
