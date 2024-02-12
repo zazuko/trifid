@@ -45,7 +45,6 @@
     "@types/sparql-http-client": "^2.2.15",
     "absolute-url": "^2.0.0",
     "ajv": "^8.12.0",
-    "camouflage-rewrite": "^1.5.1",
     "commander": "^12.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
