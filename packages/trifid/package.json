@@ -31,7 +31,6 @@
     "morgan": "^1.10.0",
     "trifid-core": "^2.7.1",
     "trifid-handler-fetch": "^2.0.1",
-    "trifid-handler-sparql": "^2.1.1",
     "trifid-plugin-graph-explorer": "^1.0.2",
     "trifid-plugin-i18n": "^2.0.1",
     "trifid-plugin-spex": "^1.1.4",
