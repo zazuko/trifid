@@ -2,15 +2,18 @@
 # Start this example by running: `npm run start:tbbt`
 # Example of a working URL: http://localhost:8080/data/person/amy-farrah-fowler
 
+server:
+  logLevel: debug
+
 globals:
   datasetBaseUrl: http://localhost:8080/
+  endpoints:
+    default:
+      url: /query
 
 middlewares:
   morgan:
     module: file:../../middlewares/morgan.js
-
-  rewrite:
-    module: trifid-core/middlewares/rewrite.js
 
   welcome:
     module: trifid-core/middlewares/view.js
@@ -18,6 +21,10 @@ middlewares:
     methods: GET
     config:
       path: file:welcome.hbs
+
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths: /sparql
 
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
@@ -27,5 +34,6 @@ middlewares:
     config:
       url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt
       contentType: application/n-triples
-      split: true
-      cache: true
+      baseIRI: http://localhost:8080
+      graphName: http://example.com/graph
+      unionDefaultGraph: true
