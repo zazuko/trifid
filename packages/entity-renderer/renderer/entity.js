@@ -33,13 +33,9 @@ const toBoolean = (val) => {
 
 /**
  * Render HTML.
- *
- * @param {*} req Express request.
- * @param {*} graph Graph from a handler (JSON object).
- * @returns {function(*, *): Promise<string>} Rendered output as string.
  */
-const createEntityRenderer = ({ options = {}, logger }) => {
-  return async (req, res, { dataset }) => {
+const createEntityRenderer = ({ options = {}, logger, query }) => {
+  return async (req, res, { dataset, rewriteResponse, replaceIri, entityRoot }) => {
     const rendererConfig = { ...DEFAULTS, ...options }
 
     // Honor parameters in the request
@@ -100,7 +96,6 @@ const createEntityRenderer = ({ options = {}, logger }) => {
     }
 
     // rendererConfig.showImages = true
-    const entityRoot = res.locals?.camouflageRewriteOriginalUrl ?? req.iri
 
     const term = rdf.namedNode(entityRoot)
     logger?.debug(`Entity root: ${entityRoot}`)
@@ -114,20 +109,17 @@ const createEntityRenderer = ({ options = {}, logger }) => {
     const externalLabels = rdf.clownface({ dataset: rdf.dataset() })
     // If a labelLoader is configured, try to fetch the labels
     if (options.labelLoader) {
-      const endpoint = options.labelLoader.endpointUrl || '/query'
-      const absoluteUrl =
-        res.locals.camouflageRewriteOriginalUrl || req.absoluteUrl()
-      const endpointUrl = new URL(endpoint, absoluteUrl)
-
       const labelLoader = new LabelLoader({
         ...options.labelLoader,
-        endpointUrl,
+        query,
+        replaceIri,
+        rewriteResponse,
         logger,
       })
       const quadChunks = await labelLoader.tryFetchAll(cf)
       const labelQuads = quadChunks.filter((notNull) => notNull).flat()
       logger?.debug(
-        `Got ${labelQuads.length} new labels from endpointUrl:${endpointUrl}`,
+        `Got ${labelQuads.length} new labels`,
       )
       externalLabels.dataset.addAll(labelQuads)
     }
@@ -139,7 +131,7 @@ const createEntityRenderer = ({ options = {}, logger }) => {
 
     const entityLabel = cf.term ? getLabel(cf, rendererConfig)?.value : ''
     const entityUrl = cf.term?.value
-    logger?.debug(`Label for term: ${cf.term?.value}: ${entityLabel}`)
+    logger?.debug(`Label for term: ${entityUrl}: ${entityLabel}`)
 
     return {
       entityHtml,

@@ -21,6 +21,7 @@ export {
   supportedTypes as sparqlSupportedTypes,
   serializeFormattedStream as sparqlSerializeFormattedStream,
   serializeQuadStream as sparqlSerializeQuadStream,
+  getRewriteConfiguration as sparqlGetRewriteConfiguration,
 } from './lib/sparql.js'
 
 /**

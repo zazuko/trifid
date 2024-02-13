@@ -1,11 +1,9 @@
 import { ns } from '@zazuko/rdf-entity-webcomponent/src/namespaces.js'
 // eslint-disable-next-line import/no-unresolved
 import PQueue from 'p-queue'
-import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import rdf from '@zazuko/env'
 
 /**
- * endpointUrl: From where the labels are retrieved
  * labelNamespace: If specified, only fetches labels for iris starting with this
  * chunkSize: The number of labels to be fetched by each query
  * concurrency: Number of concurrent queries'
@@ -15,30 +13,21 @@ import rdf from '@zazuko/env'
 class LabelLoader {
   constructor(options) {
     const {
-      endpointUrl,
+      query,
+      replaceIri,
+      rewriteResponse,
       labelNamespace,
       labelNamespaces,
       chunkSize,
       concurrency,
       timeout,
-      authentication,
       logger,
     } = options
-    if (!endpointUrl) {
-      throw Error('requires a endpointUrl')
-    }
 
-    const clientOptions = {
-      endpointUrl,
-    }
-    if (authentication?.user) {
-      clientOptions.user = authentication.user
-    }
-    if (authentication?.password) {
-      clientOptions.password = authentication.password
-    }
+    this.query = query
+    this.replaceIri = replaceIri
+    this.rewriteResponse = rewriteResponse
 
-    this.client = new ParsingClient(clientOptions)
     this.labelNamespaces = labelNamespace ? [labelNamespace] : labelNamespaces
     this.chunkSize = chunkSize || 30
     this.queue = new PQueue({
@@ -88,9 +77,9 @@ class LabelLoader {
   }
 
   async fetchLabels (iris) {
-    const uris = iris.map((x) => `<${x.value}> `).join(' ')
+    const uris = iris.map((x) => `<${this.replaceIri(x.value)}> `).join(' ')
     this.logger?.debug(`Fetching labels for terms without label: ${uris}`)
-    return await this.client.query.construct(`
+    return await this.query(`
 PREFIX schema: <http://schema.org/>
 
 CONSTRUCT {
@@ -100,7 +89,7 @@ CONSTRUCT {
     ?uri schema:name ?label
     VALUES ?uri { ${uris} }
   }
-}`)
+}`, { rewriteResponse: this.rewriteResponse })
   }
 
   async tryFetchAll (pointer) {

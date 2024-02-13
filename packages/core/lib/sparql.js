@@ -1,5 +1,6 @@
 // @ts-check
 
+import replaceStream from 'string-replace-stream'
 import formats from '@rdfjs-elements/formats-pretty'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import SimpleClient from 'sparql-http-client/SimpleClient.js'
@@ -104,14 +105,109 @@ export const serializeQuadStream = async (quadStream, mimeType, _options = {}) =
 }
 
 /**
+ * Compute the value for the `rewrite` option.
+ *
+ * @param {*} value The value from the configuration (ideally: true, false or auto ; default="auto").
+ * @param {string} [datasetBaseUrl] The dataset base URL to use in case rewriting is enabled.
+ * @returns {boolean} The computed value of the `rewrite` option.
+ */
+const getRewriteOptionValue = (value, datasetBaseUrl) => {
+  const jsonValue = JSON.stringify(`${value}`.toLocaleLowerCase())
+
+  if (jsonValue === '"false"') {
+    return false
+  }
+
+  if (jsonValue === '"true"') {
+    // Check if `datasetBaseUrl` is a valid URL if present
+    if (datasetBaseUrl) {
+      try {
+        new URL(datasetBaseUrl) // eslint-disable-line no-new
+      } catch (_e) {
+        throw new Error(
+          `The current value you have for 'datasetBaseUrl' is '${datasetBaseUrl}', which is not a valid URL.`,
+        )
+      }
+    } else {
+      throw new Error('Rewriting is enabled but no datasetBaseUrl is configured.')
+    }
+
+    return true
+  }
+
+  // Let's assume that we are in "auto" mode.
+
+  // Check if `datasetBaseUrl` is a valid URL if present
+  if (datasetBaseUrl) {
+    try {
+      new URL(datasetBaseUrl) // eslint-disable-line no-new
+      return true
+    } catch (_e) {
+      // Don't throw in case of an invalid URL
+      return false
+    }
+  }
+
+  return false
+}
+
+/**
+ * Compute the value for the `rewrite` option and the `datasetBaseUrl`.
+ *
+ * @param {*} value The value from the configuration (ideally: true, false or auto ; default="auto").
+ * @param {string} [datasetBaseUrl] The dataset base URL to use in case rewriting is enabled.
+ * @returns {{ rewrite: boolean, datasetBaseUrl: string | null, replaceIri: (iri: string) => string, iriOrigin: (iri: string) => string}} The computed value of the `rewrite` option.
+ */
+export const getRewriteConfiguration = (value, datasetBaseUrl) => {
+  const iriOrigin = (iri) => {
+    const parts = new URL(iri)
+    parts.pathname = '/'
+    parts.search = ''
+    parts.username = ''
+    parts.password = ''
+
+    return parts.toString()
+  }
+
+  const rewriteValue = getRewriteOptionValue(value, datasetBaseUrl)
+  if (!rewriteValue) {
+    return {
+      rewrite: false,
+      datasetBaseUrl: null,
+      replaceIri: (iri) => iri,
+      iriOrigin,
+    }
+  }
+
+  const datasetBaseUrlValue = new URL(datasetBaseUrl)
+  datasetBaseUrlValue.search = ''
+  datasetBaseUrlValue.searchParams.forEach((_value, key) => datasetBaseUrlValue.searchParams.delete(key))
+  const datasetBaseUrlString = datasetBaseUrlValue.toString()
+
+  return {
+    rewrite: rewriteValue,
+    datasetBaseUrl: datasetBaseUrlString,
+    replaceIri: (iri) => iri.replace(iriOrigin(iri), datasetBaseUrlString),
+    iriOrigin,
+  }
+}
+
+/**
  * @typedef {Object} QueryResult
  * @property {any} response The response body.
  * @property {string} contentType The response content type.
  */
 
 /**
+ * @typedef {Object} RewriteResponseOptions
+ * @property {string} find The string to find.
+ * @property {string} replace The string to replace with.
+ */
+
+/**
  * @typedef {Object} QueryOptions
- * @property {boolean?} [ask] Is it a ASK query?
+ * @property {boolean} [ask] Is it a ASK query?
+ * @property {Array<RewriteResponseOptions>} [rewriteResponse] Replace strings in the response.
  */
 
 /**
@@ -141,6 +237,7 @@ export const generateClient = (sparqlEndpoint, options) => {
    */
   const query = async (query, options = {}) => {
     const isAsk = options && options.ask
+    const rewriteResponse = (options && options.rewriteResponse) || []
 
     if (isAsk) {
       return await clients.parsing.query.ask(query)
@@ -150,8 +247,17 @@ export const generateClient = (sparqlEndpoint, options) => {
     const contentType = result.headers.get('Content-Type') || 'application/n-triples'
     const body = result.body
 
+    // Function to apply all replacements in sequence
+    const applyReplacements = (stream, replacements) => {
+      let pipeline = stream
+      for (const replacement of replacements) {
+        pipeline = pipeline.pipe(replaceStream(replacement.find, replacement.replace))
+      }
+      return pipeline
+    }
+
     return {
-      response: body,
+      response: applyReplacements(body, rewriteResponse),
       contentType,
     }
   }

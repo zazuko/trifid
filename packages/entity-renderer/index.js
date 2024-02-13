@@ -5,7 +5,7 @@ import { parsers } from '@rdfjs/formats-common'
 import absoluteUrl from 'absolute-url'
 
 import rdf from '@zazuko/env'
-import { sparqlSerializeQuadStream, sparqlSupportedTypes } from 'trifid-core'
+import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core'
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
 
@@ -38,13 +38,24 @@ const replaceIriInQuery = (query, iri) => {
 
 const factory = async (trifid) => {
   const { render, logger, config, query } = trifid
-  const entityRenderer = createEntityRenderer({ options: config, logger })
+  const entityRenderer = createEntityRenderer({ options: config, logger, query })
   const metadataProvider = createMetadataProvider({ options: config })
 
-  const { path, ignorePaths } = config
+  const { path, ignorePaths, rewrite: rewriteConfigValue, datasetBaseUrl } = config
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
 
-  // if `ignorePaths` is not provided or invalid, we configure some defaults values
+  const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
+  const { rewrite: rewriteValue, replaceIri, iriOrigin } = rewriteConfig
+  logger.debug(`Rewriting is ${rewriteValue ? 'enabled' : 'disabled'}`)
+
+  if (rewriteValue) {
+    if (!datasetBaseUrl.endsWith('/')) {
+      logger.warn('The value for `datasetBaseUrl` should usually end with a `/`')
+    }
+    logger.debug(`Using '${datasetBaseUrl}' as dataset base URL`)
+  }
+
+  // If `ignorePaths` is not provided or invalid, we configure some defaults values
   let ignoredPaths = ignorePaths
   if (!ignorePaths || !Array.isArray(ignorePaths)) {
     ignoredPaths = ['/query']
@@ -63,8 +74,14 @@ const factory = async (trifid) => {
     const iriUrl = new URL(encodeURI(absoluteUrl(req)))
     iriUrl.search = ''
     iriUrl.searchParams.forEach((_value, key) => iriUrl.searchParams.delete(key))
-    const iri = iriUrl.toString()
-    logger.debug(`IRI value: ${iri}`)
+    const iriUrlString = iriUrl.toString()
+    const iri = replaceIri(iriUrlString)
+    logger.debug(`IRI value: ${iri}${rewriteValue ? ' (rewritten)' : ''}`)
+    const rewriteResponse = rewriteValue
+      ? [
+        { find: datasetBaseUrl, replace: iriOrigin(iriUrlString) },
+      ]
+      : []
 
     // Check if the IRI exists in the dataset
     // @TODO: allow the user to configure the query
@@ -78,7 +95,10 @@ const factory = async (trifid) => {
       // Get the entity from the dataset
       // @TODO: allow the user to configure the query
       const describeQuery = 'DESCRIBE <{{iri}}>'
-      const entity = await query(replaceIriInQuery(describeQuery, iri), { ask: false })
+      const entity = await query(replaceIriInQuery(describeQuery, iri), {
+        ask: false,
+        rewriteResponse,
+      })
       const entityContentType = entity.contentType || 'application/n-triples'
       const entityStream = entity.response
       if (!entityStream) {
@@ -102,7 +122,12 @@ const factory = async (trifid) => {
       const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
         req,
         res,
-        { dataset },
+        {
+          dataset,
+          rewriteResponse,
+          replaceIri,
+          entityRoot: rewriteValue ? iri.replace(datasetBaseUrl, iriOrigin(iriUrlString)) : iri,
+        },
       )
       const metadata = await metadataProvider(req, { dataset })
 
