@@ -28,9 +28,15 @@ middlewares:
 
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
+    config:
+      labelLoader:
+        chunkSize: 30
+        concurrency: 2
+        timeout: 4000
 
   fetch-handler:
     module: trifid-handler-fetch
+    paths: /query
     config:
       url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt
       contentType: application/n-triples
