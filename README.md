@@ -30,7 +30,7 @@ Any compatible middleware can be added to the configuration.
 
 #### Examples
 
-- [Trifid plugin iiif](https://github.com/zazuko/trifid-plugin-iiif/)
+- [Trifid plugin iiif](./packages/iiif/)
 - [CKAN harvester endpoint](./packages/ckan/)
 
 ## Who Uses Trifid?
