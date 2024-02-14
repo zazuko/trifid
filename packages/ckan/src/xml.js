@@ -74,7 +74,7 @@ const toXML = (dataset) => {
                 'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
                 'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
-                'dcterms:rights': serializeTerm(copyright),
+                'dcterms:license': serializeTerm(copyright),
                 'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
               },
             }))
