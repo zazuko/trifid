@@ -28,6 +28,7 @@ const toXML = (dataset) => {
       dcat: prefixes.dcat,
       dcterms: prefixes.dcterms,
       vcard: prefixes.vcard,
+      foaf: prefixes.foaf,
     },
   }, {
     'rdf:RDF': {
@@ -80,8 +81,8 @@ const toXML = (dataset) => {
 
           const publishers = dataset.out(ns.dcterms.publisher)
             .map(publisher => ({
-              'rdf:Description': {
-                'rdfs:label': publisher.value,
+              'foaf:Organization': {
+                'foaf:name': publisher.value,
               },
             }))
 
