@@ -20,7 +20,7 @@ const createTrifidInstance = async () => {
   return await trifidCore({
     server: {
       listener: {
-        port: 4242,
+        port: 0,
       },
       logLevel: 'warn',
     },
@@ -39,6 +39,16 @@ const createTrifidInstance = async () => {
       },
     },
   })
+}
+
+/**
+ * Remove prefixes from the body.
+ *
+ * @param {string} body The body to remove prefixes from.
+ * @returns {string} The body with prefixes removed.
+ */
+const removePrefixesFromBody = (body) => {
+  return body.replace(/<rdf:RDF.*>/g, '<rdf:RDF>')
 }
 
 describe('@zazuko/trifid-plugin-ckan', () => {
@@ -68,7 +78,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       const expectedResult = await readFile(new URL('./support/empty-result.xml', import.meta.url), 'utf8')
 
       strictEqual(res.status, 200)
-      strictEqual(body, expectedResult)
+      strictEqual(removePrefixesFromBody(body), expectedResult)
     })
 
     it('should get a basic result for a known organization', async () => {
@@ -79,7 +89,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
 
       strictEqual(res.status, 200)
-      strictEqual(body, expectedResult)
+      strictEqual(removePrefixesFromBody(body), expectedResult)
     })
 
     it('should convert legacy frequency to EU frequency if possible', async () => {
