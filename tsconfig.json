@@ -1,0 +1,20 @@
+{
+  "exclude": [
+    "**/coverage",
+    "**/test",
+    "node_modules",
+    "**/*.d.ts",
+    "**/*.d.cts",
+    "**/*.d.mts"
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "outDir": "dist"
+  }
+}

@@ -24,7 +24,7 @@ const removeSearchParams = (originalUrl) => {
   return urlFrom(url)
 }
 
-/** @type {import('../types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../types/index.js').TrifidMiddleware} */
 const factory = (trifid) => {
   const { config, logger } = trifid
   const { datasetBaseUrl } = config
@@ -41,8 +41,7 @@ const factory = (trifid) => {
   }
 
   return (req, res, next) => {
-    absoluteUrl.attach(req)
-    const url = req.absoluteUrl()
+    const url = absoluteUrl(req)
     req.iri = decodeURI(removeSearchParams(url))
 
     // set current path, so that middlewares can access it

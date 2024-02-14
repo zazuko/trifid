@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-/** @type {import('../types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../types/index.js').TrifidMiddleware} */
 const factory = (trifid) => {
   const { logger, render } = trifid
 

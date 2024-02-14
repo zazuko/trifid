@@ -1,8 +1,9 @@
 // @ts-check
+
 import rdf from '@zazuko/env'
 import { createAPI } from './ckan.js'
 
-/** @type {import('trifid-core/types/index.d.ts').TrifidMiddleware} */
+/** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
 const factory = (trifid) => {
   const { config, logger } = trifid
 

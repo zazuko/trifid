@@ -1,40 +1,52 @@
 # trifid-handler-fetch
 
-Handler for Trifid which reads the data from a URL.
-[fetch-lite](https://github.com/rdfjs-base/fetch-lite) is used for `http://` and `https://` URLs.
-[file-fetch](https://www.npmjs.com/package/file-fetch) is used for `file://` URLs.
+This Trifid plugin exposes an endpoint where you can perform SPARQL queries against a dataset which is loaded from a URL.
+
+The URL can be a local file or a remote resource.
+
+At the start of the server, the dataset is loaded from the URL and stored in memory, using [Oxigraph](https://github.com/oxigraph/oxigraph).
+The dataset is not updated automatically when the resource changes.
 
 ## Usage
 
 Add the `trifid-handler-fetch` package to your dependencies:
 
-    npm install trifid-handler-fetch --save
+```sh
+npm install trifid-handler-fetch
+```
 
-Change the `handler` property in the config like in the example below and adapt the options.
+And update the Trifid configuration to something similar as shown in the example below.
 
 ## Example
 
 This example config uses [The Big Bang Theory dataset](https://www.npmjs.com/package/tbbt-ld/):
 
-```
-{
-  "baseConfig": "trifid:config.json",
-  "handler": {
-    "module": "trifid-handler-fetch",
-      "options": {
-        "url": "https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt",
-        "contentType": "application/n-triples",
-        "split": "true",
-        "cache": "true"
-    }
-  }
-}
+```yaml
+middlewares:
+  # […]
+  handler-fetch:
+    module: "trifid-handler-fetch"
+    paths: /query
+    config:
+      url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt
+      contentType: application/n-triples
+      baseIRI: http://example.com
+      graphName: http://example.com/graph
 ```
 
 ## Options
 
 - `url`: URL to the resource which contains the dataset
-- `contentType`: If set, parse the content with a parser for the given media type
-- `resource`: If set, the dataset will be loaded into the given Named Graph
-- `split`: If true, the dataset will be split into subgraphs for each Named Node
-- `cache`: Reads the resource only once at the first request and caches the dataset for other request
+- `contentType`: the format of the serialization. See below for the supported formats.
+- `baseIRI`: the base IRI to use to resolve the relative IRIs in the serialization.
+- `graphName`: for triple serialization formats, the name of the named graph the triple should be loaded to.
+- `unionDefaultGraph`: for triple serialization formats, if the triples should be loaded to the default graph or to the named graph specified in `graphName`. This impacts also the need or not to query a specific graph in SPARQL queries. Defaults to `false`.
+
+Supported formats:
+
+- [Turtle](https://www.w3.org/TR/turtle/): `text/turtle` or `ttl`
+- [TriG](https://www.w3.org/TR/trig/): `application/trig` or `trig`
+- [N-Triples](https://www.w3.org/TR/n-triples/): `application/n-triples` or `nt`
+- [N-Quads](https://www.w3.org/TR/n-quads/): `application/n-quads` or `nq`
+- [N3](https://w3c.github.io/N3/spec/): `text/n3` or `n3`
+- [RDF/XML](https://www.w3.org/TR/rdf-syntax-grammar/): `application/rdf+xml` or `rdf`

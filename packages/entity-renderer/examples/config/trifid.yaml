@@ -1,6 +1,11 @@
 server:
   logLevel: debug
 
+globals:
+  endpoints:
+    default:
+      url: /query
+
 middlewares:
   entity-host-web-page:
     module: trifid-core/middlewares/view.js
@@ -9,10 +14,16 @@ middlewares:
     config:
       path: file:../views/welcome.hbs
 
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths: /sparql
+
   fetch-handler:
     module: trifid-handler-fetch
+    paths: /query
     config:
       url: file:../data/people.ttl
-      contentType: application/n-triples
-      split: true
-      cache: true
+      contentType: text/turtle
+      baseIRI: http://example.com
+      graphName: http://example.com/graph
+      unionDefaultGraph: true

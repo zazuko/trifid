@@ -1,4 +1,5 @@
 // @ts-check
+
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import { toXML } from './xml.js'
 import { datasetsQuery } from './query.js'

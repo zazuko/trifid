@@ -1,7 +1,10 @@
 import merge from 'lodash/merge.js'
 import vhost from 'vhost'
+import { initQuery } from '../sparql.js'
 
-const apply = async (server, globals, middlewares, logger, templateEngine) => {
+const apply = async (server, globals, middlewares, logger, templateEngine, instanceHostname, trifidEvents) => {
+  const { query: querySparql } = initQuery(logger, globals.endpoints, instanceHostname)
+
   for (const middleware of middlewares) {
     const name = middleware[0]
     const m = middleware[1]
@@ -15,6 +18,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
     delete m.module
 
     const middlewareLogger = logger.child({ name })
+    const query = querySparql(logger.child({ name: `${name}:query` }))
 
     const { render, registerHelper } = templateEngine
     const loadedMiddleware = await module({
@@ -22,7 +26,9 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
       server,
       logger: middlewareLogger,
       render,
+      query,
       registerTemplateHelper: registerHelper,
+      trifidEvents,
     })
 
     // default path is '/' (see: https://github.com/expressjs/express/blob/d854c43ea177d1faeea56189249fff8c24a764bd/lib/router/index.js#L425)

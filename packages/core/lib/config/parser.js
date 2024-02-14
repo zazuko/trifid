@@ -8,7 +8,7 @@ const ajv = new Ajv()
 /**
  * Return the configuration object if it is valid or throw an error in other cases.
  *
- * @param {import('../../types/index.js').TrifidConfigWithExtends} config Configuration to validate.
+ * @param {import('../../types/index.js').TrifidConfigWithExtends} [config] Configuration to validate.
  * @returns {import('../../types/index.js').TrifidConfigWithExtends} Valid configuration.
  */
 const parser = (config) => {

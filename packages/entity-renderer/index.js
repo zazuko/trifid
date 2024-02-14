@@ -1,9 +1,11 @@
+/* eslint-disable no-template-curly-in-string */
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { parsers } from '@rdfjs/formats-common'
-import hijackResponse from 'hijackresponse'
+import absoluteUrl from 'absolute-url'
 
 import rdf from '@zazuko/env'
+import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core'
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
 
@@ -17,6 +19,8 @@ const getAcceptHeader = (req) => {
     jsonld: 'application/ld+json',
     xml: 'application/rdf+xml',
     nt: 'application/n-triples',
+    trig: 'application/trig',
+    csv: 'text/csv',
   }
 
   if (
@@ -25,92 +29,121 @@ const getAcceptHeader = (req) => {
     return supportedQueryStringValues[queryStringValue]
   }
 
-  return req.headers.accept
+  return `${req.headers.accept || ''}`.toLocaleLowerCase()
+}
+
+const replaceIriInQuery = (query, iri) => {
+  return query.split('{{iri}}').join(iri)
 }
 
 const factory = async (trifid) => {
-  const { render, logger, config } = trifid
-  const entityRenderer = createEntityRenderer({ options: config, logger })
+  const { render, logger, config, query } = trifid
+  const entityRenderer = createEntityRenderer({ options: config, logger, query })
   const metadataProvider = createMetadataProvider({ options: config })
 
-  const { path, ignorePaths } = config
+  const { path, ignorePaths, rewrite: rewriteConfigValue, datasetBaseUrl } = config
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
 
-  // if `ignorePaths` is not provided or invalid, we configure some defaults values
+  const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
+  const { rewrite: rewriteValue, replaceIri, iriOrigin } = rewriteConfig
+  logger.debug(`Rewriting is ${rewriteValue ? 'enabled' : 'disabled'}`)
+
+  if (rewriteValue) {
+    if (!datasetBaseUrl.endsWith('/')) {
+      logger.warn('The value for `datasetBaseUrl` should usually end with a `/`')
+    }
+    logger.debug(`Using '${datasetBaseUrl}' as dataset base URL`)
+  }
+
+  // If `ignorePaths` is not provided or invalid, we configure some defaults values
   let ignoredPaths = ignorePaths
   if (!ignorePaths || !Array.isArray(ignorePaths)) {
     ignoredPaths = ['/query']
   }
 
   return async (req, res, next) => {
-    // check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
+    // Check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
     if (ignoredPaths.includes(req.path)) {
       return next()
     }
 
-    // update "Accept" HTTP header depending on the requested type
-    req.headers.accept = getAcceptHeader(req)
+    // Get the expected format from the Accept header or from the `format` query parameter
+    const acceptHeader = getAcceptHeader(req)
 
-    // only take care of the rendering if HTML is requested
-    const accepts = req.accepts(['text/plain', 'json', 'html'])
-    if (accepts !== 'html') {
+    // Generate the IRI we expect
+    const iriUrl = new URL(encodeURI(absoluteUrl(req)))
+    iriUrl.search = ''
+    iriUrl.searchParams.forEach((_value, key) => iriUrl.searchParams.delete(key))
+    const iriUrlString = iriUrl.toString()
+    const iri = replaceIri(iriUrlString)
+    logger.debug(`IRI value: ${iri}${rewriteValue ? ' (rewritten)' : ''}`)
+    const rewriteResponse = rewriteValue
+      ? [
+        { find: datasetBaseUrl, replace: iriOrigin(iriUrlString) },
+      ]
+      : []
+
+    // Check if the IRI exists in the dataset
+    // @TODO: allow the user to configure the query
+    const askQuery = 'ASK { <{{iri}}> ?p ?o }'
+    const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
+    if (!exists) {
       return next()
     }
 
-    req.headers.accept = 'application/n-quads'
-
-    const { readable, writable } = await hijackResponse(res, next)
-
-    const contentType = res.getHeader('Content-Type')
-    if (!contentType) {
-      return readable.pipe(writable)
-    }
-
-    const mimeType = contentType.toLowerCase().split(';')[0].trim()
-    const hijackFormats = [
-      'application/ld+json',
-      'application/trig',
-      'application/n-quads',
-      'application/n-triples',
-      'text/n3',
-      'text/turtle',
-      'application/rdf+xml',
-    ]
-
-    if (!hijackFormats.includes(mimeType)) {
-      return readable.pipe(writable)
-    }
-
-    const quadStream = parsers.import(mimeType, readable)
-    const dataset = await rdf.dataset().import(quadStream)
-
-    let contentToForward
     try {
+      // Get the entity from the dataset
+      // @TODO: allow the user to configure the query
+      const describeQuery = 'DESCRIBE <{{iri}}>'
+      const entity = await query(replaceIriInQuery(describeQuery, iri), {
+        ask: false,
+        rewriteResponse,
+      })
+      const entityContentType = entity.contentType || 'application/n-triples'
+      const entityStream = entity.response
+      if (!entityStream) {
+        return next()
+      }
+
+      // Make sure the Content-Type is lower case and without parameters (e.g. charset)
+      const fixedContentType = entityContentType.split(';')[0].trim().toLocaleLowerCase()
+
+      const quadStream = parsers.import(fixedContentType, entityStream)
+
+      if (sparqlSupportedTypes.includes(acceptHeader)) {
+        const serialized = await sparqlSerializeQuadStream(quadStream, acceptHeader)
+        res.setHeader('Content-Type', acceptHeader)
+        res.send(serialized)
+        return
+      }
+
+      const dataset = await rdf.dataset().import(quadStream)
+
       const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
         req,
         res,
-        { dataset },
+        {
+          dataset,
+          rewriteResponse,
+          replaceIri,
+          entityRoot: rewriteValue ? iri.replace(datasetBaseUrl, iriOrigin(iriUrlString)) : iri,
+        },
       )
       const metadata = await metadataProvider(req, { dataset })
-      contentToForward = await render(entityTemplatePath, {
+
+      res.setHeader('Content-Type', 'text/html')
+      res.send(await render(entityTemplatePath, {
         dataset: entityHtml,
         locals: res.locals,
         entityLabel,
         entityUrl,
         metadata,
         config,
-      })
-      res.setHeader('Content-Type', 'text/html')
-
-      // Without this, the browser will try to download the HTML file if the `Content-Disposition` header is set by the SPARQL endpoint
-      res.removeHeader('Content-Disposition')
+      }))
     } catch (e) {
       logger.error(e)
-      return readable.pipe(writable)
+      return next()
     }
-
-    writable.write(contentToForward)
-    writable.end()
   }
 }
 

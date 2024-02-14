@@ -8,7 +8,7 @@
  *  - context (object, optional): context to give to this specific template file (some variables)
  *  - options (object, optional): options to pass to the Trifid render function (change the title of the page, …)
  *
- * @param {import('../types/index.d.ts').TrifidMiddlewareArgument} trifid Trifid object containing the configuration, and other utility functions.
+ * @param {import('../types/index.js').TrifidMiddlewareArgument} trifid Trifid object containing the configuration, and other utility functions.
  * @returns Express middleware.
  */
 const factory = async (trifid) => {

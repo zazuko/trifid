@@ -1,8 +1,7 @@
 // @ts-check
 import url from 'url'
-import absoluteUrl from 'absolute-url'
 
-/** @type {import('../types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../types/index.js').TrifidMiddleware} */
 const factory = (trifid) => {
   const { logger } = trifid
 
@@ -12,14 +11,13 @@ const factory = (trifid) => {
   const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000
 
   return (req, res, next) => {
-    absoluteUrl.attach(req)
-
     // export language information for other middlewares
     res.locals.defaultLanguage = defaultLanguage
     res.locals.currentLanguage = req?.cookies?.i18n || defaultLanguage
 
     // update langage by setting `lang` query parameter
-    const lang = req.query.lang
+    const langQuery = req.query.lang || ''
+    const lang = typeof langQuery === 'string' ? langQuery : langQuery.toString()
     if (lang && supportedLanguages.includes(lang)) {
       logger.debug(`set default language to '${lang}'`)
       res.cookie('i18n', lang, { maxAge: oneMonthMilliseconds })

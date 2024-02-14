@@ -8,8 +8,8 @@ import { loader } from '../lib/middlewares/loader.js'
  *  - module (string, required): the name of the NPM module to load
  *  - options (any, optional): some options to pass to the Express middleware
  *
- * @param {import('../types/index.d.ts').TrifidMiddlewareArgument} trifid Trifid object containing the configuration, and other utility functions.
- * @returns {Promise<import('../types/index.d.ts').ExpressMiddleware>} Express middleware.
+ * @param {import('../types/index.js').TrifidMiddlewareArgument} trifid Trifid object containing the configuration, and other utility functions.
+ * @returns {Promise<import('../types/index.js').ExpressMiddleware>} Express middleware.
  */
 const factory = async (trifid) => {
   const { config } = trifid

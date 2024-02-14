@@ -1,8 +1,10 @@
 // @ts-check
+import EventEmitter from 'node:events'
 import express from 'express'
 import { pino } from 'pino'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import { middleware as absoluteUrl } from 'absolute-url'
 
 import handler from './lib/config/handler.js'
 import {
@@ -14,13 +16,21 @@ import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
 import templateEngine from './lib/templateEngine.js'
 
+// Export some useful functions to work with SPARQL
+export {
+  supportedTypes as sparqlSupportedTypes,
+  serializeFormattedStream as sparqlSerializeFormattedStream,
+  serializeQuadStream as sparqlSerializeQuadStream,
+  getRewriteConfiguration as sparqlGetRewriteConfiguration,
+} from './lib/sparql.js'
+
 /**
  * Create a new Trifid instance.
  *
  * @param {import('./types/index.js').TrifidConfigWithExtends?} config Trifid configuration.
  * @param {Record<string, {
  *   order?: number,
- *   module: import('./types/index.d.ts').TrifidMiddleware,
+ *   module: import('./types/index.js').TrifidMiddleware,
  *   paths?: string | string[];
  *   methods?: string | string[];
  *   hosts?: string | string[];
@@ -33,20 +43,30 @@ import templateEngine from './lib/templateEngine.js'
  * }>} Trifid instance.
  */
 const trifid = async (config, additionalMiddlewares = {}) => {
+  const trifidEvents = new EventEmitter()
   const fullConfig = await handler(config)
   const server = express()
   server.disable('x-powered-by')
 
-  // add required middlewares
+  // Add required middlewares
   server.use(
     cors({
       credentials: true,
       origin: true,
     }),
   )
+
+  // Add support for JSON-encoded and URL-encoded bodies
+  server.use(express.json())
+  server.use(express.urlencoded({ extended: true }))
+
+  // Add support for cookies
   server.use(cookieParser())
 
-  // configure Express server
+  // Add support for absolute URLs, so that we can use `req.absoluteUrl()` in any middleware to get the absolute URL
+  server.use(absoluteUrl())
+
+  // Configure Express server
   if (fullConfig?.server?.express) {
     for (const expressSettingKey in fullConfig.server.express) {
       server.set(
@@ -56,15 +76,16 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     }
   }
 
-  // dynamic server configuration
-  const port = fullConfig?.server?.listener?.port || defaultPort
+  // Dynamic server configuration
+  const portFromConfig = fullConfig?.server?.listener?.port
+  const port = (portFromConfig === 0 || portFromConfig === '0') ? 0 : (portFromConfig || defaultPort)
   const host = fullConfig?.server?.listener?.host || defaultHost
   const portNumber = typeof port === 'string' ? parseInt(port, 10) : port
 
-  // logger configuration
+  // Logger configuration
   const logLevel = fullConfig?.server?.logLevel || defaultLogLevel
 
-  // template configuration
+  // Template configuration
   const template = fullConfig?.template || {}
 
   const logger = pino({
@@ -86,6 +107,8 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     middlewares,
     logger,
     templateEngineInstance,
+    `http://${host}:${portNumber}/`,
+    trifidEvents,
   )
 
   const start = async () => {
@@ -94,6 +117,14 @@ const trifid = async (config, additionalMiddlewares = {}) => {
         if (err) {
           return reject(err)
         }
+
+        // Forward server events to the Trifid middlewares
+        listener.on('ready', () => {
+          trifidEvents.emit('ready')
+        })
+        listener.on('close', () => {
+          trifidEvents.emit('close')
+        })
 
         logger.info(`Trifid instance listening on: http://${host}:${portNumber}/`)
         resolve(listener)

@@ -51,6 +51,16 @@ middlewares:
       embedNamedNodes: false
 ```
 
+## Rewriting
+
+You can configure if the plugin needs to perform any rewriting on the result to the SPARQL queries.
+
+You can use the following configuration option `rewrite` and set it to one of those value:
+
+- `auto` (default value): if the `datasetBaseUrl` configuration value is defined (globally or at the scope of this plugin), then it will behaves as if the value was set to `true`, else like `false`
+- `true`: rewrite the result of the SPARQL queries by replacing the `datasetBaseUrl` value with the current domain.
+- `false`: this will disable the rewriting mechanism. This is useful if your triples are already matching the domain name where your Trifid instance is deployed.
+
 ## Run an example instance
 
 ```sh
