@@ -25,7 +25,7 @@ describe('trifid-plugin-iiif', () => {
 
   describe('middleware', () => {
     it('warns about no uri parameter', async () => {
-      await withServer(async server => {
+      await withServer(async (server) => {
         const loggerSpy = []
         const trifid = createTrifidConfig({ endpointUrl: '/test' }, loggerSpy)
         const middleware = trifidFactory(trifid)

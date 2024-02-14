@@ -1,8 +1,8 @@
 import namespace from '@rdfjs/namespace'
 
 const ns = {
-  iiif_image: namespace('http://iiif.io/api/image/3#'),
-  iiif_prezi: namespace('http://iiif.io/api/presentation/3#'),
+  iiifImage: namespace('http://iiif.io/api/image/3#'),
+  iiifPrezi: namespace('http://iiif.io/api/presentation/3#'),
   dctypes: namespace('http://purl.org/dc/dcmitype/'),
   exif: namespace('http://www.w3.org/2003/12/exif/ns#'),
   dcterms: namespace('http://purl.org/dc/terms/'),

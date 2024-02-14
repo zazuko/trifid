@@ -1,11 +1,15 @@
+/* eslint-disable no-console */
+
 import jsonld from 'jsonld'
 import rdf from 'rdf-ext'
 import SparqlHttpClient from 'sparql-http-client'
 import frame from './src/frame.js'
 import { createApi } from './src/iiif.js'
 
-// eslint-disable-next-line no-console
-function createMiddleware (api, options = {}, logger = str => console.log(str)) {
+/**
+ * Create the Express middleware.
+ */
+const createMiddleware = (api, options = {}, logger = (str) => console.log(str)) => {
   const { uriPrefix } = options
 
   return async (req, res, next) => {
@@ -36,7 +40,7 @@ function createMiddleware (api, options = {}, logger = str => console.log(str)) 
   }
 }
 
-function trifidFactory (trifid) {
+const trifidFactory = (trifid) => {
   const { config, logger } = trifid
 
   if (!config || !config.endpointUrl) {
