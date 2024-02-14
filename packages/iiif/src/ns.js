@@ -9,7 +9,7 @@ const ns = {
   schema: namespace('https://schema.org/'),
   as: namespace('http://www.w3.org/ns/activitystreams#'),
   oa: namespace('http://www.w3.org/ns/oa#'),
-  rdf: namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+  rdf: namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
 }
 
 export default ns

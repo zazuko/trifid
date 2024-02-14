@@ -5,7 +5,7 @@ import frame from '../../src/frame.js'
 import { createApi } from '../../src/iiif.js'
 
 const client = new SparqlHttpClient({
-  endpointUrl: 'https://data.ptt-archiv.ch/query'
+  endpointUrl: 'https://data.ptt-archiv.ch/query',
 })
 
 const clientOptions = {
@@ -22,8 +22,10 @@ async function tryOut () {
     const augmented = await api.augmentDataset(dataset)
     const doc = await jsonld.fromRDF(augmented, {})
     const framed = await frame(doc)
+    // eslint-disable-next-line no-console
     console.log(framed)
   } else {
+    // eslint-disable-next-line no-console
     console.log('boo')
   }
 }

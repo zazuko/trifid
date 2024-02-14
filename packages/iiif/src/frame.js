@@ -20,23 +20,23 @@ const iiifFrame = {
     {
       body: {
         '@type': '@id',
-        '@id': 'oa:hasBody'
+        '@id': 'oa:hasBody',
       },
       target: {
         '@type': '@id',
-        '@id': 'oa:hasTarget'
+        '@id': 'oa:hasTarget',
       },
       motivation: {
         '@type': '@vocab',
-        '@id': 'oa:motivatedBy'
+        '@id': 'oa:motivatedBy',
       },
       partOf: {
         '@type': '@id',
-        '@id': 'as:partOf'
-      }
-    }
+        '@id': 'as:partOf',
+      },
+    },
   ],
-  type: 'Manifest'
+  type: 'Manifest',
 }
 
 /**
