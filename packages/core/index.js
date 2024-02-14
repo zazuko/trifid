@@ -77,7 +77,8 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   }
 
   // Dynamic server configuration
-  const port = fullConfig?.server?.listener?.port || defaultPort
+  const portFromConfig = fullConfig?.server?.listener?.port
+  const port = (portFromConfig === 0 || portFromConfig === '0') ? 0 : (portFromConfig || defaultPort)
   const host = fullConfig?.server?.listener?.host || defaultHost
   const portNumber = typeof port === 'string' ? parseInt(port, 10) : port
 
