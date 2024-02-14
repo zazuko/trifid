@@ -89,7 +89,7 @@ const toXML = (dataset) => {
           // Datasets contain a mix of legacy (DC) frequencies and new (EU) frequencies.
           // The query makes sure we get both legacy and new ones, we only
           // provide the new ones to CKAN, by converting legacy ones if needed.
-          const legacyFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency/'
+          const euFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency/'
           const accrualPeriodicity = dataset.out(ns.dcterms.accrualPeriodicity)
             .map((t) => {
               if (!t.term || !t.term.value) {
@@ -99,7 +99,7 @@ const toXML = (dataset) => {
               t.term.value = convertLegacyFrequency(t.term.value)
               return t
             })
-            .filter(({ term }) => term.value.startsWith(legacyFreqPrefix))
+            .filter(({ term }) => term.value.startsWith(euFreqPrefix))
 
           return {
             'dcat:Dataset': {
