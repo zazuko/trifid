@@ -1,75 +1,77 @@
 import { sparql } from '@tpluscode/rdf-string'
 import ns from './ns.js'
 
-function discoverManifest (iri) {
+const { as, dcterms, exif, iiifImage, iiifPrezi, oa, rdf, schema } = ns
+
+const discoverManifest = (iri) => {
   return sparql`
 CONSTRUCT {
-  ?m a ${ns.iiif_prezi.Manifest} ;
-    ${ns.as.items} ?manifestItems .
+  ?m a ${iiifPrezi.Manifest} ;
+    ${as.items} ?manifestItems .
 
-  ?manifestRest ${ns.rdf.first} ?canvas ;
-    ${ns.rdf.rest} ?manifestTail .
+  ?manifestRest ${rdf.first} ?canvas ;
+    ${rdf.rest} ?manifestTail .
 
-  ?canvas a ${ns.iiif_prezi.Canvas} ;
-    ${ns.as.items} ?canvasItems .
+  ?canvas a ${iiifPrezi.Canvas} ;
+    ${as.items} ?canvasItems .
 
-  ?canvasRest ${ns.rdf.first} ?page ;
-    ${ns.rdf.rest} ?canvasTail .
+  ?canvasRest ${rdf.first} ?page ;
+    ${rdf.rest} ?canvasTail .
 
-  ?page a ${ns.as.OrderedCollectionPage} ;
-    ${ns.as.items} ?pageItems .
+  ?page a ${as.OrderedCollectionPage} ;
+    ${as.items} ?pageItems .
 
-  ?pageRest ${ns.rdf.first} ?annotation ;
-    ${ns.rdf.rest} ?pageTail .
+  ?pageRest ${rdf.first} ?annotation ;
+    ${rdf.rest} ?pageTail .
 
-  ?annotation a ${ns.oa.Annotation} ;
-    ${ns.oa.hasBody} ?body .
+  ?annotation a ${oa.Annotation} ;
+    ${oa.hasBody} ?body .
 
   ?body a ?dcmiType ;
-    ${ns.schema.potentialAction} ?service .
+    ${schema.potentialAction} ?service .
 
-  ?service a ${ns.iiif_image.ImageService} ;
-    ${ns.dcterms.conformsTo} ?serviceLevel ;
-    ${ns.dcterms.type} ?serviceType ;
-    ${ns.exif.height} ?serviceHeight ;
-    ${ns.exif.width} ?serviceWidth .
+  ?service a ${iiifImage.ImageService} ;
+    ${dcterms.conformsTo} ?serviceLevel ;
+    ${dcterms.type} ?serviceType ;
+    ${exif.height} ?serviceHeight ;
+    ${exif.width} ?serviceWidth .
 } WHERE {
   #pragma optimizer.property.paths.start off
 
-  ?m a ${ns.iiif_prezi.Manifest} ;
-    ${ns.as.items} ?manifestItems .
+  ?m a ${iiifPrezi.Manifest} ;
+    ${as.items} ?manifestItems .
 
-  ?manifestItems ${ns.rdf.rest}* ?manifestRest .
-  ?manifestRest ${ns.rdf.first} ?canvas ;
-    ${ns.rdf.rest} ?manifestTail .
+  ?manifestItems ${rdf.rest}* ?manifestRest .
+  ?manifestRest ${rdf.first} ?canvas ;
+    ${rdf.rest} ?manifestTail .
 
-  ?canvas a ${ns.iiif_prezi.Canvas} ;
-    ${ns.as.items} ?canvasItems .
+  ?canvas a ${iiifPrezi.Canvas} ;
+    ${as.items} ?canvasItems .
 
-  ?canvasItems ${ns.rdf.rest}* ?canvasRest .
-  ?canvasRest ${ns.rdf.first} ?page ;
-    ${ns.rdf.rest} ?canvasTail .
+  ?canvasItems ${rdf.rest}* ?canvasRest .
+  ?canvasRest ${rdf.first} ?page ;
+    ${rdf.rest} ?canvasTail .
 
-  ?page a ${ns.as.OrderedCollectionPage} ;
-    ${ns.as.items} ?pageItems .
+  ?page a ${as.OrderedCollectionPage} ;
+    ${as.items} ?pageItems .
 
-  ?pageItems ${ns.rdf.rest}* ?pageRest .
-  ?pageRest ${ns.rdf.first} ?annotation ;
-    ${ns.rdf.rest} ?pageTail .
+  ?pageItems ${rdf.rest}* ?pageRest .
+  ?pageRest ${rdf.first} ?annotation ;
+    ${rdf.rest} ?pageTail .
 
-  ?annotation a ${ns.oa.Annotation} ;
-    ${ns.oa.hasBody} ?body .
+  ?annotation a ${oa.Annotation} ;
+    ${oa.hasBody} ?body .
 
   ?body a ?dcmiType .
 
   OPTIONAL {
-    ?body ${ns.schema.potentialAction} ?service .
+    ?body ${schema.potentialAction} ?service .
 
-    ?service a ${ns.iiif_image.ImageService} ;
-      ${ns.dcterms.conformsTo} ?serviceLevel ;
-      ${ns.dcterms.type} ?serviceType ;
-      ${ns.exif.height} ?serviceHeight ;
-      ${ns.exif.width} ?serviceWidth .
+    ?service a ${iiifImage.ImageService} ;
+      ${dcterms.conformsTo} ?serviceLevel ;
+      ${dcterms.type} ?serviceType ;
+      ${exif.height} ?serviceHeight ;
+      ${exif.width} ?serviceWidth .
   }
 
   VALUES ?m { ${iri} }
@@ -77,14 +79,14 @@ CONSTRUCT {
 `.toString()
 }
 
-function describeNodes (nodes) {
+const describeNodes = (nodes) => {
   return nodes
     .reduce((acc, node) => sparql`${acc} ${node}`, sparql`DESCRIBE`)
     .toString()
 }
 
-function manifestExists (iri) {
-  return sparql`ASK { ${iri} a ${ns.iiif_prezi.Manifest} }`.toString()
+const manifestExists = (iri) => {
+  return sparql`ASK { ${iri} a ${iiifPrezi.Manifest} }`.toString()
 }
 
 export default { discoverManifest, describeNodes, manifestExists }

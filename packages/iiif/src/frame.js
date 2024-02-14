@@ -44,7 +44,7 @@ const iiifFrame = {
  * @param doc
  * @returns {Promise<*>}
  */
-async function frame (doc) {
+const frame = async (doc) => {
   const framed = await jsonld.frame(doc, iiifFrame, { documentLoader: customLoader })
   framed['@context'] = 'http://iiif.io/api/presentation/3/context.json'
   return framed

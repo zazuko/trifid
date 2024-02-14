@@ -1,6 +1,6 @@
-function createTrifidConfig (config, loggerSpy = []) {
+const createTrifidConfig = (config, loggerSpy = []) => {
   return {
-    logger: str => loggerSpy.push(str),
+    logger: (str) => loggerSpy.push(str),
     config,
   }
 }
