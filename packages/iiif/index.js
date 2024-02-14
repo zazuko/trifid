@@ -4,6 +4,7 @@ import SparqlHttpClient from 'sparql-http-client'
 import frame from './src/frame.js'
 import { createApi } from './src/iiif.js'
 
+// eslint-disable-next-line no-console
 function createMiddleware (api, options = {}, logger = str => console.log(str)) {
   const { uriPrefix } = options
 
@@ -44,11 +45,11 @@ function trifidFactory (trifid) {
   const client = new SparqlHttpClient({
     endpointUrl: config.endpointUrl,
     user: config.endpointUser,
-    password: config.endpointPassword
+    password: config.endpointPassword,
   })
 
   const api = createApi(client, {
-    operation: 'postUrlencoded'
+    operation: 'postUrlencoded',
   })
   const uriPrefix = config.uriPrefix ? config.uriPrefix : ''
 

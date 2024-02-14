@@ -49,7 +49,7 @@ function createApi (client, clientOptions) {
       ns.as.OrderedCollectionPage,
       ns.oa.Annotation,
       ns.dctypes.StillImage,
-      ns.dctypes.MovingImage
+      ns.dctypes.MovingImage,
     ]).terms
 
     // And describe them
@@ -61,7 +61,7 @@ function createApi (client, clientOptions) {
   return {
     exists,
     getBasicDataset,
-    augmentDataset
+    augmentDataset,
   }
 }
 

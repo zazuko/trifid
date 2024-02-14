@@ -16,7 +16,7 @@
   },
   "scripts": {
     "coverage": "codecov",
-    "test": "stricter-standard && c8 --reporter=lcov --reporter=text mocha"
+    "test": "c8 --reporter=lcov --reporter=text mocha"
   },
   "dependencies": {
     "@rdfjs/express-handler": "^1.2.2",
@@ -25,12 +25,12 @@
     "clownface": "^1.5.1",
     "jsonld": "^5.2.0",
     "rdf-ext": "^2.0.1",
-    "sparql-http-client": "^2.4.0"
+    "sparql-http-client": "^2.4.0",
+    "through2": "^4.0.2"
   },
   "devDependencies": {
     "c8": "^7.11.3",
-    "stricter-standard": "^0.2.0",
-    "mocha": "^10.0.0",
-    "express-as-promise": "^1.2.0"
+    "express-as-promise": "^1.2.0",
+    "mocha": "^10.0.0"
   }
 }
