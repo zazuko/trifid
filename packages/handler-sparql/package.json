@@ -15,7 +15,6 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "coverage": "codecov",
     "test": "c8 --all --reporter lcovonly --reporter=text mocha"
   },
   "dependencies": {
