@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "c8 --all --reporter=lcov --reporter=text mocha",
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha",
     "prebuild": "rimraf src/*.d.ts src/*.d.ts.map",
     "build": "tsc",
     "prepack": "npm run build"

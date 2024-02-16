@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "example-instance": "node ./examples/run-instance.js",
-    "test": "c8 --all --reporter=lcov --reporter=text mocha"
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "repository": {
     "type": "git",
