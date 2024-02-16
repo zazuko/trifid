@@ -17,17 +17,17 @@ jobs:
           - 18
           - 20
         package:
-          - @zazuko/trifid-plugin-ckan
+          - "@zazuko/trifid-plugin-ckan"
           - trifid-core
-          - @zazuko/trifid-entity-renderer
+          - "@zazuko/trifid-entity-renderer"
           - trifid-plugin-graph-explorer
           - trifid-handler-fetch
           - trifid-handler-sparql
           - trifid-plugin-i18n
-          - @zazuko/trifid-plugin-iiif
-          - @zazuko/trifid-markdown-content
-          - @zazuko/trifid-handle-redirects
-          - @zazuko/trifid-plugin-sparql-proxy
+          - "@zazuko/trifid-plugin-iiif"
+          - "@zazuko/trifid-markdown-content"
+          - "@zazuko/trifid-handle-redirects"
+          - "@zazuko/trifid-plugin-sparql-proxy"
           - trifid-plugin-spex
           - trifid
           - trifid-plugin-yasgui
