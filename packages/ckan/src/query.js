@@ -15,6 +15,7 @@ const datasetsQuery = (organizationId) => {
       ?o ?nestedP ?nestedO .
       ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
       ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
+      ?publisher ${ns.schema.name} ?publisherName .
     }
     WHERE {
       GRAPH ?graph {
@@ -41,6 +42,11 @@ const datasetsQuery = (organizationId) => {
 
         OPTIONAL {
           ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
+        }
+
+        OPTIONAL {
+          ?dataset ${ns.dcterms.publisher} ?publisher .
+          ?publisher ${ns.schema.name} ?publisherName .
         }
       }
     }

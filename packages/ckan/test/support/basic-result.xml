@@ -14,6 +14,11 @@
         <dcterms:description xml:lang="it">Dataset 1 - Description</dcterms:description>
         <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2023-10-31</dcterms:issued>
         <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-10-31T15:15:15Z</dcterms:modified>
+        <dcterms:publisher>
+          <foaf:Organization rdf:about="http://example.com/my-org">
+            <foaf:name>http://example.com/my-org</foaf:name>
+          </foaf:Organization>
+        </dcterms:publisher>
         <dcterms:creator rdf:resource="http://example.com/my-org"/>
         <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/IRREG"/>
       </dcat:Dataset>

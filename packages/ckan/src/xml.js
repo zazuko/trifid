@@ -80,11 +80,25 @@ const toXML = (dataset) => {
             }))
 
           const publishers = dataset.out(ns.dcterms.publisher)
-            .map(publisher => ({
-              'foaf:Organization': {
-                'foaf:name': publisher.value,
-              },
-            }))
+            .map(publisher => {
+              const attr = {}
+              /** @type {string | string[]} */
+              let name = publisher.value
+
+              if (isNamedNode(publisher)) {
+                attr['rdf:about'] = publisher.value
+                if (publisher.out(ns.schema.name).values.length > 0) {
+                  name = publisher.out(ns.schema.name).values
+                }
+              }
+
+              return {
+                'foaf:Organization': {
+                  '@': attr,
+                  'foaf:name': name,
+                },
+              }
+            })
 
           // Datasets contain a mix of legacy (DC) frequencies and new (EU) frequencies.
           // The query makes sure we get both legacy and new ones, we only
