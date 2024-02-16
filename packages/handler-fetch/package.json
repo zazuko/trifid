@@ -15,7 +15,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "c8 --all mocha"
   },
   "dependencies": {
     "@rdfjs/express-handler": "^1.2.2",
@@ -29,6 +29,7 @@
     "rdfjs": "^0.0.1"
   },
   "devDependencies": {
+    "c8": "^8",
     "bluebird": "^3.7.2",
     "express": "^4.18.2",
     "mocha": "^10.0.0",

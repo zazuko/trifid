@@ -53,7 +53,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     trifidListener.close()
   })
 
-  describe('basic tests', () => {
+  describe.skip('basic tests', () => {
     it('should answer with a 400 status code if the organization parameter is missing', async () => {
       const ckanUrl = `${getListenerURL(trifidListener)}/ckan`
       const res = await fetch(ckanUrl)

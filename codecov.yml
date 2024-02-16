@@ -1,0 +1,6 @@
+flag_management:
+  default_rules:
+    carryforward: true
+ignore:
+  - "packages/*/test/**/*"
+  - "packages/*/examples/**/*"
