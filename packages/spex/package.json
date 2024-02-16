@@ -15,7 +15,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
+    "test": "c8 --all --reporter lcovonly --reporter=text mocha"
   },
   "dependencies": {
     "@zazuko/spex": "^0.1.20",

@@ -17,9 +17,6 @@
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
   },
-  "scripts": {
-    "test": "true"
-  },
   "dependencies": {
     "debug": "^4.3.4",
     "sparql-http-client": "^2.4.2"

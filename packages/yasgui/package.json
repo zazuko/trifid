@@ -21,7 +21,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "c8 --all mocha"
+    "test": "c8 --all --reporter lcovonly mocha"
   },
   "dependencies": {
     "@openlayers-elements/bundle": "^0.1.0",

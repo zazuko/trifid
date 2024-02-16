@@ -16,7 +16,7 @@
   },
   "scripts": {
     "coverage": "codecov",
-    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
+    "test": "c8 --all --reporter lcovonly --reporter=text mocha"
   },
   "dependencies": {
     "debug": "^4.3.4",
