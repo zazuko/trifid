@@ -47,7 +47,7 @@ jobs:
       - name: Run tests
         run: npx wsrun --no-prefix -p ${{ matrix.package }} -mc test
       - name: Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: ${{ matrix.package }}
