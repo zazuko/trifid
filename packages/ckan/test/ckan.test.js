@@ -102,6 +102,12 @@ describe('@zazuko/trifid-plugin-ckan', () => {
         </foaf:Organization>`)
         expect(publisher).to.containSubset(expected)
       })
+
+      it('should get landing page resource', () => {
+        const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage')
+
+        expect(landingPage).to.eq('https://example.com/')
+      })
     })
 
     it('should convert legacy frequency to EU frequency if possible', async () => {
@@ -178,6 +184,12 @@ describe('@zazuko/trifid-plugin-ckan', () => {
           <foaf:name>Bundesamt für Landwirtschaft</foaf:name>
         </foaf:Organization>`)
       expect(publisher).to.containSubset(expected)
+    })
+
+    it('should get landing page resource', () => {
+      const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage')
+
+      expect(landingPage.$['rdf:resource']).to.eq('https://agrarmarktdaten.admin.ch')
     })
   })
 })

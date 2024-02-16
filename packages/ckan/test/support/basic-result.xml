@@ -20,6 +20,7 @@
           </foaf:Organization>
         </dcterms:publisher>
         <dcterms:creator rdf:resource="http://example.com/my-org"/>
+        <dcat:landingPage>https://example.com/</dcat:landingPage>
         <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/IRREG"/>
       </dcat:Dataset>
     </dcat:dataset>
