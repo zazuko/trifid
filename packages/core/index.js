@@ -16,6 +16,8 @@ import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
 import templateEngine from './lib/templateEngine.js'
 
+import { errorsHandler } from './lib/handlers/index.js'
+
 // Export some useful functions to work with SPARQL
 export {
   supportedTypes as sparqlSupportedTypes,
@@ -93,7 +95,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   // Add support for Accept header parser
   server.register(fastifyAccepts)
 
-  server.setErrorHandler()
+  server.setErrorHandler(errorsHandler)
   server.setNotFoundHandler()
 
   const templateEngineInstance = await templateEngine(template)

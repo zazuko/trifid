@@ -2,7 +2,6 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 import healthMiddleware from '../../middlewares/health.js'
-import errorsMiddleware from '../../middlewares/errors.js'
 import notFoundMiddleware from '../../middlewares/notFound.js'
 import staticMiddleware from '../../middlewares/static.js'
 import iriMiddleware from '../../middlewares/iri.js'
@@ -14,11 +13,6 @@ const health = {
   paths: '/health',
   methods: 'GET',
   module: healthMiddleware,
-}
-
-const errors = {
-  module: errorsMiddleware,
-  order: 1200,
 }
 
 const notFound = {
@@ -46,7 +40,6 @@ const locals = {
 
 export default {
   health,
-  // errors,
   // notFound,
   // templateStaticFiles,
   // iri,
