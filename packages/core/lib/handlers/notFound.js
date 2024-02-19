@@ -23,6 +23,10 @@ const handler = (request, reply) => {
       break
 
     case 'html':
+      reply.view('404', {
+
+      })
+      break;
     // res.send(
     //   await render(
     //     `${currentDir}/../views/404.hbs`,

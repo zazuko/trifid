@@ -1,5 +1,7 @@
-# extends:
-#   - file:./config2.json
+# yaml-language-server: $schema=./lib/config/schema.json
+
+extends:
+  - file:./config2.json
 
 server:
   listener:

@@ -21,6 +21,11 @@ import templateEngine from './lib/templateEngine.js'
 
 import { errorsHandler, notFoundHandler } from './lib/handlers/index.js'
 
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
+
 // Export some useful functions to work with SPARQL
 export {
   supportedTypes as sparqlSupportedTypes,
@@ -104,23 +109,30 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   server.register(fastifyView, {
     engine: {
       handlebars: Handlebars
+    },
+    root: join(currentDir, 'views'),
+    viewExt: 'hbs',
+    includeViewExtension: true,
+    layout: './layouts/main.hbs',
+    defaultContext: {
+      title: 'Trifid'
     }
   })
 
-  const templateEngineInstance = await templateEngine(template)
+  // const templateEngineInstance = await templateEngine(template)
   const middlewares = await middlewaresAssembler(
     fullConfig,
     additionalMiddlewares,
   )
-  await applyMiddlewares(
-    server,
-    fullConfig.globals,
-    middlewares,
-    logger,
-    templateEngineInstance,
-    `http://${host}:${portNumber}/`,
-    trifidEvents,
-  )
+  // await applyMiddlewares(
+  //   server,
+  //   fullConfig.globals,
+  //   middlewares,
+  //   logger,
+  //   templateEngineInstance,
+  //   `http://${host}:${portNumber}/`,
+  //   trifidEvents,
+  // )
 
   const start = async () => {
     return await new Promise(async (resolve, reject) => {
