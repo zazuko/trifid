@@ -5,6 +5,9 @@ import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
 import fastifyCookie from '@fastify/cookie'
 import fastifyAccepts from '@fastify/accepts'
+import fastifyView from '@fastify/view'
+
+import Handlebars from 'handlebars'
 
 import handler from './lib/config/handler.js'
 import {
@@ -16,7 +19,7 @@ import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
 import templateEngine from './lib/templateEngine.js'
 
-import { errorsHandler } from './lib/handlers/index.js'
+import { errorsHandler, notFoundHandler } from './lib/handlers/index.js'
 
 // Export some useful functions to work with SPARQL
 export {
@@ -96,7 +99,13 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   server.register(fastifyAccepts)
 
   server.setErrorHandler(errorsHandler)
-  server.setNotFoundHandler()
+  server.setNotFoundHandler(notFoundHandler)
+
+  server.register(fastifyView, {
+    engine: {
+      handlebars: Handlebars
+    }
+  })
 
   const templateEngineInstance = await templateEngine(template)
   const middlewares = await middlewaresAssembler(
@@ -129,20 +138,20 @@ const trifid = async (config, additionalMiddlewares = {}) => {
           trifidEvents.emit('ready')
         })
 
+        // Start server
         await server.listen({
           port: portNumber,
           host,
         })
 
-        const fastifyAddresses = server.addresses()
-        const addresses = fastifyAddresses.map((address) => {
+        // Log server address
+        const fastifyAddresses = server.addresses().map((address) => {
           if (typeof address === 'string') {
             return address
           }
-
           return `http://${address.address}:${address.port}`
         })
-        logger.info(`Server listening on ${addresses.join(', ')}`)
+        logger.info(`Server listening on ${fastifyAddresses.join(', ')}`)
 
         resolve(server.server)
       } catch (error) {
