@@ -1,10 +1,10 @@
 // @ts-check
 import EventEmitter from 'node:events'
-import express from 'express'
 import { pino } from 'pino'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-import { middleware as absoluteUrl } from 'absolute-url'
+import fastify from 'fastify'
+import fastifyCors from '@fastify/cors'
+import fastifyCookie from '@fastify/cookie'
+import fastifyAccepts from '@fastify/accepts'
 
 import handler from './lib/config/handler.js'
 import {
@@ -38,43 +38,23 @@ export {
  * }>?} additionalMiddlewares Add additional middlewares.
  * @returns {Promise<{
  *  start: () => Promise<import('http').Server>;
- *  server: import('express').Express;
+ *  server: import('fastify').FastifyInstance;
  *  config: import('./types/index.js').TrifidConfig
  * }>} Trifid instance.
  */
 const trifid = async (config, additionalMiddlewares = {}) => {
   const trifidEvents = new EventEmitter()
   const fullConfig = await handler(config)
-  const server = express()
-  server.disable('x-powered-by')
 
-  // Add required middlewares
-  server.use(
-    cors({
-      credentials: true,
-      origin: true,
-    }),
-  )
-
-  // Add support for JSON-encoded and URL-encoded bodies
-  server.use(express.json())
-  server.use(express.urlencoded({ extended: true }))
-
-  // Add support for cookies
-  server.use(cookieParser())
-
-  // Add support for absolute URLs, so that we can use `req.absoluteUrl()` in any middleware to get the absolute URL
-  server.use(absoluteUrl())
-
-  // Configure Express server
-  if (fullConfig?.server?.express) {
-    for (const expressSettingKey in fullConfig.server.express) {
-      server.set(
-        expressSettingKey,
-        fullConfig.server.express[expressSettingKey],
-      )
-    }
-  }
+  // // Configure Express server
+  // if (fullConfig?.server?.express) {
+  //   for (const expressSettingKey in fullConfig.server.express) {
+  //     server.set(
+  //       expressSettingKey,
+  //       fullConfig.server.express[expressSettingKey],
+  //     )
+  //   }
+  // }
 
   // Dynamic server configuration
   const portFromConfig = fullConfig?.server?.listener?.port
@@ -88,6 +68,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   // Template configuration
   const template = fullConfig?.template || {}
 
+  // Custom logger instance
   const logger = pino({
     name: 'trifid-core',
     level: logLevel,
@@ -95,6 +76,25 @@ const trifid = async (config, additionalMiddlewares = {}) => {
       target: 'pino-pretty',
     },
   })
+
+  const server = fastify({
+    logger,
+  })
+
+  // Add required middlewares
+  server.register(fastifyCors, {
+    credentials: true,
+    origin: true,
+  })
+
+  // Add support for cookies
+  server.register(fastifyCookie)
+
+  // Add support for Accept header parser
+  server.register(fastifyAccepts)
+
+  server.setErrorHandler()
+  server.setNotFoundHandler()
 
   const templateEngineInstance = await templateEngine(template)
   const middlewares = await middlewaresAssembler(
@@ -112,23 +112,40 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   )
 
   const start = async () => {
-    return await new Promise((resolve, reject) => {
-      const listener = server.listen(portNumber, host, (err) => {
-        if (err) {
-          return reject(err)
-        }
-
+    return await new Promise(async (resolve, reject) => {
+      try {
         // Forward server events to the Trifid middlewares
-        listener.on('ready', () => {
-          trifidEvents.emit('ready')
+        server.addHook('onListen', () => {
+          trifidEvents.emit('listen')
         })
-        listener.on('close', () => {
+
+        server.addHook('onClose', () => {
           trifidEvents.emit('close')
         })
 
-        logger.info(`Trifid instance listening on: http://${host}:${portNumber}/`)
-        resolve(listener)
-      })
+        server.addHook('onReady', () => {
+          trifidEvents.emit('ready')
+        })
+
+        await server.listen({
+          port: portNumber,
+          host,
+        })
+
+        const fastifyAddresses = server.addresses()
+        const addresses = fastifyAddresses.map((address) => {
+          if (typeof address === 'string') {
+            return address
+          }
+
+          return `http://${address.address}:${address.port}`
+        })
+        logger.info(`Server listening on ${addresses.join(', ')}`)
+
+        resolve(server.server)
+      } catch (error) {
+        return reject(error)
+      }
     })
   }
 

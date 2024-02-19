@@ -46,9 +46,9 @@ const locals = {
 
 export default {
   health,
-  errors,
-  notFound,
-  templateStaticFiles,
-  iri,
-  locals,
+  // errors,
+  // notFound,
+  // templateStaticFiles,
+  // iri,
+  // locals,
 }
