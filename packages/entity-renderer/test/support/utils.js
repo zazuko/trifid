@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * Get the URL of a listener.
+ * Get an endpoint of the Fastify Instance.
  *
  * @param {import('fastify').FastifyInstance} server Server.
  * @returns {string}
