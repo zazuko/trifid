@@ -1,134 +1,139 @@
 // @ts-check
 
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { describe, expect, test } from '@jest/globals'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { describe, it } from 'mocha'
+import chai, { expect } from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 
 import handler from '../lib/config/handler.js'
 import { fileCallback } from '../lib/resolvers.js'
 
+chai.use(chaiAsPromised)
+
 describe('config handler', () => {
-  test('should not throw when loading an empty configuration file', async () => {
+  it('should not throw when loading an empty configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/empty.json')),
-    ).resolves.not.toThrow()
+    ).to.not.throw
   })
 
-  test('should not throw when loading an empty configuration', async () => {
-    await expect(handler({})).resolves.not.toThrow()
+  it('should not throw when loading an empty configuration', () => {
+    return expect(handler({})).to.not.eventually.be.rejected
   })
 
-  test('should not throw when loading a configuration that extends an existing one', async () => {
+  it('should not throw when loading a configuration that extends an existing one', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler({
         extends: [`${currentDir}/support/empty.json`],
       }),
-    ).resolves.not.toThrow()
+    ).to.not.eventually.be.rejected
   })
 
-  test('should throw when loading a configuration that extends a non-existant one', async () => {
+  it('should throw when loading a configuration that extends a non-existant one', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler({
         extends: [`${currentDir}/support/non-existant.json`],
       }),
-    ).rejects.toThrow()
+    ).to.eventually.be.rejected
   })
 
-  test('should not throw when loading a basic configuration file', async () => {
+  it('should not throw when loading a basic configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/basic.json')),
-    ).resolves.not.toThrow()
+    ).to.not.eventually.be.rejected
   })
 
-  test('should not throw when loading a basic YAML configuration file', async () => {
+  it('should not throw when loading a basic YAML configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/basic.yaml')),
-    ).resolves.not.toThrow()
+    ).to.not.eventually.be.rejected
   })
 
-  test('should throw when trying to load a non-existant configuration file', async () => {
+  it('should throw when trying to load a non-existant configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/non-existant.json')),
-    ).rejects.toThrow()
+    ).to.eventually.be.rejected
   })
 
-  test('should throw when trying to read an invalid configuration file', async () => {
+  it('should throw when trying to read an invalid configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/invalid.json')),
-    ).rejects.toThrow()
+    ).to.eventually.be.rejected
   })
 
-  test('should throw when trying to read an invalid JSON file', async () => {
+  it('should throw when trying to read an invalid JSON file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/invalid-json.json')),
-    ).rejects.toThrow()
+    ).to.eventually.be.rejected
   })
 
-  test('should support comments in JSON configuration file', async () => {
+  it('should support comments in JSON configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/basic-commented.json')),
-    ).resolves.not.toThrow()
+    ).to.not.eventually.be.rejected
   })
 
-  test('simple chain should work', async () => {
+  it('simple chain should work', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/chain/chain1.json')),
-    ).resolves.not.toThrow()
+    ).to.not.eventually.be.rejected
   })
 
-  test('check if expected values are here on extended config', async () => {
+  it('check if expected values are here on extended config', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     const config = await handler(
       fileCallback(currentDir)('./support/chain/chain1.json'),
     )
-    expect(config.globals).toBeDefined()
-    expect(config.globals.value3).toBeDefined()
-    expect(config.globals.value3).toEqual('chain3')
-    expect(config.globals.value2).toBeDefined()
-    expect(config.globals.value2).toEqual('chain2')
-    expect(config.globals.value1).toBeDefined()
-    expect(config.globals.value1).toEqual('chain1')
-    expect(config.globals.value).toBeDefined()
-    expect(config.globals.value).toEqual('chain1')
+    expect(config.globals).to.not.be.undefined
+    expect(config.globals.value3).to.not.be.undefined
+    expect(config.globals.value3).to.equal('chain3')
+    expect(config.globals.value2).to.not.be.undefined
+    expect(config.globals.value2).to.equal('chain2')
+    expect(config.globals.value1).to.not.be.undefined
+    expect(config.globals.value1).to.equal('chain1')
+    expect(config.globals.value).to.not.be.undefined
+    expect(config.globals.value).to.equal('chain1')
   })
 
-  test('simple check using the file resolver should work', async () => {
+  it('simple check using the file resolver should work', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/chain-file/chain1.json')),
-    ).resolves.not.toThrow()
+    ).to.not.eventually.be.rejected
   })
 
-  test('check if expected values are here on extended config with file prefix', async () => {
+  it('check if expected values are here on extended config with file prefix', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
     const config = await handler(
       fileCallback(currentDir)('./support/chain-file/chain1.json'),
     )
-    expect(config.globals).toBeDefined()
-    expect(config.globals.value3).toBeDefined()
-    expect(config.globals.value3).toEqual('chain3')
-    expect(config.globals.value2).toBeDefined()
-    expect(config.globals.value2).toEqual('chain2')
-    expect(config.globals.value1).toBeDefined()
-    expect(config.globals.value1).toEqual('chain1')
-    expect(config.globals.value).toBeDefined()
-    expect(config.globals.value).toEqual('chain1')
+    expect(config.globals).to.not.be.undefined
+    expect(config.globals.value3).to.not.be.undefined
+    expect(config.globals.value3).to.equal('chain3')
+    expect(config.globals.value2).to.not.be.undefined
+    expect(config.globals.value2).to.equal('chain2')
+    expect(config.globals.value1).to.not.be.undefined
+    expect(config.globals.value1).to.equal('chain1')
+    expect(config.globals.value).to.not.be.undefined
+    expect(config.globals.value).to.equal('chain1')
   })
 
-  test('should throw in case of infinite loop', async () => {
+  it('should throw in case of infinite loop', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    await expect(
+    return expect(
       handler(fileCallback(currentDir)('./support/infinite-loop/chain1.json')),
-    ).rejects.toThrow()
+    ).to.eventually.be.rejected
   })
 })

@@ -14,7 +14,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test": "c8 --reporter=lcov --reporter=text mocha test/**.test.js test/**/*.test.js",
     "watch": "nodemon server.js",
     "typings": "tsc",
     "clean": "rimraf *.tgz dist/",
@@ -60,26 +60,16 @@
     "yaml": "^2.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.17",
-    "@babel/preset-env": "^7.23.6",
-    "@jest/globals": "^29.7.0",
     "@rdfjs/types": "^1.1.0",
-    "@types/express": "^4.17.20",
     "@types/node": "^20.10.6",
-    "babel-jest": "^29.7.0",
-    "jest": "^29.7.0",
+    "c8": "^9.1.0",
+    "chai": "^4.4.1",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^10.3.0",
     "nodemon": "^3.0.1",
-    "path-scurry": "^1.10.1",
     "rimraf": "^5.0.5",
     "supertest": "^6.3.4",
     "typescript": "^5.3.3"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/"
-    ]
   },
   "publishConfig": {
     "access": "public"
