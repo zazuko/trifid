@@ -40,7 +40,7 @@ export {
  *   config?: Record<string, any>;
  * }>?} additionalMiddlewares Add additional middlewares.
  * @returns {Promise<{
- *  start: () => Promise<import('http').Server>;
+ *  start: () => Promise<import('fastify').FastifyInstance>;
  *  server: import('fastify').FastifyInstance;
  *  config: import('./types/index.js').TrifidConfig
  * }>} Trifid instance.
@@ -151,7 +151,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     })
     logger.info(`Server listening on ${fastifyAddresses.join(', ')}`)
 
-    return server.server
+    return server
   }
 
   return {
