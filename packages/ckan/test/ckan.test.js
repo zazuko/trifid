@@ -27,7 +27,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
   let trifidListener
 
   beforeEach(async () => {
-    const trifidInstance = await createTrifidInstance({ logLevel: 'debug' })
+    const trifidInstance = await createTrifidInstance({ logLevel: 'warn' })
     trifidListener = await trifidInstance.start()
   })
 
