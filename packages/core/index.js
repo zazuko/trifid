@@ -119,41 +119,35 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   )
 
   const start = async () => {
-    return await new Promise(async (resolve, reject) => {
-      try {
-        // Forward server events to the Trifid middlewares
-        server.addHook('onListen', () => {
-          trifidEvents.emit('listen')
-        })
-
-        server.addHook('onClose', () => {
-          trifidEvents.emit('close')
-        })
-
-        server.addHook('onReady', () => {
-          trifidEvents.emit('ready')
-        })
-
-        // Start server
-        await server.listen({
-          port: portNumber,
-          host,
-        })
-
-        // Log server address
-        const fastifyAddresses = server.addresses().map((address) => {
-          if (typeof address === 'string') {
-            return address
-          }
-          return `http://${address.address}:${address.port}`
-        })
-        logger.info(`Server listening on ${fastifyAddresses.join(', ')}`)
-
-        resolve(server.server)
-      } catch (error) {
-        return reject(error)
-      }
+    // Forward server events to the Trifid middlewares
+    server.addHook('onListen', () => {
+      trifidEvents.emit('listen')
     })
+
+    server.addHook('onClose', () => {
+      trifidEvents.emit('close')
+    })
+
+    server.addHook('onReady', () => {
+      trifidEvents.emit('ready')
+    })
+
+    // Start server
+    await server.listen({
+      port: portNumber,
+      host,
+    })
+
+    // Log server address
+    const fastifyAddresses = server.addresses().map((address) => {
+      if (typeof address === 'string') {
+        return address
+      }
+      return `http://${address.address}:${address.port}`
+    })
+    logger.info(`Server listening on ${fastifyAddresses.join(', ')}`)
+
+    return server.server
   }
 
   return {
