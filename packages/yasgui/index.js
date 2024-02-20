@@ -1,7 +1,8 @@
-import url, { fileURLToPath } from 'url'
-import { dirname } from 'path'
-import express from 'express'
+import url, { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
+
 import { resolve } from 'import-meta-resolve'
+import fastifyStatic from '@fastify/static'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -14,40 +15,59 @@ const trifidFactory = async (trifid) => {
 
   // serve static files for YASGUI
   const yasguiPath = resolve('@zazuko/yasgui/build/', import.meta.url)
-  server.use(
-    '/yasgui-dist/',
-    express.static(yasguiPath.replace(/^file:\/\//, '')),
-  )
+  server.register(fastifyStatic, {
+    root: yasguiPath.replace(/^file:\/\//, ''),
+    prefix: '/yasgui-dist/',
+    decorateReply: false,
+  })
 
   // serve static files for openlayers (maps)
   const olPath = resolve('@openlayers-elements/bundle/dist/', import.meta.url)
-  server.use('/yasgui-ol/', express.static(olPath.replace(/^file:\/\//, '')))
+  server.register(fastifyStatic, {
+    root: olPath.replace(/^file:\/\//, ''),
+    prefix: '/yasgui-ol/',
+    decorateReply: false,
+  })
 
   // serve static files for custom plugins
   const pluginsUrl = new URL('plugins/', import.meta.url)
   const pluginsPath = fileURLToPath(pluginsUrl)
-  server.use('/yasgui-plugins/', express.static(pluginsPath))
+  server.register(fastifyStatic, {
+    root: pluginsPath.replace(/^file:\/\//, ''),
+    prefix: '/yasgui-plugins/',
+    decorateReply: false,
+  })
 
-  return async (req, res, _next) => {
-    logger.debug('Yasgui plugin was called')
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET'],
+        paths: ['/sparql'],
+      }
+    },
+    routeHandler: async () => {
+      /**
+       * Route handler.
+       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyReply} reply Reply.
+       */
+      const handler = async (request, reply) => {
+        logger.debug('Yasgui plugin was called')
+        const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+        const content = await render(
+          view,
+          {
+            // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
+            endpointUrl: url.resolve(fullUrl, endpoint), // eslint-disable-line
+            urlShortener,
+          },
+          { title: 'YASGUI' },
+        )
 
-    let fullUrl = req.absoluteUrl()
-    if (typeof fullUrl !== 'string' && fullUrl.toString) {
-      fullUrl = fullUrl.toString()
-    }
-
-    const content = await render(
-      view,
-      {
-        // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
-        endpointUrl: url.resolve(fullUrl, endpoint), // eslint-disable-line
-        urlShortener,
-        locals: res.locals,
-      },
-      { title: 'YASGUI' },
-    )
-
-    res.send(content)
+        reply.type('text/html').send(content)
+      }
+      return handler
+    },
   }
 }
 
