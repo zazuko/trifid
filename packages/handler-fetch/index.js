@@ -81,6 +81,10 @@ export const factory = async (trifid) => {
         if (type === 'query' && data.queryId === queryId) {
           clearTimeout(timeoutId)
           worker.off('message', messageHandler)
+          if (!data.success) {
+            reject(new Error(data.response))
+            return
+          }
           resolve(data)
         }
       }

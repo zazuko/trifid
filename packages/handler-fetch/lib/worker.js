@@ -67,13 +67,27 @@ const handleConfig = async (config) => {
 // Handle query
 const handleQuery = async (data) => {
   const { query, queryId } = data
-  const { response, contentType } = await performOxigraphQuery(store, query)
+  let response = ''
+  let contentType = 'text/plain'
+  let success = false
+
+  // Perform the query and catch any errors
+  try {
+    const { response: storeResponse, contentType: storeContentType } = await performOxigraphQuery(store, query)
+    response = storeResponse
+    contentType = storeContentType
+    success = true
+  } catch (error) {
+    response = error.message
+  }
+
   parentPort.postMessage({
     type: 'query',
     data: {
       queryId,
       response,
       contentType,
+      success,
     },
   })
 }
