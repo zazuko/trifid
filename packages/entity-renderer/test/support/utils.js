@@ -3,18 +3,20 @@
 /**
  * Get the URL of a listener.
  *
- * @param {import('http').Server} listener HTTP listener
+ * @param {import('fastify').FastifyInstance} server Server.
  * @returns {string}
  */
-export const getListenerURL = (listener) => {
-  const address = listener.address()
-  if (!address) {
+export const getListenerURL = (server) => {
+  const addresses = server.addresses().map((address) => {
+    if (typeof address === 'string') {
+      return address
+    }
+    return `http://${address.address}:${address.port}`
+  })
+
+  if (addresses.length < 1) {
     throw new Error('The listener is not listening')
   }
-  if (typeof address === 'string') {
-    return address
-  }
 
-  const { address: hostname, port } = address
-  return `http://${hostname}:${port}`
+  return addresses[0]
 }

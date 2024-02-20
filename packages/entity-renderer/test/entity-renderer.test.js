@@ -10,7 +10,7 @@ import { getListenerURL } from './support/utils.js'
 
 const trifidConfigUrl = './examples/config/trifid.yaml'
 
-describe('@zazuko/trifid-entity-renderer', () => {
+describe('@zazuko/trifid-entity-renderer', async () => {
   let trifidListener
 
   beforeEach(async () => {
@@ -18,8 +18,8 @@ describe('@zazuko/trifid-entity-renderer', () => {
     trifidListener = await trifidInstance.start()
   })
 
-  afterEach(() => {
-    trifidListener.close()
+  afterEach(async () => {
+    await trifidListener.close()
   })
 
   describe('basic tests', () => {
