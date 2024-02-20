@@ -3,42 +3,65 @@
 import rdf from '@zazuko/env'
 import { createAPI } from './ckan.js'
 
-/** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../../core/dist/types/index.d.ts').TrifidMiddleware} */
 const factory = (trifid) => {
   const { config, logger } = trifid
 
-  const { endpointUrl, user, password } = config
+  const { endpointUrl, user, password, queryAllGraphs: queryAllGraphsConfiguredValue } = config
   const configuredEndpoint = endpointUrl || '/query'
 
-  return async (req, res, _next) => {
-    const endpoint = new URL(configuredEndpoint, req.absoluteUrl())
-    const { fetchDatasets, toXML } = createAPI({
-      endpointUrl: endpoint,
-      user,
-      password,
-    })
+  let queryAllGraphs = true
+  if (!queryAllGraphsConfiguredValue || queryAllGraphsConfiguredValue === 'false') {
+    queryAllGraphs = false
+  }
 
-    const organization = req?.query?.organization
-    if (!organization) {
-      return res.status(400).send('Missing `organization` query param')
-    }
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET'],
+        paths: ['/ckan'],
+      }
+    },
+    routeHandler: async () => {
+      /**
+       * Route handler.
+       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyReply} reply Reply.
+       */
+      const handler = async (request, reply) => {
+        const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+        const endpoint = new URL(configuredEndpoint, fullUrl)
+        const { fetchDatasets, toXML } = createAPI({
+          endpointUrl: endpoint,
+          user,
+          password,
+          queryAllGraphs,
+        })
 
-    logger.debug(`asked for the '${organization}' organization`)
+        const organization = request.query?.organization
+        if (!organization) {
+          reply.status(400).send('Missing `organization` query param')
+          return
+        }
 
-    try {
-      const uri = rdf.namedNode(organization)
+        logger.debug(`Asked for the '${organization}' organization`)
 
-      const dataset = await fetchDatasets(uri)
-      const xml = toXML(dataset)
+        try {
+          const uri = rdf.namedNode(organization)
 
-      const format = 'application/rdf+xml'
-      res.setHeader('Content-Type', format)
+          const dataset = await fetchDatasets(uri)
+          const xml = toXML(dataset)
 
-      return res.send(xml.toString())
-    } catch (e) {
-      logger.error(e)
-      return res.status(500).send('Error')
-    }
+          const format = 'application/rdf+xml'
+
+          reply.type(format).send(xml.toString())
+        } catch (e) {
+          logger.error(e)
+          reply.status(500).send('Error')
+        }
+      }
+      return handler
+    },
   }
 }
 

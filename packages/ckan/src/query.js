@@ -7,9 +7,13 @@ import * as ns from './namespace.js'
  * Query to retrieve all datasets for a given organization.
  *
  * @param {string} organizationId The organization identifier.
+ * @param {boolean} queryAllGraphs Whether to query all graphs or only the default one.
  * @returns {import('@tpluscode/rdf-string').SparqlTemplateResult}
  */
-const datasetsQuery = (organizationId) => {
+const datasetsQuery = (organizationId, queryAllGraphs) => {
+  const startQueryGraph = queryAllGraphs ? 'GRAPH ?graph {' : ''
+  const endQueryGraph = queryAllGraphs ? '}' : ''
+
   return sparql`
     CONSTRUCT {
       ?dataset ?p ?o .
@@ -18,7 +22,7 @@ const datasetsQuery = (organizationId) => {
       ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
     }
     WHERE {
-      GRAPH ?graph {
+      ${startQueryGraph}
         ?dataset ?p ?o .
 
         ?dataset ${ns.dcterms.creator} ${organizationId} .
@@ -43,7 +47,7 @@ const datasetsQuery = (organizationId) => {
         OPTIONAL {
           ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
         }
-      }
+      ${endQueryGraph}
     }
   `
 }

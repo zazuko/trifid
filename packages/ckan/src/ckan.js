@@ -12,7 +12,7 @@ export const createAPI = (config) => {
   })
 
   const fetchDatasets = async (organizationId) => {
-    const query = datasetsQuery(organizationId)
+    const query = datasetsQuery(organizationId, config.queryAllGraphs)
     return await client.query.construct(query.toString())
   }
 
