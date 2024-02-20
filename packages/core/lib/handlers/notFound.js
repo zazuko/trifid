@@ -10,7 +10,6 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
  * so that it can have access to the `render` function.
  */
 const factory = async ({ render }) => {
-
   /**
    * Not found handler.
    *
@@ -18,7 +17,6 @@ const factory = async ({ render }) => {
    * @param {import('fastify').FastifyReply} reply Reply.
    */
   const handler = async (request, reply) => {
-    console.log("okok")
     request.log.debug(`path '${request.url}' returned a 404 error (Not Found)`)
 
     const accept = request.accepts()
@@ -54,7 +52,5 @@ const factory = async ({ render }) => {
 
   return handler
 }
-
-
 
 export default factory
