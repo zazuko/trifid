@@ -27,6 +27,7 @@
     "@tpluscode/eslint-config": "^0.4.4",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
+    "type-detect": "^4.0.8",
     "typescript": "^5.3.3",
     "wsrun": "^5.2.4"
   }
