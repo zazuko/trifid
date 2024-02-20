@@ -113,8 +113,14 @@ export const factory = async (trifid) => {
        */
 
       /**
+       * Request body type.
+       * @typedef {Object} RequestBody
+       * @property {string} [query] The SPARQL query.
+       */
+
+      /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody}>} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -122,7 +128,13 @@ export const factory = async (trifid) => {
         if (request.method === 'GET') {
           query = request.query.query
         } else if (request.method === 'POST') {
-          query = request.body.query || request.body
+          query = request.body.query
+          if (!query && request.body) {
+            query = request.body
+            if (typeof query !== 'string') {
+              query = JSON.stringify(query)
+            }
+          }
         }
 
         if (!query) {
