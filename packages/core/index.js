@@ -81,7 +81,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   })
 
   const server = fastify({
-    logger,
+    logger: false,
     trustProxy: true,
   })
 
