@@ -201,6 +201,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
         'http://publications.europa.eu/resource/authority/data-theme/GOVE',
         'http://publications.europa.eu/resource/authority/data-theme/ECON',
       ])
+      expect(themes).to.have.length(3)
     })
   })
 })
