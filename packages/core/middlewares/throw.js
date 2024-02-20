@@ -25,7 +25,7 @@ const factory = async (trifid) => {
         throw new Error(messageToThrow)
       }
       return handler
-    }
+    },
   }
 }
 

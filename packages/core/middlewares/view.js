@@ -43,7 +43,7 @@ const factory = async (trifid) => {
         reply.status(200).type('text/html').send(await render(path, { ...context }, options))
       }
       return handler
-    }
+    },
   }
 }
 

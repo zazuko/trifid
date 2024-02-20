@@ -25,7 +25,7 @@ const factory = async (trifid) => {
         reply.redirect(target)
       }
       return handler
-    }
+    },
   }
 }
 

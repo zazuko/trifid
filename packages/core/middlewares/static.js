@@ -38,7 +38,7 @@ const factory = async (trifid) => {
         // Serve static files after other routes
         order: 1200,
       }
-    }
+    },
   }
 }
 

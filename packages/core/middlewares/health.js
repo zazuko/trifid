@@ -22,7 +22,7 @@ const factory = async (_trifid) => {
     },
     routeHandler: async () => {
       return healthRouteHandler
-    }
+    },
   }
 }
 
