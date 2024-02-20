@@ -1,48 +1,60 @@
 // @ts-check
 
-/**
- * Not found handler.
- *
- * @param {import('fastify').FastifyRequest} request Request.
- * @param {import('fastify').FastifyReply} reply Reply.
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
+
+/*
+ * Using the factory pattern to create the handler,
+ * so that it can have access to the `render` function.
  */
-const handler = (request, reply) => {
-  request.log.debug(`path '${request.url}' returned a 404 error (Not Found)`)
+const factory = async ({ render }) => {
 
-  const accept = request.accepts()
+  /**
+   * Not found handler.
+   *
+   * @param {import('fastify').FastifyRequest} request Request.
+   * @param {import('fastify').FastifyReply} reply Reply.
+   */
+  const handler = async (request, reply) => {
+    console.log("okok")
+    request.log.debug(`path '${request.url}' returned a 404 error (Not Found)`)
 
-  reply.status(404)
+    const accept = request.accepts()
 
-  switch (accept.type([
-    'text/plain',
-    'json',
-    'html',
-  ])) {
-    case 'json':
-      reply.send({ success: false, message: 'Not found', status: 404 })
-      break
+    reply.status(404)
 
-    case 'html':
-      reply.view('404', {
+    switch (accept.type([
+      'text/plain',
+      'json',
+      'html',
+    ])) {
+      case 'json':
+        reply.send({ success: false, message: 'Not found', status: 404 })
+        break
 
-      })
-      break;
-    // res.send(
-    //   await render(
-    //     `${currentDir}/../views/404.hbs`,
-    //     {
-    //       url: req.url,
-    //       locals: res.locals,
-    //     },
-    //     { title: 'Not Found' },
-    //   ),
-    // )
-    // break
+      case 'html':
+        reply.type('text/html').send(
+          await render(
+            `${currentDir}/../../views/404.hbs`,
+            {
+              url: request.url,
+            },
+            { title: 'Not Found' },
+          ),
+        )
+        break
 
-    default:
-      reply.send('Not Found\n')
-      break
+      default:
+        reply.type('text/plain').send('Not Found\n')
+        break
+    }
   }
+
+  return handler
 }
 
-export default handler
+
+
+export default factory

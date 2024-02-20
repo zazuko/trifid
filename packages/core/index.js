@@ -5,9 +5,6 @@ import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
 import fastifyCookie from '@fastify/cookie'
 import fastifyAccepts from '@fastify/accepts'
-import fastifyView from '@fastify/view'
-
-import Handlebars from 'handlebars'
 
 import handler from './lib/config/handler.js'
 import {
@@ -20,11 +17,6 @@ import applyMiddlewares from './lib/middlewares/apply.js'
 import templateEngine from './lib/templateEngine.js'
 
 import { errorsHandler, notFoundHandler } from './lib/handlers/index.js'
-
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-
-const currentDir = dirname(fileURLToPath(import.meta.url))
 
 // Export some useful functions to work with SPARQL
 export {
@@ -89,6 +81,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
 
   const server = fastify({
     logger,
+    trustProxy: true,
   })
 
   // Add required middlewares
@@ -103,36 +96,27 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   // Add support for Accept header parser
   server.register(fastifyAccepts)
 
+  // Template engine configuration
+  const templateEngineInstance = await templateEngine(template)
+  const { render } = templateEngineInstance
+
+  // Add error and not found handlers (requires template engine to be ready)
   server.setErrorHandler(errorsHandler)
-  server.setNotFoundHandler(notFoundHandler)
+  server.setNotFoundHandler(await notFoundHandler({ render }))
 
-  server.register(fastifyView, {
-    engine: {
-      handlebars: Handlebars
-    },
-    root: join(currentDir, 'views'),
-    viewExt: 'hbs',
-    includeViewExtension: true,
-    layout: './layouts/main.hbs',
-    defaultContext: {
-      title: 'Trifid'
-    }
-  })
-
-  // const templateEngineInstance = await templateEngine(template)
   const middlewares = await middlewaresAssembler(
     fullConfig,
     additionalMiddlewares,
   )
-  // await applyMiddlewares(
-  //   server,
-  //   fullConfig.globals,
-  //   middlewares,
-  //   logger,
-  //   templateEngineInstance,
-  //   `http://${host}:${portNumber}/`,
-  //   trifidEvents,
-  // )
+  await applyMiddlewares(
+    server,
+    fullConfig.globals,
+    middlewares,
+    logger,
+    templateEngineInstance,
+    `http://${host}:${portNumber}/`,
+    trifidEvents,
+  )
 
   const start = async () => {
     return await new Promise(async (resolve, reject) => {

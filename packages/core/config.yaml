@@ -11,22 +11,23 @@ server:
 globals:
   value: config
   config1: config1
-# middlewares:
-#   staticFiles:
-#     order: 100
-#     module: file:./middlewares/static.js
-#     paths: "/sources"
-#     config:
-#       directory: cwd:.
 
-#   zazuko-redirect:
-#     module: file:./middlewares/redirect.js
-#     paths: "/zazuko"
-#     config:
-#       target: https://zazuko.com/
+middlewares:
+  staticFiles:
+    order: 100
+    module: file:./middlewares/static.js
+    paths: "/sources"
+    config:
+      directory: cwd:.
 
-#   throw:
-#     module: file:./middlewares/throw.js
-#     paths: "/oops"
-#     config:
-#       message: This is a custom error message!
+  zazuko-redirect:
+    module: file:./middlewares/redirect.js
+    paths: "/zazuko"
+    config:
+      target: https://zazuko.com/
+
+  throw:
+    module: file:./middlewares/throw.js
+    paths: "/oops"
+    config:
+      message: This is a custom error message!

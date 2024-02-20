@@ -1,31 +1,23 @@
 import cloneDeep from 'lodash/cloneDeep.js'
 
-// see: https://expressjs.com/fr/api.html#routing-methods (+all)
+// see: https://fastify.dev/docs/latest/Reference/Routes/#routes-options
 const supportedMethods = [
-  'all',
-  'checkout',
-  'copy',
-  'delete',
-  'get',
-  'head',
-  'lock',
-  'merge',
-  'mkactivity',
-  'mkcol',
-  'move',
-  'm-search',
-  'notify',
-  'options',
-  'patch',
-  'post',
-  'purge',
-  'put',
-  'report',
-  'search',
-  'subscribe',
-  'trace',
-  'unlock',
-  'unsubscribe',
+  'DELETE',
+  'GET',
+  'HEAD',
+  'PATCH',
+  'POST',
+  'PUT',
+  'OPTIONS',
+  'SEARCH',
+  'TRACE',
+  'PROPFIND',
+  'PROPPATCH',
+  'MKCOL',
+  'COPY',
+  'MOVE',
+  'LOCK',
+  'UNLOCK'
 ]
 
 const standardize = (middleware) => {
@@ -53,7 +45,7 @@ const standardize = (middleware) => {
   }
   m.methods = m.methods
     .map((method) => {
-      return method.toLocaleLowerCase()
+      return method.toLocaleUpperCase()
     })
     .filter((method) => {
       return supportedMethods.includes(method)

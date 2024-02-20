@@ -7,7 +7,7 @@
  * @param {import('fastify').FastifyRequest} request Request.
  * @param {import('fastify').FastifyReply} reply Reply.
  */
-const handler = (error, request, reply) => {
+const handler = async (error, request, reply) => {
   request.log.error(error)
 
   let statusCode = error.statusCode || 500

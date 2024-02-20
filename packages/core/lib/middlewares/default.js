@@ -9,8 +9,6 @@ import localsMiddleware from '../../middlewares/locals.js'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const health = {
-  paths: '/health',
-  methods: 'GET',
   module: healthMiddleware,
 }
 
@@ -34,7 +32,7 @@ const locals = {
 
 export default {
   health,
-  // templateStaticFiles,
+  templateStaticFiles,
   // iri,
   // locals,
 }

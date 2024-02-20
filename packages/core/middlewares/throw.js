@@ -1,7 +1,7 @@
 // @ts-check
 
 /** @type {import('../types/index.js').TrifidMiddleware} */
-const factory = (trifid) => {
+const factory = async (trifid) => {
   const { message } = trifid.config
 
   let messageToThrow = 'Oops, something went wrong :-('
@@ -9,8 +9,23 @@ const factory = (trifid) => {
     messageToThrow = `${message}`
   }
 
-  return (_req, _res, _next) => {
-    throw new Error(messageToThrow)
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET'],
+      }
+    },
+    routeHandler: async () => {
+      /**
+       * Route handler.
+       * @param {import('fastify').FastifyRequest} _request Request.
+       * @param {import('fastify').FastifyReply} _reply Reply.
+       */
+      const handler = async (_request, _reply) => {
+        throw new Error(messageToThrow)
+      }
+      return handler
+    }
   }
 }
 
