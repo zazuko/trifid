@@ -191,5 +191,16 @@ describe('@zazuko/trifid-plugin-ckan', () => {
 
       expect(landingPage.$['rdf:resource']).to.eq('https://agrarmarktdaten.admin.ch')
     })
+
+    it('should use mapped themes', () => {
+      const themes = xpath.find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:theme')
+        .map(theme => theme.$['rdf:resource'])
+
+      expect(themes).to.contain.all.members([
+        'http://publications.europa.eu/resource/authority/data-theme/AGRI',
+        'http://publications.europa.eu/resource/authority/data-theme/GOVE',
+        'http://publications.europa.eu/resource/authority/data-theme/ECON',
+      ])
+    })
   })
 })

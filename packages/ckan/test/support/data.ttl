@@ -155,3 +155,15 @@ _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 a schema:ContactPoint, 
  # schema:name "Office fédéral de l'agriculture"@fr ;
  # schema:name "Ufficio federale dell'agricoltura"@it ;
 .
+
+category:administration
+  schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/GOVE> ;
+.
+
+category:agriculture
+  schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/AGRI> ;
+.
+
+category:national-economy
+  schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/ECON> ;
+.
