@@ -5,6 +5,7 @@ import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
 import fastifyCookie from '@fastify/cookie'
 import fastifyAccepts from '@fastify/accepts'
+import fastifyFormBody from '@fastify/formbody'
 
 import handler from './lib/config/handler.js'
 import {
@@ -95,6 +96,9 @@ const trifid = async (config, additionalMiddlewares = {}) => {
 
   // Add support for Accept header parser
   server.register(fastifyAccepts)
+
+  // Add support for `application/x-www-form-urlencoded` content type
+  server.register(fastifyFormBody)
 
   // Template engine configuration
   const templateEngineInstance = await templateEngine(template)
