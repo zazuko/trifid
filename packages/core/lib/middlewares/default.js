@@ -1,5 +1,5 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import healthMiddleware from '../../middlewares/health.js'
 import staticMiddleware from '../../middlewares/static.js'

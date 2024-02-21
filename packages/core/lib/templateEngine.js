@@ -1,8 +1,8 @@
 // @ts-check
 
-import fs from 'fs/promises'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import fs from 'node:fs/promises'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import Handlebars from 'handlebars'
 import merge from 'lodash/merge.js'
 

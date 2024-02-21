@@ -17,7 +17,7 @@ const supportedMethods = [
   'COPY',
   'MOVE',
   'LOCK',
-  'UNLOCK'
+  'UNLOCK',
 ]
 
 const standardize = (middleware) => {

@@ -1,5 +1,6 @@
 // @ts-check
 import EventEmitter from 'node:events'
+
 import { pino } from 'pino'
 import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
@@ -16,7 +17,6 @@ import {
 import middlewaresAssembler from './lib/middlewares/assembler.js'
 import applyMiddlewares from './lib/middlewares/apply.js'
 import templateEngine from './lib/templateEngine.js'
-
 import { errorsHandler, notFoundHandler } from './lib/handlers/index.js'
 
 // Export some useful functions to work with SPARQL

@@ -1,6 +1,6 @@
-#!/usr/bin / env node
+#!/usr/bin/env node
 
-import { join } from 'path'
+import { join } from 'node:path'
 import { Command } from 'commander'
 
 import trifid from './index.js'
@@ -15,7 +15,7 @@ program
 const opts = program.opts()
 const configFile = join(process.cwd(), opts.config)
 
-// create a minimal configuration that extends the specified one
+// Create a minimal configuration that extends the specified one
 const config = {
   extends: [configFile],
   server: {
@@ -23,11 +23,11 @@ const config = {
   },
 }
 
-// add optional arguments to the configuration
+// Add optional arguments to the configuration
 if (opts.port) {
   config.server.listener.port = opts.port
 }
 
-// load the configuration and start the server
+// Load the configuration and start the server
 const instance = await trifid(config)
-instance.start()
+await instance.start()
