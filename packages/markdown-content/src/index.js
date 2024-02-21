@@ -159,25 +159,19 @@ const entriesForLanguage = (store, language = 'en') => {
   return finalStore
 }
 
-const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, next) => {
-  logger.debug(`loaded store into '${namespace}' namespace`)
-
-  // just make sure that the `content-plugin` entry exists
-  if (!res.locals[LOCALS_PLUGIN_KEY]) {
-    res.locals[LOCALS_PLUGIN_KEY] = {}
-  }
-
-  // add all configured entries for the specified namespace
-  const lang = res?.locals?.currentLanguage || 'en'
-  res.locals[LOCALS_PLUGIN_KEY][namespace] = entriesForLanguage(store, lang)
-
-  // let's forward all of this to other middlewares
-  return next()
-}
-
-/** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../../core/types/index.js').TrifidMiddleware} */
 const factory = async (trifid) => {
   const { config, logger, server, render } = trifid
+
+  const locals = server.locals
+  if (!locals) {
+    throw new Error('locals not found')
+  }
+
+  if (!locals.has(LOCALS_PLUGIN_KEY)) {
+    locals.set(LOCALS_PLUGIN_KEY, {})
+  }
+
   const entries = config?.entries || {}
   const defaults = config?.defaults || {}
 
@@ -210,27 +204,34 @@ const factory = async (trifid) => {
       store[item.name] = await getContent(item.path, contentConfiguration)
     }
 
-    // apply the middleware in all cases
-    server.use(contentMiddleware({ logger, namespace, store }))
+    server.addHook('onRequest', (_request, _reply, done) => {
+      const currentLanguage = locals.get('currentLanguage') || 'en'
+      logger.debug(`loaded store into '${namespace}' namespace (lang=${currentLanguage})`)
+      const currentContent = locals.get(LOCALS_PLUGIN_KEY) || {}
+      currentContent[namespace] = entriesForLanguage(store, currentLanguage)
+      locals.set(LOCALS_PLUGIN_KEY, currentContent)
+      done()
+    })
 
     // create a route for each entry
     if (mountPath) {
       const mountAtPathSlash = mountPath.endsWith('/') ? mountPath : `${mountPath}/`
 
       for (const item of items) {
-        server.get(`${mountAtPathSlash}${item.name}`, async (_req, res, _next) => {
-          return res.send(await render(defaultValue('template', entry, template), {
-            content: res.locals[LOCALS_PLUGIN_KEY][namespace][item.name] || '',
-            locals: res.locals,
+        /**
+         * Route handler for the specific content.
+         * @param {import('fastify').FastifyRequest} _request Request.
+         * @param {import('fastify').FastifyReply} reply Reply.
+         * @returns {Promise<void>}
+         */
+        const routeHandler = async (_request, reply) => {
+          reply.send(await render(defaultValue('template', entry, template), {
+            content: locals.get(LOCALS_PLUGIN_KEY)?.[namespace]?.[item.name] || '',
           }))
-        })
+        }
+        server.get(`${mountAtPathSlash}${item.name}`, routeHandler)
       }
     }
-  }
-
-  // just return a dummy middleware
-  return (_req, _res, next) => {
-    return next()
   }
 }
 
