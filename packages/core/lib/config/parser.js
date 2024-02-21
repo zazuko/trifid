@@ -1,8 +1,10 @@
 // @ts-check
-import Ajv from 'ajv'
+
 import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+import Ajv from 'ajv'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const schemaPath = join(currentDir, 'schema.json')
