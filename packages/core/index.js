@@ -85,6 +85,11 @@ const trifid = async (config, additionalMiddlewares = {}) => {
     trustProxy: true,
   })
 
+  // This can be used to pass data from multiple plugins
+  /** @type {Map<string, any>} */
+  const trifidLocals = new Map()
+  server.decorate('locals', trifidLocals)
+
   // Add required middlewares
   server.register(fastifyCors, {
     credentials: true,
@@ -101,7 +106,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   server.register(fastifyFormBody)
 
   // Template engine configuration
-  const templateEngineInstance = await templateEngine(template)
+  const templateEngineInstance = await templateEngine(template, trifidLocals)
   const { render } = templateEngineInstance
 
   // Add error and not found handlers (requires template engine to be ready)

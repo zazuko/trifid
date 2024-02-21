@@ -59,7 +59,7 @@
  * @property {string[]} [methods] The HTTP methods to apply the middleware to.
  * @property {string[]} [hosts] The hosts to apply the middleware to.
  * @property {import('pino').Logger} logger The logger instance.
- * @property {import('fastify').FastifyInstance} server The Fastify server instance.
+ * @property {import('fastify').FastifyInstance & {locals: Map<string, any>}} server The Fastify server instance.
  * @property {Object.<string, any>} config The Trifid configuration.
  * @property {(templatePath: string, context: Object.<string, any>, options?: Object.<string, any>) => Promise<string>} render The render function.
  * @property {TrifidQuery} query The SPARQL query function.

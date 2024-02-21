@@ -3,7 +3,6 @@ import { fileURLToPath } from 'url'
 
 import healthMiddleware from '../../middlewares/health.js'
 import staticMiddleware from '../../middlewares/static.js'
-import iriMiddleware from '../../middlewares/iri.js'
 import localsMiddleware from '../../middlewares/locals.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
@@ -20,11 +19,6 @@ const templateStaticFiles = {
   },
 }
 
-const iri = {
-  module: iriMiddleware,
-  order: 10,
-}
-
 const locals = {
   module: localsMiddleware,
   order: 11,
@@ -33,6 +27,5 @@ const locals = {
 export default {
   health,
   templateStaticFiles,
-  // iri,
-  // locals,
+  locals,
 }

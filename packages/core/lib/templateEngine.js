@@ -1,3 +1,5 @@
+// @ts-check
+
 import fs from 'fs/promises'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -21,12 +23,32 @@ const defaultConfig = {
   disableFooter: false,
 }
 
-const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
+const forceRefresh = false
+
+/**
+ * Register a new helper.
+ *  - name: Name of the helper.
+ *  - fn: Helper function.
+ *
+ * @typedef {(name: string, fn: import('handlebars').HelperDelegate) => void} RegisterHelperFunction
+ */
+
+/**
+ * Render a view.
+ *
+ * @typedef {(templatePath: string, context: Record<string, any>, options: Record<string, any>) => Promise<string>} RenderFunction
+ */
+
+/**
+ * Create a new template engine instance.
+ *
+ * @param {Object} defaultOptions Default optioons for the template engine.
+ * @param {Map<string, any>} locals Trifid locals.
+ * @returns {Promise<{ render: RenderFunction, registerHelper: RegisterHelperFunction }>} Template engine instance.
+ */
+const templateEngine = async (defaultOptions, locals) => {
   /**
-   * Register a new helper.
-   *
-   * @param {string} name Name of the helper.
-   * @param {Function} fn Helper function.
+   * @type {RegisterHelperFunction}
    */
   const registerHelper = (name, fn) => {
     Handlebars.registerHelper(name, fn)
@@ -57,7 +79,7 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
     throw new Error("no 'main' template was defined")
   }
 
-  // register all partials
+  // Register all partials
   Object.entries(templateOptions.partials).map(async (t) => {
     const partialName = t[0]
     const partialPath = t[1]
@@ -79,18 +101,17 @@ const templateEngine = async (defaultOptions = {}, forceRefresh = false) => {
   const mainTemplate = templates.main
 
   /**
-   * Render the full page.
-   *
-   * @param {string} templatePath Handlebars template path.
-   * @param {Record<string, any>} context Context for the rendered view.
-   * @param {Record<string, any>} options Options to pass for the main view.
-   * @returns {string} The rendered view.
+   * @type {RenderFunction}
    */
   const render = async (templatePath, context, options = {}) => {
     const template = await resolveTemplate(templatePath)
-    const body = template(context)
+    const localsObject = Object.fromEntries(locals.entries())
+    const mergedLocals = merge(localsObject, context.locals)
+    const mergedContext = merge({}, context)
+    mergedContext.locals = mergedLocals
+    const body = template(mergedContext)
 
-    const renderedOptions = merge({}, context, templateOptions, options)
+    const renderedOptions = merge({}, mergedContext, templateOptions, options)
     const renderedPartials = Object.fromEntries(
       Object.entries(templatesWithoutMain).map((t) => [
         t[0],
