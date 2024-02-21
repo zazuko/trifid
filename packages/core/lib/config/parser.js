@@ -11,6 +11,7 @@ const schemaPath = join(currentDir, 'schema.json')
 const schemaContent = await readFile(schemaPath, 'utf8')
 const schema = JSON.parse(schemaContent)
 
+// @ts-ignore
 const ajv = new Ajv()
 
 /**
