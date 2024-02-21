@@ -9,7 +9,7 @@ import * as ns from './namespace.js'
 /**
  * Generate a CKAN-compatible XML representation of the dataset.
  *
- * @param {any[]} dataset Dataset to convert.
+ * @param {import('@rdfjs/types').Quad[]} dataset Dataset to convert.
  * @returns {string} XML representation of the dataset.
  */
 const toXML = (dataset) => {
@@ -123,6 +123,7 @@ const toXML = (dataset) => {
               'dcterms:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
               'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
+              // @ts-ignore
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
               'dcat:distribution': distributions,
             },
@@ -133,6 +134,12 @@ const toXML = (dataset) => {
   }).doc().end({ prettyPrint: true }).concat('\n')
 }
 
+/**
+ * Serialize a term.
+ *
+ * @param {import('clownface').AnyPointer} pointer Pointer to serialize.
+ * @return {Record<string, unknown>[]} Serialized term.
+ */
 const serializeTerm = (pointer) => {
   return pointer.map((value) => {
     return serializeLiteral(value) || serializeNamedNode(value) || serializeBlankNode(value) || {}

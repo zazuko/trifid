@@ -6,7 +6,7 @@ import * as ns from './namespace.js'
 /**
  * Query to retrieve all datasets for a given organization.
  *
- * @param {string} organizationId The organization identifier.
+ * @param {import('@rdfjs/types').NamedNode<string>} organizationId The organization identifier.
  * @param {boolean} queryAllGraphs Whether to query all graphs or only the default one.
  * @returns {import('@tpluscode/rdf-string').SparqlTemplateResult}
  */

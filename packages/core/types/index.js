@@ -1,4 +1,8 @@
 /**
+ * @module trifid-core/types/index.js
+ */
+
+/**
  * Trifid Middleware Configuration.
  *
  * @typedef {Object} TrifidMiddlewareConfig

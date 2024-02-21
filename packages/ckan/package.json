@@ -3,12 +3,13 @@
   "version": "2.4.3",
   "description": "Endpoint for opendata.swiss CKAN harvester",
   "main": "src/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/ckan/src/index.d.ts",
   "type": "module",
   "scripts": {
     "test": "c8 --reporter=lcov --reporter=text mocha",
     "example-instance": "node test/support/run-instance.js",
-    "prebuild": "rimraf dist/",
+    "clean": "rimraf dist/",
+    "prebuild": "npm run clean",
     "build": "tsc",
     "prepack": "npm run build"
   },

@@ -3,8 +3,8 @@
 import rdf from '@zazuko/env'
 import { createAPI } from './ckan.js'
 
-/** @type {import('../../core/dist/types/index.d.ts').TrifidMiddleware} */
-const factory = (trifid) => {
+/** @type {import('../../core/types/index.js').TrifidMiddleware} */
+const factory = async (trifid) => {
   const { config, logger } = trifid
 
   const { endpointUrl, user, password, queryAllGraphs: queryAllGraphsConfiguredValue } = config
@@ -24,15 +24,22 @@ const factory = (trifid) => {
     },
     routeHandler: async () => {
       /**
+       * Query string type.
+       *
+       * @typedef {Object} QueryString
+       * @property {string} [organization] The organization to fetch.
+       */
+
+      /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyRequest<{Querystring: QueryString}>} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
         const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
         const endpoint = new URL(configuredEndpoint, fullUrl)
         const { fetchDatasets, toXML } = createAPI({
-          endpointUrl: endpoint,
+          endpointUrl: endpoint.toString(),
           user,
           password,
           queryAllGraphs,
