@@ -134,7 +134,7 @@
   dcterms:license <https://www.fedlex.admin.ch/eli/cc/1998/3033_3033_3033/de#art_27> ;
   dcterms:accrualPeriodicity <http://publications.europa.eu/resource/authority/frequency/MONTHLY> ;
   dcat:contactPoint _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 ;
-  dcat:theme category:administration, category:agriculture, category:national-economy, category:prices ;
+  dcat:theme category:gove, category:agriculture, category:national-economy, category:wrong ;
   cube:observationSet
     <https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/observation/> ;
   cube:observationConstraint
@@ -156,11 +156,15 @@ _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 a schema:ContactPoint, 
  # schema:name "Ufficio federale dell'agricoltura"@it ;
 .
 
-category:administration
+category:gove
   schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/GOVE> ;
 .
 
 category:agriculture
+  schema:supersededBy category:agri ;
+.
+
+category:agri
   schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/AGRI> ;
 .
 
