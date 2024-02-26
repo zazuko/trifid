@@ -1,3 +1,4 @@
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 @base <http://example.com/> .
 @prefix schema: <http://schema.org/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -42,6 +43,7 @@
   schema:version "1"^^xsd:integer ;
   dcterms:publisher <http://example.com/my-org> ;
   dcat:landingPage "https://example.com/" ;
+  foaf:page <https://example.com/docs> ;
 .
 
 <dataset2>

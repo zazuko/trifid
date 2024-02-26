@@ -139,6 +139,7 @@ const toXML = (dataset) => {
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
               'dcat:distribution': distributions,
+              'foaf:page': serializeTerm(dataset.out(ns.foaf.page)),
             },
           }
         }).filter(Boolean),

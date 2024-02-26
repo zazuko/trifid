@@ -22,6 +22,7 @@
         <dcterms:creator rdf:resource="http://example.com/my-org"/>
         <dcat:landingPage>https://example.com/</dcat:landingPage>
         <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/IRREG"/>
+        <foaf:page rdf:resource="https://example.com/docs"/>
       </dcat:Dataset>
     </dcat:dataset>
     <dcat:dataset>
