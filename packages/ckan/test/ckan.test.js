@@ -203,5 +203,16 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       ])
       expect(themes).to.have.length(3)
     })
+
+    it('should get temporal PeriodOfTime', async () => {
+      const themes = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:temporal')
+
+      const expected = await parser.parseStringPromise(`
+        <dcterms:PeriodOfTime>
+          <schema:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-01-01</schema:startDate>
+          <schema:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-12-31</schema:endDate>
+        </dcterms:PeriodOfTime>`)
+      expect(themes).to.containSubset(expected)
+    })
   })
 })
