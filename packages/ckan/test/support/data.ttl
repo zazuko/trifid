@@ -139,7 +139,12 @@
     <https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/observation/> ;
   cube:observationConstraint
     <https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/shape> ;
-  admin:euDataTheme theme:AGRI, theme:ECON .
+  admin:euDataTheme theme:AGRI, theme:ECON ;
+  dcterms:temporal [
+    a dcterms:PeriodOfTime ;
+    schema:startDate "2024-01-01"^^xsd:date ;
+    schema:endDate "2024-12-31"^^xsd:date ;
+  ] .
 
 _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 a schema:ContactPoint, vcard:Organization ;
   dcterms:title "Bundesamt für Landwirtschaft, Fachbereich Marktanalysen" ;
