@@ -26,6 +26,14 @@ middlewares:
     module: trifid-plugin-yasgui
     paths: /sparql
 
+  graph-explorer:
+    module: trifid-plugin-graph-explorer
+    paths: /graph-explorer
+
+  spex:
+    module: trifid-plugin-spex
+    paths: /spex
+
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
     config:

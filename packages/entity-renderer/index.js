@@ -75,8 +75,7 @@ const factory = async (trifid) => {
         const currentPath = request.url.split('?')[0]
         // Check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
         if (ignoredPaths.includes(currentPath)) {
-          reply.callNotFound()
-          return
+          return reply.callNotFound()
         }
 
         // Get the expected format from the Accept header or from the `format` query parameter
@@ -101,8 +100,7 @@ const factory = async (trifid) => {
         const askQuery = 'ASK { <{{iri}}> ?p ?o }'
         const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
         if (!exists) {
-          reply.callNotFound()
-          return
+          return reply.callNotFound()
         }
 
         try {
@@ -116,8 +114,7 @@ const factory = async (trifid) => {
           const entityContentType = entity.contentType || 'application/n-triples'
           const entityStream = entity.response
           if (!entityStream) {
-            reply.callNotFound()
-            return
+            return reply.callNotFound()
           }
 
           // Make sure the Content-Type is lower case and without parameters (e.g. charset)
@@ -154,7 +151,7 @@ const factory = async (trifid) => {
           }))
         } catch (e) {
           logger.error(e)
-          reply.callNotFound()
+          return reply.callNotFound()
         }
       }
       return handler

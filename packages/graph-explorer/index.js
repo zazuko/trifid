@@ -1,11 +1,14 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import absoluteUrl from 'absolute-url'
+// @ts-check
+
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { resolve } from 'import-meta-resolve'
-import express from 'express'
+import fastifyStatic from '@fastify/static'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+/** @type {import('../core/types/index.js').TrifidMiddleware} */
 const factory = async (trifid) => {
   const { config, server, render } = trifid
   const {
@@ -20,16 +23,18 @@ const factory = async (trifid) => {
 
   const view = !template ? `${currentDir}/views/graph-explorer.hbs` : template
 
-  // serve static files for graph-explorer
+  // Serve static files for graph-explorer
   const distPath = await resolve('graph-explorer/dist/', import.meta.url)
-  server.use(
-    '/graph-explorer-assets/',
-    express.static(distPath.replace(/^file:\/\//, '')),
-  )
-  server.use(
-    '/graph-explorer-static/',
-    express.static(`${currentDir}/static/`),
-  )
+  server.register(fastifyStatic, {
+    root: distPath.replace(/^file:\/\//, ''),
+    prefix: '/graph-explorer/assets/',
+    decorateReply: false,
+  })
+  server.register(fastifyStatic, {
+    root: `${currentDir}/static/`,
+    prefix: '/graph-explorer/static/',
+    decorateReply: false,
+  })
 
   const endpoint = endpointUrl || '/query'
   const acceptBlankNodes = !!acceptBlankNodesConfig
@@ -43,39 +48,54 @@ const factory = async (trifid) => {
     { code: 'it', label: 'Italian' },
   ]
 
-  return async (req, res, _next) => {
-    absoluteUrl.attach(req)
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET'],
+        paths: [
+          '/graph-explorer',
+          '/graph-explorer/',
+        ],
+      }
+    },
+    routeHandler: async () => {
+      /**
+       * Route handler.
+       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyReply} reply Reply.
+       */
+      const handler = async (request, reply) => {
+        const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+        const fullUrlObject = new URL(fullUrl)
+        const fullUrlPathname = fullUrlObject.pathname
 
-    const urlPathname = new URL(req.originalUrl, req.absoluteUrl()).pathname
+        if (fullUrlPathname.slice(-1) !== '/') {
+          return reply.redirect(`${fullUrlPathname}/`)
+        }
 
-    // redirect to trailing slash URL
-    if (urlPathname.slice(-1) !== '/') {
-      return res.redirect(`${urlPathname}/`)
-    }
+        const content = await render(
+          view,
+          {
+            // Just forward all the config as a string
+            graphExplorerConfig: JSON.stringify({
+              // Read SPARQL endpoint URL from configuration and resolve with the current full URL
+              endpointUrl: new URL(endpoint, fullUrl).href,
 
-    const content = await render(
-      view,
-      {
-        // just forward all the config as a string
-        graphExplorerConfig: JSON.stringify({
-          // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
-          endpointUrl: new URL(endpoint, req.absoluteUrl()).href,
+              // All other configured options
+              acceptBlankNodes,
+              dataLabelProperty,
+              schemaLabelProperty,
+              language,
+              languages,
+            }).replace(/'/g, "\\'"),
+          },
+          { title: 'Graph Explorer' },
+        )
 
-          // all other configured options
-          acceptBlankNodes,
-          dataLabelProperty,
-          schemaLabelProperty,
-          language,
-          languages,
-        }).replace(/'/g, "\\'"),
-
-        // good practice: forward locals to templates
-        locals: res.locals,
-      },
-      { title: 'Graph Explorer' },
-    )
-
-    res.send(content)
+        return reply.type('text/html').send(content)
+      }
+      return handler
+    },
   }
 }
 

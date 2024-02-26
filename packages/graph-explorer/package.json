@@ -19,12 +19,14 @@
     "test": "c8 --reporter=lcov --reporter=text mocha"
   },
   "dependencies": {
+    "@fastify/static": "^7.0.1",
     "absolute-url": "^1.2.2",
     "express": "^4.18.2",
     "graph-explorer": "^1.2.0",
     "import-meta-resolve": "^2.2.0"
   },
   "devDependencies": {
+    "@types/node": "^20.11.20",
     "c8": "^9.1.0",
     "express-as-promise": "^1.2.0",
     "mocha": "^10.2.0"
