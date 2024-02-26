@@ -4,7 +4,7 @@ const SparqlDialect = GraphExplorer.OWLStatsSettings
 SparqlDialect.dataLabelProperty = graphExplorerConfig.dataLabelProperty
 SparqlDialect.schemaLabelProperty = graphExplorerConfig.schemaLabelProperty
 
-function onWorkspaceMounted(workspace) {
+const onWorkspaceMounted = async (workspace) => {
   if (!workspace) {
     return
   }
@@ -30,37 +30,31 @@ function onWorkspaceMounted(workspace) {
   const resources = url.searchParams.get('resources')
 
   if (resources) {
-    const elm = model.dataProvider.elementInfo({
+    const elm = await model.dataProvider.elementInfo({
       elementIds: resources.split(';'),
     })
 
-    elm
-      .then(function (arg) {
-        const elmIds = []
-        resources.split(';').forEach(function (item) {
-          const node = model.createElement(arg[item])
-          elmIds[item] = node.id
-          workspace.forceLayout()
-        })
-        return elmIds
+    const elmIds = []
+    resources.split(';').forEach((item) => {
+      const node = model.createElement(elm[item])
+      elmIds[item] = node.id
+      workspace.forceLayout()
+    })
+
+    /* now that we have the resources, add the links */
+    const lnk = await model.dataProvider.linksInfo({
+      elementIds: resources.split(';'),
+    })
+
+    lnk.forEach((link) => {
+      const newLink = new GraphExplorer.Link({
+        typeId: link.linkTypeId,
+        sourceId: elmIds[link.sourceId],
+        targetId: elmIds[link.targetId],
       })
-      .then(function (elmIds) {
-        /* now that we have the resources, add the links */
-        const lnk = model.dataProvider.linksInfo({
-          elementIds: resources.split(';'),
-        })
-        lnk.then(function (arg) {
-          arg.forEach(function (link) {
-            const newLink = new GraphExplorer.Link({
-              typeId: link.linkTypeId,
-              sourceId: elmIds[link.sourceId],
-              targetId: elmIds[link.targetId],
-            })
-            model.addLink(newLink)
-            workspace.forceLayout()
-          })
-        })
-      })
+      model.addLink(newLink)
+      workspace.forceLayout()
+    })
   }
 }
 
