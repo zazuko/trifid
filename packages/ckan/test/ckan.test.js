@@ -214,5 +214,11 @@ describe('@zazuko/trifid-plugin-ckan', () => {
         </dcterms:PeriodOfTime>`)
       expect(themes).to.containSubset(expected)
     })
+
+    it('should build correct distribution format', async () => {
+      const format = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution/dcat:Distribution/dcterms:format')
+
+      expect(format.$['rdf:resource']).to.eq('http://publications.europa.eu/resource/authority/file-type/SPARQLQ')
+    })
   })
 })

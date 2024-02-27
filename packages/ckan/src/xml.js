@@ -70,12 +70,17 @@ const toXML = (dataset) => {
             .filter(workExample => workExample.out(ns.schema.encodingFormat).terms.length > 0)
             .map(workExample => ({
               'dcat:Distribution': {
+                '@': { 'rdf:about': workExample.out(ns.schema.url).value },
                 'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
                 'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
                 'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
                 'dcterms:license': serializeTerm(copyright),
-                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
+                'dcterms:format': {
+                  '@': {
+                    'rdf:resource': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)),
+                  },
+                },
               },
             }))
 
@@ -257,13 +262,13 @@ const distributionFormatFromEncoding = (encodingPointer) => {
 
   switch (encoding) {
     case 'text/html': {
-      return 'HTML'
+      return 'http://publications.europa.eu/resource/authority/file-type/HTML'
     }
     case 'application/sparql-query': {
-      return 'SERVICE'
+      return 'http://publications.europa.eu/resource/authority/file-type/SPARQLQ'
     }
     default: {
-      return 'UNKNOWN'
+      return `https://www.iana.org/assignments/media-types/${encoding}`
     }
   }
 }
