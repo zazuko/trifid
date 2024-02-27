@@ -52,7 +52,7 @@ const datasetsQuery = (organizationId) => {
 
         OPTIONAL {
           ?dataset ${ns.dcat.theme} ?theme .
-          ?theme ${ns.schema.sameAs} ?euTheme .
+          ?theme ${ns.schema.supersededBy}?/${ns.schema.sameAs} ?euTheme .
         }
 
         FILTER (?p != ${ns.dcat.theme})
