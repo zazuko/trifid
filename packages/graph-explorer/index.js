@@ -69,6 +69,7 @@ const factory = async (trifid) => {
         const fullUrlObject = new URL(fullUrl)
         const fullUrlPathname = fullUrlObject.pathname
 
+        // Enforce trailing slash
         if (fullUrlPathname.slice(-1) !== '/') {
           return reply.redirect(`${fullUrlPathname}/`)
         }

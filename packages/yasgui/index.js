@@ -42,7 +42,10 @@ const trifidFactory = async (trifid) => {
     defaultConfiguration: async () => {
       return {
         methods: ['GET'],
-        paths: ['/sparql'],
+        paths: [
+          '/sparql',
+          '/sparql/',
+        ],
       }
     },
     routeHandler: async () => {
@@ -52,8 +55,15 @@ const trifidFactory = async (trifid) => {
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
-        logger.debug('Yasgui plugin was called')
         const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+        const fullUrlObject = new URL(fullUrl)
+        const fullUrlPathname = fullUrlObject.pathname
+
+        // Enforce trailing slash
+        if (fullUrlPathname.slice(-1) !== '/') {
+          return reply.redirect(`${fullUrlPathname}/`)
+        }
+
         const content = await render(
           view,
           {
