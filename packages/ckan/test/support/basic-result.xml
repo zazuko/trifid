@@ -33,7 +33,7 @@
         <dcterms:relation>
           <rdf:Description rdf:about="http://www.bafu.admin.ch/laerm/index.html"/>
         </dcterms:relation>
-        <dcat:landingPage>https://example.com/</dcat:landingPage>
+        <dcat:landingPage rdf:resource="https://example.com/"/>
         <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/IRREG"/>
         <foaf:page rdf:resource="https://example.com/docs"/>
       </dcat:Dataset>

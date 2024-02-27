@@ -43,7 +43,7 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
   schema:description "Dataset 1 - Description"@de ;
   schema:version "1"^^xsd:integer ;
   dcterms:publisher <http://example.com/my-org> ;
-  dcat:landingPage "https://example.com/" ;
+  dcat:landingPage <https://example.com/> ;
   foaf:page <https://example.com/docs> ;
   dcterms:relation <http://www.bafu.admin.ch/laerm/index.html> ;
   dcterms:relation <http://www.bafu.admin.ch/laerm/index.html?lang=de> ;

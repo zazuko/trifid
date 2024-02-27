@@ -106,7 +106,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       it('should get landing page resource', () => {
         const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage')
 
-        expect(landingPage).to.eq('https://example.com/')
+        expect(landingPage.$['rdf:resource']).to.eq('https://example.com/')
       })
     })
 
