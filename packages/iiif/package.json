@@ -1,0 +1,43 @@
+{
+  "name": "@zazuko/trifid-plugin-iiif",
+  "version": "0.1.2",
+  "type": "module",
+  "description": "Trifid plugin to handle IIIF data",
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "iiif"
+  ],
+  "author": "Zazuko GmbH",
+  "license": "MIT",
+  "homepage": "https://github.com/zazuko/trifid#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/iiif"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid/issues"
+  },
+  "scripts": {
+    "test": "c8 --reporter=lcov --reporter=text mocha"
+  },
+  "dependencies": {
+    "@rdfjs/express-handler": "^1.2.2",
+    "@rdfjs/namespace": "^1.1.0",
+    "@tpluscode/rdf-string": "^0.2.25",
+    "clownface": "^1.5.1",
+    "jsonld": "^8.1.1",
+    "rdf-ext": "^2.2.0",
+    "sparql-http-client": "^2.4.0",
+    "through2": "^4.0.2"
+  },
+  "devDependencies": {
+    "c8": "^7.13.0",
+    "express-as-promise": "^1.2.0",
+    "mocha": "^10.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
