@@ -131,7 +131,10 @@ const toXML = (dataset) => {
               ),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
               'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
-              'dcterms:relation': legalBasis,
+              'dcterms:relation': [
+                legalBasis,
+                serializeTerm(dataset.out(ns.dcterms.relation), { properties: [ns.rdfs.label] }),
+              ],
               'dcat:keyword': serializeTerm(keywords),
               'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
               'dcterms:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
@@ -148,9 +151,15 @@ const toXML = (dataset) => {
   }).doc().end({ prettyPrint: true }).concat('\n')
 }
 
-const serializeTerm = (pointer) => {
+/**
+ * Serialize a term.
+ * @param {import('clownface').MultiPointer | Array<import('clownface').GraphPointer>} pointer Pointer to serialize.
+ * @param {object} [options]
+ * @param {import('@rdfjs/types').NamedNode[]} [options.properties]
+ */
+const serializeTerm = (pointer, { properties = [] } = {}) => {
   return pointer.map((value) => {
-    return serializeLiteral(value) || serializeNamedNode(value) || serializeBlankNode(value) || {}
+    return serializeLiteral(value) || serializeNamedNode(value, properties) || serializeBlankNode(value) || {}
   })
 }
 
@@ -184,10 +193,25 @@ const serializeLiteral = (pointer) => {
  * Serialize a named node.
  *
  * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @param {import('@rdfjs/types').NamedNode[]} [properties]
  * @return {Record<string, unknown>} Serialized named node.
  */
-const serializeNamedNode = (pointer) => {
+const serializeNamedNode = (pointer, properties = []) => {
   if (!isNamedNode(pointer)) return null
+
+  const propertyMap = properties.reduce((acc, property) => ({
+    ...acc,
+    [shrink(property.value)]: serializeTerm(pointer.out(property)),
+  }), {})
+
+  if (Object.keys(propertyMap).length > 0) {
+    return {
+      'rdf:Description': {
+        '@': { 'rdf:about': pointer.value },
+        ...propertyMap,
+      },
+    }
+  }
 
   return {
     '@': { 'rdf:resource': pointer.value },

@@ -1,3 +1,4 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 @base <http://example.com/> .
 @prefix schema: <http://schema.org/> .
@@ -44,6 +45,13 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
   dcterms:publisher <http://example.com/my-org> ;
   dcat:landingPage "https://example.com/" ;
   foaf:page <https://example.com/docs> ;
+  dcterms:relation <http://www.bafu.admin.ch/laerm/index.html> ;
+  dcterms:relation <http://www.bafu.admin.ch/laerm/index.html?lang=de> ;
+  dcterms:license <https://www.fedlex.admin.ch/eli/cc/1998/3033_3033_3033/de#art_27> ;
+.
+
+<http://www.bafu.admin.ch/laerm/index.html?lang=de>
+  rdfs:label "Webseite des BAFU" ;
 .
 
 <dataset2>

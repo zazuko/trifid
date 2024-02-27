@@ -20,6 +20,19 @@
           </foaf:Organization>
         </dcterms:publisher>
         <dcterms:creator rdf:resource="http://example.com/my-org"/>
+        <dcterms:relation>
+          <rdf:Description rdf:about="https://www.fedlex.admin.ch/eli/cc/1998/3033_3033_3033/de#art_27">
+            <rdfs:label>legal_basis</rdfs:label>
+          </rdf:Description>
+        </dcterms:relation>
+        <dcterms:relation>
+          <rdf:Description rdf:about="http://www.bafu.admin.ch/laerm/index.html?lang=de">
+            <rdfs:label>Webseite des BAFU</rdfs:label>
+          </rdf:Description>
+        </dcterms:relation>
+        <dcterms:relation>
+          <rdf:Description rdf:about="http://www.bafu.admin.ch/laerm/index.html"/>
+        </dcterms:relation>
         <dcat:landingPage>https://example.com/</dcat:landingPage>
         <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/IRREG"/>
         <foaf:page rdf:resource="https://example.com/docs"/>
