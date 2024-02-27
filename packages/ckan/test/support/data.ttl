@@ -1,3 +1,5 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 @base <http://example.com/> .
 @prefix schema: <http://schema.org/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -40,7 +42,17 @@
   schema:description "Dataset 1 - Description"@it ;
   schema:description "Dataset 1 - Description"@de ;
   schema:version "1"^^xsd:integer ;
-  .
+  dcterms:publisher <http://example.com/my-org> ;
+  dcat:landingPage <https://example.com/> ;
+  foaf:page <https://example.com/docs> ;
+  dcterms:relation <http://www.bafu.admin.ch/laerm/index.html> ;
+  dcterms:relation <http://www.bafu.admin.ch/laerm/index.html?lang=de> ;
+  dcterms:license <https://www.fedlex.admin.ch/eli/cc/1998/3033_3033_3033/de#art_27> ;
+.
+
+<http://www.bafu.admin.ch/laerm/index.html?lang=de>
+  rdfs:label "Webseite des BAFU" ;
+.
 
 <dataset2>
   rdf:type schema:Dataset ;
@@ -71,7 +83,7 @@
   schema:description "Dataset 2 - Description"@it ;
   schema:description "Dataset 2 - Description"@de ;
   schema:version "1"^^xsd:integer ;
-  .
+.
 
 #########################################
 #
@@ -113,11 +125,7 @@
   schema:publisher <https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw> ;
   schema:contactPoint _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 ;
   schema:datePublished "2024-02-01"^^xsd:date ;
-  dcat:landingPage
-    <https://agrarmarktdaten.admin.ch>,
-    <https://donnees-agrimarche.admin.ch>,
-    <https://dati-agrimercato.admin.ch>,
-    <https://agrimarketdata.admin.ch> ;
+  dcat:landingPage <https://agrarmarktdaten.admin.ch> ;
   schema:workExample
     <https://ld.admin.ch/application/opendataswiss>,
     <https://ld.admin.ch/application/visualize>,
@@ -141,7 +149,12 @@
     <https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/observation/> ;
   cube:observationConstraint
     <https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/shape> ;
-  admin:euDataTheme theme:AGRI, theme:ECON .
+  admin:euDataTheme theme:AGRI, theme:ECON ;
+  dcterms:temporal [
+    a dcterms:PeriodOfTime ;
+    schema:startDate "2024-01-01"^^xsd:date ;
+    schema:endDate "2024-12-31"^^xsd:date ;
+  ] .
 
 _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 a schema:ContactPoint, vcard:Organization ;
   dcterms:title "Bundesamt für Landwirtschaft, Fachbereich Marktanalysen" ;
@@ -149,3 +162,23 @@ _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 a schema:ContactPoint, 
   schema:email "marktanalysen@blw.admin.ch" ;
   vcard:fn "Bundesamt für Landwirtschaft, Fachbereich Marktanalysen" ;
   vcard:hasEmail <mailto:marktanalysen@blw.admin.ch> .
+
+<https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw>
+  rdf:type schema:Organization ;
+  schema:name "Bundesamt für Landwirtschaft"@de ;
+ # schema:name "Federal Office for Agriculture"@en ;
+ # schema:name "Office fédéral de l'agriculture"@fr ;
+ # schema:name "Ufficio federale dell'agricoltura"@it ;
+.
+
+category:administration
+  schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/GOVE> ;
+.
+
+category:agriculture
+  schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/AGRI> ;
+.
+
+category:national-economy
+  schema:sameAs <http://publications.europa.eu/resource/authority/data-theme/ECON> ;
+.

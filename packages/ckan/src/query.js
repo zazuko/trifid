@@ -15,6 +15,8 @@ const datasetsQuery = (organizationId) => {
       ?o ?nestedP ?nestedO .
       ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
       ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
+      ?publisher ${ns.schema.name} ?publisherName .
+      ?dataset ${ns.dcat.theme} ?euTheme .
     }
     WHERE {
       GRAPH ?graph {
@@ -42,6 +44,18 @@ const datasetsQuery = (organizationId) => {
         OPTIONAL {
           ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
         }
+
+        OPTIONAL {
+          ?dataset ${ns.dcterms.publisher} ?publisher .
+          ?publisher ${ns.schema.name} ?publisherName .
+        }
+
+        OPTIONAL {
+          ?dataset ${ns.dcat.theme} ?theme .
+          ?theme ${ns.schema.sameAs} ?euTheme .
+        }
+
+        FILTER (?p != ${ns.dcat.theme})
       }
     }
   `
