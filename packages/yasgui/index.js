@@ -1,4 +1,4 @@
-import url, { fileURLToPath } from 'node:url'
+import { fileURLToPath } from 'node:url'
 import { dirname } from 'node:path'
 
 import { resolve } from 'import-meta-resolve'
@@ -6,14 +6,15 @@ import fastifyStatic from '@fastify/static'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+/** @type {import('../core/types/index.js').TrifidMiddleware} */
 const trifidFactory = async (trifid) => {
-  const { config, logger, render, server } = trifid
+  const { config, render, server } = trifid
   const { template, endpointUrl, urlShortener } = config
 
   const endpoint = endpointUrl || '/query'
   const view = !template ? `${currentDir}/views/yasgui.hbs` : template
 
-  // serve static files for YASGUI
+  // Serve static files for YASGUI
   const yasguiPath = resolve('@zazuko/yasgui/build/', import.meta.url)
   server.register(fastifyStatic, {
     root: yasguiPath.replace(/^file:\/\//, ''),
@@ -21,7 +22,7 @@ const trifidFactory = async (trifid) => {
     decorateReply: false,
   })
 
-  // serve static files for openlayers (maps)
+  // Serve static files for openlayers (maps)
   const olPath = resolve('@openlayers-elements/bundle/dist/', import.meta.url)
   server.register(fastifyStatic, {
     root: olPath.replace(/^file:\/\//, ''),
@@ -29,7 +30,7 @@ const trifidFactory = async (trifid) => {
     decorateReply: false,
   })
 
-  // serve static files for custom plugins
+  // Serve static files for custom plugins
   const pluginsUrl = new URL('plugins/', import.meta.url)
   const pluginsPath = fileURLToPath(pluginsUrl)
   server.register(fastifyStatic, {
@@ -64,11 +65,13 @@ const trifidFactory = async (trifid) => {
           return reply.redirect(`${fullUrlPathname}/`)
         }
 
+        // Read SPARQL endpoint URL from configuration and resolve with full URL
+        const endpointUrl = new URL(endpoint, fullUrl)
+
         const content = await render(
           view,
           {
-            // read SPARQL endpoint URL from configuration and resolve with absoluteUrl
-            endpointUrl: url.resolve(fullUrl, endpoint), // eslint-disable-line
+            endpointUrl: endpointUrl.toString(),
             urlShortener,
           },
           { title: 'YASGUI' },
