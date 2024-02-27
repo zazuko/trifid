@@ -5,9 +5,6 @@ globals:
   datasetBaseUrl: env:DATASET_BASE_URL
 
 middlewares:
-  morgan:
-    module: file:../../middlewares/morgan.js
-
   static-assets:
     module: trifid-core/middlewares/static.js
     order: 0

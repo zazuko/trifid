@@ -12,9 +12,6 @@ globals:
       url: /query
 
 middlewares:
-  morgan:
-    module: file:../../middlewares/morgan.js
-
   welcome:
     module: trifid-core/middlewares/view.js
     paths: /

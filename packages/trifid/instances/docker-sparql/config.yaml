@@ -9,9 +9,6 @@ globals:
     password: env:SPARQL_ENDPOINT_PASSWORD
 
 middlewares:
-  morgan:
-    module: file:../../middlewares/morgan.js
-
   static-assets:
     module: trifid-core/middlewares/static.js
     order: 0
