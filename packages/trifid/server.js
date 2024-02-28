@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { join } from 'path'
-import { Command } from 'commander'
+import { join } from 'node:path'
 
+import { Command } from 'commander'
 import trifid from 'trifid-core'
 
 const program = new Command()

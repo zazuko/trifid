@@ -34,8 +34,18 @@ const replaceIriInQuery = (query, iri) => {
   return query.split('{{iri}}').join(iri)
 }
 
+const defaultConfiguration = {
+  resourceNoSlash: true,
+  resourceExistsQuery: 'ASK { <{{iri}}> ?p ?o }',
+  resourceGraphQuery: 'DESCRIBE <{{iri}}>',
+  containerExistsQuery: 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^{{iri}}") }',
+  containerGraphQuery:
+    'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^{{iri}}") }',
+}
+
 const factory = async (trifid) => {
   const { render, logger, config, query } = trifid
+  const mergedConfig = { ...defaultConfiguration, ...config }
   const entityRenderer = createEntityRenderer({ options: config, logger, query })
   const metadataProvider = createMetadataProvider({ options: config })
 
@@ -88,7 +98,8 @@ const factory = async (trifid) => {
         iriUrl.searchParams.forEach((_value, key) => iriUrl.searchParams.delete(key))
         const iriUrlString = iriUrl.toString()
         const iri = replaceIri(iriUrlString)
-        logger.debug(`IRI value: ${iri}${rewriteValue ? ' (rewritten)' : ''}`)
+        const isContainer = mergedConfig.resourceNoSlash && iri.endsWith('/')
+        logger.debug(`IRI value: ${iri}${rewriteValue ? ' (rewritten)' : ''} - is container: ${isContainer ? 'true' : 'false'}`)
         const rewriteResponse = rewriteValue
           ? [
             { find: datasetBaseUrl, replace: iriOrigin(iriUrlString) },
@@ -96,8 +107,7 @@ const factory = async (trifid) => {
           : []
 
         // Check if the IRI exists in the dataset
-        // @TODO: allow the user to configure the query
-        const askQuery = 'ASK { <{{iri}}> ?p ?o }'
+        const askQuery = isContainer ? mergedConfig.containerExistsQuery : mergedConfig.resourceExistsQuery
         const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
         if (!exists) {
           return reply.callNotFound()
@@ -105,8 +115,7 @@ const factory = async (trifid) => {
 
         try {
           // Get the entity from the dataset
-          // @TODO: allow the user to configure the query
-          const describeQuery = 'DESCRIBE <{{iri}}>'
+          const describeQuery = isContainer ? mergedConfig.containerGraphQuery : mergedConfig.resourceGraphQuery
           const entity = await query(replaceIriInQuery(describeQuery, iri), {
             ask: false,
             rewriteResponse,
