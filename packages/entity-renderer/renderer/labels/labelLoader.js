@@ -2,6 +2,7 @@ import { ns } from '@zazuko/rdf-entity-webcomponent/src/namespaces.js'
 // eslint-disable-next-line import/no-unresolved
 import PQueue from 'p-queue'
 import rdf from '@zazuko/env'
+import { parsers } from '@rdfjs/formats-common'
 
 /**
  * labelNamespace: If specified, only fetches labels for iris starting with this
@@ -79,7 +80,7 @@ class LabelLoader {
   async fetchLabels (iris) {
     const uris = iris.map((x) => `<${this.replaceIri(x.value)}> `).join(' ')
     this.logger?.debug(`Fetching labels for terms without label: ${uris}`)
-    return await this.query(`
+    const response = await this.query(`
 PREFIX schema: <http://schema.org/>
 
 CONSTRUCT {
@@ -89,7 +90,12 @@ CONSTRUCT {
     ?uri schema:name ?label
     VALUES ?uri { ${uris} }
   }
-}`, { rewriteResponse: this.rewriteResponse })
+}`, { ask: false, rewriteResponse: this.rewriteResponse })
+    // Make sure the Content-Type is lower case and without parameters (e.g. charset)
+    const fixedContentType = response.contentType.split(';')[0].trim().toLocaleLowerCase()
+    const quadStream = parsers.import(fixedContentType, response.response)
+    const dataset = await rdf.dataset().import(quadStream)
+    return dataset
   }
 
   async tryFetchAll (pointer) {

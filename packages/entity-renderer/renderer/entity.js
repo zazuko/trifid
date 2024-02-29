@@ -118,11 +118,10 @@ const createEntityRenderer = ({ options = {}, logger, query }) => {
         logger,
       })
       const quadChunks = await labelLoader.tryFetchAll(cf)
-      const labelQuads = quadChunks.filter((notNull) => notNull).flat()
-      logger?.debug(
-        `Got ${labelQuads.length} new labels`,
-      )
-      externalLabels.dataset.addAll(labelQuads)
+
+      quadChunks.forEach((chunk) => {
+        externalLabels.dataset.addAll(chunk)
+      })
     }
     rendererConfig.externalLabels = externalLabels
 
