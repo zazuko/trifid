@@ -204,14 +204,22 @@ const factory = async (trifid) => {
       store[item.name] = await getContent(item.path, contentConfiguration)
     }
 
-    server.addHook('onRequest', (_request, _reply, done) => {
-      const currentLanguage = locals.get('currentLanguage') || 'en'
+    /**
+     * Handler to load the content into the locals, using the user language.
+     *
+     * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
+     * @param {import('fastify').FastifyReply} _reply Reply.
+     * @param {import('fastify').DoneFuncWithErrOrRes} done Done.
+     */
+    const onRequestHook = (request, _reply, done) => {
+      const currentLanguage = request.session.get('currentLanguage') || request.session.get('defaultLanguage') || 'en'
       logger.debug(`loaded store into '${namespace}' namespace (lang=${currentLanguage})`)
       const currentContent = locals.get(LOCALS_PLUGIN_KEY) || {}
       currentContent[namespace] = entriesForLanguage(store, currentLanguage)
       locals.set(LOCALS_PLUGIN_KEY, currentContent)
       done()
-    })
+    }
+    server.addHook('onRequest', onRequestHook)
 
     // create a route for each entry
     if (mountPath) {

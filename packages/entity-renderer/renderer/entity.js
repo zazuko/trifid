@@ -36,7 +36,7 @@ const toBoolean = (val) => {
  */
 const createEntityRenderer = ({ options = {}, logger, query }) => {
   return async (req, { dataset, rewriteResponse, replaceIri, entityRoot }) => {
-    const currentLanguage = req.cookies.i18n
+    const currentLanguage = req.session.get('currentLanguage') || req.session.get('defaultLanguage') || 'en'
     const rendererConfig = { ...DEFAULTS, ...options }
 
     // Honor parameters in the request

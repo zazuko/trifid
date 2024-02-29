@@ -90,6 +90,19 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   const trifidLocals = new Map()
   server.decorate('locals', trifidLocals)
 
+  /**
+   * Handler to add a session to the request.
+   *
+   * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
+   * @param {import('fastify').FastifyReply} _reply Reply.
+   * @param {import('fastify').DoneFuncWithErrOrRes} done Done.
+   */
+  const addSessionHandler = (request, _reply, done) => {
+    request.session = new Map()
+    done()
+  }
+  server.addHook('onRequest', addSessionHandler)
+
   // Add required middlewares
   server.register(fastifyCors, {
     credentials: true,
