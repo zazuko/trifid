@@ -152,7 +152,7 @@ docker run --rm -it -p 8080:8080 ghcr.io/zazuko/trifid
 
 You can use the following environment variables:
 
-- `TRIFID_CONFIG`: the configuration file to use (default value: `config-docker.json`, which enable the following environment variables)
+- `TRIFID_CONFIG`: the configuration file to use (default value: `instances/docker-sparql/config.yaml`, which enable the following environment variables)
 - `SPARQL_ENDPOINT_URL`: the SPARQL endpoint URL to use
 - `DATASET_BASE_URL`: the base URL to use to enable rewriting
 - `SPARQL_USER`: the user to use to authenticate against the SPARQL endpoint
