@@ -109,13 +109,15 @@ Values of the base file will be overwritten.
 
 ### Examples
 
-#### Default configuration
+#### Big Bang Theory dataset
 
-The default configuration uses the file system handler and the [Big Bang Theory dataset](https://github.com/zazukoians/tbbt-ld).
+If you use `instances/tbbt/config.yaml` as a base configuration, you will get a server that serves the [Big Bang Theory dataset](https://github.com/zazuko/tbbt-ld).
+
+It will load the triples from the following remote file: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt.
 
 You will then be able to access its content, e.g. [Amy Farrah Fowler](http://localhost:8080/data/person/amy-farrah-fowler).
 
-In a production environment, the SPARQL handler may be the better choice.
+This is a good starting point to understand how dereferencing works.
 
 #### SPARQL configuration
 
