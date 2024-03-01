@@ -206,6 +206,6 @@ Pull requests are very welcome.
 
 ## License
 
-Copyright 2015-2023 Zazuko GmbH
+Copyright Zazuko GmbH.
 
 Trifid is licensed under the [Apache License, Version 2.0](./LICENSE).
