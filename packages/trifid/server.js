@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import { Command } from 'commander'
 import trifid from 'trifid-core'
 
 const program = new Command()
 
-const defaultConfigurationFile = process.env.TRIFID_CONFIG ?? 'config.yaml'
+const currentDir = dirname(fileURLToPath(import.meta.url))
+const sparqlConfigPath = join(currentDir, 'instances', 'docker-sparql', 'config.yaml')
+const defaultConfigurationFile = process.env.TRIFID_CONFIG || sparqlConfigPath
 
 program
   .option('-c, --config <path>', 'configuration file', defaultConfigurationFile)
@@ -20,7 +23,9 @@ program
   .parse(process.argv)
 
 const opts = program.opts()
-const configFile = join(process.cwd(), opts.config)
+const configFile = (opts.config && !opts.config.startsWith('/'))
+  ? join(process.cwd(), opts.config)
+  : opts.config
 
 // create a minimal configuration that extends the specified one
 const config = {
@@ -39,9 +44,11 @@ if (opts.sparqlEndpointUrl) {
   config.globals.sparqlEndpoint = {
     url: opts.sparqlEndpointUrl,
   }
+  process.env.SPARQL_ENDPOINT_URL = opts.sparqlEndpointUrl
 }
 if (opts.datasetBaseUrl) {
   config.globals.datasetBaseUrl = opts.datasetBaseUrl
+  process.env.DATASET_BASE_URL = opts.datasetBaseUrl
 }
 
 // load the configuration and start the server

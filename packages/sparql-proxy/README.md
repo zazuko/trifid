@@ -1,9 +1,5 @@
 # Trifid plugin for `sparql-proxy`
 
-## Supported options
-
-Here are all supported options: https://github.com/zazuko/sparql-proxy#usage
-
 ## Quick start
 
 Install this Trifid plugin using:
@@ -21,10 +17,8 @@ middlewares:
     module: "@zazuko/trifid-plugin-sparql-proxy"
     paths: /query
     config:
-      enableProxy: true # enable support for `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` environment variables
-      sparqlEndpoint:
-        url: https://example.com/query
-        username: admin
-        password: secret
-      # …other configuration fields
+      endpointUrl: https://example.com/query
+      # The following fields are not required:
+      username: admin
+      password: secret
 ```

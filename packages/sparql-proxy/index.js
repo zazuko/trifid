@@ -2,6 +2,8 @@
 
 const defaultConfiguration = {
   endpointUrl: '',
+  username: '',
+  password: '',
 }
 
 /** @type {import('../core/types/index.js').TrifidMiddleware} */

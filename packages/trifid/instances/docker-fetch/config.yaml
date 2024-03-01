@@ -3,6 +3,9 @@
 
 globals:
   datasetBaseUrl: env:DATASET_BASE_URL
+  endpoints:
+    default:
+      url: /query
 
 middlewares:
   static-assets:
