@@ -173,9 +173,6 @@ If you run Trifid behind a reverse proxy, the proxy must set the `X-Forwarded-Ho
 The log level can be configured by using the `server.logLevel` property.
 Supported log levels are: `fatal`, `error`, `warn`, `info`, `debug`, `trace` and `silent`.
 
-Some middlewares also uses [`debug`](https://www.npmjs.com/package/debug).
-You can get debug logging via: `DEBUG=trifid:` or `DEBUG=trifid:*`.
-
 ## Monorepo
 
 To improve the maintenability of the whole project, we decided to use a monorepo architecture.
