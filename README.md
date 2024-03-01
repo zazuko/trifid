@@ -25,12 +25,10 @@ If a SPARQL endpoint is the source of the RDF data, some additional plugins are 
 ### Further use
 
 This server can also be extended with plugins, depending on the use case of the deployment.
-[Express](http://expressjs.com/) is used to handle routings and middlewares.
-Any compatible middleware can be added to the configuration.
 
 #### Examples
 
-- [Trifid plugin iiif](./packages/iiif/)
+- [IIIF Trifid plugin](./packages/iiif/)
 - [CKAN harvester endpoint](./packages/ckan/)
 
 ## Who Uses Trifid?
@@ -111,7 +109,7 @@ Values of the base file will be overwritten.
 
 #### Big Bang Theory dataset
 
-If you use `instances/tbbt/config.yaml` as a base configuration, you will get a server that serves the [Big Bang Theory dataset](https://github.com/zazuko/tbbt-ld).
+If you use [`instances/tbbt/config.yaml`](./packages/trifid/instances/tbbt/config.yaml) as a base configuration, you will get a server that serves the [Big Bang Theory dataset](https://github.com/zazuko/tbbt-ld).
 
 It will load the triples from the following remote file: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt.
 
@@ -122,7 +120,7 @@ This is a good starting point to understand how dereferencing works.
 #### SPARQL configuration
 
 For production systems, we recommend data access via the [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/) interface.
-`instances/docker-sparql/config.yaml` can be used as base configuration.
+[`instances/docker-sparql/config.yaml`](./packages/trifid/instances/docker-sparql/config.yaml) can be used as base configuration.
 
 ##### SPARQL endpoint with self-signed certificate
 
@@ -154,11 +152,17 @@ docker run --rm -it -p 8080:8080 ghcr.io/zazuko/trifid
 
 You can use the following environment variables:
 
-- `TRIFID_CONFIG`: the configuration file to use (default value: `instances/docker-sparql/config.yaml`, which enable the following environment variables)
+- `TRIFID_CONFIG`: the configuration file to use (default value: [`instances/docker-sparql/config.yaml`](./packages/trifid/instances/docker-sparql/config.yaml), which enable the following environment variables)
 - `SPARQL_ENDPOINT_URL`: the SPARQL endpoint URL to use
 - `DATASET_BASE_URL`: the base URL to use to enable rewriting
 - `SPARQL_USER`: the user to use to authenticate against the SPARQL endpoint
 - `SPARQL_PASSWORD`: the password to use to authenticate against the SPARQL endpoint
+
+If you want to use a file that contains your triples instead of a SPARQL endpoint, you can set `TRIFID_CONFIG` to [`instances/docker-fetch/config.yaml`](./packages/trifid/instances/docker-fetch/config.yaml), and you will be able to use the following environment variables to configure your instance:
+
+- `FETCH_HANDLER_FILE`: the file to use to fetch the data (default value: `https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt`)
+- `FETCH_HANDLER_FILE_TYPE`: the type of the file to use to fetch the data (default value: `application/n-triples`)
+- `DATASET_BASE_URL`: the base URL to use to enable rewriting
 
 #### Custom build
 
@@ -199,7 +203,7 @@ More to come as we gradually consolidate other, initially separate repositories.
 
 ## Support
 
-Issues & feature requests should be reported on GitHub.
+Issues & feature requests should be reported on [GitHub](https://github.com/zazuko/trifid).
 
 Pull requests are very welcome.
 
