@@ -30,9 +30,8 @@
     "import-meta-resolve": "^3.0.0"
   },
   "devDependencies": {
-    "absolute-url": "^1.2.2",
     "c8": "^9.1.0",
     "mocha": "^10.2.0",
-    "supertest": "^6.3.4"
+    "trifid-core": "^2.7.1"
   }
 }
