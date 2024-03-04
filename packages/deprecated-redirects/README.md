@@ -1,5 +1,9 @@
 # trifid-handle-redirects
 
+> [!WARNING]
+> This package is deprecated and will be removed in the future.
+> Please configure redirects directly using the entity renderer plugin.
+
 ## Overview
 
 This document provides guidance for using the `trifid-handle-redirects` plugin with [Trifid](https://github.com/zazuko/trifid), a versatile handler for managing HTTP redirects of RDF IRIs.
