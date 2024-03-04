@@ -6,6 +6,18 @@ const defaultConfiguration = {
   password: '',
 }
 
+/**
+ * Generate the value for the Authorization header for basic authentication.
+ *
+ * @param {string} user The username.
+ * @param {string} password The password of that user.
+ * @returns {string} The value of the Authorization header to use.
+ */
+const authBasicHeader = (user, password) => {
+  const base64String = Buffer.from(`${user}:${password}`).toString('base64')
+  return `Basic ${base64String}`
+}
+
 /** @type {import('../core/types/index.js').TrifidMiddleware} */
 const factory = async (trifid) => {
   const { logger, config } = trifid
@@ -13,6 +25,11 @@ const factory = async (trifid) => {
   const options = { ...defaultConfiguration, ...config }
   if (!options.endpointUrl) {
     throw Error('Missing endpointUrl parameter')
+  }
+
+  let authorizationHeader = ''
+  if (options.username && options.password) {
+    authorizationHeader = authBasicHeader(options.username, options.password)
   }
 
   return {
@@ -83,12 +100,16 @@ const factory = async (trifid) => {
 
         try {
           const acceptHeader = request.headers.accept || 'application/sparql-results+json'
+          const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Accept: acceptHeader,
+          }
+          if (authorizationHeader) {
+            headers.Authorization = authorizationHeader
+          }
           const response = await fetch(options.endpointUrl, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              Accept: acceptHeader,
-            },
+            headers,
             body: new URLSearchParams({ query }),
           })
 
