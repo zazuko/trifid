@@ -1,4 +1,4 @@
-# This loads the TBBT dataset from a remote file using the `trifid-handler-fetch` middleware.
+# This loads the TBBT dataset from a remote file using the `trifid-handler-fetch` plugin.
 # Start this example by running: `npm run start:tbbt`
 # Example of a working URL: http://localhost:8080/data/person/amy-farrah-fowler
 
@@ -11,9 +11,9 @@ globals:
     default:
       url: /query
 
-middlewares:
+plugins:
   welcome:
-    module: trifid-core/middlewares/view.js
+    module: trifid-core/plugins/view.js
     paths: /
     methods: GET
     config:

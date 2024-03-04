@@ -11,7 +11,7 @@ const healthRouteHandler = async (request, reply) => {
   reply.type('text/plain').send('OK\n')
 }
 
-/** @type {import('../types/index.js').TrifidMiddleware} */
+/** @type {import('../types/index.js').TrifidPlugin} */
 const factory = async (_trifid) => {
   return {
     defaultConfiguration: async () => {

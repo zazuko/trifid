@@ -7,16 +7,16 @@ globals:
     default:
       url: /query
 
-middlewares:
+plugins:
   static-assets:
-    module: trifid-core/middlewares/static.js
+    module: trifid-core/plugins/static.js
     order: 0
     paths: /static-assets
     config:
       directory: file:static
 
   welcome:
-    module: trifid-core/middlewares/view.js
+    module: trifid-core/plugins/view.js
     paths: /
     methods: GET
     config:

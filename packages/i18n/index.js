@@ -16,7 +16,7 @@ const defaults = {
   logErrorFn: (_msg) => { },
 }
 
-/** @type {import('../core/types/index.js').TrifidMiddleware} */
+/** @type {import('../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
   const { config, registerTemplateHelper, server } = trifid
 

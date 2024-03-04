@@ -1,18 +1,18 @@
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import healthMiddleware from '../../middlewares/health.js'
-import staticMiddleware from '../../middlewares/static.js'
-import localsMiddleware from '../../middlewares/locals.js'
+import healthPlugin from '../../plugins/health.js'
+import staticPlugin from '../../plugins/static.js'
+import localsPlugin from '../../plugins/locals.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const health = {
-  module: healthMiddleware,
+  module: healthPlugin,
 }
 
 const templateStaticFiles = {
-  module: staticMiddleware,
+  module: staticPlugin,
   paths: '/static/core',
   config: {
     directory: `${currentDir}/../../static`,
@@ -20,7 +20,7 @@ const templateStaticFiles = {
 }
 
 const locals = {
-  module: localsMiddleware,
+  module: localsPlugin,
   order: 11,
 }
 

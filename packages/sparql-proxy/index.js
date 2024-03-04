@@ -18,7 +18,7 @@ const authBasicHeader = (user, password) => {
   return `Basic ${base64String}`
 }
 
-/** @type {import('../core/types/index.js').TrifidMiddleware} */
+/** @type {import('../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
   const { logger, config } = trifid
 

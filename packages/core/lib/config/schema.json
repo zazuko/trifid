@@ -14,8 +14,8 @@
     "globals": {
       "$ref": "#/definitions/globals"
     },
-    "middlewares": {
-      "$ref": "#/definitions/middlewares"
+    "plugins": {
+      "$ref": "#/definitions/plugins"
     },
     "template": {
       "type": "object",
@@ -76,7 +76,7 @@
       "type": "object",
       "additionalProperties": true
     },
-    "middleware": {
+    "plugin": {
       "type": "object",
       "properties": {
         "order": {
@@ -139,11 +139,11 @@
       ],
       "additionalProperties": false
     },
-    "middlewares": {
+    "plugins": {
       "type": "object",
       "patternProperties": {
         ".*": {
-          "$ref": "#/definitions/middleware"
+          "$ref": "#/definitions/plugin"
         }
       }
     }

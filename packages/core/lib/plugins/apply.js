@@ -5,18 +5,18 @@ import { initQuery } from '../sparql.js'
  *
  * @param {import('fastify').FastifyInstance} server
  * @param {*} globals
- * @param {*} middlewares
+ * @param {*} plugins
  * @param {import('pino').Logger} logger
  * @param {*} templateEngine
  * @param {string} instanceHostname
  * @param {import('node:events').EventEmitter} trifidEvents
  */
-const apply = async (server, globals, middlewares, logger, templateEngine, instanceHostname, trifidEvents) => {
+const apply = async (server, globals, plugins, logger, templateEngine, instanceHostname, trifidEvents) => {
   const { query: querySparql } = initQuery(logger, globals.endpoints, instanceHostname)
 
-  for (const middleware of middlewares) {
-    const name = middleware[0]
-    const m = middleware[1]
+  for (const plugin of plugins) {
+    const name = plugin[0]
+    const m = plugin[1]
 
     const { paths, hosts, methods, module, config } = m
 
@@ -26,7 +26,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine, insta
     delete m.order
     delete m.module
 
-    const middlewareLogger = logger.child({ name })
+    const pluginLogger = logger.child({ name })
     const query = querySparql(logger.child({ name: `${name}:query` }))
 
     let pluginConfig = {
@@ -37,10 +37,10 @@ const apply = async (server, globals, middlewares, logger, templateEngine, insta
     }
 
     const { render, registerHelper } = templateEngine
-    const loadedMiddleware = await module({
+    const loadedPlugin = await module({
       ...pluginConfig,
       server,
-      logger: middlewareLogger,
+      logger: pluginLogger,
       render,
       query,
       registerTemplateHelper: registerHelper,
@@ -48,22 +48,22 @@ const apply = async (server, globals, middlewares, logger, templateEngine, insta
     })
 
     let routeHandler
-    if (loadedMiddleware) {
-      if (loadedMiddleware.defaultConfiguration) {
-        const defaultConfiguration = await loadedMiddleware.defaultConfiguration()
+    if (loadedPlugin) {
+      if (loadedPlugin.defaultConfiguration) {
+        const defaultConfiguration = await loadedPlugin.defaultConfiguration()
         if (defaultConfiguration) {
           pluginConfig = merge({}, defaultConfiguration, pluginConfig)
         }
       }
 
-      if (loadedMiddleware.routeHandler) {
-        routeHandler = await loadedMiddleware.routeHandler()
+      if (loadedPlugin.routeHandler) {
+        routeHandler = await loadedPlugin.routeHandler()
       }
     }
 
     if (!routeHandler) {
-      // @TODO: remove this when all middlewares are up-to-date
-      logger.warn(`mount '${name}' middleware ; no handler found ; skipped`)
+      // @TODO: remove this when all plugins are up-to-date
+      logger.warn(`mount '${name}' plugin ; no handler found ; skipped`)
       continue
     }
 
@@ -77,7 +77,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine, insta
     if (pluginHosts.length === 0) {
       for (const path of pluginPaths) {
         logger.debug(
-          `mount '${name}' middleware (methods=${baseRouteOptions.method}, path=${path})`,
+          `mount '${name}' plugin (methods=${baseRouteOptions.method}, path=${path})`,
         )
         server.route({
           ...baseRouteOptions,
@@ -88,7 +88,7 @@ const apply = async (server, globals, middlewares, logger, templateEngine, insta
       for (const host of pluginHosts) {
         for (const path of pluginPaths) {
           logger.debug(
-            `mount '${name}' middleware (methods=${baseRouteOptions.methods}, path=${path}, host=${host})`,
+            `mount '${name}' plugin (methods=${baseRouteOptions.methods}, path=${path}, host=${host})`,
           )
           server.route({
             ...baseRouteOptions,

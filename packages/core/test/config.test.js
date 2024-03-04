@@ -21,7 +21,7 @@ describe('config', () => {
         extends: [],
         globals: {},
         server: {},
-        middlewares: {},
+        plugins: {},
       }),
     ).to.not.throw()
   })
@@ -202,16 +202,16 @@ describe('config', () => {
     }).to.throw()
   })
 
-  it('should not throw on valid values for middlewares', () => {
+  it('should not throw on valid values for plugins', () => {
     expect(() => {
       parser({
-        middlewares: {},
+        plugins: {},
       })
     }).to.not.throw()
 
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
@@ -222,7 +222,7 @@ describe('config', () => {
 
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
@@ -236,7 +236,7 @@ describe('config', () => {
 
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
@@ -252,7 +252,7 @@ describe('config', () => {
     // allow complex config object
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
@@ -267,19 +267,19 @@ describe('config', () => {
     }).to.not.throw()
   })
 
-  describe('should throw on invalid values for middlewares', () => {
-    it('should throw if middlewares is a string', () => {
+  describe('should throw on invalid values for plugins', () => {
+    it('should throw if plugins is a string', () => {
       return expect(() => {
         parser({
-          middlewares: 'this is a string instead of an object',
+          plugins: 'this is a string instead of an object',
         })
       }).to.throw()
     })
 
-    it('should throw if middlewares is not an object of middlewares', () => {
+    it('should throw if plugins is not an object of plugins', () => {
       return expect(() => {
         parser({
-          middlewares: {
+          plugins: {
             order: 42,
             name: 'module',
           },
@@ -290,7 +290,7 @@ describe('config', () => {
     it('should throw if the "module" property is missing', () => {
       expect(() => {
         parser({
-          middlewares: {
+          plugins: {
             module: {
               order: 42,
             },

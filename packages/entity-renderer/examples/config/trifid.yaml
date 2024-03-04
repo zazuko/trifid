@@ -7,9 +7,9 @@ globals:
     default:
       url: /query
 
-middlewares:
+plugins:
   welcome-page:
-    module: trifid-core/middlewares/view.js
+    module: trifid-core/plugins/view.js
     paths: /
     config:
       path: file:../views/welcome.hbs

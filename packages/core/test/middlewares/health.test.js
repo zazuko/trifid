@@ -4,15 +4,15 @@
 // import request from 'supertest'
 // import { describe, test } from '@jest/globals'
 
-// import healthMiddleware from '../../middlewares/health.js'
+// import healthPlugin from '../../plugins/health.js'
 
-// describe('health middleware', () => {
+// describe('health plugin', () => {
 //   test('should return expected content-type', async () => {
 //     const app = express()
 
 //     app.use(
 //       '/health',
-//       healthMiddleware({
+//       healthPlugin({
 //         logger: {
 //           debug: (_msg) => { },
 //         },
@@ -29,7 +29,7 @@
 
 //     app.use(
 //       '/health',
-//       healthMiddleware({
+//       healthPlugin({
 //         logger: {
 //           debug: (_msg) => { },
 //         },
@@ -44,7 +44,7 @@
 
 //     app.use(
 //       '/health',
-//       healthMiddleware({
+//       healthPlugin({
 //         logger: {
 //           debug: (_msg) => { },
 //         },
@@ -59,7 +59,7 @@
 
 //     app.use(
 //       '/health',
-//       healthMiddleware({
+//       healthPlugin({
 //         logger: {
 //           debug: (_msg) => { },
 //         },
@@ -78,7 +78,7 @@
 
 //     app.use(
 //       '/health',
-//       healthMiddleware({
+//       healthPlugin({
 //         logger: {
 //           debug: (_msg) => { },
 //         },

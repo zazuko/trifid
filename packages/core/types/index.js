@@ -5,30 +5,30 @@
  */
 
 /**
- * Trifid Middleware Configuration.
+ * Trifid Plugin Configuration.
  *
- * @typedef {Object} TrifidMiddlewareConfig
- * @property {number} [order] The order of the middleware (for loading them).
- * @property {string} [module] The NPM module of the middleware.
- * @property {string | string[]} [paths] The paths to apply the middleware to.
- * @property {string | string[]} [methods] The HTTP methods to apply the middleware to.
- * @property {string | string[]} [hosts] The hosts to apply the middleware to.
- * @property {Object.<string, any>} [config] The middleware configuration.
+ * @typedef {Object} TrifidPluginConfig
+ * @property {number} [order] The order of the plugin (for loading them).
+ * @property {string} [module] The NPM module of the plugin.
+ * @property {string | string[]} [paths] The paths to apply the plugin to.
+ * @property {string | string[]} [methods] The HTTP methods to apply the plugin to.
+ * @property {string | string[]} [hosts] The hosts to apply the plugin to.
+ * @property {Object.<string, any>} [config] The plugin configuration.
  */
 
 /**
  * Trifid configuration.
  *
  * @typedef {Object} TrifidConfig
- * @property {Object} [server] Express server.
- * @property {Object} [server.listener] Express server listener.
+ * @property {Object} [server] Fastify server.
+ * @property {Object} [server.listener] Fastify server listener.
  * @property {string} [server.listener.host] The host to listen on.
  * @property {number|string} [server.listener.port] The port to listen on.
  * @property {"fatal"|"error"|"warn"|"info"|"debug"|"trace"|"silent"} [server.logLevel] The log level.
- * @property {Object.<string, any>} [server.express] Express settings.
+ * @property {Object.<string, any>} [server.express] Server settings.
  * @property {Object.<string, any>} [globals] Global settings.
  * @property {Object.<string, any>} [template] Template settings.
- * @property {Object.<string, TrifidMiddlewareConfig>} [middlewares] Middlewares.
+ * @property {Object.<string, TrifidPluginConfig>} [plugins] Plugins.
  */
 
 /**
@@ -54,12 +54,12 @@
  */
 
 /**
- * Trifid Middleware Argument.
+ * Trifid Plugin Argument.
  *
- * @typedef {Object} TrifidMiddlewareArgument
- * @property {string[]} [paths] The paths to apply the middleware to.
- * @property {string[]} [methods] The HTTP methods to apply the middleware to.
- * @property {string[]} [hosts] The hosts to apply the middleware to.
+ * @typedef {Object} TrifidPluginArgument
+ * @property {string[]} [paths] The paths to apply the plugin to.
+ * @property {string[]} [methods] The HTTP methods to apply the plugin to.
+ * @property {string[]} [hosts] The hosts to apply the plugin to.
  * @property {import('pino').Logger} logger The logger instance.
  * @property {import('fastify').FastifyInstance & {locals: Map<string, any>}} server The Fastify server instance.
  * @property {Object.<string, any>} config The Trifid configuration.
@@ -70,17 +70,17 @@
  */
 
 /**
- * Trifid Middleware Setup.
+ * Trifid Plugin Setup.
  *
- * @typedef {Object} TrifidMiddlewareSetup
- * @property {() => Promise<TrifidMiddlewareConfig>} [defaultConfiguration] Default configurations for this plugin.
+ * @typedef {Object} TrifidPluginSetup
+ * @property {() => Promise<TrifidPluginConfig>} [defaultConfiguration] Default configurations for this plugin.
  * @property {() => Promise<FastifyRouteHandler>} [routeHandler] Route handler.
  */
 
 /**
- * Trifid Middleware.
+ * Trifid Plugin.
  *
- * @typedef {(trifid: TrifidMiddlewareArgument) => Promise<TrifidMiddlewareSetup | void>} TrifidMiddleware
+ * @typedef {(trifid: TrifidPluginArgument) => Promise<TrifidPluginSetup | void>} TrifidPlugin
  */
 
 /**

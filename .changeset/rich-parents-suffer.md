@@ -5,7 +5,7 @@
 Trifid Plugins should return an object:
 
 ```js
-/** @type {import('trifid-core/types/index.js').TrifidMiddleware} */
+/** @type {import('trifid-core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
   return {
     defaultConfiguration: async () => {

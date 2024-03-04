@@ -3,7 +3,7 @@
 import rdf from '@zazuko/env'
 import { createAPI } from './ckan.js'
 
-/** @type {import('../../core/types/index.js').TrifidMiddleware} */
+/** @type {import('../../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
   const { config, logger } = trifid
 

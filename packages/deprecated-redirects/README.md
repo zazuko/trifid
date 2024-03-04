@@ -58,7 +58,7 @@ npm install @zazuko/trifid-handle-redirects
 Incorporate the plugin into your Trifid configuration file:
 
 ```yaml
-middlewares:
+plugins:
   # […]
   arbitrary-name:
     module: "@zazuko/trifid-handle-redirects"

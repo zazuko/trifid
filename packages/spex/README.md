@@ -2,7 +2,7 @@
 
 [SPEX](https://github.com/zazuko/spex) for Trifid.
 
-This middleware does the static file hosting for all SPEX files and renders a view page that points to the configured endpoint URL.
+This plugin does the static file hosting for all SPEX files and renders a view page that points to the configured endpoint URL.
 
 ## Quick start
 
@@ -15,8 +15,8 @@ npm install trifid-plugin-spex
 And then add in the `config.yaml` file the following part:
 
 ```yaml
-middlewares:
-  # […] your other middlewares
+plugins:
+  # […] your other plugins
   spex:
     module: trifid-plugin-spex
     paths: # by default

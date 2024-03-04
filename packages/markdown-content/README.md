@@ -25,8 +25,8 @@ npm install @zazuko/trifid-markdown-content
 And then add in the `config.yaml` file the following part:
 
 ```yaml
-middlewares:
-  # […] your other middlewares
+plugins:
+  # […] your other plugins
   markdown-content:
     module: "@zazuko/trifid-markdown-content"
     order: 80
@@ -64,15 +64,15 @@ Those options are all optional.
 The following options are required for each namespace:
 
 - `directory`: The directory where the content is located. This should be a local directory (required).
-- `mountPath`: The path where the content should be mounted. This should be a path that is not used by other middlewares (required).
+- `mountPath`: The path where the content should be mounted. This should be a path that is not used by other plugins (required).
 
 ### Example
 
 This is a more complete example on how this plugin can be used:
 
 ```yaml
-middlewares:
-  # […] your other middlewares
+plugins:
+  # […] your other plugins
   markdown-content:
     module: "@zazuko/trifid-markdown-content"
     order: 80
@@ -131,8 +131,8 @@ Inside the `contact` directory, move the `contact.md` file and rename it to `def
 If you want to create the pages directly at the root of your Trifid instance, you can use the following Plugin configuration:
 
 ```yaml
-middlewares:
-  # […] your other middlewares
+plugins:
+  # […] your other plugins
   markdown-content:
     module: "@zazuko/trifid-markdown-content"
     order: 80

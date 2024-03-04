@@ -4,11 +4,11 @@
 // import request from 'supertest'
 // import { describe, expect, test } from '@jest/globals'
 
-// import redirectMiddleware from '../../middlewares/redirect.js'
+// import redirectPlugin from '../../plugins/redirect.js'
 
-// describe('redirect middleware', () => {
+// describe('redirect plugin', () => {
 //   test('should throw if the target parameter is not set', () => {
-//     expect(() => redirectMiddleware({ config: {} })).toThrow()
+//     expect(() => redirectPlugin({ config: {} })).toThrow()
 //   })
 
 //   test('should redirect request', async () => {
@@ -16,7 +16,7 @@
 
 //     app.use(
 //       '/redirect',
-//       redirectMiddleware({
+//       redirectPlugin({
 //         config: {
 //           target: '/',
 //         },
@@ -34,7 +34,7 @@
 
 //     app.use(
 //       '/redirect',
-//       redirectMiddleware({
+//       redirectPlugin({
 //         config: {
 //           target: '/',
 //         },

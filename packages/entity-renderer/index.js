@@ -149,7 +149,7 @@ const factory = async (trifid) => {
        */
       const handler = async (request, reply) => {
         const currentPath = request.url.split('?')[0]
-        // Check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
+        // Check if it is a path that needs to be ignored (check of type is already done at the load of the plugin)
         if (ignoredPaths.includes(currentPath)) {
           return reply.callNotFound()
         }

@@ -11,7 +11,7 @@ npm install @zazuko/trifid-entity-renderer
 And then add in the `config.yaml` file the following part:
 
 ```yaml
-middlewares:
+plugins:
   # […]
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
@@ -26,7 +26,7 @@ middlewares:
 Specify the path where the handlebars template is located:
 
 ```yaml
-middlewares:
+plugins:
   # […]
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
@@ -41,7 +41,7 @@ Under the hood, this plugin uses [rdf-entity-webcomponent](https://github.com/za
 Add any of these options under the config section:
 
 ```yaml
-middlewares:
+plugins:
   # […]
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
@@ -69,7 +69,7 @@ This plugin can follow those redirects and render the final resource, if the `fo
 The default value is `false`.
 
 ```yaml
-middlewares:
+plugins:
   # […]
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"

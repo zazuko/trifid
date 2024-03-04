@@ -14,8 +14,8 @@ import {
   defaultLogLevel,
   defaultPort,
 } from './lib/config/default.js'
-import middlewaresAssembler from './lib/middlewares/assembler.js'
-import applyMiddlewares from './lib/middlewares/apply.js'
+import pluginsAssembler from './lib/plugins/assembler.js'
+import applyPlugins from './lib/plugins/apply.js'
 import templateEngine from './lib/templateEngine.js'
 import { errorsHandler, notFoundHandler } from './lib/handlers/index.js'
 
@@ -33,19 +33,19 @@ export {
  * @param {import('./types/index.js').TrifidConfigWithExtends?} config Trifid configuration.
  * @param {Record<string, {
  *   order?: number,
- *   module: import('./types/index.js').TrifidMiddleware,
+ *   module: import('./types/index.js').TrifidPlugin,
  *   paths?: string | string[];
  *   methods?: string | string[];
  *   hosts?: string | string[];
  *   config?: Record<string, any>;
- * }>?} additionalMiddlewares Add additional middlewares.
+ * }>?} additionalPlugins Add additional plugins.
  * @returns {Promise<{
  *  start: () => Promise<import('fastify').FastifyInstance>;
  *  server: import('fastify').FastifyInstance;
  *  config: import('./types/index.js').TrifidConfig
  * }>} Trifid instance.
  */
-const trifid = async (config, additionalMiddlewares = {}) => {
+const trifid = async (config, additionalPlugins = {}) => {
   const trifidEvents = new EventEmitter()
   const fullConfig = await handler(config)
 
@@ -103,7 +103,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   }
   server.addHook('onRequest', addSessionHandler)
 
-  // Add required middlewares
+  // Add required plugins
   server.register(fastifyCors, {
     credentials: true,
     origin: true,
@@ -126,14 +126,14 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   server.setErrorHandler(errorsHandler)
   server.setNotFoundHandler(await notFoundHandler({ render }))
 
-  const middlewares = await middlewaresAssembler(
+  const plugins = await pluginsAssembler(
     fullConfig,
-    additionalMiddlewares,
+    additionalPlugins,
   )
-  await applyMiddlewares(
+  await applyPlugins(
     server,
     fullConfig.globals,
-    middlewares,
+    plugins,
     logger,
     templateEngineInstance,
     `http://${host}:${portNumber}/`,
@@ -141,7 +141,7 @@ const trifid = async (config, additionalMiddlewares = {}) => {
   )
 
   const start = async () => {
-    // Forward server events to the Trifid middlewares
+    // Forward server events to the Trifid plugins
     server.addHook('onListen', () => {
       trifidEvents.emit('listen')
     })

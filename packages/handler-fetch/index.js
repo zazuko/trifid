@@ -4,7 +4,7 @@ import { Worker } from 'node:worker_threads'
 import { v4 as uuidv4 } from 'uuid'
 import { waitForVariableToBeTrue } from './lib/utils.js'
 
-/** @type {import('../core/types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../core/types/index.d.ts').TrifidPlugin} */
 export const factory = async (trifid) => {
   const { config, logger, trifidEvents } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config

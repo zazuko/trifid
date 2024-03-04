@@ -20,14 +20,14 @@ const defaultOptions = {
 }
 
 /**
- * Create Middleware.
+ * Create Plugin.
  *
  * @param {import('fastify').FastifyInstance} server
  * @param {*} config
  * @param {*} render
  * @returns
  */
-const createMiddleWare = async (server, config, render) => {
+const createPlugin = async (server, config, render) => {
   const options = { ...defaultOptions, ...(config || {}) }
   const spexOptions = {
     sparqlEndpoint: options.url,
@@ -81,7 +81,7 @@ const createMiddleWare = async (server, config, render) => {
   return handler
 }
 
-/** @type {import('../core/types/index.js').TrifidMiddleware} */
+/** @type {import('../core/types/index.js').TrifidPlugin} */
 const trifidFactory = async (trifid) => {
   const { server, config, render } = trifid
 
@@ -95,9 +95,9 @@ const trifidFactory = async (trifid) => {
         ],
       }
     },
-    routeHandler: async () => createMiddleWare(server, config, render),
+    routeHandler: async () => createPlugin(server, config, render),
   }
 }
 
 export default trifidFactory
-export { createMiddleWare }
+export { createPlugin }

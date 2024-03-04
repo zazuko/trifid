@@ -37,7 +37,7 @@ This configuration tells Trifid to use the `trifid-handler-sparql` handler and t
 It also defines the queries to fetch the resources and containers:
 
 ```yaml
-middlewares:
+plugins:
   # […]
   sparql-handler:
     module: trifid-handler-sparql

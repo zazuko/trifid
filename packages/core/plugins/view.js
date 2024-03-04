@@ -8,7 +8,7 @@
  *  - context (object, optional): context to give to this specific template file (some variables)
  *  - options (object, optional): options to pass to the Trifid render function (change the title of the page, …)
  *
- * @type {import('../types/index.js').TrifidMiddleware}
+ * @type {import('../types/index.js').TrifidPlugin}
  */
 const factory = async (trifid) => {
   const { config, render } = trifid

@@ -20,8 +20,8 @@ const supportedMethods = [
   'UNLOCK',
 ]
 
-const standardize = (middleware) => {
-  const m = cloneDeep(middleware)
+const standardize = (plugin) => {
+  const m = cloneDeep(plugin)
 
   // make sure order is defined
   if (m.order === undefined) {

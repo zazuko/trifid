@@ -6,17 +6,17 @@
 // import request from 'supertest'
 // import { describe, expect, test } from '@jest/globals'
 
-// import staticMiddleware from '../../middlewares/static.js'
+// import staticPlugin from '../../plugins/static.js'
 
-// describe('static middleware', () => {
+// describe('static plugin', () => {
 //   test('should throw if the directory parameter is not set', () => {
-//     expect(() => staticMiddleware({ config: {} })).toThrow()
+//     expect(() => staticPlugin({ config: {} })).toThrow()
 //   })
 
 //   test('should not throw if the directory parameter is set', () => {
 //     const currentDir = dirname(fileURLToPath(import.meta.url))
 //     expect(() =>
-//       staticMiddleware({
+//       staticPlugin({
 //         config: {
 //           directory: `${currentDir}/../support/`,
 //         },
@@ -29,7 +29,7 @@
 //     const app = express()
 
 //     app.use(
-//       staticMiddleware({
+//       staticPlugin({
 //         config: {
 //           directory: `${currentDir}/../support`,
 //         },
@@ -48,7 +48,7 @@
 //     const app = express()
 
 //     app.use(
-//       staticMiddleware({
+//       staticPlugin({
 //         config: {
 //           directory: `${currentDir}/../support/`,
 //         },

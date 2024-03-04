@@ -22,7 +22,7 @@ And update the Trifid configuration to something similar as shown in the example
 This example config uses [The Big Bang Theory dataset](https://www.npmjs.com/package/tbbt-ld/):
 
 ```yaml
-middlewares:
+plugins:
   # […]
   handler-fetch:
     module: "trifid-handler-fetch"

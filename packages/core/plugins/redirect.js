@@ -1,6 +1,6 @@
 // @ts-check
 
-/** @type {import('../types/index.js').TrifidMiddleware} */
+/** @type {import('../types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
   const { config, logger } = trifid
   const { target } = config

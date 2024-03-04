@@ -11,7 +11,7 @@ import parser from './parser.js'
 import {
   extendsResolver,
   globalsResolver,
-  middlewaresResolver,
+  pluginsResolver,
   serverResolver,
   templateResolver,
 } from './resolvers.js'
@@ -49,24 +49,24 @@ const resolveConfig = async (
   }
 
   // merge all fields
-  const middlewares = {}
+  const plugins = {}
   configs.forEach((c) => {
     // merge template, globals and server parts
     config.globals = merge({}, c.globals, config.globals)
     config.server = merge({}, c.server, config.server)
     config.template = merge({}, c.template, config.template)
 
-    // merge middlewares
-    Object.keys(c.middlewares).forEach((m) => {
-      middlewares[m] = c.middlewares[m]
+    // merge plugins
+    Object.keys(c.plugins).forEach((m) => {
+      plugins[m] = c.plugins[m]
     })
   })
-  Object.keys(config.middlewares).forEach((m) => {
-    middlewares[m] = config.middlewares[m]
+  Object.keys(config.plugins).forEach((m) => {
+    plugins[m] = config.plugins[m]
   })
 
   // apply all resolvers
-  config.middlewares = middlewaresResolver(middlewares, context)
+  config.plugins = pluginsResolver(plugins, context)
   config.globals = globalsResolver(config.globals, context)
   config.server = serverResolver(config.server, context)
   config.template = templateResolver(config.template, context)
@@ -112,8 +112,8 @@ const addDefaultFields = (config) => {
     config.globals = {}
   }
 
-  if (!config.middlewares) {
-    config.middlewares = {}
+  if (!config.plugins) {
+    config.plugins = {}
   }
 }
 

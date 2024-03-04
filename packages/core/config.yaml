@@ -12,22 +12,22 @@ globals:
   value: config
   config1: config1
 
-middlewares:
+plugins:
   staticFiles:
     order: 100
-    module: file:./middlewares/static.js
+    module: file:./plugins/static.js
     paths: "/sources"
     config:
       directory: cwd:.
 
   zazuko-redirect:
-    module: file:./middlewares/redirect.js
+    module: file:./plugins/redirect.js
     paths: "/zazuko"
     config:
       target: https://zazuko.com/
 
   throw:
-    module: file:./middlewares/throw.js
+    module: file:./plugins/throw.js
     paths: "/oops"
     config:
       message: This is a custom error message!

@@ -6,7 +6,7 @@ import fastifyStatic from '@fastify/static'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-/** @type {import('../core/types/index.js').TrifidMiddleware} */
+/** @type {import('../core/types/index.js').TrifidPlugin} */
 const trifidFactory = async (trifid) => {
   const { config, render, server } = trifid
   const { template, endpointUrl, urlShortener } = config
