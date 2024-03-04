@@ -29,7 +29,7 @@
   "devDependencies": {
     "c8": "^9.1.0",
     "mocha": "^10.2.0",
-    "supertest": "^6.3.4"
+    "trifid-core": "^2.7.1"
   },
   "publishConfig": {
     "access": "public"
