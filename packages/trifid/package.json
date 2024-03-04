@@ -15,7 +15,6 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "true",
     "help": "node server.js --help",
     "start:tbbt": "node server.js -c instances/tbbt/config.yaml",
     "start": "npm run start:tbbt"

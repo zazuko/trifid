@@ -17,9 +17,6 @@
   "files": [
     "index.js"
   ],
-  "scripts": {
-    "test": "true"
-  },
   "dependencies": {
     "trifid-core": "^2.7.1"
   }
