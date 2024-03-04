@@ -5,6 +5,7 @@
   "version": "2.0.1",
   "license": "MIT",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
@@ -14,26 +15,28 @@
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
   },
+  "files": [
+    "dist",
+    "lib",
+    "index.js",
+    "CHANGELOG.md"
+  ],
   "scripts": {
-    "test": "mocha"
+    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "prebuild": "rimraf dist/",
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "dependencies": {
-    "@rdfjs/express-handler": "^1.2.2",
-    "@rdfjs/formats-common": "^2.2.0",
-    "@rdfjs/serializer-jsonld-ext": "^3.0.0",
-    "file-fetch": "^1.7.0",
-    "@rdfjs/fetch": "^3.1.0",
-    "nodeify-fetch": "^3.0.0",
-    "proto-fetch": "^1.0.0",
-    "rdf-ext": "^2.0.1",
-    "rdfjs": "^0.0.1"
+    "oxigraph": "^0.4.0-alpha.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "bluebird": "^3.7.2",
-    "express": "^4.18.2",
-    "mocha": "^10.0.0",
-    "nock": "^13.2.9",
-    "supertest": "^6.3.4",
-    "tbbt-ld": "^1.1.0"
+    "@types/node": "^20.11.16",
+    "@types/uuid": "^9.0.8",
+    "c8": "^9.1.0",
+    "mocha": "^10.2.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
   }
 }

@@ -1,4 +1,5 @@
 // @ts-check
+
 import rdf from '@zazuko/env'
 import prefixes, { shrink } from '@zazuko/prefixes'
 import { create as createXml } from 'xmlbuilder2'
@@ -8,7 +9,7 @@ import * as ns from './namespace.js'
 /**
  * Generate a CKAN-compatible XML representation of the dataset.
  *
- * @param {any[]} dataset Dataset to convert.
+ * @param {import('@rdfjs/types').Quad[]} dataset Dataset to convert.
  * @returns {string} XML representation of the dataset.
  */
 const toXML = (dataset) => {
@@ -145,6 +146,7 @@ const toXML = (dataset) => {
               'dcterms:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
               'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
+              // @ts-ignore
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
               'dcat:distribution': distributions,
               'foaf:page': serializeTerm(dataset.out(ns.foaf.page)),
@@ -158,6 +160,7 @@ const toXML = (dataset) => {
 
 /**
  * Serialize a term.
+ *
  * @param {import('clownface').MultiPointer | Array<import('clownface').GraphPointer>} pointer Pointer to serialize.
  * @param {object} [options]
  * @param {import('@rdfjs/types').NamedNode[]} [options.properties]

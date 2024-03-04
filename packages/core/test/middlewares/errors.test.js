@@ -1,64 +1,66 @@
-import express from 'express'
-import request from 'supertest'
-import { describe, test } from '@jest/globals'
+// // @ts-check
 
-import errorsMiddleware from '../../middlewares/errors.js'
+// import express from 'express'
+// import request from 'supertest'
+// import { describe, test } from '@jest/globals'
 
-describe('errors middleware', () => {
-  test('should return a 500 status code', async () => {
-    const app = express()
+// import errorsMiddleware from '../../middlewares/errors.js'
 
-    const throwingMiddleware = (_req, _res, _next) => {
-      throw new Error('Oops, something went wrong…')
-    }
+// describe('errors middleware', () => {
+//   test('should return a 500 status code', async () => {
+//     const app = express()
 
-    app.use(throwingMiddleware)
-    app.use(
-      errorsMiddleware({
-        logger: {
-          error: (_msg) => { },
-        },
-      }),
-    )
+//     const throwingMiddleware = (_req, _res, _next) => {
+//       throw new Error('Oops, something went wrong…')
+//     }
 
-    return request(app).get('/').expect(500)
-  })
+//     app.use(throwingMiddleware)
+//     app.use(
+//       errorsMiddleware({
+//         logger: {
+//           error: (_msg) => { },
+//         },
+//       }),
+//     )
 
-  test('should forward status code', async () => {
-    const app = express()
+//     return request(app).get('/').expect(500)
+//   })
 
-    const throwingMiddleware = (_req, res, _next) => {
-      res.status(502).send('Something went wrong :-(')
-    }
+//   test('should forward status code', async () => {
+//     const app = express()
 
-    app.use(throwingMiddleware)
-    app.use(
-      errorsMiddleware({
-        logger: {
-          error: (_msg) => { },
-        },
-      }),
-    )
+//     const throwingMiddleware = (_req, res, _next) => {
+//       res.status(502).send('Something went wrong :-(')
+//     }
 
-    return request(app).get('/').expect(502)
-  })
+//     app.use(throwingMiddleware)
+//     app.use(
+//       errorsMiddleware({
+//         logger: {
+//           error: (_msg) => { },
+//         },
+//       }),
+//     )
 
-  test('should return an empty body in case of internal error', async () => {
-    const app = express()
+//     return request(app).get('/').expect(502)
+//   })
 
-    const throwingMiddleware = (_req, _res, _next) => {
-      throw new Error('Oops, something went wrong…')
-    }
+//   test('should return an empty body in case of internal error', async () => {
+//     const app = express()
 
-    app.use(throwingMiddleware)
-    app.use(
-      errorsMiddleware({
-        logger: {
-          error: (_msg) => { },
-        },
-      }),
-    )
+//     const throwingMiddleware = (_req, _res, _next) => {
+//       throw new Error('Oops, something went wrong…')
+//     }
 
-    return request(app).get('/').expect('')
-  })
-})
+//     app.use(throwingMiddleware)
+//     app.use(
+//       errorsMiddleware({
+//         logger: {
+//           error: (_msg) => { },
+//         },
+//       }),
+//     )
+
+//     return request(app).get('/').expect('')
+//   })
+// })

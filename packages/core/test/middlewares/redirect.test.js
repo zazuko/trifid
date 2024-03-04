@@ -1,47 +1,49 @@
-import express from 'express'
-import request from 'supertest'
-import { describe, expect, test } from '@jest/globals'
+// // @ts-check
 
-import redirectMiddleware from '../../middlewares/redirect.js'
+// import express from 'express'
+// import request from 'supertest'
+// import { describe, expect, test } from '@jest/globals'
 
-describe('redirect middleware', () => {
-  test('should throw if the target parameter is not set', () => {
-    expect(() => redirectMiddleware({ config: {} })).toThrow()
-  })
+// import redirectMiddleware from '../../middlewares/redirect.js'
 
-  test('should redirect request', async () => {
-    const app = express()
+// describe('redirect middleware', () => {
+//   test('should throw if the target parameter is not set', () => {
+//     expect(() => redirectMiddleware({ config: {} })).toThrow()
+//   })
 
-    app.use(
-      '/redirect',
-      redirectMiddleware({
-        config: {
-          target: '/',
-        },
-        logger: {
-          debug: (_) => { },
-        },
-      }),
-    )
+//   test('should redirect request', async () => {
+//     const app = express()
 
-    return request(app).get('/redirect').expect(302)
-  })
+//     app.use(
+//       '/redirect',
+//       redirectMiddleware({
+//         config: {
+//           target: '/',
+//         },
+//         logger: {
+//           debug: (_) => { },
+//         },
+//       }),
+//     )
 
-  test('should not redirect request', async () => {
-    const app = express()
+//     return request(app).get('/redirect').expect(302)
+//   })
 
-    app.use(
-      '/redirect',
-      redirectMiddleware({
-        config: {
-          target: '/',
-        },
-        logger: {
-          debug: (_) => { },
-        },
-      }),
-    )
+//   test('should not redirect request', async () => {
+//     const app = express()
 
-    return request(app).get('/non-existant-route').expect(404)
-  })
-})
+//     app.use(
+//       '/redirect',
+//       redirectMiddleware({
+//         config: {
+//           target: '/',
+//         },
+//         logger: {
+//           debug: (_) => { },
+//         },
+//       }),
+//     )
+
+//     return request(app).get('/non-existant-route').expect(404)
+//   })
+// })

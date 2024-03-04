@@ -1,7 +1,19 @@
 import merge from 'lodash/merge.js'
-import vhost from 'vhost'
+import { initQuery } from '../sparql.js'
 
-const apply = async (server, globals, middlewares, logger, templateEngine) => {
+/**
+ *
+ * @param {import('fastify').FastifyInstance} server
+ * @param {*} globals
+ * @param {*} middlewares
+ * @param {import('pino').Logger} logger
+ * @param {*} templateEngine
+ * @param {string} instanceHostname
+ * @param {import('node:events').EventEmitter} trifidEvents
+ */
+const apply = async (server, globals, middlewares, logger, templateEngine, instanceHostname, trifidEvents) => {
+  const { query: querySparql } = initQuery(logger, globals.endpoints, instanceHostname)
+
   for (const middleware of middlewares) {
     const name = middleware[0]
     const m = middleware[1]
@@ -15,45 +27,77 @@ const apply = async (server, globals, middlewares, logger, templateEngine) => {
     delete m.module
 
     const middlewareLogger = logger.child({ name })
+    const query = querySparql(logger.child({ name: `${name}:query` }))
+
+    let pluginConfig = {
+      paths,
+      hosts,
+      methods,
+      config: merge({}, globals, config),
+    }
 
     const { render, registerHelper } = templateEngine
     const loadedMiddleware = await module({
-      config: merge({}, globals, config),
+      ...pluginConfig,
       server,
       logger: middlewareLogger,
       render,
+      query,
       registerTemplateHelper: registerHelper,
+      trifidEvents,
     })
 
-    // default path is '/' (see: https://github.com/expressjs/express/blob/d854c43ea177d1faeea56189249fff8c24a764bd/lib/router/index.js#L425)
-    if (paths.length === 0) {
-      paths.push('/')
+    let routeHandler
+    if (loadedMiddleware) {
+      if (loadedMiddleware.defaultConfiguration) {
+        const defaultConfiguration = await loadedMiddleware.defaultConfiguration()
+        if (defaultConfiguration) {
+          pluginConfig = merge({}, defaultConfiguration, pluginConfig)
+        }
+      }
+
+      if (loadedMiddleware.routeHandler) {
+        routeHandler = await loadedMiddleware.routeHandler()
+      }
     }
 
-    // if no methods are specified, use 'use'
-    if (methods.length === 0) {
-      methods.push('use')
+    if (!routeHandler) {
+      // @TODO: remove this when all middlewares are up-to-date
+      logger.warn(`mount '${name}' middleware ; no handler found ; skipped`)
+      continue
     }
 
-    // mount the middleware the way it should
-    for (const path of paths) {
-      if (hosts.length === 0) {
-        // keeping this to be called without 'vhost' is needed for the error handler to work
-        methods.map((method) => {
+    const { hosts: pluginHosts, methods: pluginMethods, paths: pluginPaths } = pluginConfig
+
+    const baseRouteOptions = {
+      method: pluginMethods,
+      handler: routeHandler,
+    }
+
+    if (pluginHosts.length === 0) {
+      for (const path of pluginPaths) {
+        logger.debug(
+          `mount '${name}' middleware (methods=${baseRouteOptions.method}, path=${path})`,
+        )
+        server.route({
+          ...baseRouteOptions,
+          url: path,
+        })
+      }
+    } else {
+      for (const host of pluginHosts) {
+        for (const path of pluginPaths) {
           logger.debug(
-            `mount '${name}' middleware (method=${method}, path=${path})`,
+            `mount '${name}' middleware (methods=${baseRouteOptions.methods}, path=${path}, host=${host})`,
           )
-          return server[method](path, loadedMiddleware)
-        })
-      } else {
-        hosts.map((host) => {
-          return methods.map((method) => {
-            logger.debug(
-              `mount '${name}' middleware (method=${method}, path=${path}, host=${host})`,
-            )
-            return server[method](path, vhost(host, loadedMiddleware))
+          server.route({
+            ...baseRouteOptions,
+            url: path,
+            constraints: {
+              host,
+            },
           })
-        })
+        }
       }
     }
   }

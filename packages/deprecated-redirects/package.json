@@ -1,0 +1,24 @@
+{
+  "name": "@zazuko/trifid-handle-redirects",
+  "description": "Handle redirects",
+  "type": "module",
+  "version": "0.1.3",
+  "license": "MIT",
+  "main": "index.js",
+  "author": {
+    "name": "Zazuko GmbH"
+  },
+  "homepage": "https://github.com/zazuko/trifid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/redirects"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid/issues"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "sparql-http-client": "^2.4.2"
+  }
+}

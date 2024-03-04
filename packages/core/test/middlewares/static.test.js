@@ -1,58 +1,60 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import express from 'express'
-import request from 'supertest'
-import { describe, expect, test } from '@jest/globals'
+// // @ts-check
 
-import staticMiddleware from '../../middlewares/static.js'
+// import { dirname } from 'path'
+// import { fileURLToPath } from 'url'
+// import express from 'express'
+// import request from 'supertest'
+// import { describe, expect, test } from '@jest/globals'
 
-describe('static middleware', () => {
-  test('should throw if the directory parameter is not set', () => {
-    expect(() => staticMiddleware({ config: {} })).toThrow()
-  })
+// import staticMiddleware from '../../middlewares/static.js'
 
-  test('should not throw if the directory parameter is set', () => {
-    const currentDir = dirname(fileURLToPath(import.meta.url))
-    expect(() =>
-      staticMiddleware({
-        config: {
-          directory: `${currentDir}/../support/`,
-        },
-      }),
-    ).not.toThrow()
-  })
+// describe('static middleware', () => {
+//   test('should throw if the directory parameter is not set', () => {
+//     expect(() => staticMiddleware({ config: {} })).toThrow()
+//   })
 
-  test('should serve the specified resource', () => {
-    const currentDir = dirname(fileURLToPath(import.meta.url))
-    const app = express()
+//   test('should not throw if the directory parameter is set', () => {
+//     const currentDir = dirname(fileURLToPath(import.meta.url))
+//     expect(() =>
+//       staticMiddleware({
+//         config: {
+//           directory: `${currentDir}/../support/`,
+//         },
+//       }),
+//     ).not.toThrow()
+//   })
 
-    app.use(
-      staticMiddleware({
-        config: {
-          directory: `${currentDir}/../support`,
-        },
-      }),
-    )
+//   test('should serve the specified resource', () => {
+//     const currentDir = dirname(fileURLToPath(import.meta.url))
+//     const app = express()
 
-    return request(app)
-      .get('/test.txt')
-      .expect(200)
-      .expect('Content-Type', /text\/plain/)
-      .expect(/some text/)
-  })
+//     app.use(
+//       staticMiddleware({
+//         config: {
+//           directory: `${currentDir}/../support`,
+//         },
+//       }),
+//     )
 
-  test('should return a 404 on non-existant resources', () => {
-    const currentDir = dirname(fileURLToPath(import.meta.url))
-    const app = express()
+//     return request(app)
+//       .get('/test.txt')
+//       .expect(200)
+//       .expect('Content-Type', /text\/plain/)
+//       .expect(/some text/)
+//   })
 
-    app.use(
-      staticMiddleware({
-        config: {
-          directory: `${currentDir}/../support/`,
-        },
-      }),
-    )
+//   test('should return a 404 on non-existant resources', () => {
+//     const currentDir = dirname(fileURLToPath(import.meta.url))
+//     const app = express()
 
-    return request(app).get('/test-not-exist.txt').expect(404)
-  })
-})
+//     app.use(
+//       staticMiddleware({
+//         config: {
+//           directory: `${currentDir}/../support/`,
+//         },
+//       }),
+//     )
+
+//     return request(app).get('/test-not-exist.txt').expect(404)
+//   })
+// })

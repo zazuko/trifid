@@ -1,9 +1,9 @@
-import path from 'path'
+import { resolve } from 'node:path'
 import cloneDeep from 'lodash/cloneDeep.js'
 
 const resolvePath = (modulePath) => {
   if (['.', '/'].includes(modulePath.slice(0, 1))) {
-    return path.resolve(modulePath)
+    return resolve(modulePath)
   } else {
     return modulePath
   }

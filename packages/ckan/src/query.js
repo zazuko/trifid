@@ -1,14 +1,19 @@
 // @ts-check
+
 import { sparql } from '@tpluscode/rdf-string'
 import * as ns from './namespace.js'
 
 /**
  * Query to retrieve all datasets for a given organization.
  *
- * @param {string} organizationId The organization identifier.
+ * @param {import('@rdfjs/types').NamedNode<string>} organizationId The organization identifier.
+ * @param {boolean} queryAllGraphs Whether to query all graphs or only the default one.
  * @returns {import('@tpluscode/rdf-string').SparqlTemplateResult}
  */
-const datasetsQuery = (organizationId) => {
+const datasetsQuery = (organizationId, queryAllGraphs) => {
+  const startQueryGraph = queryAllGraphs ? 'GRAPH ?graph {' : ''
+  const endQueryGraph = queryAllGraphs ? '}' : ''
+
   return sparql`
     CONSTRUCT {
       ?dataset ?p ?o .
@@ -19,7 +24,7 @@ const datasetsQuery = (organizationId) => {
       ?dataset ${ns.dcat.theme} ?euTheme .
     }
     WHERE {
-      GRAPH ?graph {
+      ${startQueryGraph}
         ?dataset ?p ?o .
 
         ?dataset ${ns.dcterms.creator} ${organizationId} .
@@ -56,7 +61,7 @@ const datasetsQuery = (organizationId) => {
         }
 
         FILTER (?p != ${ns.dcat.theme})
-      }
+      ${endQueryGraph}
     }
   `
 }

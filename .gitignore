@@ -10,3 +10,12 @@ yarn.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*.d.ts
+*.d.ts.map
+*.d.cts
+*.d.cts.map
+*.d.mts
+*.d.mts.map
+
+dist/

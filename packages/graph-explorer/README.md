@@ -18,7 +18,9 @@ middlewares:
   # […] your other middlewares
   yasgui:
     module: trifid-plugin-graph-explorer
-    paths: /graph-explorer
+    paths: # by default
+      - /graph-explorer
+      - /graph-explorer/
     config:
       endpointUrl: https://example.com/query
       # …other configuration fields
