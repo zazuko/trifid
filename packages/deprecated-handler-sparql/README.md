@@ -1,5 +1,9 @@
 # trifid-handler-sparql
 
+> [!WARNING]
+> This package is deprecated and will be removed in the future.
+> The functionality is now part of the entity renderer plugin.
+
 SPARQL handler for [Trifid](https://github.com/zazuko/trifid).
 Fetches the graphs for a given IRI from a SPARQL endpoint.
 
@@ -41,8 +45,8 @@ middlewares:
       endpointUrl: https://dbpedia.org/sparql
       resourceExistsQuery: "ASK { <${iri}> ?p ?o }"
       resourceGraphQuery: "DESCRIBE <${iri}>"
-      containerExistsQuery: "ASK { ?s a ?o. FILTER REGEX(STR(?s), \"^${iri}\") }"
-      containerGraphQuery: "CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), \"^${iri}\") }"
+      containerExistsQuery: 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }'
+      containerGraphQuery: 'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^${iri}") }'
 ```
 
 ## Debug
