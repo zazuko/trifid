@@ -61,6 +61,25 @@ You can use the following configuration option `rewrite` and set it to one of th
 - `true`: rewrite the result of the SPARQL queries by replacing the `datasetBaseUrl` value with the current domain.
 - `false`: this will disable the rewriting mechanism. This is useful if your triples are already matching the domain name where your Trifid instance is deployed.
 
+## Follow redirects
+
+Using SPARQL it is possible to define some redirects.
+This plugin can follow those redirects and render the final resource, if the `followRedirects` configuration option is set to `true`.
+
+The default value is `false`.
+
+```yaml
+middlewares:
+  # […]
+  entity-renderer:
+    module: "@zazuko/trifid-entity-renderer"
+    config:
+      followRedirects: true
+      redirectQuery: "…" # Select query used to get the redirect target ; needs to return a row with `?responseCode` and `?location` bindings.
+```
+
+The default redirect query supports `http://www.w3.org/2011/http#` and `http://www.w3.org/2006/http#` prefixes.
+
 ## Other configuration options
 
 - `resourceExistsQuery`: The `ASK` query to check whether the resources exists or not

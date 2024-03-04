@@ -18,6 +18,9 @@ export const createTrifidInstance = async (configFilePath, logLevel = 'debug') =
   }, {
     entityRenderer: {
       module: entityRendererTrifidPlugin,
+      config: {
+        followRedirects: true,
+      },
     },
   })
 }

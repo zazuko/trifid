@@ -8,7 +8,7 @@ globals:
       url: /query
 
 middlewares:
-  entity-host-web-page:
+  welcome-page:
     module: trifid-core/middlewares/view.js
     paths: /
     config:
