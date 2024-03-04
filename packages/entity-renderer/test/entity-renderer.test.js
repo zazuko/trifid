@@ -18,8 +18,8 @@ describe('@zazuko/trifid-entity-renderer', () => {
     trifidListener = await trifidInstance.start()
   })
 
-  afterEach(() => {
-    trifidListener.close()
+  afterEach(async () => {
+    await trifidListener.close()
   })
 
   describe('basic tests', () => {

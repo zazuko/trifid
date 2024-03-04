@@ -4,7 +4,7 @@ import { Worker } from 'node:worker_threads'
 import { v4 as uuidv4 } from 'uuid'
 import { waitForVariableToBeTrue } from './lib/utils.js'
 
-/** @type {import('trifid-core/dist/types/index.d.ts').TrifidMiddleware} */
+/** @type {import('../core/types/index.d.ts').TrifidMiddleware} */
 export const factory = async (trifid) => {
   const { config, logger, trifidEvents } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
@@ -81,6 +81,10 @@ export const factory = async (trifid) => {
         if (type === 'query' && data.queryId === queryId) {
           clearTimeout(timeoutId)
           worker.off('message', messageHandler)
+          if (!data.success) {
+            reject(new Error(data.response))
+            return
+          }
           resolve(data)
         }
       }
@@ -97,29 +101,65 @@ export const factory = async (trifid) => {
     'Worker did not become ready within 30 seconds',
   )
 
-  return async (req, res, _next) => {
-    let query
-    if (req.method === 'GET') {
-      query = req.query.query
-    } else if (req.method === 'POST') {
-      query = req.body.query || req.body
-    }
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET', 'POST'],
+        paths: ['/query'],
+      }
+    },
+    routeHandler: async () => {
+      /**
+       * Query string type.
+       *
+       * @typedef {Object} QueryString
+       * @property {string} [query] The SPARQL query.
+       */
 
-    if (!query) {
-      return res.status(400).send('Missing query parameter')
-    }
+      /**
+       * Request body type.
+       * @typedef {Object} RequestBody
+       * @property {string} [query] The SPARQL query.
+       */
 
-    logger.debug(`Received query: ${query}`)
+      /**
+       * Route handler.
+       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody}>} request Request.
+       * @param {import('fastify').FastifyReply} reply Reply.
+       */
+      const handler = async (request, reply) => {
+        let query
+        if (request.method === 'GET') {
+          query = request.query.query
+        } else if (request.method === 'POST') {
+          query = request.body.query
+          if (!query && request.body) {
+            query = request.body
+            if (typeof query !== 'string') {
+              query = JSON.stringify(query)
+            }
+          }
+        }
 
-    try {
-      const { response, contentType } = await handleQuery(query)
-      res.set('Content-Type', contentType)
-      logger.debug(`Sending the following ${contentType} response:\n${response}`)
-      return res.status(200).send(response)
-    } catch (error) {
-      logger.error(error)
-      return res.status(500).send(error.message)
-    }
+        if (!query) {
+          reply.status(400).send('Missing query parameter')
+          return
+        }
+
+        logger.debug(`Received query: ${query}`)
+
+        try {
+          const { response, contentType } = await handleQuery(query)
+          reply.type(contentType)
+          logger.debug(`Sending the following ${contentType} response:\n${response}`)
+          reply.status(200).send(response)
+        } catch (error) {
+          logger.error(error)
+          reply.status(500).send(error.message)
+        }
+      }
+      return handler
+    },
   }
 }
 

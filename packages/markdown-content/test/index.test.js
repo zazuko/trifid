@@ -1,4 +1,6 @@
-import { strictEqual, notEqual } from 'assert'
+// @ts-check
+
+import { strictEqual } from 'node:assert'
 import { describe, it } from 'mocha'
 
 import trifidCore from 'trifid-core'
@@ -14,7 +16,7 @@ const createTrifidInstance = async (config) => {
       logLevel: 'warn',
     },
   }, {
-    ckan: {
+    markdownContent: {
       module: markdownContentTrifidPlugin,
       methods: ['GET'],
       config,
@@ -35,27 +37,7 @@ describe('@zazuko/trifid-markdown-content', () => {
         strictEqual(e.message, 'should have thrown')
       } finally {
         if (trifidListener) {
-          trifidListener.close()
-        }
-      }
-    })
-
-    it('should throw if the configured directory is not existing', async () => {
-      const trifidInstance = createTrifidInstance({
-        directory: 'non-existing-directory',
-      })
-      let trifidListener
-
-      try {
-        await trifidInstance
-        trifidListener = await trifidInstance.start()
-        throw new Error('should have thrown')
-      } catch (e) {
-        notEqual(e.message, 'should have thrown')
-        notEqual(e.message, "'directory' should be a non-empty string")
-      } finally {
-        if (trifidListener) {
-          trifidListener.close()
+          await trifidListener.close()
         }
       }
     })
@@ -87,7 +69,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -116,7 +98,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -145,7 +127,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -178,7 +160,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
   })
@@ -209,7 +191,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -238,7 +220,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -267,7 +249,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -296,7 +278,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
   })
@@ -330,7 +312,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -360,7 +342,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -390,7 +372,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -420,7 +402,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -451,7 +433,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -481,7 +463,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
   })
@@ -517,7 +499,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -549,7 +531,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -581,7 +563,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -613,7 +595,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -646,7 +628,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
 
@@ -678,7 +660,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       } catch (e) {
         throw e
       } finally {
-        trifidListener.close()
+        await trifidListener.close()
       }
     })
   })

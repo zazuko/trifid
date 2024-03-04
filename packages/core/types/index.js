@@ -1,3 +1,9 @@
+// @ts-check
+
+/**
+ * @module trifid-core/types/index.js
+ */
+
 /**
  * Trifid Middleware Configuration.
  *
@@ -39,48 +45,42 @@
  */
 
 /**
- * Express middleware function.
+ * Fastify route handler.
  *
- * @typedef {Function} ExpressStandardMiddleware
- * @param {import("express").Request} req The request object.
- * @param {import("express").Response} res The response object.
- * @param {import("express").NextFunction} next A callback to trigger the next middleware in the stack.
+ * @typedef {Function} FastifyRouteHandler
+ * @param {import('fastify').FastifyRequest} request Request.
+ * @param {import('fastify').FastifyReply} reply Reply.
  * @returns {void | Promise<void>}
- */
-
-/**
- * Express error-handling middleware function.
- *
- * @typedef {Function} ExpressErrorHandlingMiddleware
- * @param {any} err The error object.
- * @param {import("express").Request} req The request object.
- * @param {import("express").Response} res The response object.
- * @param {import("express").NextFunction} next A callback to trigger the next middleware in the stack.
- * @returns {void | Promise<void>}
- */
-
-/**
- * Express middleware.
- *
- * @typedef {ExpressStandardMiddleware | ExpressErrorHandlingMiddleware} ExpressMiddleware
  */
 
 /**
  * Trifid Middleware Argument.
  *
  * @typedef {Object} TrifidMiddlewareArgument
- * @property {import("pino").Logger} logger The logger instance.
- * @property {import("express").Express} server The Express server.
+ * @property {string[]} [paths] The paths to apply the middleware to.
+ * @property {string[]} [methods] The HTTP methods to apply the middleware to.
+ * @property {string[]} [hosts] The hosts to apply the middleware to.
+ * @property {import('pino').Logger} logger The logger instance.
+ * @property {import('fastify').FastifyInstance & {locals: Map<string, any>}} server The Fastify server instance.
  * @property {Object.<string, any>} config The Trifid configuration.
  * @property {(templatePath: string, context: Object.<string, any>, options?: Object.<string, any>) => Promise<string>} render The render function.
  * @property {TrifidQuery} query The SPARQL query function.
  * @property {import('node:events').EventEmitter} trifidEvents The Trifid events emitter.
+ * @property {(name: string, fn: import('handlebars').HelperDelegate) => void} registerTemplateHelper Register a template helper, that can be used by the template engine.
+ */
+
+/**
+ * Trifid Middleware Setup.
+ *
+ * @typedef {Object} TrifidMiddlewareSetup
+ * @property {() => Promise<TrifidMiddlewareConfig>} [defaultConfiguration] Default configurations for this plugin.
+ * @property {() => Promise<FastifyRouteHandler>} [routeHandler] Route handler.
  */
 
 /**
  * Trifid Middleware.
  *
- * @typedef {(trifid: TrifidMiddlewareArgument) => Promise<ExpressMiddleware> | ExpressMiddleware} TrifidMiddleware
+ * @typedef {(trifid: TrifidMiddlewareArgument) => Promise<TrifidMiddlewareSetup | void>} TrifidMiddleware
  */
 
 /**

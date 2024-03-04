@@ -1,45 +1,53 @@
 // @ts-check
-import url from 'url'
 
 /** @type {import('../types/index.js').TrifidMiddleware} */
-const factory = (trifid) => {
-  const { logger } = trifid
+const factory = async (trifid) => {
+  const { logger, server } = trifid
+
+  const locals = server.locals
 
   const defaultLanguage = 'en'
   const supportedLanguages = ['en', 'fr', 'de', 'it']
 
   const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000
 
-  return (req, res, next) => {
-    // export language information for other middlewares
-    res.locals.defaultLanguage = defaultLanguage
-    res.locals.currentLanguage = req?.cookies?.i18n || defaultLanguage
+  /**
+   * Hook to configure the language in the locals.
+   *
+   * @param {import('fastify').FastifyRequest<{ Querystring: { lang: string }}> & { session: Map<string, any> }} request Request.
+   * @param {import('fastify').FastifyReply} reply Reply.
+   * @param {import('fastify').DoneFuncWithErrOrRes} done Done function.
+   */
+  const onRequestHookHandler = (request, reply, done) => {
+    const session = request.session
+    const currentLanguage = request.cookies.i18n || defaultLanguage
+    session.set('defaultLanguage', defaultLanguage)
+    session.set('currentLanguage', currentLanguage)
 
-    // update langage by setting `lang` query parameter
-    const langQuery = req.query.lang || ''
-    const lang = typeof langQuery === 'string' ? langQuery : langQuery.toString()
-    if (lang && supportedLanguages.includes(lang)) {
-      logger.debug(`set default language to '${lang}'`)
-      res.cookie('i18n', lang, { maxAge: oneMonthMilliseconds })
-      res.locals.currentLanguage = lang
+    const langQuery = request.query.lang || ''
+    if (langQuery && supportedLanguages.includes(langQuery)) {
+      logger.debug(`set default language to '${langQuery}'`)
+      reply.setCookie('i18n', langQuery, { maxAge: oneMonthMilliseconds })
+      session.set('currentLanguage', langQuery)
     }
 
-    // requested resource
-    res.locals.iri = req.iri
-
-    // requested resource parsed into URL object
-    res.locals.url = new url.URL(res.locals.iri)
-
-    // dummy translation
-    res.locals.t =
-      res.locals.t ||
-      ((x) => {
+    if (!session.has('t') || typeof session.get('t') !== 'function') {
+      /**
+       * Dummy translation function.
+       * @param {string} x Translation key.
+       * @returns {string} Translation value.
+       */
+      const t = (x) => {
         const translation = x.substring(x.indexOf(':') + 1)
         logger.debug(`translation value: ${translation}`)
         return translation
-      })
-    next()
+      }
+      session.set('t', t)
+    }
+
+    done()
   }
+  server.addHook('onRequest', onRequestHookHandler)
 }
 
 export default factory

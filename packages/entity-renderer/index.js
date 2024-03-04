@@ -1,8 +1,6 @@
-/* eslint-disable no-template-curly-in-string */
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { parsers } from '@rdfjs/formats-common'
-import absoluteUrl from 'absolute-url'
 
 import rdf from '@zazuko/env'
 import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core'
@@ -36,14 +34,89 @@ const replaceIriInQuery = (query, iri) => {
   return query.split('{{iri}}').join(iri)
 }
 
+const streamToString = (stream) => {
+  const chunks = []
+  return new Promise((resolve, reject) => {
+    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)))
+    stream.on('error', (err) => reject(err))
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
+  })
+}
+
+const defaultConfiguration = {
+  resourceNoSlash: true,
+  resourceExistsQuery: 'ASK { <{{iri}}> ?p ?o }',
+  resourceGraphQuery: 'DESCRIBE <{{iri}}>',
+  containerExistsQuery: 'ASK { ?s a ?o. FILTER REGEX(STR(?s), "^{{iri}}") }',
+  containerGraphQuery:
+    'CONSTRUCT { ?s a ?o. } WHERE { ?s a ?o. FILTER REGEX(STR(?s), "^{{iri}}") }',
+  redirectQuery: `
+    PREFIX http2011: <http://www.w3.org/2011/http#>
+    PREFIX http2006: <http://www.w3.org/2006/http#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+    SELECT ?req ?res ?location ?responseCode ?validFrom
+    WHERE {
+      GRAPH ?g {
+
+        # Handle 2011 version
+        {
+          ?req2011 rdf:type http2011:GetRequest.
+          ?req2011 http2011:requestURI <{{iri}}>.
+          ?req2011 http2011:response ?res2011.
+
+          ?res2011 rdf:type http2011:Response.
+          ?res2011 http2011:location ?location2011.
+          ?res2011 http2011:responseCode ?responseCode2011.
+
+          OPTIONAL {
+            ?res2011 <http://schema.org/validFrom> ?validFrom2011.
+          }
+        }
+
+        UNION
+
+        # Handle 2006 version
+        {
+          ?req2006 rdf:type http2006:GetRequest.
+          ?req2006 http2006:requestURI <{{iri}}>.
+          ?req2006 http2006:response ?res2006.
+
+          ?res2006 rdf:type http2006:Response.
+          ?res2006 http2006:location ?location2006.
+          ?res2006 http2006:responseCode ?responseCode2006.
+
+          OPTIONAL {
+            ?res2006 <http://schema.org/validFrom> ?validFrom2006.
+          }
+        }
+
+        # Combine results, using priority for 2011 version over 2006 version
+        BIND(COALESCE(?req2011, ?req2006) AS ?req)
+        BIND(COALESCE(?res2011, ?res2006) AS ?res)
+        BIND(COALESCE(?location2011, ?location2006) AS ?location)
+        BIND(COALESCE(?validFrom2011, ?validFrom2006) AS ?validFrom)
+        # Just get the response code as a string instead of the full IRI
+        BIND(STRAFTER(STR(COALESCE(?responseCode2011, ?responseCode2006)), "#") AS ?responseCode)
+      }
+    }
+    LIMIT 1
+  `,
+  followRedirects: false,
+}
+
+const fixContentTypeHeader = (contentType) => {
+  return contentType.split(';')[0].trim().toLocaleLowerCase()
+}
+
 const factory = async (trifid) => {
   const { render, logger, config, query } = trifid
+  const mergedConfig = { ...defaultConfiguration, ...config }
   const entityRenderer = createEntityRenderer({ options: config, logger, query })
   const metadataProvider = createMetadataProvider({ options: config })
 
   const { path, ignorePaths, rewrite: rewriteConfigValue, datasetBaseUrl } = config
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
-
   const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
   const { rewrite: rewriteValue, replaceIri, iriOrigin } = rewriteConfig
   logger.debug(`Rewriting is ${rewriteValue ? 'enabled' : 'disabled'}`)
@@ -61,89 +134,121 @@ const factory = async (trifid) => {
     ignoredPaths = ['/query']
   }
 
-  return async (req, res, next) => {
-    // Check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
-    if (ignoredPaths.includes(req.path)) {
-      return next()
-    }
-
-    // Get the expected format from the Accept header or from the `format` query parameter
-    const acceptHeader = getAcceptHeader(req)
-
-    // Generate the IRI we expect
-    const iriUrl = new URL(encodeURI(absoluteUrl(req)))
-    iriUrl.search = ''
-    iriUrl.searchParams.forEach((_value, key) => iriUrl.searchParams.delete(key))
-    const iriUrlString = iriUrl.toString()
-    const iri = replaceIri(iriUrlString)
-    logger.debug(`IRI value: ${iri}${rewriteValue ? ' (rewritten)' : ''}`)
-    const rewriteResponse = rewriteValue
-      ? [
-        { find: datasetBaseUrl, replace: iriOrigin(iriUrlString) },
-      ]
-      : []
-
-    // Check if the IRI exists in the dataset
-    // @TODO: allow the user to configure the query
-    const askQuery = 'ASK { <{{iri}}> ?p ?o }'
-    const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
-    if (!exists) {
-      return next()
-    }
-
-    try {
-      // Get the entity from the dataset
-      // @TODO: allow the user to configure the query
-      const describeQuery = 'DESCRIBE <{{iri}}>'
-      const entity = await query(replaceIriInQuery(describeQuery, iri), {
-        ask: false,
-        rewriteResponse,
-      })
-      const entityContentType = entity.contentType || 'application/n-triples'
-      const entityStream = entity.response
-      if (!entityStream) {
-        return next()
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET'],
+        paths: ['/*'],
       }
+    },
+    routeHandler: async () => {
+      /**
+       * Route handler.
+       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyReply} reply Reply.
+       */
+      const handler = async (request, reply) => {
+        const currentPath = request.url.split('?')[0]
+        // Check if it is a path that needs to be ignored (check of type is already done at the load of the middleware)
+        if (ignoredPaths.includes(currentPath)) {
+          return reply.callNotFound()
+        }
 
-      // Make sure the Content-Type is lower case and without parameters (e.g. charset)
-      const fixedContentType = entityContentType.split(';')[0].trim().toLocaleLowerCase()
+        // Get the expected format from the Accept header or from the `format` query parameter
+        const acceptHeader = getAcceptHeader(request)
 
-      const quadStream = parsers.import(fixedContentType, entityStream)
+        // Generate the IRI we expect
+        const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+        const iriUrl = new URL(fullUrl)
+        iriUrl.search = ''
+        iriUrl.searchParams.forEach((_value, key) => iriUrl.searchParams.delete(key))
+        const iriUrlString = iriUrl.toString()
+        const iri = replaceIri(iriUrlString)
+        const isContainer = mergedConfig.resourceNoSlash && iri.endsWith('/')
+        logger.debug(`IRI value: ${iri}${rewriteValue ? ' (rewritten)' : ''} - is container: ${isContainer ? 'true' : 'false'}`)
+        const rewriteResponse = rewriteValue
+          ? [
+            { find: datasetBaseUrl, replace: iriOrigin(iriUrlString) },
+          ]
+          : []
 
-      if (sparqlSupportedTypes.includes(acceptHeader)) {
-        const serialized = await sparqlSerializeQuadStream(quadStream, acceptHeader)
-        res.setHeader('Content-Type', acceptHeader)
-        res.send(serialized)
-        return
+        // Check if the IRI exists in the dataset
+        const askQuery = isContainer ? mergedConfig.containerExistsQuery : mergedConfig.resourceExistsQuery
+        const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
+        if (!exists) {
+          return reply.callNotFound()
+        }
+
+        try {
+          // Check if there is a redirect for the IRI
+          if (mergedConfig.followRedirects) {
+            const redirect = await query(replaceIriInQuery(mergedConfig.redirectQuery, iri), {
+              ask: false,
+              select: true, // Force the parsing of the response
+              rewriteResponse,
+            })
+            if (redirect.length > 0) {
+              const entityRedirect = redirect[0]
+              const { responseCode, location } = entityRedirect
+              if (responseCode && location && responseCode.value && location.value) {
+                logger.debug(`Redirecting <${iri}> to <${location.value}> (HTTP ${responseCode.value})`)
+                return reply.status(parseInt(responseCode.value, 10)).redirect(location.value)
+              } else {
+                logger.warn('Redirect query did not return the expected results')
+              }
+            }
+          }
+
+          // Get the entity from the dataset
+          const describeQuery = isContainer ? mergedConfig.containerGraphQuery : mergedConfig.resourceGraphQuery
+          const entity = await query(replaceIriInQuery(describeQuery, iri), {
+            ask: false,
+            rewriteResponse,
+          })
+          const entityContentType = entity.contentType || 'application/n-triples'
+          const entityStream = entity.response
+          if (!entityStream) {
+            return reply.callNotFound()
+          }
+
+          // Make sure the Content-Type is lower case and without parameters (e.g. charset)
+          const fixedContentType = fixContentTypeHeader(entityContentType)
+          const quadStream = parsers.import(fixedContentType, entityStream)
+
+          if (sparqlSupportedTypes.includes(acceptHeader)) {
+            const serialized = await sparqlSerializeQuadStream(quadStream, acceptHeader)
+            reply.type(acceptHeader).send(serialized)
+            return
+          }
+
+          const dataset = await rdf.dataset().import(quadStream)
+
+          const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
+            request,
+            {
+              dataset,
+              rewriteResponse,
+              replaceIri,
+              entityRoot: rewriteValue ? iri.replace(datasetBaseUrl, iriOrigin(iriUrlString)) : iri,
+            },
+          )
+          const metadata = await metadataProvider(request, { dataset })
+
+          reply.type('text/html').send(await render(entityTemplatePath, {
+            dataset: entityHtml,
+            locals: {},
+            entityLabel,
+            entityUrl,
+            metadata,
+            config,
+          }))
+        } catch (e) {
+          logger.error(e)
+          return reply.callNotFound()
+        }
       }
-
-      const dataset = await rdf.dataset().import(quadStream)
-
-      const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
-        req,
-        res,
-        {
-          dataset,
-          rewriteResponse,
-          replaceIri,
-          entityRoot: rewriteValue ? iri.replace(datasetBaseUrl, iriOrigin(iriUrlString)) : iri,
-        },
-      )
-      const metadata = await metadataProvider(req, { dataset })
-
-      res.setHeader('Content-Type', 'text/html')
-      res.send(await render(entityTemplatePath, {
-        dataset: entityHtml,
-        locals: res.locals,
-        entityLabel,
-        entityUrl,
-        metadata,
-        config,
-      }))
-    } catch (e) {
-      logger.error(e)
-      return next()
-    }
+      return handler
+    },
   }
 }
 

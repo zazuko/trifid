@@ -1,6 +1,7 @@
 // @ts-check
-import fs from 'fs/promises'
-import { dirname } from 'path'
+import fs from 'node:fs/promises'
+import { dirname } from 'node:path'
+
 import merge from 'lodash/merge.js'
 import JSON5 from 'json5'
 import { parse } from 'yaml'

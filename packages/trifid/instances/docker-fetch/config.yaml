@@ -3,11 +3,11 @@
 
 globals:
   datasetBaseUrl: env:DATASET_BASE_URL
+  endpoints:
+    default:
+      url: /query
 
 middlewares:
-  morgan:
-    module: file:../../middlewares/morgan.js
-
   static-assets:
     module: trifid-core/middlewares/static.js
     order: 0
@@ -25,6 +25,14 @@ middlewares:
   yasgui:
     module: trifid-plugin-yasgui
     paths: /sparql
+
+  graph-explorer:
+    module: trifid-plugin-graph-explorer
+    paths: /graph-explorer
+
+  spex:
+    module: trifid-plugin-spex
+    paths: /spex
 
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"

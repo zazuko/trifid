@@ -2,15 +2,15 @@ server:
   logLevel: debug
 
 globals:
+  datasetBaseUrl: http://localhost:3000/
   endpoints:
     default:
       url: /query
 
 middlewares:
-  entity-host-web-page:
+  welcome-page:
     module: trifid-core/middlewares/view.js
     paths: /
-    methods: GET
     config:
       path: file:../views/welcome.hbs
 

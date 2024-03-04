@@ -8,38 +8,10 @@ import chaiSubset from 'chai-subset'
 import * as xml from 'xml2js'
 import xpath from 'xml2js-xpath'
 import { describe, it } from 'mocha'
-import trifidCore from 'trifid-core'
-import ckanTrifidPlugin from '../src/index.js'
 import { convertLegacyFrequency } from '../src/xml.js'
-import { storeMiddleware } from './support/store.js'
-import { getListenerURL } from './support/utils.js'
+import { createTrifidInstance, getListenerURL } from './support/utils.js'
 
 chai.use(chaiSubset)
-
-const createTrifidInstance = async () => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 0,
-      },
-      logLevel: 'warn',
-    },
-  }, {
-    store: {
-      module: storeMiddleware,
-      paths: ['/query'],
-      methods: ['GET', 'POST'],
-    },
-    ckan: {
-      module: ckanTrifidPlugin,
-      paths: ['/ckan'],
-      methods: ['GET'],
-      config: {
-        endpointUrl: '/query',
-      },
-    },
-  })
-}
 
 /**
  * Remove prefixes from the body.
@@ -55,12 +27,12 @@ describe('@zazuko/trifid-plugin-ckan', () => {
   let trifidListener
 
   beforeEach(async () => {
-    const trifidInstance = await createTrifidInstance()
+    const trifidInstance = await createTrifidInstance({ logLevel: 'warn' })
     trifidListener = await trifidInstance.start()
   })
 
-  afterEach(() => {
-    trifidListener.close()
+  afterEach(async () => {
+    await trifidListener.close()
   })
 
   describe('basic tests', () => {

@@ -1,6 +1,15 @@
 // @ts-check
+
+import { readFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import Ajv from 'ajv'
-import schema from './schema.js'
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
+const schemaPath = join(currentDir, 'schema.json')
+const schemaContent = await readFile(schemaPath, 'utf8')
+const schema = JSON.parse(schemaContent)
 
 // @ts-ignore
 const ajv = new Ajv()

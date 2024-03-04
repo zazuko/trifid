@@ -1,105 +1,81 @@
-import assert from 'assert'
-import request from 'supertest'
-import { describe, it } from 'mocha'
-import express from 'express'
-import absoluteUrl from 'absolute-url'
-import trifidFactory from '../index.js'
+// @ts-check
 
-const createTrifidConfig = (app, config) => {
-  const server = app
-  const logger = console
-  const render = (filePath, context, options) => {
-    return JSON.stringify(
-      {
-        filePath,
-        context,
-        options,
-      },
-      null,
-      2,
-    )
+import { strictEqual } from 'node:assert'
+
+import trifidCore from 'trifid-core'
+import { describe } from 'mocha'
+
+import trifidPluginFactory from '../index.js'
+
+/**
+ * Get an endpoint of the Fastify Instance.
+ *
+ * @param {import('fastify').FastifyInstance} server Server.
+ * @returns {string}
+ */
+const getListenerURL = (server) => {
+  const addresses = server.addresses().map((address) => {
+    if (typeof address === 'string') {
+      return address
+    }
+    return `http://${address.address}:${address.port}`
+  })
+
+  if (addresses.length < 1) {
+    throw new Error('The listener is not listening')
   }
 
-  return {
-    config,
-    server,
-    logger,
-    render,
-  }
+  return addresses[0]
 }
 
 describe('trifid-plugin-yasgui', () => {
-  describe('trifid factory', () => {
-    it('should create a middleware with factory and default options', async () => {
-      const app = express()
-      const trifid = createTrifidConfig(app, {})
-      const middleware = await trifidFactory(trifid)
+  let trifidListener
 
-      assert.strictEqual(typeof middleware, 'function')
-    })
+  beforeEach(async () => {
+    const trifidServer = await trifidCore(
+      {
+        server: {
+          listener: {
+            port: 0,
+          },
+          logLevel: 'warn',
+        },
+      },
+      {
+        yasgui: {
+          module: trifidPluginFactory,
+        },
+      },
+    )
+    trifidListener = await trifidServer.start()
   })
 
-  describe('middleware', () => {
-    it('can execute', (done) => {
-      const app = express()
-      app.use(absoluteUrl())
-
-      const trifidConfig = createTrifidConfig(app, {})
-      trifidFactory(trifidConfig).then((middleware) => {
-        app.use('/sparql', middleware)
-        request(app)
-          .get('/sparql')
-          .expect(200)
-          .end((err, _res) => {
-            if (err) {
-              done(err)
-            } else {
-              done()
-            }
-          })
-      })
-    })
+  afterEach(async () => {
+    await trifidListener.close()
   })
 
-  describe('YASGUI dist', () => {
-    it('can serve static CSS style', (done) => {
-      const app = express()
-      app.use(absoluteUrl())
+  it('can serve YASGUI', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/sparql/`)
+    const _body = await res.text() // Just make sure that the stream is consumed
+    strictEqual(res.status, 200)
+  })
 
-      const trifidConfig = createTrifidConfig(app, {})
-      trifidFactory(trifidConfig).then((middleware) => {
-        app.use('/sparql', middleware)
-        request(app)
-          .get('/yasgui-dist/yasgui.min.css')
-          .expect(200)
-          .end((err, _res) => {
-            if (err) {
-              done(err)
-            } else {
-              done()
-            }
-          })
-      })
-    })
+  it('should redirect if trailing slash is missing', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/sparql`)
+    const _body = await res.text() // Just make sure that the stream is consumed
+    strictEqual(res.status, 200) // The redirection should lead to a correct page
+    strictEqual(res.redirected, true) // Check the redirection
+  })
 
-    it('can serve static JavaScript script', (done) => {
-      const app = express()
-      app.use(absoluteUrl())
+  it('can serve static CSS style', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-dist/yasgui.min.css`)
+    const _body = await res.text() // Just make sure that the stream is consumed
+    strictEqual(res.status, 200)
+  })
 
-      const trifidConfig = createTrifidConfig(app, {})
-      trifidFactory(trifidConfig).then((middleware) => {
-        app.use('/sparql', middleware)
-        request(app)
-          .get('/yasgui-dist/yasgui.min.js')
-          .expect(200)
-          .end((err, _res) => {
-            if (err) {
-              done(err)
-            } else {
-              done()
-            }
-          })
-      })
-    })
+  it('can serve static JavaScript script', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-dist/yasgui.min.js`)
+    const _body = await res.text() // Just make sure that the stream is consumed
+    strictEqual(res.status, 200)
   })
 })

@@ -35,7 +35,8 @@ const toBoolean = (val) => {
  * Render HTML.
  */
 const createEntityRenderer = ({ options = {}, logger, query }) => {
-  return async (req, res, { dataset, rewriteResponse, replaceIri, entityRoot }) => {
+  return async (req, { dataset, rewriteResponse, replaceIri, entityRoot }) => {
+    const currentLanguage = req.session.get('currentLanguage') || req.session.get('defaultLanguage') || 'en'
     const rendererConfig = { ...DEFAULTS, ...options }
 
     // Honor parameters in the request
@@ -71,8 +72,8 @@ const createEntityRenderer = ({ options = {}, logger, query }) => {
     }
 
     rendererConfig.highlightLanguage =
-      req.query.highlightLanguage ??
-      res.locals.currentLanguage ??
+      req.query.highlightLanguage ||
+      currentLanguage ||
       rendererConfig.preferredLanguages[0]
 
     if (req.query.compactMode !== undefined) {
@@ -117,11 +118,10 @@ const createEntityRenderer = ({ options = {}, logger, query }) => {
         logger,
       })
       const quadChunks = await labelLoader.tryFetchAll(cf)
-      const labelQuads = quadChunks.filter((notNull) => notNull).flat()
-      logger?.debug(
-        `Got ${labelQuads.length} new labels`,
-      )
-      externalLabels.dataset.addAll(labelQuads)
+
+      quadChunks.forEach((chunk) => {
+        externalLabels.dataset.addAll(chunk)
+      })
     }
     rendererConfig.externalLabels = externalLabels
 

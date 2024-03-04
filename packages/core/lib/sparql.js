@@ -207,20 +207,21 @@ export const getRewriteConfiguration = (value, datasetBaseUrl) => {
 /**
  * @typedef {Object} QueryOptions
  * @property {boolean} [ask] Is it a ASK query?
+ * @property {boolean} [select] Is it a SELECT query?
  * @property {Array<RewriteResponseOptions>} [rewriteResponse] Replace strings in the response.
  */
 
 /**
  * @typedef {Object} SPARQLClient
  * @property {{parsing: ParsingClient, simple: SimpleClient}} clients Supported clients.
- * @property {(query: string, options?: QueryOptions) => Promise<QueryResult | boolean>} query Query function.
+ * @property {(query: string, options?: QueryOptions) => Promise<QueryResult | Array<import('sparql-http-client/ResultParser.js').ResultRow> | boolean>} query Query function.
  */
 
 /**
  * Generate a SPARQL client.
  *
  * @param {string} sparqlEndpoint The SPARQL endpoint URL.
- * @param {Object} options Options.
+ * @param {QueryOptions} options Options.
  * @returns {SPARQLClient} The SPARQL client.
  */
 export const generateClient = (sparqlEndpoint, options) => {
@@ -233,14 +234,38 @@ export const generateClient = (sparqlEndpoint, options) => {
    *
    * @param {string} query The SPARQL query to use.
    * @param {QueryOptions?} [options] Query options.
-   * @returns {Promise<QueryResult | boolean>} The quad stream or boolean for ASK queries.
+   * @returns {Promise<QueryResult | Array<import('sparql-http-client/ResultParser.js').ResultRow> | boolean>} The quad stream or boolean for ASK queries.
    */
   const query = async (query, options = {}) => {
     const isAsk = options && options.ask
+    const isSelect = options && options.select
     const rewriteResponse = (options && options.rewriteResponse) || []
 
     if (isAsk) {
       return await clients.parsing.query.ask(query)
+    }
+
+    if (isSelect) {
+      const selectResults = await clients.parsing.query.select(query)
+      const replacedSelectResults = selectResults.map((row) => {
+        for (const key in row) {
+          if (!Object.prototype.hasOwnProperty.call(row, key) || !row[key].value) {
+            continue
+          }
+
+          let value = row[key].value
+          if (typeof value !== 'string') {
+            continue
+          }
+
+          for (const replacement of rewriteResponse) {
+            value = value.replace(replacement.find, replacement.replace)
+          }
+          row[key].value = value
+        }
+        return row
+      })
+      return replacedSelectResults
     }
 
     const result = await clients.simple.query.construct(query)

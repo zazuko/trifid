@@ -3,15 +3,11 @@
 
 globals:
   datasetBaseUrl: env:DATASET_BASE_URL
-  sparqlEndpoint:
-    url: env:SPARQL_ENDPOINT_URL
-    username: env:SPARQL_ENDPOINT_USERNAME
-    password: env:SPARQL_ENDPOINT_PASSWORD
+  endpoints:
+    default:
+      url: /query
 
 middlewares:
-  morgan:
-    module: file:../../middlewares/morgan.js
-
   static-assets:
     module: trifid-core/middlewares/static.js
     order: 0
@@ -54,10 +50,9 @@ middlewares:
     config:
       queryOperation: postQueryUrlencoded
       rewriteQueries: true
-      cache:
-        prefix: env:SPARQL_PROXY_CACHE_PREFIX
-        url: env:SPARQL_PROXY_CACHE_URL
-        clearAtStartup: env:SPARQL_PROXY_CACHE_CLEAR_AT_STARTUP
+      endpointUrl: env:SPARQL_ENDPOINT_URL
+      username: env:SPARQL_ENDPOINT_USERNAME
+      password: env:SPARQL_ENDPOINT_PASSWORD
 
   handle-redirects:
     module: "@zazuko/trifid-handle-redirects"

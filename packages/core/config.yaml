@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=./lib/config/schema.json
+
 extends:
   - file:./config2.json
 

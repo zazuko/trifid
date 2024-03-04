@@ -18,7 +18,9 @@ middlewares:
   # […] your other middlewares
   yasgui:
     module: trifid-plugin-yasgui
-    paths: /sparql
+    paths: # by default
+      - /sparql
+      - /sparql/
     config:
       endpointUrl: https://example.com/query
       urlShortener: https://example.com/api/v1/shorten

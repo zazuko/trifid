@@ -19,7 +19,9 @@ middlewares:
   # […] your other middlewares
   spex:
     module: trifid-plugin-spex
-    paths: /spex
+    paths: # by default
+      - /spex
+      - /spex/
     config:
       prefixes:
         - prefix: ex

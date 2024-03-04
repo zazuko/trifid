@@ -9,7 +9,8 @@
     "test": "npx wsrun --report -msc test",
     "release": "changeset publish",
     "prepare": "husky install",
-    "build": "npx wsrun --report -msc prepack"
+    "build": "npx wsrun --report -msc prepack",
+    "clean": "npx wsrun --report -msc clean"
   },
   "workspaces": [
     "packages/*"
@@ -27,6 +28,7 @@
     "@tpluscode/eslint-config": "^0.4.4",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
+    "type-detect": "^4.0.8",
     "typescript": "^5.3.3",
     "wsrun": "^5.2.4"
   }

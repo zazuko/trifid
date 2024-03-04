@@ -15,7 +15,6 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "true",
     "help": "node server.js --help",
     "start:tbbt": "node server.js -c instances/tbbt/config.yaml",
     "start": "npm run start:tbbt"
@@ -28,7 +27,6 @@
     "@zazuko/trifid-plugin-sparql-proxy": "^1.2.0",
     "@zazuko/trifid-entity-renderer": "^0.6.2",
     "commander": "^12.0.0",
-    "morgan": "^1.10.0",
     "trifid-core": "^2.7.1",
     "trifid-handler-fetch": "^2.0.1",
     "trifid-plugin-graph-explorer": "^1.0.2",

@@ -12,9 +12,6 @@ globals:
       url: /query
 
 middlewares:
-  morgan:
-    module: file:../../middlewares/morgan.js
-
   welcome:
     module: trifid-core/middlewares/view.js
     paths: /
@@ -25,6 +22,14 @@ middlewares:
   yasgui:
     module: trifid-plugin-yasgui
     paths: /sparql
+
+  graph-explorer:
+    module: trifid-plugin-graph-explorer
+    paths: /graph-explorer
+
+  spex:
+    module: trifid-plugin-spex
+    paths: /spex
 
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"

@@ -1,42 +1,24 @@
-import cookieParser from 'cookie-parser'
+// @ts-check
+
 import i18n from 'i18n'
-import express from 'express'
 
-const { configure: i18nConfigure, init: i18nInit } = i18n
+const I18n = i18n.I18n
 
+/** @type {i18n.ConfigurationOptions} */
 const defaults = {
-  cookie: 'i18n',
   queryParameter: 'lang',
   directory: 'locales',
-  api: {
-    __: 't',
-    __n: 'tn',
-  },
-  cookieMaxAge: 30 * 24 * 60 * 60 * 1000,
+  indent: '  ',
+  extension: '.json',
+  objectNotation: true,
+  logDebugFn: (_msg) => { },
+  logWarnFn: (_msg) => { },
+  logErrorFn: (_msg) => { },
 }
 
-export const middleware = (config) => {
-  config = { ...defaults, ...config }
-
-  const middlewareRouter = express.Router()
-
-  i18nConfigure(config)
-
-  middlewareRouter.use(cookieParser(), i18nInit, (req, res, next) => {
-    if (req.cookies.i18n !== res.locals.locale) {
-      res.cookie(config.cookie, res.locals.locale, {
-        maxAge: config.cookieMaxAge,
-      })
-    }
-
-    next()
-  })
-
-  return middlewareRouter
-}
-
-const factory = (trifid) => {
-  const { config, registerTemplateHelper } = trifid
+/** @type {import('../core/types/index.js').TrifidMiddleware} */
+const factory = async (trifid) => {
+  const { config, registerTemplateHelper, server } = trifid
 
   // Force user to define the `directory` parameter
   if (!config.directory || typeof config.directory !== 'string') {
@@ -45,21 +27,35 @@ const factory = (trifid) => {
     )
   }
 
-  // Use the middleware
-  trifid.server.use(middleware(config))
+  const i18nInstance = new I18n({
+    ...defaults,
+    ...config,
+  })
 
-  // Register the 'i18n' helper for the template engine
-  return (_req, res, next) => {
-    registerTemplateHelper('i18n', (value) => {
-      if (!res.locals.t || typeof res.locals.t !== 'function') {
-        return value
-      }
+  /**
+   * Hook to configure the language in the locals.
+   *
+   * @param {import('fastify').FastifyRequest<{ Querystring: { lang: string }}> & { session: Map<string, any> }} request Request.
+   * @param {import('fastify').FastifyReply} _reply Reply.
+   * @param {import('fastify').DoneFuncWithErrOrRes} done Done function.
+   */
+  const onRequestHookHandler = (request, _reply, done) => {
+    const session = request.session
+    const currentLanguage = session.get('currentLanguage') || session.get('defaultLanguage') || 'en'
+    i18nInstance.setLocale(currentLanguage)
+    const t = (/** @type {string} **/ phrase) => i18nInstance.__({
+      phrase,
+      locale: currentLanguage,
+    })
+    session.set('t', t)
 
-      return res.locals.t(value)
+    registerTemplateHelper('i18n', (/** @type {string} **/ value) => {
+      return t(value)
     })
 
-    next()
+    done()
   }
+  server.addHook('onRequest', onRequestHookHandler)
 }
 
 export default factory

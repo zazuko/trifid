@@ -1,4 +1,5 @@
 {
+  "$schema": "./lib/config/schema.json",
   "globals": {
     "value": "config2",
     "config2": "config2"
