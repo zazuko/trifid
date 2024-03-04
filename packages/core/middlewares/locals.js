@@ -19,18 +19,19 @@ const factory = async (trifid) => {
    * @param {import('fastify').DoneFuncWithErrOrRes} done Done function.
    */
   const onRequestHookHandler = (request, reply, done) => {
+    const session = request.session
     const currentLanguage = request.cookies.i18n || defaultLanguage
-    request.session.set('defaultLanguage', defaultLanguage)
-    request.session.set('currentLanguage', currentLanguage)
+    session.set('defaultLanguage', defaultLanguage)
+    session.set('currentLanguage', currentLanguage)
 
     const langQuery = request.query.lang || ''
     if (langQuery && supportedLanguages.includes(langQuery)) {
       logger.debug(`set default language to '${langQuery}'`)
       reply.setCookie('i18n', langQuery, { maxAge: oneMonthMilliseconds })
-      request.session.set('currentLanguage', langQuery)
+      session.set('currentLanguage', langQuery)
     }
 
-    if (!locals.has('t') || typeof locals.get('t') !== 'function') {
+    if (!session.has('t') || typeof session.get('t') !== 'function') {
       /**
        * Dummy translation function.
        * @param {string} x Translation key.
@@ -41,7 +42,7 @@ const factory = async (trifid) => {
         logger.debug(`translation value: ${translation}`)
         return translation
       }
-      locals.set('t', t)
+      session.set('t', t)
     }
 
     done()
