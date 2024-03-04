@@ -43,10 +43,14 @@ const factory = async (trifid) => {
     const session = request.session
     const currentLanguage = session.get('currentLanguage') || session.get('defaultLanguage') || 'en'
     i18nInstance.setLocale(currentLanguage)
-    session.set('t', i18nInstance.__)
+    const t = (/** @type {string} **/ phrase) => i18nInstance.__({
+      phrase,
+      locale: currentLanguage,
+    })
+    session.set('t', t)
 
     registerTemplateHelper('i18n', (/** @type {string} **/ value) => {
-      return i18nInstance.__(value)
+      return t(value)
     })
 
     done()

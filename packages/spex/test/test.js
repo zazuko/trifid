@@ -13,7 +13,7 @@ import trifidPluginFactory from '../index.js'
  * @param {import('fastify').FastifyInstance} server Server.
  * @returns {string}
  */
-export const getListenerURL = (server) => {
+const getListenerURL = (server) => {
   const addresses = server.addresses().map((address) => {
     if (typeof address === 'string') {
       return address
