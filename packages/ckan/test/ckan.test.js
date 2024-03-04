@@ -72,7 +72,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
         const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
 
         strictEqual(res.status, 200)
-        strictEqual(xmlText, expectedResult)
+        strictEqual(removePrefixesFromBody(xmlText), expectedResult)
       })
 
       it('should take publisher at face value', async () => {
