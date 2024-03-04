@@ -29,6 +29,7 @@ const toXML = (dataset) => {
       dcat: prefixes.dcat,
       dcterms: prefixes.dcterms,
       vcard: prefixes.vcard,
+      foaf: prefixes.foaf,
     },
   }, {
     'rdf:RDF': {
@@ -70,26 +71,45 @@ const toXML = (dataset) => {
             .filter(workExample => workExample.out(ns.schema.encodingFormat).terms.length > 0)
             .map(workExample => ({
               'dcat:Distribution': {
+                '@': { 'rdf:about': workExample.out(ns.schema.url).value },
                 'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
                 'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
                 'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
                 'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
-                'dcterms:rights': serializeTerm(copyright),
-                'dcterms:format': { '#': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)) },
+                'dcterms:license': serializeTerm(copyright),
+                'dcterms:format': {
+                  '@': {
+                    'rdf:resource': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)),
+                  },
+                },
               },
             }))
 
           const publishers = dataset.out(ns.dcterms.publisher)
-            .map(publisher => ({
-              'rdf:Description': {
-                'rdfs:label': publisher.value,
-              },
-            }))
+            .map(publisher => {
+              const attr = {}
+              /** @type {string | string[]} */
+              let name = publisher.value
+
+              if (isNamedNode(publisher)) {
+                attr['rdf:about'] = publisher.value
+                if (publisher.out(ns.schema.name).values.length > 0) {
+                  name = publisher.out(ns.schema.name).values
+                }
+              }
+
+              return {
+                'foaf:Organization': {
+                  '@': attr,
+                  'foaf:name': name,
+                },
+              }
+            })
 
           // Datasets contain a mix of legacy (DC) frequencies and new (EU) frequencies.
           // The query makes sure we get both legacy and new ones, we only
           // provide the new ones to CKAN, by converting legacy ones if needed.
-          const legacyFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency/'
+          const euFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency/'
           const accrualPeriodicity = dataset.out(ns.dcterms.accrualPeriodicity)
             .map((t) => {
               if (!t.term || !t.term.value) {
@@ -99,7 +119,7 @@ const toXML = (dataset) => {
               t.term.value = convertLegacyFrequency(t.term.value)
               return t
             })
-            .filter(({ term }) => term.value.startsWith(legacyFreqPrefix))
+            .filter(({ term }) => term.value.startsWith(euFreqPrefix))
 
           return {
             'dcat:Dataset': {
@@ -117,7 +137,10 @@ const toXML = (dataset) => {
               ),
               'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
               'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
-              'dcterms:relation': legalBasis,
+              'dcterms:relation': [
+                legalBasis,
+                serializeTerm(dataset.out(ns.dcterms.relation), { properties: [ns.rdfs.label] }),
+              ],
               'dcat:keyword': serializeTerm(keywords),
               'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
               'dcterms:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
@@ -126,6 +149,7 @@ const toXML = (dataset) => {
               // @ts-ignore
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
               'dcat:distribution': distributions,
+              'foaf:page': serializeTerm(dataset.out(ns.foaf.page)),
             },
           }
         }).filter(Boolean),
@@ -137,12 +161,13 @@ const toXML = (dataset) => {
 /**
  * Serialize a term.
  *
- * @param {import('clownface').AnyPointer} pointer Pointer to serialize.
- * @return {Record<string, unknown>[]} Serialized term.
+ * @param {import('clownface').MultiPointer | Array<import('clownface').GraphPointer>} pointer Pointer to serialize.
+ * @param {object} [options]
+ * @param {import('@rdfjs/types').NamedNode[]} [options.properties]
  */
-const serializeTerm = (pointer) => {
+const serializeTerm = (pointer, { properties = [] } = {}) => {
   return pointer.map((value) => {
-    return serializeLiteral(value) || serializeNamedNode(value) || serializeBlankNode(value) || {}
+    return serializeLiteral(value) || serializeNamedNode(value, properties) || serializeBlankNode(value) || {}
   })
 }
 
@@ -176,10 +201,25 @@ const serializeLiteral = (pointer) => {
  * Serialize a named node.
  *
  * @param {import('clownface').MultiPointer} pointer Pointer to serialize.
+ * @param {import('@rdfjs/types').NamedNode[]} [properties]
  * @return {Record<string, unknown>} Serialized named node.
  */
-const serializeNamedNode = (pointer) => {
+const serializeNamedNode = (pointer, properties = []) => {
   if (!isNamedNode(pointer)) return null
+
+  const propertyMap = properties.reduce((acc, property) => ({
+    ...acc,
+    [shrink(property.value)]: serializeTerm(pointer.out(property)),
+  }), {})
+
+  if (Object.keys(propertyMap).length > 0) {
+    return {
+      'rdf:Description': {
+        '@': { 'rdf:about': pointer.value },
+        ...propertyMap,
+      },
+    }
+  }
 
   return {
     '@': { 'rdf:resource': pointer.value },
@@ -225,13 +265,13 @@ const distributionFormatFromEncoding = (encodingPointer) => {
 
   switch (encoding) {
     case 'text/html': {
-      return 'HTML'
+      return 'http://publications.europa.eu/resource/authority/file-type/HTML'
     }
     case 'application/sparql-query': {
-      return 'SERVICE'
+      return 'http://publications.europa.eu/resource/authority/file-type/SPARQLQ'
     }
     default: {
-      return 'UNKNOWN'
+      return `https://www.iana.org/assignments/media-types/${encoding}`
     }
   }
 }

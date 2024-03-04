@@ -25,6 +25,9 @@ const removePrefixesFromBody = (body) => {
 
 describe('@zazuko/trifid-plugin-ckan', () => {
   let trifidListener
+  const parser = new xml.Parser({
+    explicitArray: false,
+  })
 
   beforeEach(async () => {
     const trifidInstance = await createTrifidInstance({ logLevel: 'warn' })
@@ -53,15 +56,40 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       strictEqual(removePrefixesFromBody(body), expectedResult)
     })
 
-    it('should get a basic result for a known organization', async () => {
-      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/my-org`
+    describe('example organization', () => {
+      let res
+      let xmlText
+      let xmlBody
 
-      const res = await fetch(ckanUrl)
-      const body = await res.text()
-      const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
+      beforeEach(async () => {
+        const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/my-org`
+        res = await fetch(ckanUrl)
+        xmlText = await res.text()
+        xmlBody = await parser.parseStringPromise(xmlText)
+      })
 
-      strictEqual(res.status, 200)
-      strictEqual(removePrefixesFromBody(body), expectedResult)
+      it('should get a basic result for a known organization', async () => {
+        const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8')
+
+        strictEqual(res.status, 200)
+        strictEqual(removePrefixesFromBody(xmlText), expectedResult)
+      })
+
+      it('should take publisher at face value', async () => {
+        const publisher = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:publisher')
+
+        const expected = await parser.parseStringPromise(`
+        <foaf:Organization>
+          <foaf:name>http://example.com/my-org</foaf:name>
+        </foaf:Organization>`)
+        expect(publisher).to.containSubset(expected)
+      })
+
+      it('should get landing page resource', () => {
+        const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage')
+
+        expect(landingPage.$['rdf:resource']).to.eq('https://example.com/')
+      })
     })
 
     it('should convert legacy frequency to EU frequency if possible', async () => {
@@ -111,16 +139,16 @@ describe('@zazuko/trifid-plugin-ckan', () => {
   })
 
   describe('BLW tests', () => {
-    const parser = new xml.Parser({
-      explicitArray: false,
+    let xmlBody
+
+    beforeEach(async () => {
+      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw`
+      const res = await fetch(ckanUrl)
+      xmlBody = await parser.parseStringPromise(await res.text())
     })
 
     it('should get a correct contactPoint', async () => {
-      const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw`
-
-      const res = await fetch(ckanUrl)
-      const body = await parser.parseStringPromise(await res.text())
-      const contactPoint = xpath.evalFirst(body, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:contactPoint')
+      const contactPoint = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:contactPoint')
 
       const expected = await parser.parseStringPromise(`
         <vcard:Organization>
@@ -128,6 +156,51 @@ describe('@zazuko/trifid-plugin-ckan', () => {
           <vcard:hasEmail rdf:resource="mailto:marktanalysen@blw.admin.ch"/>
         </vcard:Organization>`)
       expect(contactPoint).to.containSubset(expected)
+    })
+
+    it('should get structured publisher', async () => {
+      const publisher = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:publisher')
+
+      const expected = await parser.parseStringPromise(`
+        <foaf:Organization rdf:about="https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw">
+          <foaf:name>Bundesamt für Landwirtschaft</foaf:name>
+        </foaf:Organization>`)
+      expect(publisher).to.containSubset(expected)
+    })
+
+    it('should get landing page resource', () => {
+      const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage')
+
+      expect(landingPage.$['rdf:resource']).to.eq('https://agrarmarktdaten.admin.ch')
+    })
+
+    it('should use mapped themes', () => {
+      const themes = xpath.find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:theme')
+        .map(theme => theme.$['rdf:resource'])
+
+      expect(themes).to.contain.all.members([
+        'http://publications.europa.eu/resource/authority/data-theme/AGRI',
+        'http://publications.europa.eu/resource/authority/data-theme/GOVE',
+        'http://publications.europa.eu/resource/authority/data-theme/ECON',
+      ])
+      expect(themes).to.have.length(3)
+    })
+
+    it('should get temporal PeriodOfTime', async () => {
+      const themes = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:temporal')
+
+      const expected = await parser.parseStringPromise(`
+        <dcterms:PeriodOfTime>
+          <schema:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-01-01</schema:startDate>
+          <schema:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-12-31</schema:endDate>
+        </dcterms:PeriodOfTime>`)
+      expect(themes).to.containSubset(expected)
+    })
+
+    it('should build correct distribution format', async () => {
+      const format = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution/dcat:Distribution/dcterms:format')
+
+      expect(format.$['rdf:resource']).to.eq('http://publications.europa.eu/resource/authority/file-type/SPARQLQ')
     })
   })
 })
