@@ -21,15 +21,21 @@ plugins:
 
   yasgui:
     module: trifid-plugin-yasgui
-    paths: /sparql
+    paths:
+      - /sparql
+      - /sparql/
 
   graph-explorer:
     module: trifid-plugin-graph-explorer
-    paths: /graph-explorer
+    paths:
+      - /graph-explorer
+      - /graph-explorer/
 
   spex:
     module: trifid-plugin-spex
-    paths: /spex
+    paths:
+      - /spex
+      - /spex/
 
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"

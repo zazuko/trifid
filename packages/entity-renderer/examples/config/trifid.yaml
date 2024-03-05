@@ -18,7 +18,9 @@ plugins:
 
   yasgui:
     module: trifid-plugin-yasgui
-    paths: /sparql
+    paths:
+      - /sparql
+      - /sparql/
 
   fetch-handler:
     module: trifid-handler-fetch
