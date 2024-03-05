@@ -138,11 +138,30 @@
     line-height: 28px;
   }
 
-  /*Metadata CSS*/
+  /* Metadata CSS */
   .metadata-table {
+    margin: 48px auto;
     width: 100%;
     text-align: center;
-    border: 1px solid #e5e5e5
+    border: 1px solid var(--border);
+    border-collapse: collapse;
+    font-family: "Roboto", sans-serif;
+  }
+  .metadata-table th {
+    background-color: #d6d6d6;
+    border: 1px solid var(--border);
+    padding: 8px;
+  }
+  .metadata-table td {
+    border: 1px solid var(--border);
+    padding: 8px;
+  }
+  .metadata-table tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.01);
+  }
+  .metadata-table > caption {
+    padding: 16px;
+    font-weight: bold;
   }
 </style>
 
