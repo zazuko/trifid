@@ -25,6 +25,7 @@ plugins:
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
     config:
+      followRedirects: true
       labelLoader:
         chunkSize: 30
         concurrency: 2
@@ -57,6 +58,3 @@ plugins:
       endpointUrl: env:SPARQL_ENDPOINT_URL
       username: env:SPARQL_ENDPOINT_USERNAME
       password: env:SPARQL_ENDPOINT_PASSWORD
-
-  handle-redirects:
-    module: "@zazuko/trifid-handle-redirects"

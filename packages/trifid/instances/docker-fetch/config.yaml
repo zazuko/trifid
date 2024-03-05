@@ -43,6 +43,7 @@ plugins:
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
     config:
+      followRedirects: true
       labelLoader:
         chunkSize: 30
         concurrency: 2
