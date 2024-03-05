@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=../../../core/lib/config/schema.json
+
 server:
   logLevel: debug
 
