@@ -62,8 +62,6 @@ const apply = async (server, globals, plugins, logger, templateEngine, instanceH
     }
 
     if (!routeHandler) {
-      // @TODO: remove this when all plugins are up-to-date
-      logger.warn(`mount '${name}' plugin ; no handler found ; skipped`)
       continue
     }
 
