@@ -1,14 +1,11 @@
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
-  @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-
   body {
     --border: #d1d1d1;
     --metadata: #4f4f4f;
     --color-black: #000000;
   }
 
-  /*Entity renderer CSS*/
+  /* Entity renderer CSS */
   .entities {
     display: flex;
     flex-direction: column;
@@ -117,27 +114,6 @@
     max-width: 200px;
   }
 
-  /* Header CSS */
-  .trifid-entity-renderer {
-    padding: 100px 0;
-    text-align: center;
-    background: #fcfcfc;
-    border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 100px;
-    font-family: "Roboto", sans-serif;
-  }
-  .trifid-entity-renderer h1 {
-    font-size: 50px;
-    line-height: 50px;
-    padding-bottom: 16px;
-    font-weight: 700;
-    font-family: "Playfair Display", serif;
-  }
-  .trifid-entity-renderer p {
-    font-size: 24px;
-    line-height: 28px;
-  }
-
   /* Metadata CSS */
   .metadata-table {
     margin: 48px auto;
@@ -166,7 +142,7 @@
 </style>
 
 {{#if entityLabel}}
-  <div class="trifid-entity-renderer">
+  <div class="trifid-header-title">
     <div class="trifid-content">
       <div class="container">
         <h1>{{entityLabel}}</h1>

@@ -1,3 +1,7 @@
+/* Import fonts */
+@import url('/static/core-fonts/roboto/index.css');
+@import url('/static/core-fonts/playfair-display/index.css');
+
 * {
   box-sizing: border-box;
 }
@@ -28,6 +32,7 @@ a {
 .trifid-footer {
   background-color: #ffb15e;
   height: 100px;
+  box-sizing: border-box;
 }
 
 .trifid-header .logo-block {
@@ -70,4 +75,104 @@ a {
 
 .trifid-main {
   flex: 1;
+}
+
+@media screen and (max-width: 1200px) {
+  .trifid-content {
+    padding: 16px;
+  }
+
+  .trifid-header .trifid-content,
+  .trifid-footer .trifid-content {
+    padding: 0;
+  }
+
+  .trifid-header,
+  .trifid-header .logo-block {
+    height: 50px;
+  }
+
+  .trifid-header img {
+    height: 32px;
+  }
+}
+
+/* Header title */
+.trifid-header-title {
+  padding: 100px 0;
+  text-align: center;
+  background: #fcfcfc;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 100px;
+  font-family: "Roboto", sans-serif;
+}
+
+.trifid-header-title h1 {
+  font-size: 50px;
+  line-height: 50px;
+  padding-bottom: 16px;
+  font-weight: 700;
+  font-family: "Playfair Display", serif;
+}
+
+.trifid-header-title p {
+  font-size: 24px;
+  line-height: 28px;
+}
+
+/* Small header title */
+.trifid-header-title-small {
+  padding: 42px 0;
+  text-align: center;
+  background: #fcfcfc;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 18px;
+  font-family: "Roboto", sans-serif;
+}
+
+.trifid-header-title-small h1 {
+  font-size: 42px;
+  line-height: 42px;
+  padding-bottom: 12px;
+  font-weight: 700;
+  font-family: "Playfair Display", serif;
+}
+
+.trifid-header-title-small p {
+  font-size: 24px;
+  line-height: 28px;
+}
+
+@media screen and (max-width: 1200px) {
+  .trifid-header-title {
+    padding: 48px 0;
+    margin-bottom: 48px;
+  }
+
+  .trifid-header-title h1 {
+    font-size: 42px;
+    line-height: 42px;
+    padding-bottom: 12px;
+  }
+
+  .trifid-header-title p {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .trifid-header-title-small {
+    padding: 24px 0;
+    margin-bottom: 12px;
+  }
+
+  .trifid-header-title-small h1 {
+    font-size: 32px;
+    line-height: 32px;
+    padding-bottom: 8px;
+  }
+
+  .trifid-header-title-small p {
+    font-size: 18px;
+    line-height: 22px;
+  }
 }
