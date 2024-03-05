@@ -1,5 +1,21 @@
 # @zazuko/trifid-plugin-ckan
 
+## 3.0.0
+
+### Major Changes
+
+- e6deaec: Output [europa.eu themes](https://publications.europa.eu/resource/authority/data-theme) explicitly mapped using `schema:sameAs`. Themes without a mapping are not included in the output.
+- e84b484: Use new output for the `dcat:Distribution/dcterms:format`, linking to [europa.eu controlled vocabulary](https://publications.europa.eu/resource/authority/file-type)
+
+### Minor Changes
+
+- 4417b94: Export `dcterms:relation` from source cube
+
+### Patch Changes
+
+- e06cf6d: Added `foaf:page` - dataset documentation
+- f916d8a: Map old and new category identifiers to the new controled vocabulary required by DCAT-AP handbook
+
 ## 2.4.3
 
 ### Patch Changes
