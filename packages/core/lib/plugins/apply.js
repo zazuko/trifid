@@ -29,7 +29,7 @@ const apply = async (server, globals, plugins, logger, templateEngine, instanceH
     const pluginLogger = logger.child({ name })
     const query = querySparql(logger.child({ name: `${name}:query` }))
 
-    let pluginConfig = {
+    const pluginConfig = {
       paths,
       hosts,
       methods,
@@ -52,7 +52,15 @@ const apply = async (server, globals, plugins, logger, templateEngine, instanceH
       if (loadedPlugin.defaultConfiguration) {
         const defaultConfiguration = await loadedPlugin.defaultConfiguration()
         if (defaultConfiguration) {
-          pluginConfig = merge({}, defaultConfiguration, pluginConfig)
+          if (defaultConfiguration.paths && pluginConfig.paths.length === 0) {
+            pluginConfig.paths = defaultConfiguration.paths
+          }
+          if (defaultConfiguration.hosts && pluginConfig.hosts.length === 0) {
+            pluginConfig.hosts = defaultConfiguration.hosts
+          }
+          if (defaultConfiguration.methods && pluginConfig.methods.length === 0) {
+            pluginConfig.methods = defaultConfiguration.methods
+          }
         }
       }
 
