@@ -18,6 +18,10 @@
     "index.js"
   ],
   "dependencies": {
+    "string-replace-stream": "^0.0.2",
     "trifid-core": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24"
   }
 }

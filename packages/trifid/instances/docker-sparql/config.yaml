@@ -1,5 +1,5 @@
-# server:
-#   logLevel: debug
+server:
+  logLevel: debug
 
 globals:
   datasetBaseUrl: env:DATASET_BASE_URL
@@ -53,8 +53,10 @@ plugins:
     module: "@zazuko/trifid-plugin-sparql-proxy"
     paths: /query
     config:
-      queryOperation: postQueryUrlencoded
-      rewriteQueries: true
+      allowRewriteToggle: true
+      rewrite: false
+      rewriteQuery: true
+      rewriteResults: true
       endpointUrl: env:SPARQL_ENDPOINT_URL
       username: env:SPARQL_ENDPOINT_USERNAME
       password: env:SPARQL_ENDPOINT_PASSWORD

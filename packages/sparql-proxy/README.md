@@ -17,8 +17,16 @@ plugins:
     module: "@zazuko/trifid-plugin-sparql-proxy"
     paths: /query
     config:
+      # The endpoint URL is the only required field
       endpointUrl: https://example.com/query
-      # The following fields are not required:
+
+      # In case your endpoint requires authentication:
       username: admin
       password: secret
+
+      # Rewriting configuration
+      allowRewriteToggle: true # Allow the user to toggle the rewrite configuration using the `rewrite` query parameter, even if `rewrite` is set to false
+      rewrite: false # Rewrite by default
+      rewriteQuery: true # Allow rewriting the query (in case of rewriting)
+      rewriteResults: true # Allow rewriting the results (in case of rewriting)
 ```

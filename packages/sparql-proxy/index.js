@@ -1,9 +1,18 @@
 // @ts-check
 
+import { Readable } from 'node:stream'
+import { sparqlGetRewriteConfiguration } from 'trifid-core'
+import replaceStream from 'string-replace-stream'
+
 const defaultConfiguration = {
   endpointUrl: '',
   username: '',
   password: '',
+  datasetBaseUrl: '',
+  allowRewriteToggle: true, // Allow the user to toggle the rewrite configuration using the `rewrite` query parameter.
+  rewrite: false, // Rewrite by default
+  rewriteQuery: true, // Allow rewriting the query
+  rewriteResults: true, // Allow rewriting the results
 }
 
 /**
@@ -32,6 +41,11 @@ const factory = async (trifid) => {
     authorizationHeader = authBasicHeader(options.username, options.password)
   }
 
+  const datasetBaseUrl = options.datasetBaseUrl
+  const allowRewriteToggle = options.allowRewriteToggle
+  const rewriteConfigValue = options.rewrite
+  const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
+
   return {
     defaultConfiguration: async () => {
       return {
@@ -48,6 +62,7 @@ const factory = async (trifid) => {
        *
        * @typedef {Object} QueryString
        * @property {string} [query] The SPARQL query.
+       * @property {string} [rewrite] Should the query and the results be rewritten?
        */
 
       /**
@@ -66,10 +81,28 @@ const factory = async (trifid) => {
         const fullUrlObject = new URL(fullUrl)
         const fullUrlPathname = fullUrlObject.pathname
 
+        // Generate the IRI we expect
+        fullUrlObject.search = ''
+        fullUrlObject.searchParams.forEach((_value, key) => fullUrlObject.searchParams.delete(key))
+        const iriUrlString = fullUrlObject.toString()
+
         // Enforce non-trailing slash
         if (fullUrlPathname.slice(-1) === '/') {
           return reply.redirect(`${fullUrlPathname.slice(0, -1)}`)
         }
+
+        let currentRewriteConfig = rewriteConfig
+        if (allowRewriteToggle) {
+          const rewriteConfigValueFromQuery = `${request.query.rewrite}` || rewriteConfigValue
+          currentRewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValueFromQuery, datasetBaseUrl)
+        }
+        const { rewrite: rewriteValue, iriOrigin } = currentRewriteConfig
+        const rewriteResponse = rewriteValue
+          ? {
+            origin: datasetBaseUrl,
+            replacement: iriOrigin(iriUrlString),
+          }
+          : false
 
         let query = ''
         switch (request.method) {
@@ -94,9 +127,12 @@ const factory = async (trifid) => {
             return reply.code(405).send('Method Not Allowed')
         }
 
-        logger.debug('Got a request to the sparql proxy')
+        if (rewriteResponse && options.rewriteQuery) {
+          query = query.replaceAll(rewriteResponse.replacement, rewriteResponse.origin)
+        }
 
-        logger.debug(`Received query: ${query}`)
+        logger.debug('Got a request to the sparql proxy')
+        logger.debug(`Received query${rewriteValue ? ' (rewritten)' : ''}:\n${query}`)
 
         try {
           const acceptHeader = request.headers.accept || 'application/sparql-results+json'
@@ -114,11 +150,27 @@ const factory = async (trifid) => {
           })
 
           const contentType = response.headers.get('content-type')
-          return reply.status(response.status).header('content-type', contentType).send(response.body)
+
+          let responseStream = response.body
+          if (rewriteResponse && options.rewriteResults) {
+            responseStream = Readable
+              .from(responseStream)
+              .pipe(replaceStream(
+                rewriteResponse.origin,
+                rewriteResponse.replacement,
+              ))
+          }
+
+          return reply
+            .status(response.status)
+            .header('content-type', contentType)
+            .send(responseStream)
         } catch (error) {
           logger.error('Error while querying the endpoint')
           logger.error(error)
-          return reply.code(500).send('Error while querying the endpoint')
+          return reply
+            .code(500)
+            .send('Error while querying the endpoint')
         }
       }
       return handler
