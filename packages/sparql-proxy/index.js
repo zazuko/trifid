@@ -93,7 +93,14 @@ const factory = async (trifid) => {
 
         let currentRewriteConfig = rewriteConfig
         if (allowRewriteToggle) {
-          const rewriteConfigValueFromQuery = `${request.query.rewrite}` || rewriteConfigValue
+          let rewriteConfigValueFromQuery = rewriteConfigValue
+          if (`${request.query.rewrite}` === 'false') {
+            rewriteConfigValueFromQuery = false
+          } else if (`${request.query.rewrite}` === 'true') {
+            rewriteConfigValueFromQuery = true
+          } else {
+            rewriteConfigValueFromQuery = rewriteConfigValue
+          }
           currentRewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValueFromQuery, datasetBaseUrl)
         }
         const { rewrite: rewriteValue, iriOrigin } = currentRewriteConfig
@@ -107,7 +114,7 @@ const factory = async (trifid) => {
         let query = ''
         switch (request.method) {
           case 'GET':
-            query = request.query.query
+            query = request.query.query || ''
             break
           case 'POST':
             if (typeof request.body === 'string') {
