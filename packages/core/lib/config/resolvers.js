@@ -46,6 +46,6 @@ export const globalsResolver = (value, context) => {
   return applyResolvers(value, context)
 }
 
-export const middlewaresResolver = (value, context) => {
+export const pluginsResolver = (value, context) => {
   return applyResolvers(value, context)
 }

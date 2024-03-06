@@ -1,4 +1,4 @@
-import { resolve, join } from 'path'
+import { resolve, join } from 'node:path'
 
 /**
  * Register a resolver.
@@ -60,9 +60,9 @@ export const cwdResolver = (value) => {
 
 /**
  * File resolver.
+ * @param {any | undefined} [base]
  */
-
-export const fileCallback = (base = undefined) => {
+export const fileCallback = (base) => {
   return (name) => {
     if (base === undefined) {
       base = process.cwd()
@@ -71,6 +71,12 @@ export const fileCallback = (base = undefined) => {
   }
 }
 
-export const fileResolver = (value, base = undefined) => {
+/**
+ * Register the file resolver.
+ *
+ * @param {any | undefined} value
+ * @param {any | undefined} [base]
+ */
+export const fileResolver = (value, base) => {
   return registerResolver('file', fileCallback(base), value)
 }

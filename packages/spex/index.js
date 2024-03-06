@@ -1,8 +1,8 @@
-import path, { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import absoluteUrl from 'absolute-url'
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { resolve } from 'import-meta-resolve'
-import express from 'express'
+import fastifyStatic from '@fastify/static'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -19,9 +19,15 @@ const defaultOptions = {
   forceIntrospection: false,
 }
 
-const createMiddleWare = async (config, render) => {
-  const router = express.Router()
-
+/**
+ * Create Plugin.
+ *
+ * @param {import('fastify').FastifyInstance} server
+ * @param {*} config
+ * @param {*} render
+ * @returns
+ */
+const createPlugin = async (server, config, render) => {
   const options = { ...defaultOptions, ...(config || {}) }
   const spexOptions = {
     sparqlEndpoint: options.url,
@@ -33,45 +39,65 @@ const createMiddleWare = async (config, render) => {
   }
   config = { ...defaults, ...config, spexOptions }
 
-  // render index page
-  router.get('/', async (req, res) => {
-    // Enforce trailing slash to ensure that static files are served from the correct URL
-    if (!req.originalUrl.endsWith('/')) {
-      return res.redirect(req.originalUrl + '/')
-    }
+  // Serve static files from SPEX dist folder
+  const distPath = resolve('@zazuko/spex/dist', import.meta.url)
+  server.register(fastifyStatic, {
+    root: distPath.replace(/^file:\/\//, ''),
+    prefix: '/spex/static/',
+    decorateReply: false,
+  })
 
-    absoluteUrl.attach(req)
+  /**
+   * Route handler.
+   * @param {import('fastify').FastifyRequest} request Request.
+   * @param {import('fastify').FastifyReply} reply Reply.
+   */
+  const handler = async (request, reply) => {
+    const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+    const fullUrlObject = new URL(fullUrl)
+    const fullUrlPathname = fullUrlObject.pathname
+
+    // Enforce trailing slash
+    if (fullUrlPathname.slice(-1) !== '/') {
+      return reply.redirect(`${fullUrlPathname}/`)
+    }
 
     // Create an absolute URL if a relative URL is provided
     spexOptions.sparqlEndpoint = new URL(
       spexOptions.sparqlEndpoint || '/query',
-      req.absoluteUrl(),
+      fullUrl,
     ).toString()
 
-    res.send(
-      await render(
-        config.template,
-        {
-          options: JSON.stringify(spexOptions),
-          locals: res.locals,
-        },
-        {
-          title: 'SPEX',
-        },
-      ),
+    const content = await render(
+      config.template,
+      {
+        options: JSON.stringify(spexOptions),
+      },
+      { title: 'SPEX' },
     )
-  })
 
-  // static files from spex dist folder
-  const distPath = resolve('@zazuko/spex/dist', import.meta.url)
-  router.use('/static/', express.static(distPath.replace(/^file:\/\//, '')))
-  return router
+    reply.type('text/html').send(content)
+  }
+  return handler
 }
 
+/** @type {import('../core/types/index.js').TrifidPlugin} */
 const trifidFactory = async (trifid) => {
-  const { config, render } = trifid
-  return await createMiddleWare(config, render)
+  const { server, config, render } = trifid
+
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET'],
+        paths: [
+          '/spex',
+          '/spex/',
+        ],
+      }
+    },
+    routeHandler: async () => createPlugin(server, config, render),
+  }
 }
 
 export default trifidFactory
-export { createMiddleWare }
+export { createPlugin }

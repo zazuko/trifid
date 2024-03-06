@@ -1,18 +1,33 @@
+# yaml-language-server: $schema=../../../core/lib/config/schema.json
+
 server:
   logLevel: debug
 
-middlewares:
-  entity-host-web-page:
-    module: trifid-core/middlewares/view.js
+globals:
+  datasetBaseUrl: http://localhost:3000/
+  endpoints:
+    default:
+      url: /query
+
+plugins:
+  welcome-page:
+    module: trifid-core/plugins/view.js
     paths: /
-    methods: GET
     config:
       path: file:../views/welcome.hbs
 
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths:
+      - /sparql
+      - /sparql/
+
   fetch-handler:
     module: trifid-handler-fetch
+    paths: /query
     config:
       url: file:../data/people.ttl
-      contentType: application/n-triples
-      split: true
-      cache: true
+      contentType: text/turtle
+      baseIRI: http://example.com
+      graphName: http://example.com/graph
+      unionDefaultGraph: true

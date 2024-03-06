@@ -1,70 +1,73 @@
-import { describe, expect, test } from '@jest/globals'
+// @ts-check
+
+import { describe, it } from 'mocha'
+import { expect } from 'chai'
 
 import parser from '../lib/config/parser.js'
 
 describe('config', () => {
-  test('should not throw if the configuration is empty', () => {
-    expect(() => parser()).not.toThrow()
-    expect(() => parser({})).not.toThrow()
+  it('should not throw if the configuration is empty', () => {
+    expect(() => parser()).to.not.throw()
+    expect(() => parser({})).to.not.throw()
   })
 
-  test('sould throw if we add some non-supported fields', () => {
-    expect(() => parser({ thisFieldIsNotSupported: true })).toThrow()
+  it('sould throw if we add some non-supported fields', () => {
+    expect(() => parser({ thisFieldIsNotSupported: true })).to.throw()
   })
 
-  test('should not throw if supported properties are empty', () => {
+  it('should not throw if supported properties are empty', () => {
     expect(() =>
       parser({
         extends: [],
         globals: {},
         server: {},
-        middlewares: {},
+        plugins: {},
       }),
-    ).not.toThrow()
+    ).to.not.throw()
   })
 
-  test('should not throw on valid values for extends', () => {
+  it('should not throw on valid values for extends', () => {
     expect(() =>
       parser({
         extends: [],
       }),
-    ).not.toThrow()
+    ).to.not.throw()
 
     expect(() =>
       parser({
         extends: ['path'],
       }),
-    ).not.toThrow()
+    ).to.not.throw()
 
     expect(() =>
       parser({
         extends: ['path1', 'path2', 'path3'],
       }),
-    ).not.toThrow()
+    ).to.not.throw()
   })
 
-  test('should throw on invalid values for extends', () => {
+  it('should throw on invalid values for extends', () => {
     // this is a string instead of an array of strings
     expect(() => {
       parser({
         extends: 'this is a string instead of an array',
       })
-    }).toThrow()
+    }).to.throw()
 
     // this is not an array of strings, but an array of integers
     expect(() => {
       parser({
         extends: [1, 2, 3],
       })
-    }).toThrow()
+    }).to.throw()
   })
 
-  test('should not throw on valid values for server', () => {
+  it('should not throw on valid values for server', () => {
     expect(() => {
       parser({
         server: {},
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
@@ -73,7 +76,7 @@ describe('config', () => {
           express: {},
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
@@ -82,7 +85,7 @@ describe('config', () => {
           express: {},
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
@@ -93,7 +96,7 @@ describe('config', () => {
           express: {},
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
@@ -106,16 +109,16 @@ describe('config', () => {
           },
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
   })
 
-  test('should throw on invalid values for server', () => {
+  it('should throw on invalid values for server', () => {
     // this is a string instead of an object
     expect(() => {
       parser({
         server: 'this is a string instead of an object',
       })
-    }).toThrow()
+    }).to.throw()
 
     // unsupported field
     expect(() => {
@@ -126,7 +129,7 @@ describe('config', () => {
           unsupportedField: true,
         },
       })
-    }).toThrow()
+    }).to.throw()
 
     // invalid port number
     expect(() => {
@@ -138,7 +141,7 @@ describe('config', () => {
           express: {},
         },
       })
-    }).toThrow()
+    }).to.throw()
 
     // unsupported listener property
     expect(() => {
@@ -151,15 +154,15 @@ describe('config', () => {
           express: {},
         },
       })
-    }).toThrow()
+    }).to.throw()
   })
 
-  test('should not throw on valid values for globals', () => {
+  it('should not throw on valid values for globals', () => {
     expect(() => {
       parser({
         globals: {},
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
@@ -167,7 +170,7 @@ describe('config', () => {
           foo: 'bar',
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
@@ -176,7 +179,7 @@ describe('config', () => {
           jon: 'doe',
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     // multi-level globals
     expect(() => {
@@ -187,39 +190,39 @@ describe('config', () => {
           },
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
   })
 
-  test('should throw on invalid values for globals', () => {
+  it('should throw on invalid values for globals', () => {
     // this is a string instead of an object
     expect(() => {
       parser({
         globals: 'this is a string instead of an object',
       })
-    }).toThrow()
+    }).to.throw()
   })
 
-  test('should not throw on valid values for middlewares', () => {
+  it('should not throw on valid values for plugins', () => {
     expect(() => {
       parser({
-        middlewares: {},
+        plugins: {},
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
           },
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
@@ -229,11 +232,11 @@ describe('config', () => {
           },
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
@@ -244,12 +247,12 @@ describe('config', () => {
           },
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
 
     // allow complex config object
     expect(() => {
       parser({
-        middlewares: {
+        plugins: {
           module: {
             order: 42,
             module: 'module',
@@ -261,36 +264,39 @@ describe('config', () => {
           },
         },
       })
-    }).not.toThrow()
+    }).to.not.throw()
   })
 
-  test('should throw on invalid values for middlewares', () => {
-    // this is a string instead of an object
-    expect(() => {
-      parser({
-        middlewares: 'this is a string instead of an object',
-      })
-    }).toThrow()
+  describe('should throw on invalid values for plugins', () => {
+    it('should throw if plugins is a string', () => {
+      return expect(() => {
+        parser({
+          plugins: 'this is a string instead of an object',
+        })
+      }).to.throw()
+    })
 
-    // not scoped into an object per middleware
-    expect(() => {
-      parser({
-        middlewares: {
-          order: 42,
-          name: 'module',
-        },
-      })
-    }).toThrow()
-
-    // missing "module" property
-    expect(() => {
-      parser({
-        middlewares: {
-          module: {
+    it('should throw if plugins is not an object of plugins', () => {
+      return expect(() => {
+        parser({
+          plugins: {
             order: 42,
+            name: 'module',
           },
-        },
-      })
-    }).toThrow()
+        })
+      }).to.throw()
+    })
+
+    it('should throw if the "module" property is missing', () => {
+      expect(() => {
+        parser({
+          plugins: {
+            module: {
+              order: 42,
+            },
+          },
+        })
+      }).to.throw()
+    })
   })
 })

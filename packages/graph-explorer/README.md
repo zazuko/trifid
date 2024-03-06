@@ -1,7 +1,7 @@
 # trifid-plugin-graph-explorer
 
 [Graph Explorer](https://github.com/zazuko/graph-explorer) for [Trifid](https://github.com/zazuko/trifid).
-This middleware does the static file hosting for all Graph Explorer files and renders an index page that points to the given endpoint URL.
+This plugin does the static file hosting for all Graph Explorer files and renders an index page that points to the given endpoint URL.
 
 ## Quick start
 
@@ -14,11 +14,13 @@ npm install trifid-plugin-graph-explorer
 And then add in the `config.yaml` file the following part:
 
 ```yaml
-middlewares:
-  # […] your other middlewares
+plugins:
+  # […] your other plugins
   yasgui:
     module: trifid-plugin-graph-explorer
-    paths: /graph-explorer
+    paths: # by default
+      - /graph-explorer
+      - /graph-explorer/
     config:
       endpointUrl: https://example.com/query
       # …other configuration fields

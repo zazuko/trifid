@@ -17,20 +17,18 @@ The serializations include HTML rendering based on customizable templates.
 
 If a SPARQL endpoint is the source of the RDF data, some additional plugins are enabled by default.
 
-- SPARQL Proxy: Public access to the configured store.
-- YASGUI: UI to write, execute, and analyze SPARQL queries.
-- Graph Explorer: UI to explore the data in a graph view
-- SPEX: Introspects the data on the endpoint and shows the data model
+- [SPARQL Proxy](./packages/sparql-proxy/): Public access to the configured store.
+- [YASGUI](./packages/yasgui/): UI to write, execute, and analyze SPARQL queries.
+- [Graph Explorer](./packages/graph-explorer/): UI to explore the data in a graph view
+- [SPEX](./packages/spex/): Introspects the data on the endpoint and shows the data model
 
 ### Further use
 
 This server can also be extended with plugins, depending on the use case of the deployment.
-[Express](http://expressjs.com/) is used to handle routings and middlewares.
-Any compatible middleware can be added to the configuration.
 
 #### Examples
 
-- [Trifid plugin iiif](./packages/iiif/)
+- [IIIF Trifid plugin](./packages/iiif/)
 - [CKAN harvester endpoint](./packages/ckan/)
 
 ## Who Uses Trifid?
@@ -109,18 +107,20 @@ Values of the base file will be overwritten.
 
 ### Examples
 
-#### Default configuration
+#### Big Bang Theory dataset
 
-The default configuration uses the file system handler and the [Big Bang Theory dataset](https://github.com/zazukoians/tbbt-ld).
+If you use [`instances/tbbt/config.yaml`](./packages/trifid/instances/tbbt/config.yaml) as a base configuration, you will get a server that serves the [Big Bang Theory dataset](https://github.com/zazuko/tbbt-ld).
+
+It will load the triples from the following remote file: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt.
 
 You will then be able to access its content, e.g. [Amy Farrah Fowler](http://localhost:8080/data/person/amy-farrah-fowler).
 
-In a production environment, the SPARQL handler may be the better choice.
+This is a good starting point to understand how dereferencing works.
 
 #### SPARQL configuration
 
 For production systems, we recommend data access via the [SPARQL 1.1 Protocol](http://www.w3.org/TR/sparql11-protocol/) interface.
-`instances/docker-sparql/config.yaml` can be used as base configuration.
+[`instances/docker-sparql/config.yaml`](./packages/trifid/instances/docker-sparql/config.yaml) can be used as base configuration.
 
 ##### SPARQL endpoint with self-signed certificate
 
@@ -152,11 +152,17 @@ docker run --rm -it -p 8080:8080 ghcr.io/zazuko/trifid
 
 You can use the following environment variables:
 
-- `TRIFID_CONFIG`: the configuration file to use (default value: `config-docker.json`, which enable the following environment variables)
+- `TRIFID_CONFIG`: the configuration file to use (default value: [`instances/docker-sparql/config.yaml`](./packages/trifid/instances/docker-sparql/config.yaml), which enable the following environment variables)
 - `SPARQL_ENDPOINT_URL`: the SPARQL endpoint URL to use
 - `DATASET_BASE_URL`: the base URL to use to enable rewriting
 - `SPARQL_USER`: the user to use to authenticate against the SPARQL endpoint
 - `SPARQL_PASSWORD`: the password to use to authenticate against the SPARQL endpoint
+
+If you want to use a file that contains your triples instead of a SPARQL endpoint, you can set `TRIFID_CONFIG` to [`instances/docker-fetch/config.yaml`](./packages/trifid/instances/docker-fetch/config.yaml), and you will be able to use the following environment variables to configure your instance:
+
+- `FETCH_HANDLER_FILE`: the file to use to fetch the data (default value: `https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt`)
+- `FETCH_HANDLER_FILE_TYPE`: the type of the file to use to fetch the data (default value: `application/n-triples`)
+- `DATASET_BASE_URL`: the base URL to use to enable rewriting
 
 #### Custom build
 
@@ -171,41 +177,36 @@ If you run Trifid behind a reverse proxy, the proxy must set the `X-Forwarded-Ho
 The log level can be configured by using the `server.logLevel` property.
 Supported log levels are: `fatal`, `error`, `warn`, `info`, `debug`, `trace` and `silent`.
 
-Some middlewares also uses [`debug`](https://www.npmjs.com/package/debug).
-You can get debug logging via: `DEBUG=trifid:` or `DEBUG=trifid:*`.
-
 ## Monorepo
 
 To improve the maintenability of the whole project, we decided to use a monorepo architecture.
 
 Here is the list of all packages that are maintained here:
 
-| Package                                                          | Latest version                                                                                                              |                                       |
-| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| [`trifid`](./packages/trifid)                                    | [![](https://badge.fury.io/js/trifid.svg)](https://npm.im/trifid)                                                           | Bundle with commonly used middlewares |
-| [`trifid-core`](./packages/core)                                 | [![](https://badge.fury.io/js/trifid-core.svg)](https://npm.im/trifid-core)                                                 | Core package                          |
-| [`@zazuko/trifid-entity-renderer`](./packages/entity-renderer)   | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-entity-renderer.svg)](https://npm.im/@zazuko/trifid-entity-renderer)         | Entity renderer                       |
-| [`trifid-plugin-graph-explorer`](./packages/graph-explorer)      | [![](https://badge.fury.io/js/trifid-plugin-graph-explorer.svg)](https://npm.im/trifid-plugin-graph-explorer)               | Graph Explorer plugin                 |
-| [`@zazuko/trifid-plugin-ckan`](./packages/ckan)                  | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-plugin-ckan.svg)](https://npm.im/@zazuko/trifid-plugin-ckan)                 | CKAN harvester endpoint               |
-| [`trifid-handler-fetch`](./packages/handler-fetch)               | [![](https://badge.fury.io/js/trifid-handler-fetch.svg)](https://npm.im/trifid-handler-fetch)                               | Fetch handler for Trifid              |
-| [`trifid-handler-sparql`](./packages/handler-sparql)             | [![](https://badge.fury.io/js/trifid-handler-sparql.svg)](https://npm.im/trifid-handler-sparql)                             | SPARQL handler for Trifid             |
-| [`trifid-plugin-i18n`](./packages/i18n)                          | [![](https://badge.fury.io/js/trifid-plugin-i18n.svg)](https://npm.im/trifid-plugin-i18n)                                   | i18n support for Trifid               |
-| [`@zazuko/trifid-markdown-content`](./packages/markdown-content) | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-markdown-content.svg)](https://npm.im/@zazuko/trifid-markdown-content)       | Create pages from Markdown files      |
-| [`@zazuko/trifid-handle-redirects`](./packages/redirects)        | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-handle-redirects.svg)](https://npm.im/@zazuko/trifid-handle-redirects)       | Handle HTTP redirects                 |
-| [`@zazuko/trifid-plugin-sparql-proxy`](./packages/sparql-proxy)  | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-plugin-sparql-proxy.svg)](https://npm.im/@zazuko/trifid-plugin-sparql-proxy) | Trifid plugin for SPARQL proxy        |
-| [`trifid-plugin-spex`](./packages/spex)                          | [![](https://badge.fury.io/js/trifid-plugin-spex.svg)](https://npm.im/trifid-plugin-spex)                                   | SPEX plugin for Trifid                |
-| [`trifid-plugin-yasgui`](./packages/yasgui)                      | [![](https://badge.fury.io/js/trifid-plugin-yasgui.svg)](https://npm.im/trifid-plugin-yasgui)                               | YASGUI plugin for Trifid              |
+| Package                                                          | Latest version                                                                                                              |                                   |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| [`trifid`](./packages/trifid)                                    | [![](https://badge.fury.io/js/trifid.svg)](https://npm.im/trifid)                                                           | Bundle with commonly used plugins |
+| [`trifid-core`](./packages/core)                                 | [![](https://badge.fury.io/js/trifid-core.svg)](https://npm.im/trifid-core)                                                 | Core package                      |
+| [`@zazuko/trifid-entity-renderer`](./packages/entity-renderer)   | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-entity-renderer.svg)](https://npm.im/@zazuko/trifid-entity-renderer)         | Entity renderer                   |
+| [`trifid-plugin-graph-explorer`](./packages/graph-explorer)      | [![](https://badge.fury.io/js/trifid-plugin-graph-explorer.svg)](https://npm.im/trifid-plugin-graph-explorer)               | Graph Explorer plugin             |
+| [`@zazuko/trifid-plugin-ckan`](./packages/ckan)                  | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-plugin-ckan.svg)](https://npm.im/@zazuko/trifid-plugin-ckan)                 | CKAN harvester endpoint           |
+| [`trifid-handler-fetch`](./packages/handler-fetch)               | [![](https://badge.fury.io/js/trifid-handler-fetch.svg)](https://npm.im/trifid-handler-fetch)                               | Fetch handler for Trifid          |
+| [`trifid-plugin-i18n`](./packages/i18n)                          | [![](https://badge.fury.io/js/trifid-plugin-i18n.svg)](https://npm.im/trifid-plugin-i18n)                                   | i18n support for Trifid           |
+| [`@zazuko/trifid-markdown-content`](./packages/markdown-content) | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-markdown-content.svg)](https://npm.im/@zazuko/trifid-markdown-content)       | Create pages from Markdown files  |
+| [`@zazuko/trifid-plugin-sparql-proxy`](./packages/sparql-proxy)  | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-plugin-sparql-proxy.svg)](https://npm.im/@zazuko/trifid-plugin-sparql-proxy) | Trifid plugin for SPARQL proxy    |
+| [`trifid-plugin-spex`](./packages/spex)                          | [![](https://badge.fury.io/js/trifid-plugin-spex.svg)](https://npm.im/trifid-plugin-spex)                                   | SPEX plugin for Trifid            |
+| [`trifid-plugin-yasgui`](./packages/yasgui)                      | [![](https://badge.fury.io/js/trifid-plugin-yasgui.svg)](https://npm.im/trifid-plugin-yasgui)                               | YASGUI plugin for Trifid          |
 
 More to come as we gradually consolidate other, initially separate repositories.
 
 ## Support
 
-Issues & feature requests should be reported on GitHub.
+Issues & feature requests should be reported on [GitHub](https://github.com/zazuko/trifid).
 
 Pull requests are very welcome.
 
 ## License
 
-Copyright 2015-2023 Zazuko GmbH
+Copyright Zazuko GmbH.
 
 Trifid is licensed under the [Apache License, Version 2.0](./LICENSE).

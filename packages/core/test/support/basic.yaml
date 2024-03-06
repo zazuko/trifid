@@ -1,4 +1,4 @@
-middlewares:
+plugins:
   staticFiles:
     order: 100
     module: file:./plugins/static-files.js

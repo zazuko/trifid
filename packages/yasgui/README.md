@@ -1,7 +1,7 @@
 # trifid-plugin-yasgui
 
 YASGUI for Trifid.
-This middleware does the static file hosting for all YASGUI files and renders an index page that points to the given endpoint URL.
+This plugin does the static file hosting for all YASGUI files and renders an index page that points to the given endpoint URL.
 
 ## Quick start
 
@@ -14,11 +14,13 @@ npm install trifid-plugin-yasgui
 And then add in the `config.yaml` file the following part:
 
 ```yaml
-middlewares:
-  # […] your other middlewares
+plugins:
+  # […] your other plugins
   yasgui:
     module: trifid-plugin-yasgui
-    paths: /sparql
+    paths: # by default
+      - /sparql
+      - /sparql/
     config:
       endpointUrl: https://example.com/query
       urlShortener: https://example.com/api/v1/shorten

@@ -17,11 +17,11 @@
   "files": [
     "index.js"
   ],
-  "scripts": {
-    "test": "true"
-  },
   "dependencies": {
-    "@zazuko/sparql-proxy": "^2.6.8",
-    "proxy-agent": "^6.3.1"
+    "string-replace-stream": "^0.0.2",
+    "trifid-core": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24"
   }
 }

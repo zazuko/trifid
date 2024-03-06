@@ -4,8 +4,12 @@
   "description": "Trifid plugin to handle Markdown files",
   "main": "src/index.js",
   "type": "module",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha"
+    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "prebuild": "rimraf dist/",
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "author": "Zazuko GmbH",
   "license": "MIT",
@@ -22,11 +26,15 @@
   },
   "files": [
     "src",
-    "views"
+    "views",
+    "dist",
+    "CHANGELOG.md"
   ],
   "devDependencies": {
-    "c8": "^8.0.1",
+    "@types/node": "^20.11.16",
+    "c8": "^9.1.0",
     "mocha": "^10.2.0",
+    "rimraf": "^5.0.5",
     "trifid-core": "^2.7.1"
   },
   "publishConfig": {
