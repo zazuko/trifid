@@ -186,7 +186,7 @@ const factory = async (trifid) => {
     const directory = entry?.directory
     const mountPath = entry?.mountPath || false
 
-    // check config
+    // Check config
     if (!directory || typeof directory !== 'string') {
       throw new Error('\'directory\' should be a non-empty string')
     }
@@ -221,11 +221,23 @@ const factory = async (trifid) => {
     }
     server.addHook('onRequest', onRequestHook)
 
-    // create a route for each entry
+    // Create a route for each entry
     if (mountPath) {
       const mountAtPathSlash = mountPath.endsWith('/') ? mountPath : `${mountPath}/`
 
       for (const item of items) {
+        const routePath = `${mountAtPathSlash}${item.name}`
+
+        /**
+         * Route handler for the specific content.
+         * @param {import('fastify').FastifyRequest} _request Request.
+         * @param {import('fastify').FastifyReply} reply Reply.
+         * @returns {Promise<void>}
+         */
+        const redirectHandler = async (_request, reply) => {
+          return reply.redirect(`${routePath}/`)
+        }
+
         /**
          * Route handler for the specific content.
          * @param {import('fastify').FastifyRequest} _request Request.
@@ -233,11 +245,14 @@ const factory = async (trifid) => {
          * @returns {Promise<void>}
          */
         const routeHandler = async (_request, reply) => {
-          reply.type('text/html').send(await render(defaultValue('template', entry, template), {
+          return reply.type('text/html').send(await render(defaultValue('template', entry, template), {
             content: locals.get(LOCALS_PLUGIN_KEY)?.[namespace]?.[item.name] || '',
           }))
         }
-        server.get(`${mountAtPathSlash}${item.name}`, routeHandler)
+
+        // Mount routes
+        server.get(`${routePath}`, redirectHandler)
+        server.get(`${routePath}/`, routeHandler)
       }
     }
   }
