@@ -1,5 +1,26 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.0.0
+
+### Major Changes
+
+- b38cbc5: The plugin is now using the new Trifid factory, which is a breaking change.
+- 4b515f8: Use 'plugins' instead of 'middlewares'
+- b38cbc5: The plugin was completely restructured to remove extra complexity.
+
+### Patch Changes
+
+- 538a959: Upgrade proxy-agent to 6.4.0
+- Updated dependencies [a454dbb]
+- Updated dependencies [3ab5eb3]
+- Updated dependencies [69d6ad0]
+- Updated dependencies [849fa3d]
+- Updated dependencies [4b515f8]
+- Updated dependencies [849fa3d]
+- Updated dependencies [d9963cd]
+- Updated dependencies [1dd9ae7]
+  - trifid-core@3.0.0
+
 ## 1.2.0
 
 ### Minor Changes
