@@ -1,5 +1,11 @@
 # trifid-plugin-graph-explorer
 
+## 2.0.1
+
+### Patch Changes
+
+- 195cb7b: Bump import-meta-resolve from 2.2.2 to 4.0.0
+
 ## 2.0.0
 
 ### Major Changes

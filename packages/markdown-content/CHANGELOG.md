@@ -1,5 +1,11 @@
 # @zazuko/trifid-markdown-content
 
+## 2.0.1
+
+### Patch Changes
+
+- 777bc01: Force the `text/html` content-type
+
 ## 2.0.0
 
 ### Major Changes

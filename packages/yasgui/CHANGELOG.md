@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.0.1
+
+### Patch Changes
+
+- 195cb7b: Bump import-meta-resolve from 3.0.0 to 4.0.0
+
 ## 3.0.0
 
 ### Major Changes
