@@ -56,7 +56,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -85,7 +85,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -114,7 +114,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=fr`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=fr`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -143,7 +143,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=de`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=de`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -178,7 +178,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default/`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -207,7 +207,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -236,7 +236,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default?lang=fr`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default/?lang=fr`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -265,7 +265,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default?lang=de`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry-with-default/?lang=de`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -299,7 +299,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -329,7 +329,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -359,7 +359,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -389,7 +389,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -420,7 +420,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -450,7 +450,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -486,7 +486,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -518,7 +518,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -550,7 +550,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -582,7 +582,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -615,7 +615,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
@@ -647,7 +647,7 @@ describe('@zazuko/trifid-markdown-content', () => {
       const trifidListener = await trifidInstance.start()
 
       try {
-        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry?lang=en`
+        const pluginUrl = `${getListenerURL(trifidListener)}/content/test-entry/?lang=en`
 
         const res = await fetch(pluginUrl)
         const body = await res.text()
