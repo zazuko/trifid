@@ -11,7 +11,6 @@ import { datasetsQuery } from './query.js'
  * @property {string} endpointUrl The SPARQL endpoint URL.
  * @property {string} user The user for the endpoint.
  * @property {string} password The password for the endpoint.
- * @property {boolean} queryAllGraphs Whether to query all graphs or only the default one.
  */
 
 /**
@@ -37,7 +36,7 @@ export const createAPI = (config) => {
    * @type {FetchDatasets}
    */
   const fetchDatasets = async (organizationId) => {
-    const query = datasetsQuery(organizationId, config.queryAllGraphs)
+    const query = datasetsQuery(organizationId)
     return await client.query.construct(query.toString())
   }
 

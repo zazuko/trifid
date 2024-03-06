@@ -7,13 +7,8 @@ import { createAPI } from './ckan.js'
 const factory = async (trifid) => {
   const { config, logger } = trifid
 
-  const { endpointUrl, user, password, queryAllGraphs: queryAllGraphsConfiguredValue } = config
+  const { endpointUrl, user, password } = config
   const configuredEndpoint = endpointUrl || '/query'
-
-  let queryAllGraphs = true
-  if (!queryAllGraphsConfiguredValue || queryAllGraphsConfiguredValue === 'false') {
-    queryAllGraphs = false
-  }
 
   return {
     defaultConfiguration: async () => {
@@ -42,7 +37,6 @@ const factory = async (trifid) => {
           endpointUrl: endpoint.toString(),
           user,
           password,
-          queryAllGraphs,
         })
 
         const organization = request.query?.organization

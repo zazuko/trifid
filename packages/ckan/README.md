@@ -85,7 +85,6 @@ The following options are supported:
 - `endpointUrl`: URL to the SPARQL endpoint
 - `user`: User to connect to the SPARQL endpoint
 - `password`: Password to connect to the SPARQL endpoint
-- `queryAllGraphs`: If true, the harvester will query all graphs. If false, it will only query the default graph. Default is `true`.
 
 Configuring Trifid to use `@zazuko/trifid-plugin-ckan` is easy, just add the following in your configuration file:
 
