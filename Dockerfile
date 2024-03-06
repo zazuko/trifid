@@ -29,4 +29,4 @@ WORKDIR /app/packages/trifid
 
 ENTRYPOINT ["tini", "--", "/app/packages/trifid/server.js"]
 
-HEALTHCHECK CMD wget -q -O- http://localhost:8080/health
+HEALTHCHECK CMD wget -q -O- http://localhost:8080/healthz
