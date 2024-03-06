@@ -1,5 +1,16 @@
 # @zazuko/trifid-markdown-content
 
+## 2.0.0
+
+### Major Changes
+
+- 0281f85: The plugin is now using the new Trifid factory, which is a breaking change.
+- 4b515f8: Use 'plugins' instead of 'middlewares'
+
+### Patch Changes
+
+- 69d6ad0: Improve included TypeScript types.
+
 ## 1.0.1
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # trifid-plugin-spex
 
+## 2.0.0
+
+### Major Changes
+
+- 4b515f8: Use 'plugins' instead of 'middlewares'
+- e069220: The plugin is now using the new Trifid factory, which is a breaking change.
+
 ## 1.1.4
 
 ### Patch Changes

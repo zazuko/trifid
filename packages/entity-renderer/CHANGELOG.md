@@ -1,5 +1,30 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.0.0
+
+### Major Changes
+
+- 81c27c0: The plugin is now using the new Trifid factory, which is a breaking change.
+- 4b515f8: Use 'plugins' instead of 'middlewares'
+
+### Minor Changes
+
+- 757621f: Remove the use of hijackresponse
+- deef1a8: Add support for redirects.
+- 8337a36: Support for multiple serializations
+
+### Patch Changes
+
+- Updated dependencies [a454dbb]
+- Updated dependencies [3ab5eb3]
+- Updated dependencies [69d6ad0]
+- Updated dependencies [849fa3d]
+- Updated dependencies [4b515f8]
+- Updated dependencies [849fa3d]
+- Updated dependencies [d9963cd]
+- Updated dependencies [1dd9ae7]
+  - trifid-core@3.0.0
+
 ## 0.6.3
 
 ### Patch Changes
