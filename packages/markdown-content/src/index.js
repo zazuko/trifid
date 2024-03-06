@@ -233,7 +233,7 @@ const factory = async (trifid) => {
          * @returns {Promise<void>}
          */
         const routeHandler = async (_request, reply) => {
-          reply.send(await render(defaultValue('template', entry, template), {
+          reply.type('text/html').send(await render(defaultValue('template', entry, template), {
             content: locals.get(LOCALS_PLUGIN_KEY)?.[namespace]?.[item.name] || '',
           }))
         }
