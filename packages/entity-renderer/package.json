@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-entity-renderer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "Renders a RDF entity in Trifid",
   "main": "index.js",
@@ -28,7 +28,7 @@
     "@zazuko/rdf-entity-webcomponent": "^0.7.7",
     "lit": "^3.0.2",
     "p-queue": "^8.0.1",
-    "trifid-core": "^4.0.0"
+    "trifid-core": "^4.0.2"
   },
   "devDependencies": {
     "@rdfjs/types": "^1.1.0",

@@ -1,5 +1,13 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.0.2
+
+### Patch Changes
+
+- 854eddf: Send `i18n` cookie to requests made to the SPARQL endpoint to avoid languages issues.
+- Updated dependencies [3f2271d]
+  - trifid-core@4.0.2
+
 ## 1.0.1
 
 ### Patch Changes
