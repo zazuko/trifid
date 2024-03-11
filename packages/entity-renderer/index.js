@@ -227,7 +227,6 @@ const factory = async (trifid) => {
 
           reply.type('text/html').send(await render(request, entityTemplatePath, {
             dataset: entityHtml,
-            locals: {},
             entityLabel,
             entityUrl,
             metadata,
