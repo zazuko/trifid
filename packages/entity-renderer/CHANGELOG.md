@@ -1,5 +1,13 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.0.1
+
+### Patch Changes
+
+- e8faa76: Internally use the new `render` function, that takes the `request` as first argument.
+- Updated dependencies [e8faa76]
+  - trifid-core@4.0.0
+
 ## 1.0.0
 
 ### Major Changes

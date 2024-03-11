@@ -1,5 +1,11 @@
 # trifid-core
 
+## 4.0.0
+
+### Major Changes
+
+- e8faa76: The `render` function requires the request as first argument.
+
 ## 3.0.0
 
 ### Major Changes

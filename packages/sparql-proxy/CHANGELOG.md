@@ -1,5 +1,13 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.0.1
+
+### Patch Changes
+
+- 2553ece: Fix an issue with the rewrite query parameter, where it was assuming that undefined value was equal to 'true'
+- Updated dependencies [e8faa76]
+  - trifid-core@4.0.0
+
 ## 2.0.0
 
 ### Major Changes
