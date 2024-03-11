@@ -45,7 +45,7 @@
     "chai-subset": "^1.6.0",
     "mocha": "^10.2.0",
     "rimraf": "^5.0.5",
-    "trifid-core": "^3.0.0",
+    "trifid-core": "^4.0.0",
     "trifid-handler-fetch": "^3.0.0",
     "typescript": "^5.3.3",
     "xml2js": "^0.6.2",

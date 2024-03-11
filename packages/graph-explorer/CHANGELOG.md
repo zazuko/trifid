@@ -1,5 +1,11 @@
 # trifid-plugin-graph-explorer
 
+## 2.0.2
+
+### Patch Changes
+
+- e8faa76: Internally use the new `render` function, that takes the `request` as first argument.
+
 ## 2.0.1
 
 ### Patch Changes
