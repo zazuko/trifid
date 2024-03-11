@@ -4,8 +4,6 @@
 const factory = async (trifid) => {
   const { logger, server } = trifid
 
-  const locals = server.locals
-
   const defaultLanguage = 'en'
   const supportedLanguages = ['en', 'fr', 'de', 'it']
 
@@ -27,7 +25,7 @@ const factory = async (trifid) => {
     const langQuery = request.query.lang || ''
     if (langQuery && supportedLanguages.includes(langQuery)) {
       logger.debug(`set default language to '${langQuery}'`)
-      reply.setCookie('i18n', langQuery, { maxAge: oneMonthMilliseconds })
+      reply.setCookie('i18n', langQuery, { maxAge: oneMonthMilliseconds, path: '/' })
       session.set('currentLanguage', langQuery)
     }
 
