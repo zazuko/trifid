@@ -208,6 +208,7 @@ export const getRewriteConfiguration = (value, datasetBaseUrl) => {
  * @typedef {Object} QueryOptions
  * @property {boolean} [ask] Is it a ASK query?
  * @property {boolean} [select] Is it a SELECT query?
+ * @property {Record<string, string>} [headers] Headers to use in the request.
  * @property {Array<RewriteResponseOptions>} [rewriteResponse] Replace strings in the response.
  */
 
@@ -239,14 +240,15 @@ export const generateClient = (sparqlEndpoint, options) => {
   const query = async (query, options = {}) => {
     const isAsk = options && options.ask
     const isSelect = options && options.select
+    const headers = options && options.headers
     const rewriteResponse = (options && options.rewriteResponse) || []
 
     if (isAsk) {
-      return await clients.parsing.query.ask(query)
+      return await clients.parsing.query.ask(query, { headers })
     }
 
     if (isSelect) {
-      const selectResults = await clients.parsing.query.select(query)
+      const selectResults = await clients.parsing.query.select(query, { headers })
       const replacedSelectResults = selectResults.map((row) => {
         for (const key in row) {
           if (!Object.prototype.hasOwnProperty.call(row, key) || !row[key].value) {
@@ -268,7 +270,7 @@ export const generateClient = (sparqlEndpoint, options) => {
       return replacedSelectResults
     }
 
-    const result = await clients.simple.query.construct(query)
+    const result = await clients.simple.query.construct(query, { headers })
     const contentType = result.headers.get('Content-Type') || 'application/n-triples'
     const body = result.body
 
