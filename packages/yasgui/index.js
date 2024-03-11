@@ -52,7 +52,7 @@ const trifidFactory = async (trifid) => {
     routeHandler: async () => {
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -69,6 +69,7 @@ const trifidFactory = async (trifid) => {
         const endpointUrl = new URL(endpoint, fullUrl)
 
         const content = await render(
+          request,
           view,
           {
             endpointUrl: endpointUrl.toString(),
