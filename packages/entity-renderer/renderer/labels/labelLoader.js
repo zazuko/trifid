@@ -23,11 +23,14 @@ class LabelLoader {
       concurrency,
       timeout,
       logger,
+      headers,
     } = options
 
     this.query = query
     this.replaceIri = replaceIri
     this.rewriteResponse = rewriteResponse
+
+    this.headers = headers
 
     this.labelNamespaces = labelNamespace ? [labelNamespace] : labelNamespaces
     this.chunkSize = chunkSize || 30
@@ -90,7 +93,7 @@ CONSTRUCT {
     ?uri schema:name ?label
     VALUES ?uri { ${uris} }
   }
-}`, { ask: false, rewriteResponse: this.rewriteResponse })
+}`, { ask: false, rewriteResponse: this.rewriteResponse, headers: this.headers })
     // Make sure the Content-Type is lower case and without parameters (e.g. charset)
     const fixedContentType = response.contentType.split(';')[0].trim().toLocaleLowerCase()
     const quadStream = parsers.import(fixedContentType, response.response)

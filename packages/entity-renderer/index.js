@@ -145,6 +145,11 @@ const factory = async (trifid) => {
           return reply.callNotFound()
         }
 
+        // To avoid any languge issues, we will forward the i18n cookie to the SPARQL endpoint
+        const queryHeaders = {
+          cookie: `i18n=${request.session.get('currentLanguage') || 'en'}; Path=/; SameSite=Lax; Secure; HttpOnly`,
+        }
+
         // Get the expected format from the Accept header or from the `format` query parameter
         const acceptHeader = getAcceptHeader(request)
 
@@ -220,6 +225,7 @@ const factory = async (trifid) => {
               dataset,
               rewriteResponse,
               replaceIri,
+              headers: queryHeaders,
               entityRoot: rewriteValue ? iri.replace(datasetBaseUrl, iriOrigin(iriUrlString)) : iri,
             },
           )
