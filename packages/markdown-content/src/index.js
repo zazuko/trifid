@@ -240,12 +240,12 @@ const factory = async (trifid) => {
 
         /**
          * Route handler for the specific content.
-         * @param {import('fastify').FastifyRequest} _request Request.
+         * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
          * @param {import('fastify').FastifyReply} reply Reply.
          * @returns {Promise<void>}
          */
-        const routeHandler = async (_request, reply) => {
-          return reply.type('text/html').send(await render(defaultValue('template', entry, template), {
+        const routeHandler = async (request, reply) => {
+          return reply.type('text/html').send(await render(request, defaultValue('template', entry, template), {
             content: locals.get(LOCALS_PLUGIN_KEY)?.[namespace]?.[item.name] || '',
           }))
         }

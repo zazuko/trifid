@@ -135,7 +135,7 @@ const factory = async (trifid) => {
     routeHandler: async () => {
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -225,7 +225,7 @@ const factory = async (trifid) => {
           )
           const metadata = await metadataProvider(request, { dataset })
 
-          reply.type('text/html').send(await render(entityTemplatePath, {
+          reply.type('text/html').send(await render(request, entityTemplatePath, {
             dataset: entityHtml,
             locals: {},
             entityLabel,

@@ -35,6 +35,7 @@ const factory = async ({ render }) => {
       case 'html':
         reply.type('text/html').send(
           await render(
+            request,
             `${currentDir}/../../views/404.hbs`,
             {
               url: request.url,

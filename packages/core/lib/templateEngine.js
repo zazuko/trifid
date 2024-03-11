@@ -36,7 +36,7 @@ const forceRefresh = false
 /**
  * Render a view.
  *
- * @typedef {(templatePath: string, context: Record<string, any>, options: Record<string, any>) => Promise<string>} RenderFunction
+ * @typedef {(request: import('fastify').FastifyRequest & { session: Map<string, any> }, templatePath: string, context: Record<string, any>, options: Record<string, any>) => Promise<string>} RenderFunction
  */
 
 /**
@@ -103,12 +103,15 @@ const templateEngine = async (defaultOptions, locals) => {
   /**
    * @type {RenderFunction}
    */
-  const render = async (templatePath, context, options = {}) => {
+  const render = async (request, templatePath, context, options = {}) => {
+    const session = request ? Object.fromEntries(request.session.entries()) : {}
     const template = await resolveTemplate(templatePath)
     const localsObject = Object.fromEntries(locals.entries())
+    const mergedSession = merge(session, context.session)
     const mergedLocals = merge(localsObject, context.locals)
     const mergedContext = merge({}, context)
     mergedContext.locals = mergedLocals
+    mergedContext.session = mergedSession
     const body = template(mergedContext)
 
     const renderedOptions = merge({}, mergedContext, templateOptions, options)
