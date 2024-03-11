@@ -1,5 +1,11 @@
 # trifid-core
 
+## 4.0.1
+
+### Patch Changes
+
+- 6667f40: The locals plugins should use the cookies path set as `/`.
+
 ## 4.0.0
 
 ### Major Changes
