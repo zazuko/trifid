@@ -1,5 +1,11 @@
 # trifid-core
 
+## 4.0.2
+
+### Patch Changes
+
+- 3f2271d: Allow to send custom headers to a SPARQL endpoint using the `query` function
+
 ## 4.0.1
 
 ### Patch Changes
