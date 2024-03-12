@@ -23,7 +23,6 @@
     "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
-    "@rdfjs/express-handler": "^1.2.2",
     "@rdfjs/namespace": "^1.1.0",
     "@tpluscode/rdf-string": "^1.1.3",
     "clownface": "^1.5.1",
