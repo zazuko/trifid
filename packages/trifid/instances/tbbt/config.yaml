@@ -1,31 +1,56 @@
-# This loads the TBBT dataset from a remote file using the `trifid-handler-fetch` middleware.
+# This loads the TBBT dataset from a remote file using the `trifid-handler-fetch` plugin.
 # Start this example by running: `npm run start:tbbt`
 # Example of a working URL: http://localhost:8080/data/person/amy-farrah-fowler
 
+# server:
+#   logLevel: debug
+
 globals:
   datasetBaseUrl: http://localhost:8080/
+  endpoints:
+    default:
+      url: /query
 
-middlewares:
-  morgan:
-    module: file:../../middlewares/morgan.js
-
-  rewrite:
-    module: trifid-core/middlewares/rewrite.js
-
+plugins:
   welcome:
-    module: trifid-core/middlewares/view.js
+    module: trifid-core/plugins/view.js
     paths: /
     methods: GET
     config:
       path: file:welcome.hbs
 
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths:
+      - /sparql
+      - /sparql/
+
+  graph-explorer:
+    module: trifid-plugin-graph-explorer
+    paths:
+      - /graph-explorer
+      - /graph-explorer/
+
+  spex:
+    module: trifid-plugin-spex
+    paths:
+      - /spex
+      - /spex/
+
   entity-renderer:
     module: "@zazuko/trifid-entity-renderer"
+    config:
+      labelLoader:
+        chunkSize: 30
+        concurrency: 2
+        timeout: 4000
 
   fetch-handler:
     module: trifid-handler-fetch
+    paths: /query
     config:
       url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt
       contentType: application/n-triples
-      split: true
-      cache: true
+      baseIRI: http://localhost:8080
+      graphName: http://example.com/graph
+      unionDefaultGraph: true

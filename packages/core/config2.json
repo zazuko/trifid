@@ -1,12 +1,13 @@
 {
+  "$schema": "./lib/config/schema.json",
   "globals": {
     "value": "config2",
     "config2": "config2"
   },
-  "middlewares": {
+  "plugins": {
     "tests": {
       "order": 120,
-      "module": "file:./middlewares/static.js",
+      "module": "file:./plugins/static.js",
       "paths": "/tests-dir",
       "config": {
         "directory": "cwd:./test"

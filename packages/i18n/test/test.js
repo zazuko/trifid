@@ -1,158 +1,175 @@
-import { strictEqual, throws } from 'assert'
-import { dirname, resolve } from 'path'
-import { fileURLToPath, URL } from 'url'
-import fetch from 'nodeify-fetch'
-import { describe, it } from 'mocha'
-import factory, { middleware as trifidPluginI18n } from '../index.js'
-import withServer from './support/withServer.js'
+// @ts-check
+
+import { strictEqual } from 'node:assert'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import trifidCore from 'trifid-core'
+import { describe } from 'mocha'
+
+import trifidPluginFactory from '../index.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-describe('trifid-plugin-i18n', () => {
-  it('should add the .t method to to res to translate a string', async () => {
-    await withServer(async (server) => {
-      const middleware = trifidPluginI18n({
-        locales: ['en', 'de'],
-        defaultLocale: 'en',
-        directory: resolve(currentDir, 'support/locales'),
-      })
-      server.app.use(middleware)
-
-      let t = null
-
-      server.app.get('/', (_req, res, next) => {
-        t = res.t
-
-        next()
-      })
-
-      const baseUrl = await server.listen()
-      await (await fetch(baseUrl)).text()
-
-      strictEqual(typeof t, 'function')
-    })
+/**
+ * Get an endpoint of the Fastify Instance.
+ *
+ * @param {import('fastify').FastifyInstance} server Server.
+ * @returns {string}
+ */
+const getListenerURL = (server) => {
+  const addresses = server.addresses().map((address) => {
+    if (typeof address === 'string') {
+      return address
+    }
+    return `http://${address.address}:${address.port}`
   })
 
-  it('should translate the string in the default language', async () => {
-    await withServer(async (server) => {
-      const middleware = trifidPluginI18n({
-        locales: ['en', 'de'],
-        defaultLocale: 'en',
-        directory: resolve(currentDir, 'support/locales'),
-      })
-      server.app.use(middleware)
+  if (addresses.length < 1) {
+    throw new Error('The listener is not listening')
+  }
 
-      server.app.get('/', (_req, res) => {
-        res.end(`${res.t('test')}`)
-      })
+  return addresses[0]
+}
 
-      const baseUrl = await server.listen()
-      const content = await (await fetch(baseUrl)).text()
-
-      strictEqual(content, 'test-en')
-    })
-  })
-
-  it('should translate the string in the language given as query parameter', async () => {
-    await withServer(async (server) => {
-      const middleware = trifidPluginI18n({
-        locales: ['en', 'de'],
-        defaultLocale: 'en',
-        directory: resolve(currentDir, 'support/locales'),
-      })
-      server.app.use(middleware)
-
-      server.app.get('/', (_req, res) => {
-        res.end(`${res.t('test')}`)
-      })
-
-      const baseUrl = new URL(await server.listen())
-      baseUrl.searchParams.append('lang', 'de')
-
-      const content = await (await fetch(baseUrl)).text()
-
-      strictEqual(content, 'test-de')
-    })
-  })
-
-  it('should translate the string in the language given as cookie', async () => {
-    await withServer(async (server) => {
-      const middleware = trifidPluginI18n({
-        locales: ['en', 'de'],
-        defaultLocale: 'en',
-        directory: resolve(currentDir, 'support/locales'),
-      })
-      server.app.use(middleware)
-
-      server.app.get('/', (_req, res) => {
-        res.end(`${res.t('test')}`)
-      })
-
-      const baseUrl = await server.listen()
-      const content = await (
-        await fetch(baseUrl, {
-          headers: {
-            cookie: 'i18n=de',
-          },
-        })
-      ).text()
-
-      strictEqual(content, 'test-de')
-    })
-  })
-
-  it('should send a cookie if the language changed', async () => {
-    await withServer(async (server) => {
-      const middleware = trifidPluginI18n({
-        locales: ['en', 'de'],
-        defaultLocale: 'en',
-        directory: resolve(currentDir, 'support/locales'),
-      })
-      server.app.use(middleware)
-
-      const baseUrl = new URL(await server.listen())
-      baseUrl.searchParams.append('lang', 'de')
-
-      const res = await fetch(baseUrl)
-
-      strictEqual(res.headers.get('set-cookie').startsWith('i18n=de'), true)
-    })
-  })
-})
-
-describe('Trifid factory', () => {
-  it('should throw if no directory is defined', async () => {
-    await withServer(async (server) => {
-      throws(() =>
-        factory({
-          config: {
-            locales: ['en', 'de'],
-            defaultLocale: 'en',
-          },
-        }),
-      )
-    })
-  })
-
-  it('should work as expected', async () => {
-    await withServer(async (server) => {
-      const middleware = factory({
-        registerTemplateHelper: (_name, _fn) => { },
-        server: server.app,
-        config: {
-          locales: ['en', 'de'],
-          defaultLocale: 'en',
-          directory: resolve(currentDir, 'support/locales'),
+const createTrifidInstance = (config) => {
+  return trifidCore(
+    {
+      server: {
+        listener: {
+          port: 0,
         },
-      })
-      server.app.use(middleware)
+        logLevel: 'warn',
+      },
+    },
+    {
+      i18n: {
+        module: trifidPluginFactory,
+        config,
+      },
+      testPage: {
+        module: async () => {
+          return {
+            defaultConfiguration: async () => {
+              return {
+                methods: ['GET'],
+                paths: [
+                  '/',
+                ],
+              }
+            },
+            routeHandler: async () => {
+              /**
+               * Route handler.
+               * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
+               * @param {import('fastify').FastifyReply} reply Reply.
+               */
+              const handler = async (request, reply) => {
+                const session = request.session
+                reply.send(session.get('t')('test'))
+              }
+              return handler
+            },
+          }
+        },
+      },
+    },
+  )
+}
 
-      const baseUrl = new URL(await server.listen())
-      baseUrl.searchParams.append('lang', 'de')
+describe('trifid-plugin-i18n', () => {
+  let trifidListener
 
-      const res = await fetch(baseUrl)
+  afterEach(async () => {
+    if (!trifidListener) {
+      return
+    }
+    await trifidListener.close()
+    trifidListener = undefined
+  })
 
-      strictEqual(res.headers.get('set-cookie').startsWith('i18n=de'), true)
+  it('should throw if no directory is defined', async () => {
+    try {
+      await createTrifidInstance({})
+    } catch (error) {
+      strictEqual(error.message, "The 'directory' configuration field should be a non-empty string.")
+    }
+  })
+
+  it('should work with EN as default locale', async () => {
+    const trifidInstance = await createTrifidInstance({
+      locales: ['en', 'fr', 'de'],
+      defaultLocale: 'en',
+      directory: resolve(currentDir, 'support/locales'),
     })
+    trifidListener = await trifidInstance.start()
+    const res = await fetch(`${getListenerURL(trifidListener)}/`)
+    const body = await res.text()
+    strictEqual(res.status, 200)
+    strictEqual(body, 'test-en')
+  })
+
+  it('should work with DE as default locale (should return EN)', async () => {
+    const trifidInstance = await createTrifidInstance({
+      locales: ['en', 'fr', 'de'],
+      defaultLocale: 'de',
+      directory: resolve(currentDir, 'support/locales'),
+    })
+    trifidListener = await trifidInstance.start()
+    const res = await fetch(`${getListenerURL(trifidListener)}/`)
+    const body = await res.text()
+    strictEqual(res.status, 200)
+    strictEqual(body, 'test-en')
+  })
+
+  it('should set a cookie in case the language changed', async () => {
+    const trifidInstance = await createTrifidInstance({
+      locales: ['en', 'fr', 'de'],
+      defaultLocale: 'en',
+      directory: resolve(currentDir, 'support/locales'),
+    })
+    trifidListener = await trifidInstance.start()
+    const res = await fetch(`${getListenerURL(trifidListener)}/?lang=fr`)
+    const cookies = res.headers.get('set-cookie') || ''
+    strictEqual(cookies.startsWith('i18n=fr'), true)
+    const body = await res.text() // Just make sure that the stream is consumed
+    strictEqual(res.status, 200)
+    strictEqual(body, 'test-fr')
+  })
+
+  it('should use the language from the cookie', async () => {
+    const trifidInstance = await createTrifidInstance({
+      locales: ['en', 'fr', 'de'],
+      defaultLocale: 'en',
+      directory: resolve(currentDir, 'support/locales'),
+    })
+    trifidListener = await trifidInstance.start()
+    const res = await fetch(`${getListenerURL(trifidListener)}/`, {
+      headers: {
+        cookie: 'i18n=fr',
+      },
+    })
+    const body = await res.text()
+    strictEqual(res.status, 200)
+    strictEqual(body, 'test-fr')
+  })
+
+  it('should override cookie value if language is specified in query parameter', async () => {
+    const trifidInstance = await createTrifidInstance({
+      locales: ['en', 'fr', 'de'],
+      defaultLocale: 'en',
+      directory: resolve(currentDir, 'support/locales'),
+    })
+    trifidListener = await trifidInstance.start()
+    const res = await fetch(`${getListenerURL(trifidListener)}/?lang=fr`, {
+      headers: {
+        cookie: 'i18n=de',
+      },
+    })
+    const cookies = res.headers.get('set-cookie') || ''
+    strictEqual(cookies.startsWith('i18n=fr'), true)
+    const body = await res.text()
+    strictEqual(res.status, 200)
+    strictEqual(body, 'test-fr')
   })
 })

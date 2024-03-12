@@ -1,5 +1,30 @@
 # @zazuko/trifid-markdown-content
 
+## 2.0.2
+
+### Patch Changes
+
+- e816fd3: Add support for trailing slashes (and redirect to it, to avoid duplicate content issues)
+- e8faa76: Internally use the new `render` function, that takes the `request` as first argument.
+- 71dc4ee: Use session to store content
+
+## 2.0.1
+
+### Patch Changes
+
+- 777bc01: Force the `text/html` content-type
+
+## 2.0.0
+
+### Major Changes
+
+- 0281f85: The plugin is now using the new Trifid factory, which is a breaking change.
+- 4b515f8: Use 'plugins' instead of 'middlewares'
+
+### Patch Changes
+
+- 69d6ad0: Improve included TypeScript types.
+
 ## 1.0.1
 
 ### Patch Changes

@@ -3,7 +3,7 @@
   "description": "Trifid Graph Explorer plugin",
   "type": "module",
   "main": "index.js",
-  "version": "1.0.2",
+  "version": "2.0.2",
   "license": "MIT",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
@@ -19,14 +19,14 @@
     "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
-    "absolute-url": "^1.2.2",
-    "express": "^4.18.2",
+    "@fastify/static": "^7.0.1",
     "graph-explorer": "^1.2.0",
-    "import-meta-resolve": "^2.2.0"
+    "import-meta-resolve": "^4.0.0"
   },
   "devDependencies": {
-    "c8": "^8.0.1",
-    "express-as-promise": "^1.2.0",
-    "mocha": "^10.2.0"
+    "@types/node": "^20.11.25",
+    "c8": "^9.1.0",
+    "mocha": "^10.2.0",
+    "trifid-core": "^4.0.0"
   }
 }

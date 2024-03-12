@@ -2,9 +2,10 @@
   "name": "trifid-handler-fetch",
   "description": "Fetch handler for Trifid",
   "type": "module",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "license": "MIT",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
@@ -14,27 +15,28 @@
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
   },
+  "files": [
+    "dist",
+    "lib",
+    "index.js",
+    "CHANGELOG.md"
+  ],
   "scripts": {
-    "test": "c8 --all --reporter lcovonly mocha"
+    "test": "c8 --all --reporter lcovonly mocha",
+    "prebuild": "rimraf dist/",
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "dependencies": {
-    "@rdfjs/express-handler": "^1.2.2",
-    "@rdfjs/formats-common": "^2.2.0",
-    "@rdfjs/serializer-jsonld-ext": "^3.0.0",
-    "file-fetch": "^1.7.0",
-    "@rdfjs/fetch": "^3.1.0",
-    "nodeify-fetch": "^3.0.0",
-    "proto-fetch": "^1.0.0",
-    "rdf-ext": "^2.0.1",
-    "rdfjs": "^0.0.1"
+    "oxigraph": "^0.4.0-alpha.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "c8": "^8",
-    "bluebird": "^3.7.2",
-    "express": "^4.18.2",
-    "mocha": "^10.0.0",
-    "nock": "^13.2.9",
-    "supertest": "^6.3.4",
-    "tbbt-ld": "^1.1.0"
+    "@types/node": "^20.11.25",
+    "@types/uuid": "^9.0.8",
+    "c8": "^9.1.0",
+    "mocha": "^10.2.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.4.2"
   }
 }

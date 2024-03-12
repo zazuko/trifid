@@ -1,0 +1,22 @@
+# trifid-handler-fetch
+
+## 3.0.0
+
+### Major Changes
+
+- 4b515f8: Use 'plugins' instead of 'middlewares'
+- 0eaf2b7: Completely change the way it is working.
+
+  Instead of being an handler that is made to be called only when dereferencing, it is now a Trifid plugin that is exposing a new endpoint `/query` (for example) that can be used to perform SPARQL queries against the dataset.
+
+  This means that it is now possible to perform SPARQL queries against a dataset that is loaded from a URL, which was not possible before.
+  This also means that it is possible to use all other Trifid plugins that were only working with a SPARQL endpoint and not with a dataset coming from a simple file.
+
+  Please take a look on how to use it in the documentation here: https://github.com/zazuko/trifid/tree/main/packages/handler-fetch#readme
+
+- 293d7e6: The plugin is now using the new Trifid factory, which is a breaking change.
+
+### Patch Changes
+
+- 69d6ad0: Improve included TypeScript types.
+- e65e519: Support `unionDefaultGraph` configuration

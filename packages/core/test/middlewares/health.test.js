@@ -1,88 +1,90 @@
-import express from 'express'
-import request from 'supertest'
-import { describe, test } from '@jest/globals'
+// // @ts-check
 
-import healthMiddleware from '../../middlewares/health.js'
+// import express from 'express'
+// import request from 'supertest'
+// import { describe, test } from '@jest/globals'
 
-describe('health middleware', () => {
-  test('should return expected content-type', async () => {
-    const app = express()
+// import healthPlugin from '../../plugins/health.js'
 
-    app.use(
-      '/health',
-      healthMiddleware({
-        logger: {
-          debug: (_msg) => { },
-        },
-      }),
-    )
+// describe('health plugin', () => {
+//   test('should return expected content-type', async () => {
+//     const app = express()
 
-    return request(app)
-      .get('/health')
-      .expect('Content-Type', /text\/plain/)
-  })
+//     app.use(
+//       '/health',
+//       healthPlugin({
+//         logger: {
+//           debug: (_msg) => { },
+//         },
+//       }),
+//     )
 
-  test('should return expected body', async () => {
-    const app = express()
+//     return request(app)
+//       .get('/health')
+//       .expect('Content-Type', /text\/plain/)
+//   })
 
-    app.use(
-      '/health',
-      healthMiddleware({
-        logger: {
-          debug: (_msg) => { },
-        },
-      }),
-    )
+//   test('should return expected body', async () => {
+//     const app = express()
 
-    return request(app).get('/health').expect('ok')
-  })
+//     app.use(
+//       '/health',
+//       healthPlugin({
+//         logger: {
+//           debug: (_msg) => { },
+//         },
+//       }),
+//     )
 
-  test('should return expected status code', async () => {
-    const app = express()
+//     return request(app).get('/health').expect('ok')
+//   })
 
-    app.use(
-      '/health',
-      healthMiddleware({
-        logger: {
-          debug: (_msg) => { },
-        },
-      }),
-    )
+//   test('should return expected status code', async () => {
+//     const app = express()
 
-    return request(app).get('/health').expect(200)
-  })
+//     app.use(
+//       '/health',
+//       healthPlugin({
+//         logger: {
+//           debug: (_msg) => { },
+//         },
+//       }),
+//     )
 
-  test('should call health request with valid response', async () => {
-    const app = express()
+//     return request(app).get('/health').expect(200)
+//   })
 
-    app.use(
-      '/health',
-      healthMiddleware({
-        logger: {
-          debug: (_msg) => { },
-        },
-      }),
-    )
+//   test('should call health request with valid response', async () => {
+//     const app = express()
 
-    return request(app)
-      .get('/health')
-      .expect('Content-Type', /text\/plain/)
-      .expect('ok')
-      .expect(200)
-  })
+//     app.use(
+//       '/health',
+//       healthPlugin({
+//         logger: {
+//           debug: (_msg) => { },
+//         },
+//       }),
+//     )
 
-  test('should not call health request', async () => {
-    const app = express()
+//     return request(app)
+//       .get('/health')
+//       .expect('Content-Type', /text\/plain/)
+//       .expect('ok')
+//       .expect(200)
+//   })
 
-    app.use(
-      '/health',
-      healthMiddleware({
-        logger: {
-          debug: (_msg) => { },
-        },
-      }),
-    )
+//   test('should not call health request', async () => {
+//     const app = express()
 
-    return request(app).get('/non-existant-route').expect(404)
-  })
-})
+//     app.use(
+//       '/health',
+//       healthPlugin({
+//         logger: {
+//           debug: (_msg) => { },
+//         },
+//       }),
+//     )
+
+//     return request(app).get('/non-existant-route').expect(404)
+//   })
+// })

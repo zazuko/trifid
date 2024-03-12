@@ -1,5 +1,0 @@
-node_modules/
-.gitignore
-test/
-coverage/
-tsconfig.json

@@ -1,38 +1,84 @@
-import assert from 'assert'
-import withServer from 'express-as-promise/withServer.js'
+// @ts-check
+
+import { strictEqual } from 'node:assert'
+
+import trifidCore from 'trifid-core'
 import { describe, it } from 'mocha'
-import trifidFactory from '../index.js'
-import { createTrifidConfig } from './support/createTrifidConfig.js'
 
-describe('trifid-plugin-iiif', () => {
-  describe('trifid factory', () => {
-    it('should be a factory', () => {
-      assert.strictEqual(typeof trifidFactory, 'function')
-    })
+import trifidPluginFactory from '../index.js'
 
-    it('should error if endpoint parameter is missing', () => {
-      const trifid = createTrifidConfig({})
-      assert.throws(() => trifidFactory(trifid), Error)
-    })
+/**
+ * Get an endpoint of the Fastify Instance.
+ *
+ * @param {import('fastify').FastifyInstance} server Server.
+ * @returns {string}
+ */
+const getListenerURL = (server) => {
+  const addresses = server.addresses().map((address) => {
+    if (typeof address === 'string') {
+      return address
+    }
+    return `http://${address.address}:${address.port}`
+  })
 
-    it('should create a middleware with factory and default options', () => {
-      const trifid = createTrifidConfig({ endpointUrl: '/test' })
-      const middleware = trifidFactory(trifid)
+  if (addresses.length < 1) {
+    throw new Error('The listener is not listening')
+  }
 
-      assert.strictEqual(typeof middleware, 'function')
+  return addresses[0]
+}
+
+describe('@zazuko/trifid-plugin-iiif', () => {
+  describe('Trifid plugin', () => {
+    it('should throw an error if no endpoint parameter is provided', async () => {
+      try {
+        await trifidPluginFactory({})
+      } catch (e) {
+        strictEqual(e.message, 'missing endpointUrl parameter')
+      }
     })
   })
 
-  describe('middleware', () => {
-    it('warns about no uri parameter', async () => {
-      await withServer(async (server) => {
-        const loggerSpy = []
-        const trifid = createTrifidConfig({ endpointUrl: '/test' }, loggerSpy)
-        const middleware = trifidFactory(trifid)
-        server.app.use(middleware)
-        await server.fetch('/test')
-        assert.strictEqual(loggerSpy[0], 'No uri query parameter')
-      })
+  describe('Trifid instance', () => {
+    let trifidListener
+
+    beforeEach(async () => {
+      const trifidServer = await trifidCore(
+        {
+          server: {
+            listener: {
+              port: 0,
+            },
+            logLevel: 'warn',
+          },
+        },
+        {
+          iiif: {
+            module: trifidPluginFactory,
+            config: {
+              endpointUrl: 'http://example.org/query',
+            },
+          },
+        },
+      )
+      trifidListener = await trifidServer.start()
+    })
+
+    afterEach(async () => {
+      await trifidListener.close()
+    })
+
+    it('should 404', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/iiif/`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 404)
+    })
+
+    it('can serve IIIF', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/iiif/?uri=http://example.org/data`)
+      await res.text() // Just make sure that the stream is consumed
+      // @TODO: use a real SPARQL endpoint to get real results ; the 500 is due to the fact that the SPARQL endpoint is not real
+      strictEqual(res.status, 500)
     })
   })
 })

@@ -1,5 +1,24 @@
 # trifid-plugin-yasgui
 
+## 3.0.2
+
+### Patch Changes
+
+- e8faa76: Internally use the new `render` function, that takes the `request` as first argument.
+
+## 3.0.1
+
+### Patch Changes
+
+- 195cb7b: Bump import-meta-resolve from 3.0.0 to 4.0.0
+
+## 3.0.0
+
+### Major Changes
+
+- 4b515f8: Use 'plugins' instead of 'middlewares'
+- b635ae9: The plugin is now using the new Trifid factory, which is a breaking change.
+
 ## 2.2.6
 
 ### Patch Changes

@@ -159,24 +159,10 @@ const entriesForLanguage = (store, language = 'en') => {
   return finalStore
 }
 
-const contentMiddleware = ({ logger, namespace, store }) => async (_req, res, next) => {
-  logger.debug(`loaded store into '${namespace}' namespace`)
-
-  // just make sure that the `content-plugin` entry exists
-  if (!res.locals[LOCALS_PLUGIN_KEY]) {
-    res.locals[LOCALS_PLUGIN_KEY] = {}
-  }
-
-  // add all configured entries for the specified namespace
-  const lang = res?.locals?.currentLanguage || 'en'
-  res.locals[LOCALS_PLUGIN_KEY][namespace] = entriesForLanguage(store, lang)
-
-  // let's forward all of this to other middlewares
-  return next()
-}
-
+/** @type {import('../../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
-  const { config, logger, server, render } = trifid
+  const { config, server, render } = trifid
+
   const entries = config?.entries || {}
   const defaults = config?.defaults || {}
 
@@ -191,7 +177,7 @@ const factory = async (trifid) => {
     const directory = entry?.directory
     const mountPath = entry?.mountPath || false
 
-    // check config
+    // Check config
     if (!directory || typeof directory !== 'string') {
       throw new Error('\'directory\' should be a non-empty string')
     }
@@ -209,27 +195,60 @@ const factory = async (trifid) => {
       store[item.name] = await getContent(item.path, contentConfiguration)
     }
 
-    // apply the middleware in all cases
-    server.use(contentMiddleware({ logger, namespace, store }))
+    /**
+     * Handler to load the content into the session, using the user language.
+     *
+     * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
+     * @param {import('fastify').FastifyReply} _reply Reply.
+     * @param {import('fastify').DoneFuncWithErrOrRes} done Done.
+     */
+    const onRequestHook = (request, _reply, done) => {
+      if (!request.session.has(LOCALS_PLUGIN_KEY)) {
+        request.session.set(LOCALS_PLUGIN_KEY, {})
+      }
 
-    // create a route for each entry
+      const currentLanguage = request.session.get('currentLanguage') || request.session.get('defaultLanguage') || 'en'
+      const currentContent = request.session.get(LOCALS_PLUGIN_KEY) || {}
+      currentContent[namespace] = entriesForLanguage(store, currentLanguage)
+      request.session.set(LOCALS_PLUGIN_KEY, currentContent)
+      done()
+    }
+    server.addHook('onRequest', onRequestHook)
+
+    // Create a route for each entry
     if (mountPath) {
       const mountAtPathSlash = mountPath.endsWith('/') ? mountPath : `${mountPath}/`
 
       for (const item of items) {
-        server.get(`${mountAtPathSlash}${item.name}`, async (_req, res, _next) => {
-          return res.send(await render(defaultValue('template', entry, template), {
-            content: res.locals[LOCALS_PLUGIN_KEY][namespace][item.name] || '',
-            locals: res.locals,
+        const routePath = `${mountAtPathSlash}${item.name}`
+
+        /**
+         * Route handler for the specific content.
+         * @param {import('fastify').FastifyRequest} _request Request.
+         * @param {import('fastify').FastifyReply} reply Reply.
+         * @returns {Promise<void>}
+         */
+        const redirectHandler = async (_request, reply) => {
+          return reply.redirect(`${routePath}/`)
+        }
+
+        /**
+         * Route handler for the specific content.
+         * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
+         * @param {import('fastify').FastifyReply} reply Reply.
+         * @returns {Promise<void>}
+         */
+        const routeHandler = async (request, reply) => {
+          return reply.type('text/html').send(await render(request, defaultValue('template', entry, template), {
+            content: request.session.get(LOCALS_PLUGIN_KEY)?.[namespace]?.[item.name] || '',
           }))
-        })
+        }
+
+        // Mount routes
+        server.get(`${routePath}`, redirectHandler)
+        server.get(`${routePath}/`, routeHandler)
       }
     }
-  }
-
-  // just return a dummy middleware
-  return (_req, _res, next) => {
-    return next()
   }
 }
 
