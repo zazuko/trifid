@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.0.3
+
+### Patch Changes
+
+- 1605f62: Update link to GitHub repository for the plugin.
+
 ## 3.0.2
 
 ### Patch Changes

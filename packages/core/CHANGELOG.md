@@ -1,5 +1,15 @@
 # trifid-core
 
+## 4.0.3
+
+### Patch Changes
+
+- 2a6b31f: Add a `server.options` field to configure the Fastify instance with extra fields.
+
+  Here is a list of all supported options: https://fastify.dev/docs/latest/Reference/Server/#factory
+
+- 2a6b31f: Remove old `server.express` configuration field, which was deprecated.
+
 ## 4.0.2
 
 ### Patch Changes
