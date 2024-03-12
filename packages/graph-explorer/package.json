@@ -16,7 +16,7 @@
   },
   "scripts": {
     "coverage": "codecov",
-    "test": "c8 --reporter=lcov --reporter=text mocha"
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
     "@fastify/static": "^7.0.1",

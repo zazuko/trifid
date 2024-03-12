@@ -17,7 +17,7 @@ const handler = async (error, request, reply) => {
     statusCode = 500
   }
 
-  reply.status(500).send("Internal Server Error")
+  reply.status(500).send('Internal Server Error')
 }
 
 export default handler

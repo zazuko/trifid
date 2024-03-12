@@ -59,27 +59,27 @@ describe('trifid-plugin-spex', () => {
 
   it('can serve SPEX', async () => {
     const res = await fetch(`${getListenerURL(trifidListener)}/spex/`)
-    const _body = await res.text() // Just make sure that the stream is consumed
+    await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
     strictEqual(res.redirected, false) // Should not redirect on this case
   })
 
   it('should redirect if trailing slash is missing', async () => {
     const res = await fetch(`${getListenerURL(trifidListener)}/spex`)
-    const _body = await res.text() // Just make sure that the stream is consumed
+    await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200) // The redirection should lead to a correct page
     strictEqual(res.redirected, true) // Check the redirection
   })
 
   it('should serve the static JavaScript file', async () => {
     const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/spex.umd.min.js`)
-    const _body = await res.text() // Just make sure that the stream is consumed
+    await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
   })
 
   it('should serve the static CSS file', async () => {
     const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/spex.css`)
-    const _body = await res.text() // Just make sure that the stream is consumed
+    await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
   })
 })

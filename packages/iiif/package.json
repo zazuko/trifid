@@ -20,7 +20,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha"
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
     "@rdfjs/express-handler": "^1.2.2",

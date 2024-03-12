@@ -6,7 +6,7 @@
   "types": "dist/ckan/src/index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha",
     "example-instance": "node test/support/run-instance.js",
     "clean": "rimraf dist/",
     "prebuild": "npm run clean",

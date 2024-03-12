@@ -22,7 +22,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "test": "c8 --all --reporter lcovonly mocha",
     "prebuild": "rimraf dist/",
     "build": "tsc",
     "prepack": "npm run build"

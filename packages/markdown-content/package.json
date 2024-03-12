@@ -6,7 +6,7 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha",
     "prebuild": "rimraf dist/",
     "build": "tsc",
     "prepack": "npm run build"
