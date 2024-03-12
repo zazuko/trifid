@@ -73,7 +73,7 @@ describe('config', () => {
       parser({
         server: {
           listener: {},
-          express: {},
+          options: {},
         },
       })
     }).to.not.throw()
@@ -82,7 +82,7 @@ describe('config', () => {
       parser({
         server: {
           listener: {},
-          express: {},
+          options: {},
         },
       })
     }).to.not.throw()
@@ -93,7 +93,7 @@ describe('config', () => {
           listener: {
             port: 8080,
           },
-          express: {},
+          options: {},
         },
       })
     }).to.not.throw()
@@ -104,7 +104,7 @@ describe('config', () => {
           listener: {
             port: 8080,
           },
-          express: {
+          options: {
             foo: 'bar',
           },
         },
@@ -125,7 +125,7 @@ describe('config', () => {
       parser({
         server: {
           listener: {},
-          express: {},
+          options: {},
           unsupportedField: true,
         },
       })
@@ -138,7 +138,7 @@ describe('config', () => {
           listener: {
             port: 808080,
           },
-          express: {},
+          options: {},
         },
       })
     }).to.throw()
@@ -151,7 +151,7 @@ describe('config', () => {
             port: 8080,
             unsupportedField: true,
           },
-          express: {},
+          options: {},
         },
       })
     }).to.throw()
