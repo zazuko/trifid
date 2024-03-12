@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-plugin-iiif",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Trifid plugin to handle IIIF data",
   "keywords": [
@@ -34,7 +34,7 @@
   "devDependencies": {
     "c8": "^9.1.0",
     "mocha": "^10.3.0",
-    "trifid-core": "^4.0.0"
+    "trifid-core": "^4.0.3"
   },
   "publishConfig": {
     "access": "public"

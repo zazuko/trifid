@@ -1,5 +1,11 @@
 # trifid-plugin-i18n
 
+## 3.0.1
+
+### Patch Changes
+
+- c5a7bd4: Remove some unused dev dependencies
+
 ## 3.0.0
 
 ### Major Changes
