@@ -28,9 +28,7 @@
   "devDependencies": {
     "@types/i18n": "^0.13.10",
     "c8": "^8.0.1",
-    "express-as-promise": "^1.2.0",
     "mocha": "^10.2.0",
-    "nodeify-fetch": "^3.1.0",
     "trifid-core": "^4.0.0"
   }
 }
