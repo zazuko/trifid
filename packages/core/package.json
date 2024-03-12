@@ -14,7 +14,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha test/**.test.js test/**/*.test.js",
+    "test": "c8 --all --reporter=lcov --reporter=text mocha test/**.test.js test/**/*.test.js",
     "watch": "nodemon server.js",
     "typings": "tsc",
     "clean": "rimraf *.tgz dist/",
