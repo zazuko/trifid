@@ -78,6 +78,20 @@ const trifid = async (config, additionalPlugins = {}) => {
     ...serverOptions,
   })
 
+  // Add support for `application/sparql-query` content type
+  server.addContentTypeParser('application/sparql-query', (_request, payload, done) => {
+    const data = []
+    payload.on('data', (chunk) => data.push(chunk))
+    payload.on('end', () => {
+      try {
+        const parsed = data.join('')
+        done(null, parsed)
+      } catch (err) {
+        done(err, undefined)
+      }
+    })
+  })
+
   // This can be used to pass data from multiple plugins
   /** @type {Map<string, any>} */
   const trifidLocals = new Map()
