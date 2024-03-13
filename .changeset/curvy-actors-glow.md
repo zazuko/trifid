@@ -2,4 +2,4 @@
 "@zazuko/trifid-plugin-ckan": patch
 ---
 
-Language tages were lost from publisher names
+Language tags were lost from publisher names
