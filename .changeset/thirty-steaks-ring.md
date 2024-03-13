@@ -1,5 +1,0 @@
----
-"trifid": patch
----
-
-Upgrade dependencies

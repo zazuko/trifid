@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.0.3
+
+### Patch Changes
+
+- 04c75de: Try to get quads from the store, in order to get the graph name.
+
 ## 1.0.2
 
 ### Patch Changes
