@@ -1,5 +1,11 @@
 # trifid-core
 
+## 4.0.4
+
+### Patch Changes
+
+- 46e7670: Add support for `application/sparql-query` content type
+
 ## 4.0.3
 
 ### Patch Changes
