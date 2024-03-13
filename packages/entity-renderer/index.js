@@ -170,7 +170,7 @@ const factory = async (trifid) => {
 
         // Check if the IRI exists in the dataset
         const askQuery = isContainer ? mergedConfig.containerExistsQuery : mergedConfig.resourceExistsQuery
-        const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
+        const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true, headers: queryHeaders })
         if (!exists) {
           return reply.callNotFound()
         }
@@ -200,6 +200,10 @@ const factory = async (trifid) => {
           const entity = await query(replaceIriInQuery(describeQuery, iri), {
             ask: false,
             rewriteResponse,
+            headers: {
+              ...queryHeaders,
+              accept: 'application/n-quads',
+            },
           })
           const entityContentType = entity.contentType || 'application/n-triples'
           const entityStream = entity.response
