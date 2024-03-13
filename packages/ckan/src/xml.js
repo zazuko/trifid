@@ -88,13 +88,13 @@ const toXML = (dataset) => {
           const publishers = dataset.out(ns.dcterms.publisher)
             .map(publisher => {
               const attr = {}
-              /** @type {string | string[]} */
+              /** @type {string | Record<string, unknown>[]} */
               let name = publisher.value
 
               if (isNamedNode(publisher)) {
                 attr['rdf:about'] = publisher.value
                 if (publisher.out(ns.schema.name).values.length > 0) {
-                  name = publisher.out(ns.schema.name).values
+                  name = publisher.out(ns.schema.name).map(serializeLiteral)
                 }
               }
 
