@@ -28,7 +28,7 @@
     "clownface": "^1.5.1",
     "jsonld": "^8.3.2",
     "rdf-ext": "^2.2.0",
-    "sparql-http-client": "^2.4.2",
+    "sparql-http-client": "^3.0.0",
     "through2": "^4.0.2"
   },
   "devDependencies": {
