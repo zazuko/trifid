@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
-    "sparql-http-client": "^2.4.2"
+    "sparql-http-client": "^3.0.0"
   },
   "devDependencies": {
     "c8": "^9.1.0",

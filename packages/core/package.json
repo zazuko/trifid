@@ -49,7 +49,7 @@
     "@fontsource/playfair-display": "^5.0.23",
     "@fontsource/roboto": "^5.0.12",
     "@rdfjs-elements/formats-pretty": "^0.6.7",
-    "@types/sparql-http-client": "^2.2.15",
+    "@types/sparql-http-client": "^3.0.0",
     "ajv": "^8.12.0",
     "commander": "^12.0.0",
     "fastify": "^4.26.1",
@@ -59,7 +59,7 @@
     "lodash": "^4.17.21",
     "pino": "^8.17.1",
     "pino-pretty": "^10.3.1",
-    "sparql-http-client": "^2.4.2",
+    "sparql-http-client": "^3.0.0",
     "string-replace-stream": "^0.0.2",
     "yaml": "^2.4.1"
   },
