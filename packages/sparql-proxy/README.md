@@ -29,4 +29,13 @@ plugins:
       rewrite: false # Rewrite by default
       rewriteQuery: true # Allow rewriting the query (in case of rewriting)
       rewriteResults: true # Allow rewriting the results (in case of rewriting)
+
+      # Configure formats, that can be used as `format` query parameter
+      formats:
+        ttl: "text/turtle"
+        jsonld: "application/ld+json"
+        xml: "application/rdf+xml"
+        nt: "application/n-triples"
+        trig: "application/trig"
+        csv: "text/csv"
 ```

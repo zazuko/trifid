@@ -60,3 +60,10 @@ plugins:
       endpointUrl: env:SPARQL_ENDPOINT_URL
       username: env:SPARQL_ENDPOINT_USERNAME
       password: env:SPARQL_ENDPOINT_PASSWORD
+      formats:
+        ttl: "text/turtle"
+        jsonld: "application/ld+json"
+        xml: "application/rdf+xml"
+        nt: "application/n-triples"
+        trig: "application/trig"
+        csv: "text/csv"
