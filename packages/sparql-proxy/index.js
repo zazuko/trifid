@@ -13,6 +13,7 @@ const defaultConfiguration = {
   rewrite: false, // Rewrite by default
   rewriteQuery: true, // Allow rewriting the query
   rewriteResults: true, // Allow rewriting the results
+  formats: {},
 }
 
 /**
@@ -63,6 +64,7 @@ const factory = async (trifid) => {
        * @typedef {Object} QueryString
        * @property {string} [query] The SPARQL query.
        * @property {string} [rewrite] Should the query and the results be rewritten?
+       * @property {string} [format] The format of the results.
        */
 
       /**
@@ -142,7 +144,10 @@ const factory = async (trifid) => {
         logger.debug(`Received query${rewriteValue ? ' (rewritten)' : ''}:\n${query}`)
 
         try {
-          const acceptHeader = request.headers.accept || 'application/sparql-results+json'
+          let acceptHeader = request.headers.accept || 'application/sparql-results+json'
+          if (request.query.format) {
+            acceptHeader = options.formats[request.query.format] || acceptHeader
+          }
           const headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             Accept: acceptHeader,
