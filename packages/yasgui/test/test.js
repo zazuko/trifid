@@ -29,53 +29,65 @@ const getListenerURL = (server) => {
 }
 
 describe('trifid-plugin-yasgui', () => {
-  let trifidListener
+  describe('trifidPluginFactory', () => {
+    it('should throw if the catalog option is not an array', async () => {
+      try {
+        await trifidPluginFactory({ config: { catalog: 'not an array' } })
+      } catch (err) {
+        strictEqual(err.message, '"catalog" option must be an array')
+      }
+    })
+  })
 
-  beforeEach(async () => {
-    const trifidServer = await trifidCore(
-      {
-        server: {
-          listener: {
-            port: 0,
+  describe('instance', () => {
+    let trifidListener
+
+    beforeEach(async () => {
+      const trifidServer = await trifidCore(
+        {
+          server: {
+            listener: {
+              port: 0,
+            },
+            logLevel: 'warn',
           },
-          logLevel: 'warn',
         },
-      },
-      {
-        yasgui: {
-          module: trifidPluginFactory,
+        {
+          yasgui: {
+            module: trifidPluginFactory,
+          },
         },
-      },
-    )
-    trifidListener = await trifidServer.start()
-  })
+      )
+      trifidListener = await trifidServer.start()
+    })
 
-  afterEach(async () => {
-    await trifidListener.close()
-  })
+    afterEach(async () => {
+      await trifidListener.close()
+    })
 
-  it('can serve YASGUI', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/sparql/`)
-    await res.text() // Just make sure that the stream is consumed
-    strictEqual(res.status, 200)
-  })
+    it('can serve YASGUI', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/sparql/`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 200)
+    })
 
-  it('should redirect if trailing slash is missing', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/sparql`)
-    await res.text() // Just make sure that the stream is consumed
-    strictEqual(res.status, 200) // The redirection should lead to a correct page
-    strictEqual(res.redirected, true) // Check the redirection
-  })
+    it('should redirect if trailing slash is missing', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/sparql`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 200) // The redirection should lead to a correct page
+      strictEqual(res.redirected, true) // Check the redirection
+    })
 
-  it('can serve static CSS style', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-dist/yasgui.min.css`)
-    await res.text() // Just make sure that the stream is consumed
-    strictEqual(res.status, 200)
-  })
+    it('can serve static CSS style', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-dist/yasgui.min.css`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 200)
+    })
 
-  it('can serve static JavaScript script', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-dist/yasgui.min.js`)
-    await res.text() // Just make sure that the stream is consumed
-    strictEqual(res.status, 200)
+    it('can serve static JavaScript script', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-dist/yasgui.min.js`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 200)
+    })
   })
 })

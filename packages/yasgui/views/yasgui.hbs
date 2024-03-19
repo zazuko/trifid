@@ -47,7 +47,13 @@
   {{/if}}
 
   <script>
+    const catalogueEndpoints = [...new Set(JSON.parse('{{{ catalogueEndpoints }}}'))]
     Yasgui.defaults.requestConfig.endpoint = '{{ endpointUrl }}'
+    Yasgui.defaults.endpointCatalogueOptions.getData = () => {
+      return catalogueEndpoints.map((endpoint) => {
+        return { endpoint }
+      })
+    }
     const yasgui = new Yasgui(document.getElementById('yasgui'), config)
   </script>
 </div>
