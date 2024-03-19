@@ -21,7 +21,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "c8 --all --reporter lcovonly mocha"
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
     "@fastify/static": "^7.0.1",
