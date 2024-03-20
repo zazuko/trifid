@@ -1,5 +1,27 @@
 # trifid
 
+## 5.0.2
+
+### Patch Changes
+
+- d5ade95: Upgrade dependencies
+- Updated dependencies [04c75de]
+  - @zazuko/trifid-entity-renderer@1.0.3
+
+## 5.0.1
+
+### Patch Changes
+
+- Updated dependencies [e8faa76]
+- Updated dependencies [2553ece]
+- Updated dependencies [e8faa76]
+  - trifid-core@4.0.0
+  - @zazuko/trifid-plugin-sparql-proxy@2.0.1
+  - @zazuko/trifid-entity-renderer@1.0.1
+  - trifid-plugin-graph-explorer@2.0.2
+  - trifid-plugin-yasgui@3.0.2
+  - trifid-plugin-spex@2.0.2
+
 ## 5.0.0
 
 ### Major Changes

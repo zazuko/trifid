@@ -1,5 +1,27 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.0.3
+
+### Patch Changes
+
+- 04c75de: Try to get quads from the store, in order to get the graph name.
+
+## 1.0.2
+
+### Patch Changes
+
+- 854eddf: Send `i18n` cookie to requests made to the SPARQL endpoint to avoid languages issues.
+- Updated dependencies [3f2271d]
+  - trifid-core@4.0.2
+
+## 1.0.1
+
+### Patch Changes
+
+- e8faa76: Internally use the new `render` function, that takes the `request` as first argument.
+- Updated dependencies [e8faa76]
+  - trifid-core@4.0.0
+
 ## 1.0.0
 
 ### Major Changes

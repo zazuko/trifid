@@ -49,15 +49,7 @@ const trifid = async (config, additionalPlugins = {}) => {
   const trifidEvents = new EventEmitter()
   const fullConfig = await handler(config)
 
-  // // Configure Express server
-  // if (fullConfig?.server?.express) {
-  //   for (const expressSettingKey in fullConfig.server.express) {
-  //     server.set(
-  //       expressSettingKey,
-  //       fullConfig.server.express[expressSettingKey],
-  //     )
-  //   }
-  // }
+  const serverOptions = fullConfig?.server?.options || {}
 
   // Dynamic server configuration
   const portFromConfig = fullConfig?.server?.listener?.port
@@ -83,6 +75,21 @@ const trifid = async (config, additionalPlugins = {}) => {
   const server = fastify({
     logger: false,
     trustProxy: true,
+    ...serverOptions,
+  })
+
+  // Add support for `application/sparql-query` content type
+  server.addContentTypeParser('application/sparql-query', (_request, payload, done) => {
+    const data = []
+    payload.on('data', (chunk) => data.push(chunk))
+    payload.on('end', () => {
+      try {
+        const parsed = data.join('')
+        done(null, parsed)
+      } catch (err) {
+        done(err, undefined)
+      }
+    })
   })
 
   // This can be used to pass data from multiple plugins

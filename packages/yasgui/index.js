@@ -9,10 +9,15 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 /** @type {import('../core/types/index.js').TrifidPlugin} */
 const trifidFactory = async (trifid) => {
   const { config, render, server } = trifid
-  const { template, endpointUrl, urlShortener } = config
+  const { template, endpointUrl, urlShortener, catalog } = config
 
   const endpoint = endpointUrl || '/query'
   const view = !template ? `${currentDir}/views/yasgui.hbs` : template
+
+  const catalogOption = catalog || []
+  if (!Array.isArray(catalogOption)) {
+    throw new Error('"catalog" option must be an array')
+  }
 
   // Serve static files for YASGUI
   const yasguiPath = resolve('@zazuko/yasgui/build/', import.meta.url)
@@ -52,7 +57,7 @@ const trifidFactory = async (trifid) => {
     routeHandler: async () => {
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -68,10 +73,17 @@ const trifidFactory = async (trifid) => {
         // Read SPARQL endpoint URL from configuration and resolve with full URL
         const endpointUrl = new URL(endpoint, fullUrl)
 
+        const catalogueEndpoints = JSON.stringify([
+          ...catalogOption,
+          endpointUrl,
+        ])
+
         const content = await render(
+          request,
           view,
           {
             endpointUrl: endpointUrl.toString(),
+            catalogueEndpoints,
             urlShortener,
           },
           { title: 'YASGUI' },

@@ -135,7 +135,7 @@ const factory = async (trifid) => {
     routeHandler: async () => {
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -143,6 +143,11 @@ const factory = async (trifid) => {
         // Check if it is a path that needs to be ignored (check of type is already done at the load of the plugin)
         if (ignoredPaths.includes(currentPath)) {
           return reply.callNotFound()
+        }
+
+        // To avoid any languge issues, we will forward the i18n cookie to the SPARQL endpoint
+        const queryHeaders = {
+          cookie: `i18n=${request.session.get('currentLanguage') || 'en'}; Path=/; SameSite=Lax; Secure; HttpOnly`,
         }
 
         // Get the expected format from the Accept header or from the `format` query parameter
@@ -165,7 +170,7 @@ const factory = async (trifid) => {
 
         // Check if the IRI exists in the dataset
         const askQuery = isContainer ? mergedConfig.containerExistsQuery : mergedConfig.resourceExistsQuery
-        const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true })
+        const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true, headers: queryHeaders })
         if (!exists) {
           return reply.callNotFound()
         }
@@ -195,6 +200,10 @@ const factory = async (trifid) => {
           const entity = await query(replaceIriInQuery(describeQuery, iri), {
             ask: false,
             rewriteResponse,
+            headers: {
+              ...queryHeaders,
+              accept: 'application/n-quads',
+            },
           })
           const entityContentType = entity.contentType || 'application/n-triples'
           const entityStream = entity.response
@@ -220,14 +229,14 @@ const factory = async (trifid) => {
               dataset,
               rewriteResponse,
               replaceIri,
+              headers: queryHeaders,
               entityRoot: rewriteValue ? iri.replace(datasetBaseUrl, iriOrigin(iriUrlString)) : iri,
             },
           )
           const metadata = await metadataProvider(request, { dataset })
 
-          reply.type('text/html').send(await render(entityTemplatePath, {
+          reply.type('text/html').send(await render(request, entityTemplatePath, {
             dataset: entityHtml,
-            locals: {},
             entityLabel,
             entityUrl,
             metadata,

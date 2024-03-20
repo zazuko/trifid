@@ -49,7 +49,7 @@ const createPlugin = async (server, config, render) => {
 
   /**
    * Route handler.
-   * @param {import('fastify').FastifyRequest} request Request.
+   * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
    * @param {import('fastify').FastifyReply} reply Reply.
    */
   const handler = async (request, reply) => {
@@ -69,6 +69,7 @@ const createPlugin = async (server, config, render) => {
     ).toString()
 
     const content = await render(
+      request,
       config.template,
       {
         options: JSON.stringify(spexOptions),

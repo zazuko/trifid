@@ -3,7 +3,7 @@
   "description": "Trifid SPEX plugin",
   "type": "module",
   "main": "index.js",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
@@ -15,7 +15,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha"
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
     "@fastify/static": "^7.0.1",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "c8": "^9.1.0",
     "mocha": "^10.2.0",
-    "trifid-core": "^3.0.0"
+    "trifid-core": "^4.0.0"
   },
   "publishConfig": {
     "access": "public"

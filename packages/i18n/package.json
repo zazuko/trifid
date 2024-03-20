@@ -1,11 +1,11 @@
 {
   "name": "trifid-plugin-i18n",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Trifid plugin for i18n support",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=lcov mocha"
+    "test": "c8 --all --reporter=lcovonly mocha"
   },
   "author": "Zazuko GmbH",
   "license": "MIT",
@@ -27,9 +27,8 @@
   ],
   "devDependencies": {
     "@types/i18n": "^0.13.10",
+    "c8": "^9.1.0",
     "mocha": "^10.2.0",
-    "nodeify-fetch": "^3.1.0",
-    "nyc": "^15.1.0",
-    "trifid-core": "^3.0.0"
+    "trifid-core": "^4.0.3"
   }
 }

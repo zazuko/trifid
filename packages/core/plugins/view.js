@@ -36,11 +36,11 @@ const factory = async (trifid) => {
     routeHandler: async () => {
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} _request Request.
+       * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
-      const handler = async (_request, reply) => {
-        reply.status(200).type('text/html').send(await render(path, { ...context }, options))
+      const handler = async (request, reply) => {
+        reply.status(200).type('text/html').send(await render(request, path, { ...context }, options))
       }
       return handler
     },

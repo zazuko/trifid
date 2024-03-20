@@ -35,7 +35,7 @@ const toBoolean = (val) => {
  * Render HTML.
  */
 const createEntityRenderer = ({ options = {}, logger, query }) => {
-  return async (req, { dataset, rewriteResponse, replaceIri, entityRoot }) => {
+  return async (req, { dataset, rewriteResponse, replaceIri, entityRoot, headers }) => {
     const currentLanguage = req.session.get('currentLanguage') || req.session.get('defaultLanguage') || 'en'
     const rendererConfig = { ...DEFAULTS, ...options }
 
@@ -113,6 +113,7 @@ const createEntityRenderer = ({ options = {}, logger, query }) => {
       const labelLoader = new LabelLoader({
         ...options.labelLoader,
         query,
+        headers,
         replaceIri,
         rewriteResponse,
         logger,

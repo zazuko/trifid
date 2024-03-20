@@ -25,7 +25,7 @@
  * @property {string} [server.listener.host] The host to listen on.
  * @property {number|string} [server.listener.port] The port to listen on.
  * @property {"fatal"|"error"|"warn"|"info"|"debug"|"trace"|"silent"} [server.logLevel] The log level.
- * @property {Object.<string, any>} [server.express] Server settings.
+ * @property {Object.<string, any>} [server.options] Server options.
  * @property {Object.<string, any>} [globals] Global settings.
  * @property {Object.<string, any>} [template] Template settings.
  * @property {Object.<string, TrifidPluginConfig>} [plugins] Plugins.
@@ -63,7 +63,7 @@
  * @property {import('pino').Logger} logger The logger instance.
  * @property {import('fastify').FastifyInstance & {locals: Map<string, any>}} server The Fastify server instance.
  * @property {Object.<string, any>} config The Trifid configuration.
- * @property {(templatePath: string, context: Object.<string, any>, options?: Object.<string, any>) => Promise<string>} render The render function.
+ * @property {(request: import('fastify').FastifyRequest & { session: Map<string, any> }, templatePath: string, context: Object.<string, any>, options?: Object.<string, any>) => Promise<string>} render The render function.
  * @property {TrifidQuery} query The SPARQL query function.
  * @property {import('node:events').EventEmitter} trifidEvents The Trifid events emitter.
  * @property {(name: string, fn: import('handlebars').HelperDelegate) => void} registerTemplateHelper Register a template helper, that can be used by the template engine.

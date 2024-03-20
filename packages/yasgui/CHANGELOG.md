@@ -1,5 +1,17 @@
 # trifid-plugin-yasgui
 
+## 3.0.3
+
+### Patch Changes
+
+- 1605f62: Update link to GitHub repository for the plugin.
+
+## 3.0.2
+
+### Patch Changes
+
+- e8faa76: Internally use the new `render` function, that takes the `request` as first argument.
+
 ## 3.0.1
 
 ### Patch Changes

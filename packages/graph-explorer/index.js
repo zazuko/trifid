@@ -61,7 +61,7 @@ const factory = async (trifid) => {
     routeHandler: async () => {
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest} request Request.
+       * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -75,6 +75,7 @@ const factory = async (trifid) => {
         }
 
         const content = await render(
+          request,
           view,
           {
             // Just forward all the config as a string

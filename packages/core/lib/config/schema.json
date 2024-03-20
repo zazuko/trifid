@@ -65,7 +65,7 @@
             "silent"
           ]
         },
-        "express": {
+        "options": {
           "type": "object",
           "additionalProperties": true
         }

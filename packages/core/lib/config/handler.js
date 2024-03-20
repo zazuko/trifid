@@ -134,23 +134,6 @@ const addDefaultPort = (config) => {
 }
 
 /**
- * Add some default Express settings for the server configuration.
- * Warning: this function mutates the config object.
- *
- * @param {import('../../types/index.js').TrifidConfig} config Trifid configuration.
- * @return {void}
- */
-const addDefaultExpressSettings = (config) => {
-  if (!config.server.express) {
-    config.server.express = {}
-  }
-
-  if (!Object.hasOwnProperty.call(config.server.express, 'trust proxy')) {
-    config.server.express['trust proxy'] = 'loopback'
-  }
-}
-
-/**
  * Expand configuration and add default fields.
  *
  * @param {string | import('../../types/index.js').TrifidConfigWithExtends} configFile
@@ -165,7 +148,6 @@ const handler = async (configFile) => {
   }
   addDefaultFields(config)
   addDefaultPort(config)
-  addDefaultExpressSettings(config)
 
   return config
 }

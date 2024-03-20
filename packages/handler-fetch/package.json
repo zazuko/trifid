@@ -22,21 +22,21 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "test": "c8 --all --reporter lcovonly mocha",
     "prebuild": "rimraf dist/",
     "build": "tsc",
     "prepack": "npm run build"
   },
   "dependencies": {
-    "oxigraph": "^0.4.0-alpha.2",
+    "oxigraph": "^0.4.0-alpha.4",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.25",
     "@types/uuid": "^9.0.8",
     "c8": "^9.1.0",
     "mocha": "^10.2.0",
     "rimraf": "^5.0.5",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   }
 }

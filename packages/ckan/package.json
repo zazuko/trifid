@@ -6,7 +6,7 @@
   "types": "dist/ckan/src/index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "c8 --reporter=lcov --reporter=text mocha",
+    "test": "c8 --all --reporter=lcovonly --reporter=text mocha",
     "example-instance": "node test/support/run-instance.js",
     "clean": "rimraf dist/",
     "prebuild": "npm run clean",
@@ -39,15 +39,15 @@
     "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.25",
     "c8": "^9.1.0",
     "chai": "^5.0.3",
     "chai-subset": "^1.6.0",
     "mocha": "^10.2.0",
     "rimraf": "^5.0.5",
-    "trifid-core": "^3.0.0",
+    "trifid-core": "^4.0.0",
     "trifid-handler-fetch": "^3.0.0",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.2",
     "xml2js": "^0.6.2",
     "xml2js-xpath": "^0.13.0"
   }

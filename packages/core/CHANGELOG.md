@@ -1,5 +1,39 @@
 # trifid-core
 
+## 4.0.4
+
+### Patch Changes
+
+- 46e7670: Add support for `application/sparql-query` content type
+
+## 4.0.3
+
+### Patch Changes
+
+- 2a6b31f: Add a `server.options` field to configure the Fastify instance with extra fields.
+
+  Here is a list of all supported options: https://fastify.dev/docs/latest/Reference/Server/#factory
+
+- 2a6b31f: Remove old `server.express` configuration field, which was deprecated.
+
+## 4.0.2
+
+### Patch Changes
+
+- 3f2271d: Allow to send custom headers to a SPARQL endpoint using the `query` function
+
+## 4.0.1
+
+### Patch Changes
+
+- 6667f40: The locals plugins should use the cookies path set as `/`.
+
+## 4.0.0
+
+### Major Changes
+
+- e8faa76: The `render` function requires the request as first argument.
+
 ## 3.0.0
 
 ### Major Changes
