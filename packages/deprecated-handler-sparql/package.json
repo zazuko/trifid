@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "c8": "^9.1.0",
-    "express-as-promise": "^1.2.0",
+    "express-as-promise": "^2.0.0",
     "mocha": "^10.2.0"
   },
   "files": [
