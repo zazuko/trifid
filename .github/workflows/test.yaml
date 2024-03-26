@@ -29,16 +29,12 @@ jobs:
             flag: graph-explorer
           - name: trifid-handler-fetch
             flag: handler-fetch
-          - name: trifid-handler-sparql
-            flag: handler-sparql
           - name: trifid-plugin-i18n
             flag: i18n
           - name: "@zazuko/trifid-plugin-iiif"
             flag: iiif
           - name: "@zazuko/trifid-markdown-content"
             flag: markdown-content
-          - name: "@zazuko/trifid-handle-redirects"
-            flag: handle-redirects
           - name: "@zazuko/trifid-plugin-sparql-proxy"
             flag: sparql-proxy
           - name: trifid-plugin-spex

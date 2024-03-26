@@ -16,14 +16,14 @@ import { datasetsQuery } from './query.js'
 /**
  * Fetch datasets.
  *
- * @typedef {(organizationId: import('@rdfjs/types').NamedNode<string>) => Promise<import('@rdfjs/types').Quad[]>} FetchDatasets
+ * @typedef {(organizationId: import('@rdfjs/types').NamedNode<string>) => Promise<import('@rdfjs/types').DatasetCore<import('@rdfjs/types').Quad, import('@rdfjs/types').Quad>>} FetchDatasets
  */
 
 /**
  * Create CKAN API.
  *
  * @param {APIConfig} config API configuration.
- * @returns {{ fetchDatasets: FetchDatasets, toXML: (dataset: import('@rdfjs/types').Quad[]) => string}}
+ * @returns {{ fetchDatasets: FetchDatasets, toXML: (dataset: import('@rdfjs/types').DatasetCore<import('@rdfjs/types').Quad, import('@rdfjs/types').Quad>) => string}}
  */
 export const createAPI = (config) => {
   const client = new ParsingClient({

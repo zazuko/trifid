@@ -9,7 +9,7 @@ import * as ns from './namespace.js'
 /**
  * Generate a CKAN-compatible XML representation of the dataset.
  *
- * @param {import('@rdfjs/types').Quad[]} dataset Dataset to convert.
+ * @param {import('@rdfjs/types').DatasetCore<import('@rdfjs/types').Quad, import('@rdfjs/types').Quad>} dataset Dataset to convert.
  * @returns {string} XML representation of the dataset.
  */
 const toXML = (dataset) => {
