@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.1.0
+
+### Minor Changes
+
+- 3977304: Add `catalog` option, to configure the list of endpoints to show by default in the YASGUI interface.
+
 ## 3.0.3
 
 ### Patch Changes
