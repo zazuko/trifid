@@ -1,5 +1,12 @@
 # @zazuko/trifid-plugin-iiif
 
+## 1.0.2
+
+### Patch Changes
+
+- ffe692c: Upgrade `@tpluscode/rdf-string` from 1.1.3 to 1.2.1
+- 009d545: Upgrade `sparql-http-client` to v3.0.0
+
 ## 1.0.1
 
 ### Patch Changes

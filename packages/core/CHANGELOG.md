@@ -1,5 +1,11 @@
 # trifid-core
 
+## 4.0.5
+
+### Patch Changes
+
+- 009d545: Upgrade `sparql-http-client` to v3.0.0
+
 ## 4.0.4
 
 ### Patch Changes

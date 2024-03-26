@@ -1,5 +1,16 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.1.0
+
+### Minor Changes
+
+- b499b50: Add a `formats` configuration field, to manually configure the list of allowed formats that can be provided as query parameter. The SPARQL endpoint will need to support the specified formats.
+
+### Patch Changes
+
+- Updated dependencies [009d545]
+  - trifid-core@4.0.5
+
 ## 2.0.1
 
 ### Patch Changes
