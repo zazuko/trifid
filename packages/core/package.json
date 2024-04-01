@@ -58,7 +58,7 @@
     "json5": "^2.2.3",
     "lodash": "^4.17.21",
     "pino": "^8.17.1",
-    "pino-pretty": "^10.3.1",
+    "pino-pretty": "^11.0.0",
     "sparql-http-client": "^3.0.0",
     "string-replace-stream": "^0.0.2",
     "yaml": "^2.4.1"
