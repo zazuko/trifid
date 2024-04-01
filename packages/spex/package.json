@@ -28,7 +28,7 @@
   ],
   "devDependencies": {
     "c8": "^9.1.0",
-    "mocha": "^10.2.0",
+    "mocha": "^10.4.0",
     "trifid-core": "^4.0.0"
   },
   "publishConfig": {
