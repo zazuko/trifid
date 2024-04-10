@@ -1,15 +1,15 @@
-import namespace from '@rdfjs/namespace'
+import rdf from '@zazuko/env'
 
 const ns = {
-  iiifImage: namespace('http://iiif.io/api/image/3#'),
-  iiifPrezi: namespace('http://iiif.io/api/presentation/3#'),
-  dctypes: namespace('http://purl.org/dc/dcmitype/'),
-  exif: namespace('http://www.w3.org/2003/12/exif/ns#'),
-  dcterms: namespace('http://purl.org/dc/terms/'),
-  schema: namespace('https://schema.org/'),
-  as: namespace('http://www.w3.org/ns/activitystreams#'),
-  oa: namespace('http://www.w3.org/ns/oa#'),
-  rdf: namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
+  iiifImage: rdf.namespace('http://iiif.io/api/image/3#'),
+  iiifPrezi: rdf.namespace('http://iiif.io/api/presentation/3#'),
+  dctypes: rdf.ns.dctypes,
+  exif: rdf.ns.exif,
+  dcterms: rdf.ns.dcterms,
+  schema: rdf.ns.schema,
+  as: rdf.ns.as,
+  oa: rdf.ns.oa,
+  rdf: rdf.ns.rdf,
 }
 
 export default ns

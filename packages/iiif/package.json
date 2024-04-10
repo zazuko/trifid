@@ -23,11 +23,9 @@
     "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
-    "@rdfjs/namespace": "^2.0.1",
     "@tpluscode/rdf-string": "^1.2.1",
-    "clownface": "^1.5.1",
     "jsonld": "^8.3.2",
-    "rdf-ext": "^2.2.0",
+    "@zazuko/env": "^2.1.1",
     "sparql-http-client": "^3.0.0",
     "through2": "^4.0.2"
   },
