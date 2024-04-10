@@ -23,7 +23,6 @@
     "trifid": "./server.js"
   },
   "dependencies": {
-    "@zazuko/trifid-handle-redirects": "^0.1.3",
     "@zazuko/trifid-plugin-sparql-proxy": "^2.0.1",
     "@zazuko/trifid-entity-renderer": "^1.0.3",
     "commander": "^12.0.0",
