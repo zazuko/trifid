@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 18
           - 20
         package:
           - name: "@zazuko/trifid-plugin-ckan"
