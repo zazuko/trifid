@@ -28,14 +28,14 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "oxigraph": "^0.4.0-alpha.4",
+    "oxigraph": "^0.4.0-alpha.6",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.25",
     "@types/uuid": "^9.0.8",
     "c8": "^9.1.0",
-    "mocha": "^10.2.0",
+    "mocha": "^10.4.0",
     "rimraf": "^5.0.5",
     "typescript": "^5.4.3"
   }
