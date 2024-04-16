@@ -28,8 +28,8 @@ This server can also be extended with plugins, depending on the use case of the 
 
 #### Examples
 
-- [IIIF Trifid plugin](./packages/iiif/)
 - [CKAN harvester endpoint](./packages/ckan/)
+- [IIIF Trifid plugin](./packages/iiif/)
 
 ## Who Uses Trifid?
 
@@ -163,10 +163,6 @@ If you want to use a file that contains your triples instead of a SPARQL endpoin
 - `FETCH_HANDLER_FILE`: the file to use to fetch the data (default value: `https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt`)
 - `FETCH_HANDLER_FILE_TYPE`: the type of the file to use to fetch the data (default value: `application/n-triples`)
 - `DATASET_BASE_URL`: the base URL to use to enable rewriting
-
-#### Custom build
-
-An example of a custom Docker image can be found at [lod.opentransportdata.swiss](https://github.com/zazuko/lod.opentransportdata.swiss).
 
 ### Reverse Proxy
 
