@@ -24,7 +24,7 @@
     "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
-    "@fastify/static": "^7.0.1",
+    "@fastify/static": "^7.0.3",
     "@openlayers-elements/bundle": "^0.1.0",
     "@zazuko/yasgui": "^4.2.34",
     "import-meta-resolve": "^4.0.0"
