@@ -29,7 +29,7 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.0",
     "type-detect": "^4.0.8",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.5",
     "wsrun": "^5.2.4"
   }
 }
