@@ -1,5 +1,14 @@
 # @zazuko/trifid-plugin-ckan
 
+## 4.0.1
+
+### Patch Changes
+
+- ffe692c: Upgrade `@tpluscode/rdf-string` from 1.1.3 to 1.2.1
+- 009d545: Upgrade `sparql-http-client` to v3.0.0
+- 8345cab: Upgrade `@zazuko/env` to 2.1.0
+- 676f284: Fix types
+
 ## 4.0.0
 
 ### Major Changes
