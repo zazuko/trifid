@@ -1,5 +1,22 @@
 # trifid
 
+## 5.0.3
+
+### Patch Changes
+
+- 6382598: Remove unused dependency `@zazuko/trifid-handle-redirects`
+- Updated dependencies [b499b50]
+- Updated dependencies [009d545]
+- Updated dependencies [8345cab]
+- Updated dependencies [2c15b93]
+- Updated dependencies [c2b4053]
+- Updated dependencies [3977304]
+- Updated dependencies [24b3eab]
+  - @zazuko/trifid-plugin-sparql-proxy@2.1.0
+  - trifid-core@4.0.5
+  - @zazuko/trifid-entity-renderer@1.0.4
+  - trifid-plugin-yasgui@3.1.0
+
 ## 5.0.2
 
 ### Patch Changes

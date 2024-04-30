@@ -1,5 +1,14 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.0.4
+
+### Patch Changes
+
+- 8345cab: Upgrade `@zazuko/env` to 2.1.0
+- 2c15b93: Add support for complex Accept headers for content negociation.
+- Updated dependencies [009d545]
+  - trifid-core@4.0.5
+
 ## 1.0.3
 
 ### Patch Changes
