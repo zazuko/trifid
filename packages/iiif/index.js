@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import jsonld from 'jsonld'
-import rdf from 'rdf-ext'
+import rdf from '@zazuko/env'
 import SparqlHttpClient from 'sparql-http-client'
 import frame from './src/frame.js'
 import { createApi } from './src/iiif.js'
