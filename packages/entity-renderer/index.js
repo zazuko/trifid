@@ -19,6 +19,7 @@ const getAcceptHeader = (req) => {
     nt: 'application/n-triples',
     trig: 'application/trig',
     csv: 'text/csv',
+    html: 'text/html',
   }
 
   if (
@@ -27,7 +28,26 @@ const getAcceptHeader = (req) => {
     return supportedQueryStringValues[queryStringValue]
   }
 
-  return `${req.headers.accept || ''}`.toLocaleLowerCase()
+  const getSupportedContentType = (acceptHeader) => {
+    // Split the acceptHeader by comma to process multiple values
+    const acceptTypes = acceptHeader.split(',')
+
+    // Iterate through each type in the acceptHeader
+    for (const type of acceptTypes) {
+      // Normalize by trimming whitespace and taking the type part before any semicolon (ignoring q-factor weights)
+      const normalizedType = type.split(';')[0].trim()
+
+      // Check if the normalized type is supported
+      if (Object.values(supportedQueryStringValues).includes(normalizedType)) {
+        return normalizedType
+      }
+    }
+
+    // If no supported type is found, return the original acceptHeader value
+    return acceptHeader
+  }
+
+  return getSupportedContentType(`${req.headers.accept || ''}`.toLocaleLowerCase())
 }
 
 const replaceIriInQuery = (query, iri) => {
