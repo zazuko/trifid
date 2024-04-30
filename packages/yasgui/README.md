@@ -24,6 +24,13 @@ plugins:
     config:
       endpointUrl: https://example.com/query
       urlShortener: https://example.com/api/v1/shorten
+      defaultQuery: |
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+        SELECT * WHERE {
+          ?sub ?pred ?obj .
+        } LIMIT 10
       # …other configuration fields
 ```
 
@@ -35,3 +42,4 @@ The following options are supported:
 - `urlShortener`: URL of an URL Shortener service. It will be called like this (assuming `urlShortener` is `https://example.com/api/v1/shorten`): `https://example.com/api/v1/shorten?url=url-to-your-query` and should return a short URL as plain text (`https://example.com/s/x8Z1a`). If `urlShortener` is not defined, the short URL feature will be disabled in YASGUI.
 - `template`: Path to an alternative template (default: `views/yasgui.hbs`)
 - `catalog`: Array of SPARQL endpoints that will be shown in the YASGUI interface.
+- `defaultQuery`: Default query that will be shown in the YASGUI interface.
