@@ -1,9 +1,11 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { parsers } from '@rdfjs/formats-common'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
+import { parsers } from '@rdfjs/formats-common'
 import rdf from '@zazuko/env'
 import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core'
+import mimeparse from 'mimeparse'
+
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
 
@@ -28,26 +30,13 @@ const getAcceptHeader = (req) => {
     return supportedQueryStringValues[queryStringValue]
   }
 
-  const getSupportedContentType = (acceptHeader) => {
-    // Split the acceptHeader by comma to process multiple values
-    const acceptTypes = acceptHeader.split(',')
+  const acceptHeader = `${req.headers.accept || ''}`.toLocaleLowerCase()
+  const selectedHeader = mimeparse.bestMatch([
+    ...sparqlSupportedTypes,
+    'text/html',
+  ], acceptHeader)
 
-    // Iterate through each type in the acceptHeader
-    for (const type of acceptTypes) {
-      // Normalize by trimming whitespace and taking the type part before any semicolon (ignoring q-factor weights)
-      const normalizedType = type.split(';')[0].trim()
-
-      // Check if the normalized type is supported
-      if (Object.values(supportedQueryStringValues).includes(normalizedType)) {
-        return normalizedType
-      }
-    }
-
-    // If no supported type is found, return the original acceptHeader value
-    return acceptHeader
-  }
-
-  return getSupportedContentType(`${req.headers.accept || ''}`.toLocaleLowerCase())
+  return selectedHeader || acceptHeader
 }
 
 const replaceIriInQuery = (query, iri) => {
