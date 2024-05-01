@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.0.5
+
+### Patch Changes
+
+- 10a5f08: Uses `mimeparse` module to support complex Accept headers
+
 ## 1.0.4
 
 ### Patch Changes
