@@ -9,7 +9,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 /** @type {import('../core/types/index.js').TrifidPlugin} */
 const trifidFactory = async (trifid) => {
   const { config, render, server } = trifid
-  const { template, endpointUrl, urlShortener, catalog } = config
+  const { template, endpointUrl, urlShortener, catalog, defaultQuery } = config
 
   const endpoint = endpointUrl || '/query'
   const view = !template ? `${currentDir}/views/yasgui.hbs` : template
@@ -18,6 +18,8 @@ const trifidFactory = async (trifid) => {
   if (!Array.isArray(catalogOption)) {
     throw new Error('"catalog" option must be an array')
   }
+
+  const defaultQueryOption = defaultQuery || ''
 
   // Serve static files for YASGUI
   const yasguiPath = resolve('@zazuko/yasgui/build/', import.meta.url)
@@ -85,6 +87,7 @@ const trifidFactory = async (trifid) => {
             endpointUrl: endpointUrl.toString(),
             catalogueEndpoints,
             urlShortener,
+            defaultQuery: JSON.stringify(defaultQueryOption),
           },
           { title: 'YASGUI' },
         )

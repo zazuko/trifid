@@ -2,7 +2,7 @@
   "name": "trifid-plugin-yasgui",
   "description": "Trifid YASGUI plugin",
   "type": "module",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "license": "MIT",
   "main": "index.js",
   "homepage": "https://github.com/zazuko/trifid",
@@ -24,14 +24,14 @@
     "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
-    "@fastify/static": "^7.0.1",
+    "@fastify/static": "^7.0.3",
     "@openlayers-elements/bundle": "^0.1.0",
-    "@zazuko/yasgui": "^4.2.34",
+    "@zazuko/yasgui": "^4.3.2",
     "import-meta-resolve": "^4.0.0"
   },
   "devDependencies": {
     "c8": "^9.1.0",
     "mocha": "^10.4.0",
-    "trifid-core": "^4.0.3"
+    "trifid-core": "^4.0.5"
   }
 }

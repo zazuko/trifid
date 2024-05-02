@@ -1,9 +1,11 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { parsers } from '@rdfjs/formats-common'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
+import { parsers } from '@rdfjs/formats-common'
 import rdf from '@zazuko/env'
 import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core'
+import mimeparse from 'mimeparse'
+
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
 
@@ -19,6 +21,7 @@ const getAcceptHeader = (req) => {
     nt: 'application/n-triples',
     trig: 'application/trig',
     csv: 'text/csv',
+    html: 'text/html',
   }
 
   if (
@@ -27,7 +30,13 @@ const getAcceptHeader = (req) => {
     return supportedQueryStringValues[queryStringValue]
   }
 
-  return `${req.headers.accept || ''}`.toLocaleLowerCase()
+  const acceptHeader = `${req.headers.accept || ''}`.toLocaleLowerCase()
+  const selectedHeader = mimeparse.bestMatch([
+    ...sparqlSupportedTypes,
+    'text/html',
+  ], acceptHeader)
+
+  return selectedHeader || acceptHeader
 }
 
 const replaceIriInQuery = (query, iri) => {

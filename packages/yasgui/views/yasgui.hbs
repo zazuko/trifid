@@ -47,12 +47,16 @@
   {{/if}}
 
   <script>
+    const defaultQuery = {{{ defaultQuery }}}
     const catalogueEndpoints = [...new Set(JSON.parse('{{{ catalogueEndpoints }}}'))]
     Yasgui.defaults.requestConfig.endpoint = '{{ endpointUrl }}'
     Yasgui.defaults.endpointCatalogueOptions.getData = () => {
       return catalogueEndpoints.map((endpoint) => {
         return { endpoint }
       })
+    }
+    if (defaultQuery) {
+      Yasgui.Yasqe.defaults.value = defaultQuery
     }
     const yasgui = new Yasgui(document.getElementById('yasgui'), config)
   </script>
