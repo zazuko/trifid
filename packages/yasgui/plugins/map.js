@@ -30,32 +30,31 @@ class YasguiMap {
     const wktData = []
 
     // eslint-disable-next-line array-callback-return
-    results.map((result) => {
+    results.map((result, rowIndex) => {
       if (!result) {
         return null
       }
 
-      // eslint-disable-next-line array-callback-return
-      Object.entries(result).map((entry) => {
+      Object.entries(result).forEach((entry) => {
         if (!entry[1]) {
-          return null
+          return
         }
         const value = entry[1]
         if (!value.type || value.type !== 'literal') {
-          return null
+          return
         }
         if (
           !value.datatype ||
           value.datatype !== 'http://www.opengis.net/ont/geosparql#wktLiteral'
         ) {
-          return null
+          return
         }
         if (!value.value) {
-          return null
+          return
         }
 
         wktData.push({
-          id: `results-map-wkt-${entry[0]}`,
+          id: `results-map-wkt-${entry[0]}-${rowIndex}`,
           wkt: value.value,
         })
       })
