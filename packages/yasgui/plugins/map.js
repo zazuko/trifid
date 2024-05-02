@@ -10,7 +10,7 @@ class YasguiMap {
     this.yasr = yasr
   }
 
-  getResults() {
+  getResults () {
     if (
       !this.yasr ||
       !this.yasr.results ||
@@ -63,9 +63,11 @@ class YasguiMap {
     return wktData
   }
 
-  draw() {
+  draw () {
     const results = this.getResults()
     const el = document.createElement('ol-map')
+    el.style.height = '500px'
+    el.style.width = '100%'
     const osm = document.createElement('ol-layer-openstreetmap')
     const wkt = document.createElement('ol-layer-wkt')
     osm.appendChild(wkt)
@@ -79,12 +81,12 @@ class YasguiMap {
     }, 200)
   }
 
-  canHandleResults() {
+  canHandleResults () {
     const results = this.getResults()
     return results.length > 0
   }
 
-  getIcon() {
+  getIcon () {
     const textIcon = document.createElement('div')
     textIcon.innerText = '🌐'
     return textIcon
