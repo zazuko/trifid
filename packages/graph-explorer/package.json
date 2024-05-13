@@ -24,7 +24,7 @@
     "import-meta-resolve": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.12.9",
+    "@types/node": "^20.12.11",
     "c8": "^9.1.0",
     "mocha": "^10.4.0",
     "trifid-core": "^4.0.0"
