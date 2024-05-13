@@ -54,7 +54,7 @@
     "commander": "^12.0.0",
     "fastify": "^4.26.1",
     "handlebars": "^4.7.8",
-    "import-meta-resolve": "^4.0.0",
+    "import-meta-resolve": "^4.1.0",
     "json5": "^2.2.3",
     "lodash": "^4.17.21",
     "pino": "^8.20.0",
