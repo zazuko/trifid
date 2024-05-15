@@ -119,6 +119,21 @@ const factory = async (trifid) => {
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
   const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
   const { rewrite: rewriteValue, replaceIri, iriOrigin } = rewriteConfig
+
+  const additionalRewritesConfig = config.additionalRewrites || []
+  if (!Array.isArray(additionalRewritesConfig)) {
+    throw new Error('The `additionalRewrites` configuration must be an array')
+  }
+  const additionalRewrites = additionalRewritesConfig.map((value) => {
+    if (typeof value === 'string') {
+      return { find: value }
+    }
+    if (!value || !value.find) {
+      throw new Error('Each additional rewrite must have a `find` value')
+    }
+    return value
+  })
+
   logger.debug(`Rewriting is ${rewriteValue ? 'enabled' : 'disabled'}`)
 
   if (rewriteValue) {
@@ -173,6 +188,13 @@ const factory = async (trifid) => {
         logger.debug(`IRI value: ${iri}${rewriteValue ? ' (rewritten)' : ''} - is container: ${isContainer ? 'true' : 'false'}`)
         const rewriteResponse = rewriteValue
           ? [
+            ...additionalRewrites.map(({ find, replace }) => {
+              if (!replace) {
+                return { find, replace: iriOrigin(iriUrlString) }
+              } else {
+                return { find, replace }
+              }
+            }),
             { find: datasetBaseUrl, replace: iriOrigin(iriUrlString) },
           ]
           : []

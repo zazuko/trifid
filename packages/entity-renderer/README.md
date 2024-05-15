@@ -86,10 +86,13 @@ The default redirect query supports `http://www.w3.org/2011/http#` and `http://w
 - `resourceGraphQuery`: The query to fetch the actual triples of the resource
 - `containerExistsQuery`: The `ASK` query to check whether the container exists or not
 - `containerGraphQuery`: The query to fetch the actual triples of the container
-- `resourceNoSlash`: The handler will also check if there is a resource with a URL ending
-  with a slash before running the container logic.
+- `resourceNoSlash`: The handler will also check if there is a resource with a URL ending with a slash before running the container logic.
   Set this option to true to disable the resource exists query.
   Useful if you know there are no triples with container URLs.
+- `additionalRewrites`: An array of additional rewrite rules, in case the default rewriting is enabled but it not enough.
+  Each rule is either a string or an object with the following properties:
+  - `find`: the string to find
+  - `replace`: the string to replace with (optional, the default value will be the current hostname)
 
 ## Run an example instance
 
