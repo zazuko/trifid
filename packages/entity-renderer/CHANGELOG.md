@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.1.0
+
+### Minor Changes
+
+- c2f1e8a: Add `additionalRewrites` configuration option in order to add more rewriting rules.
+
 ## 1.0.5
 
 ### Patch Changes
