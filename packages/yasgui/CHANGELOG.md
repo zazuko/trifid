@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.1.1
+
+### Patch Changes
+
+- 7761744: Only one of multiple WKT features would be displayed on the map
+
 ## 3.1.0
 
 ### Minor Changes
