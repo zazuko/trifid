@@ -32,7 +32,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.12.12",
     "@types/uuid": "^9.0.8",
     "c8": "^9.1.0",
     "mocha": "^10.4.0",
