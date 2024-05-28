@@ -70,7 +70,7 @@
     "chai": "^5.1.1",
     "mocha": "^10.4.0",
     "nodemon": "^3.1.1",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.7",
     "typescript": "^5.4.5"
   },
   "publishConfig": {
