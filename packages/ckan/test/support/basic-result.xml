@@ -2,16 +2,33 @@
 <rdf:RDF>
   <dcat:Catalog>
     <dcat:dataset>
+      <dcat:Dataset rdf:about="http://example.com/dataset2">
+        <dcterms:identifier>dataset2@my-org</dcterms:identifier>
+        <dcterms:title xml:lang="de">Dataset 2 - Titel</dcterms:title>
+        <dcterms:title xml:lang="it">Dataset 2 - Titolo</dcterms:title>
+        <dcterms:title xml:lang="fr">Dataset 2 - Titre</dcterms:title>
+        <dcterms:title xml:lang="en">Dataset 2 - Title</dcterms:title>
+        <dcterms:description xml:lang="de">Dataset 2 - Description</dcterms:description>
+        <dcterms:description xml:lang="it">Dataset 2 - Description</dcterms:description>
+        <dcterms:description xml:lang="fr">Dataset 2 - Description</dcterms:description>
+        <dcterms:description xml:lang="en">Dataset 2 - Description</dcterms:description>
+        <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2023-11-21</dcterms:issued>
+        <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-11-21T11:12:13Z</dcterms:modified>
+        <dcterms:creator rdf:resource="http://example.com/my-org"/>
+        <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/ANNUAL_2"/>
+      </dcat:Dataset>
+    </dcat:dataset>
+    <dcat:dataset>
       <dcat:Dataset rdf:about="http://example.com/dataset1">
         <dcterms:identifier>dataset1@my-org</dcterms:identifier>
         <dcterms:title xml:lang="de">Dataset 1 - Titel</dcterms:title>
-        <dcterms:title xml:lang="en">Dataset 1 - Title</dcterms:title>
-        <dcterms:title xml:lang="fr">Dataset 1 - Titre</dcterms:title>
         <dcterms:title xml:lang="it">Dataset 1 - Titolo</dcterms:title>
+        <dcterms:title xml:lang="fr">Dataset 1 - Titre</dcterms:title>
+        <dcterms:title xml:lang="en">Dataset 1 - Title</dcterms:title>
         <dcterms:description xml:lang="de">Dataset 1 - Description</dcterms:description>
-        <dcterms:description xml:lang="en">Dataset 1 - Description</dcterms:description>
-        <dcterms:description xml:lang="fr">Dataset 1 - Description</dcterms:description>
         <dcterms:description xml:lang="it">Dataset 1 - Description</dcterms:description>
+        <dcterms:description xml:lang="fr">Dataset 1 - Description</dcterms:description>
+        <dcterms:description xml:lang="en">Dataset 1 - Description</dcterms:description>
         <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2023-10-31</dcterms:issued>
         <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-10-31T15:15:15Z</dcterms:modified>
         <dcterms:publisher>
@@ -36,23 +53,6 @@
         <dcat:landingPage rdf:resource="https://example.com/"/>
         <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/IRREG"/>
         <foaf:page rdf:resource="https://example.com/docs"/>
-      </dcat:Dataset>
-    </dcat:dataset>
-    <dcat:dataset>
-      <dcat:Dataset rdf:about="http://example.com/dataset2">
-        <dcterms:identifier>dataset2@my-org</dcterms:identifier>
-        <dcterms:title xml:lang="de">Dataset 2 - Titel</dcterms:title>
-        <dcterms:title xml:lang="en">Dataset 2 - Title</dcterms:title>
-        <dcterms:title xml:lang="fr">Dataset 2 - Titre</dcterms:title>
-        <dcterms:title xml:lang="it">Dataset 2 - Titolo</dcterms:title>
-        <dcterms:description xml:lang="de">Dataset 2 - Description</dcterms:description>
-        <dcterms:description xml:lang="en">Dataset 2 - Description</dcterms:description>
-        <dcterms:description xml:lang="fr">Dataset 2 - Description</dcterms:description>
-        <dcterms:description xml:lang="it">Dataset 2 - Description</dcterms:description>
-        <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2023-11-21</dcterms:issued>
-        <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-11-21T11:12:13Z</dcterms:modified>
-        <dcterms:creator rdf:resource="http://example.com/my-org"/>
-        <dcterms:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/ANNUAL_2"/>
       </dcat:Dataset>
     </dcat:dataset>
   </dcat:Catalog>
