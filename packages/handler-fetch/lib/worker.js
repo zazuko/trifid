@@ -49,9 +49,12 @@ const handleConfig = async (config) => {
     type: 'log',
     data: `Loaded ${data.length} bytes of data from ${url}`,
   })
-
   // Load the data into the store
-  store.load(data, contentType, baseIri, graphNameIri)
+  store.load(data, {
+    format: contentType,
+    base_iri: baseIri,
+    to_named_graph: graphNameIri,
+  })
   parentPort.postMessage({
     type: 'log',
     data: 'Loaded data into store',
