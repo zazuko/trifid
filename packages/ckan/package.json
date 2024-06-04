@@ -30,7 +30,7 @@
   "author": "Zazuko GmbH",
   "license": "UNLICENSED",
   "dependencies": {
-    "@tpluscode/rdf-string": "^1.3.1",
+    "@tpluscode/rdf-string": "^1.3.3",
     "@zazuko/env": "^2.2.0",
     "@zazuko/prefixes": "^2.1.1",
     "dotenv": "^16.3.1",
@@ -39,12 +39,12 @@
     "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.14.0",
     "c8": "^9.1.0",
     "chai": "^5.1.1",
     "chai-subset": "^1.6.0",
     "mocha": "^10.4.0",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.7",
     "trifid-core": "^4.0.5",
     "trifid-handler-fetch": "^3.0.0",
     "typescript": "^5.4.5",
