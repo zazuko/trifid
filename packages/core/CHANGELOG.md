@@ -1,5 +1,11 @@
 # trifid-core
 
+## 4.0.6
+
+### Patch Changes
+
+- 2346a1c: Bump `pino` from 8.20.0 to 9.1.0
+
 ## 4.0.5
 
 ### Patch Changes

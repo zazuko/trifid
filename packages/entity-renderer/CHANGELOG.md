@@ -1,5 +1,13 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.1.1
+
+### Patch Changes
+
+- 7442b22: Bump `@zazuko/env` from 2.1.1 to 2.2.0
+- Updated dependencies [2346a1c]
+  - trifid-core@4.0.6
+
 ## 1.1.0
 
 ### Minor Changes

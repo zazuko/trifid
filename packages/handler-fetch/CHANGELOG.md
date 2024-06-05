@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 3.1.0
+
+### Minor Changes
+
+- cba7676: Upgrade `oxigraph` to 0.4.0-alpha.7
+
 ## 3.0.0
 
 ### Major Changes
