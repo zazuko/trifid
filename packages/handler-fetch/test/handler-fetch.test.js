@@ -99,4 +99,12 @@ describe('trifid-handler-fetch', () => {
       notStrictEqual(contentType, 'application/sparql-results+json')
     })
   })
+
+  describe('Invalid queries', () => {
+    it('simple', async () => {
+      const query = 'INVALID_KEYWORD { ?s ?p ?o } WHERE { ?s ?p ?o }'
+      const { contentType } = await performOxigraphQuery(store, query)
+      strictEqual(contentType, 'text/plain')
+    })
+  })
 })
