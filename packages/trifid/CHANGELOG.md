@@ -1,5 +1,17 @@
 # trifid
 
+## 5.0.4
+
+### Patch Changes
+
+- 9aa5280: Faster default health checks on `/healthz` by using the Docker image
+- Updated dependencies [7442b22]
+- Updated dependencies [cba7676]
+- Updated dependencies [2346a1c]
+  - @zazuko/trifid-entity-renderer@1.1.1
+  - trifid-handler-fetch@3.1.0
+  - trifid-core@4.0.6
+
 ## 5.0.3
 
 ### Patch Changes

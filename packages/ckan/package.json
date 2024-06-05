@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-plugin-ckan",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Endpoint for opendata.swiss CKAN harvester",
   "main": "src/index.js",
   "types": "dist/ckan/src/index.d.ts",
@@ -45,8 +45,8 @@
     "chai-subset": "^1.6.0",
     "mocha": "^10.4.0",
     "rimraf": "^5.0.7",
-    "trifid-core": "^4.0.5",
-    "trifid-handler-fetch": "^3.0.0",
+    "trifid-core": "^4.0.6",
+    "trifid-handler-fetch": "^3.1.0",
     "typescript": "^5.4.5",
     "xml2js": "^0.6.2",
     "xml2js-xpath": "^0.13.0"

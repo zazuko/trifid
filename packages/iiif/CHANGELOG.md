@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-iiif
 
+## 1.0.3
+
+### Patch Changes
+
+- 7442b22: Bump `@zazuko/env` from 2.1.1 to 2.2.0
+
 ## 1.0.2
 
 ### Patch Changes
