@@ -29,4 +29,9 @@ WORKDIR /app/packages/trifid
 
 ENTRYPOINT ["tini", "--", "/app/packages/trifid/server.js"]
 
-HEALTHCHECK CMD wget -q -O- http://localhost:8080/healthz
+HEALTHCHECK \
+  --interval=5s \
+  --timeout=30s \
+  --start-period=60s \
+  --retries=5 \
+  CMD wget -q -O- http://127.0.0.1:8080/healthz
