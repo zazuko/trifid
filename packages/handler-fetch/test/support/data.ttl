@@ -1,0 +1,22 @@
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+ex:person1 a foaf:Person ;
+  foaf:name "John Doe" ;
+  foaf:mbox <mailto:john.doe@example.org> ;
+  ex:age 30 ;
+  ex:worksAt ex:company1 .
+
+ex:person2 a foaf:Person ;
+  foaf:name "Jane Smith" ;
+  foaf:mbox <mailto:jane.smith@example.org> ;
+  ex:age 28 ;
+  ex:worksAt ex:company2 .
+
+ex:company1 a ex:Company ;
+  ex:companyName "Tech Solutions" ;
+  ex:location "San Francisco" .
+
+ex:company2 a ex:Company ;
+  ex:companyName "Innovate Ltd." ;
+  ex:location "New York" .
