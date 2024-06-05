@@ -44,7 +44,24 @@ const handleConfig = async (config) => {
   }
 
   // Read data from file or URL
-  const data = await getContent(url)
+  let data
+  try {
+    data = await getContent(url)
+  } catch (error) {
+    let errorMessage = `Something went wrong while loading data from ${url}…`
+    if (error instanceof Error) {
+      errorMessage = `Error loading data from ${url}: ${error.message}`
+    }
+    parentPort.postMessage({
+      type: 'log',
+      data: errorMessage,
+    })
+    parentPort.postMessage({
+      type: 'ready',
+      data: false,
+    })
+    return
+  }
   parentPort.postMessage({
     type: 'log',
     data: `Loaded ${data.length} bytes of data from ${url}`,

@@ -15,6 +15,7 @@ export const factory = async (trifid) => {
   const worker = new Worker(workerUrl)
 
   let ready = false
+  let stopWait = false
 
   trifidEvents.on('close', async () => {
     logger.debug('Got "close" event from Trifid ; closing worker…')
@@ -28,7 +29,11 @@ export const factory = async (trifid) => {
       logger.debug(data)
     }
     if (type === 'ready') {
-      ready = true
+      if (!data) {
+        logger.error('There was an error in the worker during initialization.')
+      }
+      ready = data
+      stopWait = true
     }
   })
 
@@ -95,11 +100,17 @@ export const factory = async (trifid) => {
 
   // Wait for the worker to become ready, so we can be sure it can handle queries
   await waitForVariableToBeTrue(
-    () => ready,
+    () => stopWait,
     30000,
     20,
     'Worker did not become ready within 30 seconds',
   )
+
+  if (!ready) {
+    await worker.terminate()
+    logger.debug('Worker terminated')
+    throw new Error('Worker initialization error')
+  }
 
   return {
     defaultConfiguration: async () => {

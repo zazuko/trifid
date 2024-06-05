@@ -22,7 +22,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "c8 --all --reporter lcovonly mocha",
+    "test": "c8 --all --reporter lcovonly --reporter text mocha",
     "prebuild": "rimraf dist/",
     "build": "tsc",
     "prepack": "npm run build"
@@ -37,6 +37,7 @@
     "c8": "^9.1.0",
     "mocha": "^10.4.0",
     "rimraf": "^5.0.7",
+    "trifid-core": "^4.0.5",
     "typescript": "^5.4.5"
   }
 }
