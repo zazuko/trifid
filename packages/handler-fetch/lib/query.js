@@ -7,7 +7,7 @@
  * @param {string} query The query to perform
  * @returns {Promise<{
  *   response: string;
- *   contentType: 'application/sparql-results+json' | 'text/turtle' | 'text/plain' | string & Record<never, never>;
+ *   contentType: 'application/sparql-results+json' | 'application/n-quads' | 'text/plain' | string & Record<never, never>;
  * }>} SPARQL response.
  */
 export const performOxigraphQuery = async (store, query) => {
@@ -19,11 +19,13 @@ export const performOxigraphQuery = async (store, query) => {
 
   try {
     if (isConstructQuery) {
-      contentType = 'text/turtle'
+      contentType = 'application/n-quads'
       results = store.query(query, {
         use_default_graph_as_union: true,
-        results_format: 'text/turtle',
-      })
+      }).map((quad) => quad.toString()).join('.\n')
+      if (results) {
+        results = `${results}.\n`
+      }
     } else {
       contentType = 'application/sparql-results+json'
       results = store.query(query, {
