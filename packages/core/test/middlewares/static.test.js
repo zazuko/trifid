@@ -29,8 +29,8 @@ const createTrifidInstance = async (config, paths) => {
 }
 
 describe('redirect plugin', () => {
-  it('should throw if the directory parameter is not set', () => {
-    assertRejection(staticPlugin({ config: {}, logger: { debug: (/** @type {any} */ _) => { } } }))
+  it('should throw if the directory parameter is not set', async () => {
+    return assertRejection(createTrifidInstance({}, []))
   })
 
   it('should serve the specified resource (no path configured)', async () => {
