@@ -35,7 +35,7 @@ const createTrifidInstance = async (config) => {
       logLevel: 'warn',
     },
   }, {
-    markdownContent: {
+    handlerFetch: {
       module: handlerFetchTrifidPlugin,
       config,
     },
