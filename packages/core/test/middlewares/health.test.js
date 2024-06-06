@@ -28,7 +28,6 @@ describe('health plugin', () => {
     const trifidListener = await trifidInstance.start()
     const pluginUrl = `${getListenerURL(trifidListener)}/healthz`
     const response = await fetch(pluginUrl)
-    const _responseText = await response.text()
     await trifidListener.close()
 
     const contentType = response.headers.get('content-type') || ''
@@ -52,7 +51,6 @@ describe('health plugin', () => {
     const trifidListener = await trifidInstance.start()
     const pluginUrl = `${getListenerURL(trifidListener)}/healthz`
     const response = await fetch(pluginUrl)
-    const _responseText = await response.text()
     await trifidListener.close()
 
     strictEqual(response.status, 200)
@@ -76,7 +74,6 @@ describe('health plugin', () => {
     const trifidListener = await trifidInstance.start()
     const pluginUrl = `${getListenerURL(trifidListener)}/non-existant-route`
     const response = await fetch(pluginUrl)
-    const _responseText = await response.text()
     await trifidListener.close()
 
     strictEqual(response.status, 404)

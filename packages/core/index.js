@@ -29,6 +29,7 @@ export {
 
 // Export some functions that can be used for testing
 export {
+  assertRejection,
   getListenerURL,
 } from './lib/test.js'
 
