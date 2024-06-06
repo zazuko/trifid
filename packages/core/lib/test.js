@@ -1,6 +1,11 @@
 // @ts-check
 
 /**
+ * This file contains utility functions for tests.
+ * This can be used to test any other plugin.
+ */
+
+/**
  * Get an endpoint of the Fastify Instance.
  *
  * @param {import('fastify').FastifyInstance} server Server.

@@ -5,10 +5,9 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { describe, it } from 'mocha'
-import trifidCore from 'trifid-core'
+import trifidCore, { getListenerURL } from 'trifid-core'
 
 import handlerFetchTrifidPlugin from '../index.js'
-import { getListenerURL } from './support/utils.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 

@@ -3,9 +3,8 @@
 import { strictEqual } from 'node:assert'
 import { describe, it } from 'mocha'
 
-import trifidCore from 'trifid-core'
+import trifidCore, { getListenerURL } from 'trifid-core'
 import markdownContentTrifidPlugin from '../src/index.js'
-import { getListenerURL } from './support/utils.js'
 
 const createTrifidInstance = async (config) => {
   return await trifidCore({
