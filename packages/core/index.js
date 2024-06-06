@@ -27,6 +27,12 @@ export {
   getRewriteConfiguration as sparqlGetRewriteConfiguration,
 } from './lib/sparql.js'
 
+// Export some functions that can be used for testing
+export {
+  assertRejection,
+  getListenerURL,
+} from './lib/test.js'
+
 /**
  * Create a new Trifid instance.
  *

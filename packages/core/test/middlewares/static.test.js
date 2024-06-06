@@ -1,60 +1,75 @@
-// // @ts-check
+// @ts-check
 
-// import { dirname } from 'path'
-// import { fileURLToPath } from 'url'
-// import express from 'express'
-// import request from 'supertest'
-// import { describe, expect, test } from '@jest/globals'
+import { strictEqual } from 'node:assert'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-// import staticPlugin from '../../plugins/static.js'
+import { describe, it } from 'mocha'
+import trifidCore, { getListenerURL, assertRejection } from '../../index.js'
 
-// describe('static plugin', () => {
-//   test('should throw if the directory parameter is not set', () => {
-//     expect(() => staticPlugin({ config: {} })).toThrow()
-//   })
+import staticPlugin from '../../plugins/static.js'
 
-//   test('should not throw if the directory parameter is set', () => {
-//     const currentDir = dirname(fileURLToPath(import.meta.url))
-//     expect(() =>
-//       staticPlugin({
-//         config: {
-//           directory: `${currentDir}/../support/`,
-//         },
-//       }),
-//     ).not.toThrow()
-//   })
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
-//   test('should serve the specified resource', () => {
-//     const currentDir = dirname(fileURLToPath(import.meta.url))
-//     const app = express()
+const createTrifidInstance = async (config, paths) => {
+  return await trifidCore({
+    server: {
+      listener: {
+        port: 4242,
+      },
+      logLevel: 'warn',
+    },
+  }, {
+    redirect: {
+      module: staticPlugin,
+      paths,
+      config,
+    },
+  })
+}
 
-//     app.use(
-//       staticPlugin({
-//         config: {
-//           directory: `${currentDir}/../support`,
-//         },
-//       }),
-//     )
+describe('redirect plugin', () => {
+  it('should throw if the directory parameter is not set', async () => {
+    return assertRejection(createTrifidInstance({}, []))
+  })
 
-//     return request(app)
-//       .get('/test.txt')
-//       .expect(200)
-//       .expect('Content-Type', /text\/plain/)
-//       .expect(/some text/)
-//   })
+  it('should serve the specified resource (no path configured)', async () => {
+    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, [])
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/test.txt`
+    const response = await fetch(pluginUrl)
+    const responseText = await response.text()
+    await trifidListener.close()
 
-//   test('should return a 404 on non-existant resources', () => {
-//     const currentDir = dirname(fileURLToPath(import.meta.url))
-//     const app = express()
+    const contentType = response.headers.get('content-type') || ''
 
-//     app.use(
-//       staticPlugin({
-//         config: {
-//           directory: `${currentDir}/../support/`,
-//         },
-//       }),
-//     )
+    strictEqual(response.status, 200)
+    strictEqual(contentType.split(';')[0], 'text/plain')
+    strictEqual(responseText.trim(), 'some text')
+  })
 
-//     return request(app).get('/test-not-exist.txt').expect(404)
-//   })
-// })
+  it('should serve the specified resource (custom path configured)', async () => {
+    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, ['/static/'])
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/static/test.txt`
+    const response = await fetch(pluginUrl)
+    const responseText = await response.text()
+    await trifidListener.close()
+
+    const contentType = response.headers.get('content-type') || ''
+
+    strictEqual(response.status, 200)
+    strictEqual(contentType.split(';')[0], 'text/plain')
+    strictEqual(responseText.trim(), 'some text')
+  })
+
+  it('should return a 404 on non-existant resources', async () => {
+    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, ['/static/'])
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/static/test-not-exist.txt`
+    const response = await fetch(pluginUrl)
+    await trifidListener.close()
+
+    strictEqual(response.status, 404)
+  })
+})

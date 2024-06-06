@@ -1,6 +1,11 @@
 // @ts-check
 
 /**
+ * This file contains utility functions for tests.
+ * This can be used to test any other plugin.
+ */
+
+/**
  * Get an endpoint of the Fastify Instance.
  *
  * @param {import('fastify').FastifyInstance} server Server.
@@ -19,4 +24,19 @@ export const getListenerURL = (server) => {
   }
 
   return addresses[0]
+}
+
+/**
+ * Assert that a promise is rejected.
+ *
+ * @param {Promise<any>} promise The promise to assert.
+ * @returns {Promise<void>} A promise that resolves when the assertion is done.
+ */
+export const assertRejection = (promise) => {
+  return promise.then(
+    () => {
+      throw new Error('Expected promise to be rejected')
+    },
+    () => { },
+  )
 }

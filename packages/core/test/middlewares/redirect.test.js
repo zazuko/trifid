@@ -1,49 +1,51 @@
-// // @ts-check
+// @ts-check
 
-// import express from 'express'
-// import request from 'supertest'
-// import { describe, expect, test } from '@jest/globals'
+import { strictEqual } from 'node:assert'
 
-// import redirectPlugin from '../../plugins/redirect.js'
+import { describe, it } from 'mocha'
+import trifidCore, { getListenerURL, assertRejection } from '../../index.js'
 
-// describe('redirect plugin', () => {
-//   test('should throw if the target parameter is not set', () => {
-//     expect(() => redirectPlugin({ config: {} })).toThrow()
-//   })
+import redirectPlugin from '../../plugins/redirect.js'
 
-//   test('should redirect request', async () => {
-//     const app = express()
+const createTrifidInstance = async (config) => {
+  return await trifidCore({
+    server: {
+      listener: {
+        port: 4242,
+      },
+      logLevel: 'warn',
+    },
+  }, {
+    redirect: {
+      module: redirectPlugin,
+      paths: ['/redirect'],
+      config,
+    },
+  })
+}
 
-//     app.use(
-//       '/redirect',
-//       redirectPlugin({
-//         config: {
-//           target: '/',
-//         },
-//         logger: {
-//           debug: (_) => { },
-//         },
-//       }),
-//     )
+describe('redirect plugin', () => {
+  it('should throw if the target parameter is not set', () => {
+    assertRejection(redirectPlugin({ config: {}, logger: { debug: (/** @type {any} */ _) => { } } }))
+  })
 
-//     return request(app).get('/redirect').expect(302)
-//   })
+  it('should redirect request', async () => {
+    const trifidInstance = await createTrifidInstance({ target: '/' })
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/redirect`
+    const response = await fetch(pluginUrl, { redirect: 'manual' })
+    await trifidListener.close()
 
-//   test('should not redirect request', async () => {
-//     const app = express()
+    strictEqual(response.status, 302)
+  })
 
-//     app.use(
-//       '/redirect',
-//       redirectPlugin({
-//         config: {
-//           target: '/',
-//         },
-//         logger: {
-//           debug: (_) => { },
-//         },
-//       }),
-//     )
+  it('should not redirect request', async () => {
+    const trifidInstance = await createTrifidInstance({ target: '/' })
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/non-existant-route`
+    const response = await fetch(pluginUrl, { redirect: 'manual' })
+    await trifidListener.close()
 
-//     return request(app).get('/non-existant-route').expect(404)
-//   })
-// })
+    strictEqual(response.status, 404)
+  })
+})

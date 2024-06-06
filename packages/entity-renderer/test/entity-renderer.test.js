@@ -1,12 +1,10 @@
 // @ts-check
 
-/* eslint-disable no-useless-catch */
-
-import { strictEqual } from 'assert'
+import { strictEqual } from 'node:assert'
 import { describe, it, beforeEach, afterEach } from 'mocha'
+import { getListenerURL } from 'trifid-core'
 
 import { createTrifidInstance } from '../examples/instance.js'
-import { getListenerURL } from './support/utils.js'
 
 const trifidConfigUrl = './examples/config/trifid.yaml'
 

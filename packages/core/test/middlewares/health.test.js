@@ -1,90 +1,81 @@
-// // @ts-check
+// @ts-check
 
-// import express from 'express'
-// import request from 'supertest'
-// import { describe, test } from '@jest/globals'
+import { strictEqual } from 'node:assert'
 
-// import healthPlugin from '../../plugins/health.js'
+import { describe, it } from 'mocha'
+import trifidCore, { getListenerURL } from '../../index.js'
 
-// describe('health plugin', () => {
-//   test('should return expected content-type', async () => {
-//     const app = express()
+import healthPlugin from '../../plugins/health.js'
 
-//     app.use(
-//       '/health',
-//       healthPlugin({
-//         logger: {
-//           debug: (_msg) => { },
-//         },
-//       }),
-//     )
+const createTrifidInstance = async () => {
+  return await trifidCore({
+    server: {
+      listener: {
+        port: 4242,
+      },
+      logLevel: 'warn',
+    },
+  }, {
+    health: {
+      module: healthPlugin,
+    },
+  })
+}
 
-//     return request(app)
-//       .get('/health')
-//       .expect('Content-Type', /text\/plain/)
-//   })
+describe('health plugin', () => {
+  it('should return expected content-type', async () => {
+    const trifidInstance = await createTrifidInstance()
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/healthz`
+    const response = await fetch(pluginUrl)
+    await trifidListener.close()
 
-//   test('should return expected body', async () => {
-//     const app = express()
+    const contentType = response.headers.get('content-type') || ''
 
-//     app.use(
-//       '/health',
-//       healthPlugin({
-//         logger: {
-//           debug: (_msg) => { },
-//         },
-//       }),
-//     )
+    strictEqual(contentType.split(';')[0], 'text/plain')
+  })
 
-//     return request(app).get('/health').expect('ok')
-//   })
+  it('should return expected body', async () => {
+    const trifidInstance = await createTrifidInstance()
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/healthz`
+    const response = await fetch(pluginUrl)
+    const responseText = await response.text()
+    await trifidListener.close()
 
-//   test('should return expected status code', async () => {
-//     const app = express()
+    strictEqual(responseText.trim(), 'OK')
+  })
 
-//     app.use(
-//       '/health',
-//       healthPlugin({
-//         logger: {
-//           debug: (_msg) => { },
-//         },
-//       }),
-//     )
+  it('should return expected status code', async () => {
+    const trifidInstance = await createTrifidInstance()
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/healthz`
+    const response = await fetch(pluginUrl)
+    await trifidListener.close()
 
-//     return request(app).get('/health').expect(200)
-//   })
+    strictEqual(response.status, 200)
+  })
 
-//   test('should call health request with valid response', async () => {
-//     const app = express()
+  it('should call health request with valid response', async () => {
+    const trifidInstance = await createTrifidInstance()
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/healthz`
+    const response = await fetch(pluginUrl)
+    const responseText = await response.text()
+    await trifidListener.close()
 
-//     app.use(
-//       '/health',
-//       healthPlugin({
-//         logger: {
-//           debug: (_msg) => { },
-//         },
-//       }),
-//     )
+    strictEqual(responseText.trim(), 'OK')
+    strictEqual(response.status, 200)
+    strictEqual(response.headers.get('content-type')?.split(';')[0], 'text/plain')
+  })
 
-//     return request(app)
-//       .get('/health')
-//       .expect('Content-Type', /text\/plain/)
-//       .expect('ok')
-//       .expect(200)
-//   })
+  it('should not call health request', async () => {
+    const trifidInstance = await createTrifidInstance()
+    const trifidListener = await trifidInstance.start()
+    const pluginUrl = `${getListenerURL(trifidListener)}/non-existant-route`
+    const response = await fetch(pluginUrl)
+    await trifidListener.close()
 
-//   test('should not call health request', async () => {
-//     const app = express()
-
-//     app.use(
-//       '/health',
-//       healthPlugin({
-//         logger: {
-//           debug: (_msg) => { },
-//         },
-//       }),
-//     )
-
-//     return request(app).get('/non-existant-route').expect(404)
-//   })
-// })
+    strictEqual(response.status, 404)
+  })
+})

@@ -5,27 +5,11 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { describe, it } from 'mocha'
-import trifidCore from 'trifid-core'
+import trifidCore, { getListenerURL, assertRejection } from 'trifid-core'
 
 import handlerFetchTrifidPlugin from '../index.js'
-import { getListenerURL } from './support/utils.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
-
-/**
- * Assert that a promise is rejected.
- *
- * @param {Promise<any>} promise The promise to assert.
- * @returns {Promise<void>} A promise that resolves when the assertion is done.
- */
-const assertRejection = (promise) => {
-  return promise.then(
-    () => {
-      throw new Error('Expected promise to be rejected')
-    },
-    () => { },
-  )
-}
 
 const createTrifidInstance = async (config) => {
   return await trifidCore({
@@ -36,7 +20,7 @@ const createTrifidInstance = async (config) => {
       logLevel: 'warn',
     },
   }, {
-    markdownContent: {
+    handlerFetch: {
       module: handlerFetchTrifidPlugin,
       config,
     },
