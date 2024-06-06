@@ -43,7 +43,7 @@ describe('health plugin', () => {
     const responseText = await response.text()
     await trifidListener.close()
 
-    strictEqual(responseText.split('\n')[0], 'OK')
+    strictEqual(responseText.trim(), 'OK')
   })
 
   it('should return expected status code', async () => {
@@ -64,7 +64,7 @@ describe('health plugin', () => {
     const responseText = await response.text()
     await trifidListener.close()
 
-    strictEqual(responseText.split('\n')[0], 'OK')
+    strictEqual(responseText.trim(), 'OK')
     strictEqual(response.status, 200)
     strictEqual(response.headers.get('content-type')?.split(';')[0], 'text/plain')
   })

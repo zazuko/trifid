@@ -14,8 +14,7 @@ const factory = async (trifid) => {
     root: directory,
     decorateReply: false,
   }
-
-  if (!paths) {
+  if (!paths || (Array.isArray(paths) && paths.length === 0)) {
     // Register static file serving for the root path
     trifid.server.register(fastifyStatic, {
       ...staticConfiguration,
