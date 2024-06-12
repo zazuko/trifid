@@ -1,4 +1,4 @@
-import path, { dirname } from 'node:path'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { resolve } from 'import-meta-resolve'
@@ -7,7 +7,7 @@ import fastifyStatic from '@fastify/static'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const defaults = {
-  template: path.join(__dirname, 'views/index.hbs'),
+  template: join(__dirname, 'views/index.hbs'),
 }
 
 const defaultOptions = {
@@ -40,7 +40,7 @@ const createPlugin = async (server, config, render) => {
   config = { ...defaults, ...config, spexOptions }
 
   // Serve static files from SPEX dist folder
-  const distPath = resolve('@zazuko/spex/dist', import.meta.url)
+  const distPath = dirname(resolve('@zazuko/spex', import.meta.url))
   server.register(fastifyStatic, {
     root: distPath.replace(/^file:\/\//, ''),
     prefix: '/spex/static/',
