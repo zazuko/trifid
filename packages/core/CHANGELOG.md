@@ -1,5 +1,12 @@
 # trifid-core
 
+## 4.0.7
+
+### Patch Changes
+
+- b03bdb5: Fix support of root path for the static plugin.
+- eff233a: Export `getListenerURL` function that can be used for any test case for example.
+
 ## 4.0.6
 
 ### Patch Changes

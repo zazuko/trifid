@@ -1,5 +1,17 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.2.0
+
+### Minor Changes
+
+- f0452b1: Returns `Server-Timing` as response header containing the duration of the request to the configured endpoint.
+
+### Patch Changes
+
+- Updated dependencies [b03bdb5]
+- Updated dependencies [eff233a]
+  - trifid-core@4.0.7
+
 ## 2.1.0
 
 ### Minor Changes
