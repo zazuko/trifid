@@ -1,6 +1,7 @@
 // @ts-check
 
 import { Readable } from 'node:stream'
+import { performance } from 'node:perf_hooks'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import replaceStream from 'string-replace-stream'
 
@@ -155,11 +156,15 @@ const factory = async (trifid) => {
           if (authorizationHeader) {
             headers.Authorization = authorizationHeader
           }
+
+          const start = performance.now()
           const response = await fetch(options.endpointUrl, {
             method: 'POST',
             headers,
             body: new URLSearchParams({ query }),
           })
+          const end = performance.now()
+          const duration = end - start
 
           const contentType = response.headers.get('content-type')
 
@@ -175,6 +180,7 @@ const factory = async (trifid) => {
 
           return reply
             .status(response.status)
+            .header('Server-Timing', `sparql-proxy;dur=${duration};desc="Querying the endpoint"`)
             .header('content-type', contentType)
             .send(responseStream)
         } catch (error) {

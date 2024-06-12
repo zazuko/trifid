@@ -1,6 +1,7 @@
 // @ts-check
 
 import { Worker } from 'node:worker_threads'
+import { performance } from 'node:perf_hooks'
 import { v4 as uuidv4 } from 'uuid'
 import { waitForVariableToBeTrue } from './lib/utils.js'
 
@@ -160,8 +161,12 @@ export const factory = async (trifid) => {
         logger.debug(`Received query: ${query}`)
 
         try {
+          const start = performance.now()
           const { response, contentType } = await handleQuery(query)
+          const end = performance.now()
+          const duration = end - start
           reply.type(contentType)
+          reply.header('Server-Timing', `handler-fetch;dur=${duration};desc="Query execution time"`)
           logger.debug(`Sending the following ${contentType} response:\n${response}`)
           reply.status(200).send(response)
         } catch (error) {
