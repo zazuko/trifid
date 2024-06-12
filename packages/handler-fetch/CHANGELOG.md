@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 3.2.0
+
+### Minor Changes
+
+- 6a4dcfc: Returns `Server-Timing` as response header containing the duration of the request to perform.
+
 ## 3.1.0
 
 ### Minor Changes
