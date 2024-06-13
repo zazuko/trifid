@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 2.1.0
+
+### Minor Changes
+
+- 9d02f2a: Upgrade SPEX to 0.2.1.
+
 ## 2.0.2
 
 ### Patch Changes
