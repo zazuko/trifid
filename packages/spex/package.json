@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@fastify/static": "^7.0.4",
-    "@zazuko/spex": "^0.2.0",
+    "@zazuko/spex": "^0.2.1",
     "import-meta-resolve": "^4.1.0"
   },
   "files": [
