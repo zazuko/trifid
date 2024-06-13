@@ -72,13 +72,13 @@ describe('trifid-plugin-spex', () => {
   })
 
   it('should serve the static JavaScript file', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/spex.umd.min.js`)
+    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/spex.umd.cjs`)
     await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
   })
 
   it('should serve the static CSS file', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/spex.css`)
+    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/style.css`)
     await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
   })
