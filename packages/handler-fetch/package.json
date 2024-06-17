@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "oxigraph": "^0.4.0-alpha.7",
-    "uuid": "^9.0.1"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
