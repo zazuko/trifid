@@ -27,7 +27,7 @@
     "views/"
   ],
   "devDependencies": {
-    "c8": "^10.0.0",
+    "c8": "^10.1.2",
     "mocha": "^10.4.0",
     "trifid-core": "^4.0.0"
   },
