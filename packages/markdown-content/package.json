@@ -34,7 +34,7 @@
     "@types/node": "^20.14.8",
     "c8": "^10.1.2",
     "mocha": "^10.5.2",
-    "rimraf": "^5.0.7",
+    "rimraf": "^5.0.8",
     "trifid-core": "^4.0.0"
   },
   "publishConfig": {
