@@ -39,7 +39,7 @@
     "xmlbuilder2": "^3.1.1"
   },
   "devDependencies": {
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.10",
     "c8": "^10.1.2",
     "chai": "^5.1.1",
     "chai-subset": "^1.6.0",
