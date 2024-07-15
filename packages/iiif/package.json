@@ -30,7 +30,7 @@
     "through2": "^4.0.2"
   },
   "devDependencies": {
-    "@types/jsonld": "^1.5.14",
+    "@types/jsonld": "^1.5.15",
     "c8": "^10.1.2",
     "mocha": "^10.6.0",
     "trifid-core": "^4.0.6"
