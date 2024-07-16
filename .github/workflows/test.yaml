@@ -11,37 +11,12 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-    timeout-minutes: 3
+    timeout-minutes: 5
 
     strategy:
       matrix:
         node-version:
           - 20
-        package:
-          - name: "@zazuko/trifid-plugin-ckan"
-            flag: ckan
-          - name: trifid-core
-            flag: core
-          - name: "@zazuko/trifid-entity-renderer"
-            flag: entity-renderer
-          - name: trifid-plugin-graph-explorer
-            flag: graph-explorer
-          - name: trifid-handler-fetch
-            flag: handler-fetch
-          - name: trifid-plugin-i18n
-            flag: i18n
-          - name: "@zazuko/trifid-plugin-iiif"
-            flag: iiif
-          - name: "@zazuko/trifid-markdown-content"
-            flag: markdown-content
-          - name: "@zazuko/trifid-plugin-sparql-proxy"
-            flag: sparql-proxy
-          - name: trifid-plugin-spex
-            flag: spex
-          - name: trifid
-            flag: trifid
-          - name: trifid-plugin-yasgui
-            flag: yasgui
 
     steps:
       - name: Checkout
@@ -57,24 +32,28 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npx wsrun --no-prefix -p ${{ matrix.package.name }} -mc test
+        run: npm run test
+
       - name: Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: ${{ matrix.package.flag }}
 
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up NodeJS
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+
       - name: Install dependencies
         run: npm ci
+
       - name: Run build of each package (prepack script, mostly for typings)
         run: npm run build
