@@ -1,5 +1,11 @@
 # trifid
 
+## 5.0.5
+
+### Patch Changes
+
+- 096b762: Upgrade some dependencies, like `braces` to 3.0.3.
+
 ## 5.0.4
 
 ### Patch Changes
