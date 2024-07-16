@@ -38,6 +38,6 @@
     "mocha": "^10.6.0",
     "rimraf": "^6.0.1",
     "trifid-core": "^4.0.7",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.3"
   }
 }
