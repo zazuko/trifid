@@ -46,7 +46,7 @@ jobs:
         with:
           images: |
             ghcr.io/zazuko/trifid
-            zazuko/trifid
+            index.docker.io/zazuko/trifid
           tags: |
             type=ref,event=branch
             type=match,prefix=v,pattern=trifid@(\d+\.\d+\.\d+),group=1
@@ -54,6 +54,8 @@ jobs:
             type=match,prefix=v,pattern=trifid@(\d+),group=1
             type=sha
           labels: |
+            io.artifacthub.package.alternative-locations=ghcr.io/zazuko/trifid,index.docker.io/zazuko/trifid
+            io.artifacthub.package.logo-url=https://charts.zazuko.com/icons/logo-zazuko.svg
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/zazuko/trifid/${{ github.sha }}/README.md
 
       - name: Build and push Docker images
