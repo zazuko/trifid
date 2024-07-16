@@ -9,9 +9,17 @@ jobs:
   docker:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.5.0
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -45,6 +53,8 @@ jobs:
             type=match,prefix=v,pattern=trifid@(\d+\.\d+),group=1
             type=match,prefix=v,pattern=trifid@(\d+),group=1
             type=sha
+          labels: |
+            io.artifacthub.package.readme-url=https://raw.githubusercontent.com/zazuko/trifid/${{ github.sha }}/README.md
 
       - name: Build and push Docker images
         id: docker_build
@@ -58,3 +68,14 @@ jobs:
           platforms: |
             linux/amd64
             linux/arm64/v8
+
+      - name: Sign the images with GitHub OIDC Token
+        env:
+          DIGEST: ${{ steps.docker_build.outputs.digest }}
+          TAGS: ${{ steps.docker_meta.outputs.tags }}
+        run: |
+          images=""
+          for tag in ${TAGS}; do
+            images+="${tag}@${DIGEST} "
+          done
+          cosign sign --yes ${images}
