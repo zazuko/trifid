@@ -1,5 +1,11 @@
 # trifid
 
+## 5.0.6
+
+### Patch Changes
+
+- d6a9f4d: Add more labels to the Docker image
+
 ## 5.0.5
 
 ### Patch Changes
