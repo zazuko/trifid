@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@rdfjs/types": "^1.1.0",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "c8": "^10.1.2",
     "chai": "^5.1.1",
     "mocha": "^10.7.0",
