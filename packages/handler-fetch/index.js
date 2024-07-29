@@ -10,6 +10,17 @@ export const factory = async (trifid) => {
   const { config, logger, trifidEvents } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
 
+  const queryLogLevel = config.queryLogLevel || 'debug'
+  if (!logger[queryLogLevel]) {
+    throw Error(`Invalid queryLogLevel: ${queryLogLevel}`)
+  }
+  /**
+   * Log a query, depending on the `queryLogLevel`.
+   * @param {string} msg Message to log
+   * @returns {void}
+   */
+  const queryLogger = (msg) => logger[queryLogLevel](msg)
+
   const queryTimeout = 30000
 
   const workerUrl = new URL('./lib/worker.js', import.meta.url)
@@ -141,9 +152,10 @@ export const factory = async (trifid) => {
        */
       const handler = async (request, reply) => {
         let query
-        if (request.method === 'GET') {
+        const method = request.method
+        if (method === 'GET') {
           query = request.query.query
-        } else if (request.method === 'POST') {
+        } else if (method === 'POST') {
           query = request.body.query
           if (!query && request.body) {
             query = request.body
@@ -158,7 +170,7 @@ export const factory = async (trifid) => {
           return
         }
 
-        logger.debug(`Received query: ${query}`)
+        queryLogger(`Received query via ${method}:\n${query}`)
 
         try {
           const start = performance.now()
