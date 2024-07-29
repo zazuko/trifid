@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.3.0
+
+### Minor Changes
+
+- 7ab85d4: It is now possible to configure the log level of the queries by using the `queryLogLevel` configuration option.
+
 ## 2.2.0
 
 ### Minor Changes
