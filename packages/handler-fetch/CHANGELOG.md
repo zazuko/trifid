@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 3.3.0
+
+### Minor Changes
+
+- cb5e6b9: It is now possible to configure the log level of the queries by using the `queryLogLevel` configuration option.
+
 ## 3.2.0
 
 ### Minor Changes
