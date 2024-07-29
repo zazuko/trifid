@@ -38,4 +38,7 @@ plugins:
         nt: "application/n-triples"
         trig: "application/trig"
         csv: "text/csv"
+
+      # Configure the log level for the queries
+      queryLogLevel: debug # Log level for the queries
 ```
