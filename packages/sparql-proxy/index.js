@@ -15,6 +15,7 @@ const defaultConfiguration = {
   rewriteQuery: true, // Allow rewriting the query
   rewriteResults: true, // Allow rewriting the results
   formats: {},
+  queryLogLevel: 'debug', // Log level for queries
 }
 
 /**
@@ -47,6 +48,17 @@ const factory = async (trifid) => {
   const allowRewriteToggle = options.allowRewriteToggle
   const rewriteConfigValue = options.rewrite
   const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
+
+  const queryLogLevel = options.queryLogLevel
+  if (!logger[queryLogLevel]) {
+    throw Error(`Invalid queryLogLevel: ${queryLogLevel}`)
+  }
+  /**
+   * Log a query, depending on the `queryLogLevel`.
+   * @param {string} msg Message to log
+   * @returns {void}
+   */
+  const queryLogger = (msg) => logger[queryLogLevel](msg)
 
   return {
     defaultConfiguration: async () => {
@@ -115,7 +127,8 @@ const factory = async (trifid) => {
           : false
 
         let query = ''
-        switch (request.method) {
+        const method = request.method
+        switch (method) {
           case 'GET':
             query = request.query.query || ''
             break
@@ -142,7 +155,7 @@ const factory = async (trifid) => {
         }
 
         logger.debug('Got a request to the sparql proxy')
-        logger.debug(`Received query${rewriteValue ? ' (rewritten)' : ''}:\n${query}`)
+        queryLogger(`Received query${rewriteValue ? ' (rewritten)' : ''} via ${method}:\n${query}`)
 
         try {
           let acceptHeader = request.headers.accept || 'application/sparql-results+json'
