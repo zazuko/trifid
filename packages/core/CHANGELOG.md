@@ -1,5 +1,11 @@
 # trifid-core
 
+## 4.1.0
+
+### Minor Changes
+
+- 27d3bc1: Introduce a `server.logFormat` configuration option, to either output JSON or pretty-formated logs.
+
 ## 4.0.7
 
 ### Patch Changes
