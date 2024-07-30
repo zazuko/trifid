@@ -2,6 +2,7 @@
 
 server:
   logLevel: debug
+  logFormat: pretty
 
 globals:
   datasetBaseUrl: http://localhost:3000/

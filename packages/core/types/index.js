@@ -25,6 +25,7 @@
  * @property {string} [server.listener.host] The host to listen on.
  * @property {number|string} [server.listener.port] The port to listen on.
  * @property {"fatal"|"error"|"warn"|"info"|"debug"|"trace"|"silent"} [server.logLevel] The log level.
+ * @property {"pretty"|"json"} [server.logFormat] The log format.
  * @property {Object.<string, any>} [server.options] Server options.
  * @property {Object.<string, any>} [globals] Global settings.
  * @property {Object.<string, any>} [template] Template settings.
