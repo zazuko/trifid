@@ -12,6 +12,7 @@ import handler from './lib/config/handler.js'
 import {
   defaultHost,
   defaultLogLevel,
+  defaultLogFormat,
   defaultPort,
 } from './lib/config/default.js'
 import pluginsAssembler from './lib/plugins/assembler.js'
@@ -57,6 +58,9 @@ const trifid = async (config, additionalPlugins = {}) => {
 
   const serverOptions = fullConfig?.server?.options || {}
 
+  // Template configuration
+  const template = fullConfig?.template || {}
+
   // Dynamic server configuration
   const portFromConfig = fullConfig?.server?.listener?.port
   const port = (portFromConfig === 0 || portFromConfig === '0') ? 0 : (portFromConfig || defaultPort)
@@ -65,18 +69,19 @@ const trifid = async (config, additionalPlugins = {}) => {
 
   // Logger configuration
   const logLevel = fullConfig?.server?.logLevel || defaultLogLevel
-
-  // Template configuration
-  const template = fullConfig?.template || {}
-
-  // Custom logger instance
-  const logger = pino({
+  const logFormat = fullConfig?.server?.logFormat || defaultLogFormat
+  const loggerConfig = {
     name: 'trifid-core',
     level: logLevel,
-    transport: {
+  }
+  if (logFormat === 'pretty') {
+    loggerConfig.transport = {
       target: 'pino-pretty',
-    },
-  })
+    }
+  }
+
+  // Custom logger instance
+  const logger = pino(loggerConfig)
 
   const server = fastify({
     logger: false,

@@ -7,6 +7,7 @@ server:
   listener:
     port: 8080
   logLevel: debug
+  logFormat: pretty
 
 globals:
   value: config

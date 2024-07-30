@@ -65,6 +65,13 @@
             "silent"
           ]
         },
+        "logFormat": {
+          "type": "string",
+          "enum": [
+            "json",
+            "pretty"
+          ]
+        },
         "options": {
           "type": "object",
           "additionalProperties": true
