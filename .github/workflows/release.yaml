@@ -11,6 +11,12 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+
     steps:
       # This allow GitHub Actions to trigger the jobs for tags if needed
       - name: Generate token
