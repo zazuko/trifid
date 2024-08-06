@@ -28,5 +28,9 @@
     "c8": "^10.1.2",
     "mocha": "^10.7.0",
     "trifid-core": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
