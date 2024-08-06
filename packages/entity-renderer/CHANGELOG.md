@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.2.0
+
+### Minor Changes
+
+- 2215e87: Add `enableSchemaUrlRedirect` configuration option (experimental).
+
 ## 1.1.1
 
 ### Patch Changes
