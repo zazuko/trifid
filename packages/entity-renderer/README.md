@@ -93,6 +93,8 @@ The default redirect query supports `http://www.w3.org/2011/http#` and `http://w
   Each rule is either a string or an object with the following properties:
   - `find`: the string to find
   - `replace`: the string to replace with (optional, the default value will be the current hostname)
+- `enableSchemaUrlRedirect` (experimental): If set to `true`, the plugin will perform a redirect if the URI contains a `schema:URL` predicate poiting to a resource of type `xsd:anyURI`.
+  The default value is `false`.
 
 ## Run an example instance
 
