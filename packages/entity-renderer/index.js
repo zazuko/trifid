@@ -262,8 +262,9 @@ const factory = async (trifid) => {
               .filter(({ object }) => object.datatype.value === 'xsd:anyURI')
               .map(({ object }) => urls.push(object.value))
             if (urls.length > 0) {
-              logger.debug(`Redirecting to ${urls[0]}`)
-              return reply.redirect(urls[0])
+              const redirectUrl = urls[0]
+              logger.debug(`Redirecting to ${redirectUrl}`)
+              return reply.redirect(redirectUrl)
             }
           }
 
