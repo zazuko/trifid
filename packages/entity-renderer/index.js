@@ -103,6 +103,7 @@ const defaultConfiguration = {
     LIMIT 1
   `,
   followRedirects: false,
+  enableSchemaUrlRedirect: false, // Experimental
 }
 
 const fixContentTypeHeader = (contentType) => {
@@ -253,6 +254,19 @@ const factory = async (trifid) => {
           }
 
           const dataset = await rdf.dataset().import(quadStream)
+
+          if (mergedConfig.enableSchemaUrlRedirect && acceptHeader === 'text/html') {
+            // Get all triples that have a schema:URL property with value of type xsd:anyURI
+            const urls = []
+            dataset.match(iriUrlString, rdf.ns.schema.URL)
+              .filter(({ object }) => object.datatype.value === 'xsd:anyURI')
+              .map(({ object }) => urls.push(object.value))
+            if (urls.length > 0) {
+              const redirectUrl = urls[0]
+              logger.debug(`Redirecting to ${redirectUrl}`)
+              return reply.redirect(redirectUrl)
+            }
+          }
 
           const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
             request,
