@@ -39,5 +39,9 @@
     "rimraf": "^6.0.1",
     "trifid-core": "^4.0.7",
     "typescript": "^5.5.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
