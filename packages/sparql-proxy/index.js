@@ -6,6 +6,7 @@ import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import replaceStream from 'string-replace-stream'
 
 const defaultConfiguration = {
+  fetch,
   endpointUrl: '',
   username: '',
   password: '',
@@ -34,7 +35,7 @@ const authBasicHeader = (user, password) => {
 const factory = async (trifid) => {
   const { logger, config } = trifid
 
-  const options = { ...defaultConfiguration, ...config }
+  const { fetch, ...options } = { ...defaultConfiguration, ...config }
   if (!options.endpointUrl) {
     throw Error('Missing endpointUrl parameter')
   }
