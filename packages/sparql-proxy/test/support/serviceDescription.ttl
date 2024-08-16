@@ -5,7 +5,7 @@ PREFIX ex: <http://example.org/>
 @prefix void: <http://rdfs.org/ns/void#> .
 
 [] a sd:Service ;
-  sd:endpoint <http://www.example/sparql/> ;
+  sd:endpoint <http://example.com/sparql> ;
   sd:supportedLanguage sd:SPARQL11Query ;
   sd:resultFormat <http://www.w3.org/ns/formats/RDF_XML>, <http://www.w3.org/ns/formats/Turtle> ;
   sd:extensionFunction <http://example.org/Distance> ;

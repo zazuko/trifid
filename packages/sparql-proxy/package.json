@@ -21,11 +21,12 @@
     "index.js"
   ],
   "dependencies": {
+    "@vocabulary/sd": "^1.0.4",
+    "@zazuko/env-node": "^2.1.3",
     "string-replace-stream": "^0.0.2",
     "trifid-core": "^4.0.7"
   },
   "devDependencies": {
-    "@zazuko/env-node": "^2.1.3",
     "@types/node": "^22.2.0",
     "chai": "^5.1.1",
     "sinon": "^18.0.0",

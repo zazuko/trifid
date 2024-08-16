@@ -1,4 +1,3 @@
-import * as fs from 'node:fs'
 import { expect } from 'chai'
 import trifidCore, { getListenerURL } from 'trifid-core'
 import rdf from '@zazuko/env-node'
@@ -21,6 +20,8 @@ describe('sparql-proxy', () => {
         module: sparqlProxy,
         config: {
           endpointUrl: 'http://example.com/sparql',
+          serviceDescriptionWorkerUrl: new URL('./support/workerDouble.js', import.meta.url),
+          serviceDescriptionTimeout: 1000,
           ...config,
         },
       },
@@ -38,21 +39,16 @@ describe('sparql-proxy', () => {
   })
 
   context('requesting service description', () => {
-    const serviceDescription = fs.readFileSync(new URL('support/serviceDescription.ttl', import.meta.url), 'utf-8')
-
     const forwardedProperties = rdf.termMap([
       [rdf.ns.sd.feature],
     ])
 
-    let proxiedFetch
     beforeEach(() => {
-      proxiedFetch = sinon.stub().callsFake(async () => {
-        return new Response(serviceDescription, {
-          headers: {
-            'content-type': 'text/turtle',
-          },
-        })
-      })
+      sinon.stub(global, 'fetch')
+    })
+
+    afterEach(() => {
+      sinon.restore()
     })
 
     for (const [property] of forwardedProperties) {
@@ -60,9 +56,7 @@ describe('sparql-proxy', () => {
 
       it(`should forward standard property ${property.value}`, async () => {
         // given
-        const url = await startTrifid({
-          fetch: proxiedFetch,
-        })
+        const url = await startTrifid()
 
         // when
         const response = await rdf.fetch(`${url}/query`)
@@ -76,8 +70,36 @@ describe('sparql-proxy', () => {
 
     it('replaces endpoint URL', async () => {
       // given
+      const url = await startTrifid()
+
+      // when
+      const response = await rdf.fetch(`${url}/query`)
+      const dataset = await response.dataset()
+
+      // then
+      const service = rdf.clownface({ dataset }).has(rdf.ns.sd.endpoint)
+      expect(service.out(rdf.ns.sd.endpoint).term).to.deep.eq(rdf.namedNode(`${url}/query`))
+    })
+
+    it('serves minimal description if original service is too slow', async () => {
+      // given
       const url = await startTrifid({
-        fetch: proxiedFetch,
+        serviceDescriptionTimeout: 0,
+      })
+
+      // when
+      const response = await rdf.fetch(`${url}/query`)
+      const dataset = await response.dataset()
+
+      // then
+      const service = rdf.clownface({ dataset }).has(rdf.ns.sd.endpoint)
+      expect(service.out(rdf.ns.sd.endpoint).term).to.deep.eq(rdf.namedNode(`${url}/query`))
+    })
+
+    it('serves minimal description if original service fails', async () => {
+      // given
+      const url = await startTrifid({
+        serviceDescriptionWorkerUrl: new URL('./support/failingWorker.js', import.meta.url),
       })
 
       // when
@@ -92,9 +114,7 @@ describe('sparql-proxy', () => {
     for (const property of [rdf.namedNode('http://example.org/foo', rdf.ns.sd.nonStandardProp)]) {
       it(`removes non-standard property ${property.value}`, async () => {
         // given
-        const url = await startTrifid({
-          fetch: proxiedFetch,
-        })
+        const url = await startTrifid()
 
         // when
         const response = await rdf.fetch(`${url}/query`)
@@ -108,9 +128,7 @@ describe('sparql-proxy', () => {
 
     it('copies deep subtrees', async () => {
       // given
-      const url = await startTrifid({
-        fetch: proxiedFetch,
-      })
+      const url = await startTrifid()
 
       // when
       const response = await rdf.fetch(`${url}/query`)
@@ -128,15 +146,28 @@ describe('sparql-proxy', () => {
 
     it('serves service description from memory', async () => {
       // given
-      const url = await startTrifid({
-        fetch: proxiedFetch,
-      })
+      const url = await startTrifid()
 
       // when
       await rdf.fetch(`${url}/query`)
 
       // then
-      expect(proxiedFetch).not.to.have.been.called
+      expect(fetch).not.to.have.been.called
+    })
+
+    it('respects content negotiation', async () => {
+      // given
+      const url = await startTrifid()
+
+      // when
+      const response = await rdf.fetch(`${url}/query`, {
+        headers: {
+          accept: 'text/turtle',
+        },
+      })
+
+      // then
+      expect(response.headers.get('content-type')).to.eq('text/turtle')
     })
   })
 })
