@@ -4,7 +4,7 @@ import sd from '@vocabulary/sd'
 import fetch from './fetchServiceDescription.js'
 
 parentPort.once('message', async (message) => {
-  const { type, data: { endpointUrl, serviceDescriptionTimeout } } = message
+  const { type, data: { endpointUrl, serviceDescriptionTimeout, serviceDescriptionFormat } } = message
   if (type === 'config') {
     const timeout = setTimeout(() => {
       parentPort.postMessage({
@@ -13,7 +13,7 @@ parentPort.once('message', async (message) => {
     }, serviceDescriptionTimeout)
 
     try {
-      const dataset = await fetch.fetchServiceDescription(endpointUrl)
+      const dataset = await fetch.fetchServiceDescription(endpointUrl, serviceDescriptionFormat)
       clearTimeout(timeout)
 
       let service = rdf.clownface({ dataset })

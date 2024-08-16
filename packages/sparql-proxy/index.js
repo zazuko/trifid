@@ -18,8 +18,9 @@ const defaultConfiguration = {
   rewriteResults: true, // Allow rewriting the results
   formats: {},
   queryLogLevel: 'debug', // Log level for queries
-  serviceDescriptionWorkerUrl: new URL('./lib/serviceDescriptionWorker.js', import.meta.url).toString(),
+  serviceDescriptionWorkerUrl: new URL('./lib/serviceDescriptionWorker.js', import.meta.url),
   serviceDescriptionTimeout: 5000, // max time to wait for the service description
+  serviceDescriptionFormat: undefined, // override the accept header for the service description request. by default, will use content negotiation using formats `@zazuko/env-node` can parse
 }
 
 /**
@@ -70,6 +71,7 @@ const factory = async (trifid) => {
     data: {
       endpointUrl: options.endpointUrl,
       serviceDescriptionTimeout: options.serviceDescriptionTimeout,
+      serviceDescriptionFormat: options.serviceDescriptionFormat,
     },
   })
 

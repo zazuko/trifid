@@ -6,6 +6,7 @@ import sparqlProxy from '../index.js'
 
 describe('sparql-proxy', () => {
   let trifidListener
+  let defaultTestConfig
 
   async function startTrifid(config) {
     const server = await trifidCore({
@@ -19,9 +20,7 @@ describe('sparql-proxy', () => {
       sparqlProxy: {
         module: sparqlProxy,
         config: {
-          endpointUrl: 'http://example.com/sparql',
-          serviceDescriptionWorkerUrl: new URL('./support/workerDouble.js', import.meta.url),
-          serviceDescriptionTimeout: 1000,
+          ...defaultTestConfig,
           ...config,
         },
       },
@@ -30,6 +29,14 @@ describe('sparql-proxy', () => {
     trifidListener = await server.start()
     return getListenerURL(trifidListener)
   }
+
+  beforeEach(() => {
+    defaultTestConfig = {
+      endpointUrl: 'http://example.com/sparql',
+      serviceDescriptionWorkerUrl: new URL('./support/workerDouble.js', import.meta.url),
+      serviceDescriptionTimeout: 1000,
+    }
+  })
   afterEach(async () => {
     await trifidListener?.close()
   })
@@ -168,6 +175,31 @@ describe('sparql-proxy', () => {
 
       // then
       expect(response.headers.get('content-type')).to.eq('text/turtle')
+    })
+
+    context('against a real SPARQL endpoint', () => {
+      beforeEach(() => {
+        defaultTestConfig = {
+          endpointUrl: 'https://dbpedia.org/sparql',
+          serviceDescriptionTimeout: 10000,
+          // dbpedia does not do content negotiation 🙄
+          serviceDescriptionFormat: 'text/turtle',
+        }
+      })
+
+      it('should work', async function () {
+        this.timeout(10000)
+
+        // given
+        const url = await startTrifid()
+
+        // when
+        const response = await rdf.fetch(`${url}/query`)
+        const dataset = await response.dataset()
+
+        // then
+        expect(dataset).to.have.property('size').greaterThan(2)
+      })
     })
   })
 })
