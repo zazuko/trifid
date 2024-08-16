@@ -18,7 +18,7 @@ const defaultConfiguration = {
   rewriteResults: true, // Allow rewriting the results
   formats: {},
   queryLogLevel: 'debug', // Log level for queries
-  serviceDescriptionWorkerUrl: new URL('./lib/serviceDescriptionWorker.js', import.meta.url),
+  serviceDescriptionWorkerUrl: new URL('./lib/serviceDescriptionWorker.js', import.meta.url).toString(),
   serviceDescriptionTimeout: 5000, // max time to wait for the service description
 }
 
@@ -67,7 +67,10 @@ const factory = async (trifid) => {
   const worker = new Worker(options.serviceDescriptionWorkerUrl)
   worker.postMessage({
     type: 'config',
-    data: options,
+    data: {
+      endpointUrl: options.endpointUrl,
+      serviceDescriptionTimeout: options.serviceDescriptionTimeout,
+    },
   })
 
   const serviceDescription = new Promise((resolve) => {
