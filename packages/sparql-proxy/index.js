@@ -75,19 +75,22 @@ const factory = async (trifid) => {
 
     worker.once('message', async (message) => {
       const { type, data } = message
-      if (type === 'serviceDescription') {
-        const dataset = await rdf.dataset().import(
-          rdf.formats.parsers.import('application/n-triples', Readable.from(data)),
-        )
-        resolve(dataset)
-      } else if (type === 'serviceDescriptionTimeOut') {
-        logger.warn('The proxied SPARQL endpoint did not return a Service Description in a timely fashion. Will return a minimal document')
-        logger.info("You can increase the timeout using the 'serviceDescriptionTimeout' configuration")
-        resolve(minimalSD.dataset)
-      } else if (type === 'serviceDescriptionError') {
-        logger.error('Error while fetching the Service Description. Will return a minimal document')
-        logger.error(data)
-        resolve(minimalSD.dataset)
+      switch (type) {
+        case 'serviceDescription':
+          resolve(await rdf.dataset().import(
+            rdf.formats.parsers.import('application/n-triples', Readable.from(data)),
+          ))
+          break
+        case 'serviceDescriptionTimeOut':
+          logger.warn('The proxied SPARQL endpoint did not return a Service Description in a timely fashion. Will return a minimal document')
+          logger.info('You can increase the timeout using the \'serviceDescriptionTimeout\' configuration')
+          resolve(minimalSD.dataset)
+          break
+        case 'serviceDescriptionError':
+          logger.error('Error while fetching the Service Description. Will return a minimal document')
+          logger.error(data)
+          resolve(minimalSD.dataset)
+          break
       }
     })
   })
