@@ -31,7 +31,7 @@
     "CHANGELOG.md"
   ],
   "devDependencies": {
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.4.1",
     "c8": "^10.1.2",
     "mocha": "^10.7.3",
     "rimraf": "^6.0.1",
