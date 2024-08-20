@@ -44,7 +44,7 @@ const factory = async (trifid) => {
     throw Error('Missing endpointUrl parameter')
   }
 
-  let authorizationHeader = ''
+  let authorizationHeader
   if (options.username && options.password) {
     authorizationHeader = authBasicHeader(options.username, options.password)
   }
@@ -72,6 +72,7 @@ const factory = async (trifid) => {
       endpointUrl: options.endpointUrl,
       serviceDescriptionTimeout: options.serviceDescriptionTimeout,
       serviceDescriptionFormat: options.serviceDescriptionFormat,
+      authorizationHeader,
     },
   })
 
