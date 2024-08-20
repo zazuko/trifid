@@ -2,8 +2,10 @@
 
 import { Readable } from 'node:stream'
 import { performance } from 'node:perf_hooks'
+import { Worker } from 'node:worker_threads'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import replaceStream from 'string-replace-stream'
+import rdf from '@zazuko/env-node'
 
 const defaultConfiguration = {
   endpointUrl: '',
@@ -16,6 +18,9 @@ const defaultConfiguration = {
   rewriteResults: true, // Allow rewriting the results
   formats: {},
   queryLogLevel: 'debug', // Log level for queries
+  serviceDescriptionWorkerUrl: new URL('./lib/serviceDescriptionWorker.js', import.meta.url),
+  serviceDescriptionTimeout: 5000, // max time to wait for the service description
+  serviceDescriptionFormat: undefined, // override the accept header for the service description request. by default, will use content negotiation using formats `@zazuko/env-node` can parse
 }
 
 /**
@@ -32,14 +37,14 @@ const authBasicHeader = (user, password) => {
 
 /** @type {import('../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
-  const { logger, config } = trifid
+  const { logger, config, trifidEvents } = trifid
 
   const options = { ...defaultConfiguration, ...config }
   if (!options.endpointUrl) {
     throw Error('Missing endpointUrl parameter')
   }
 
-  let authorizationHeader = ''
+  let authorizationHeader
   if (options.username && options.password) {
     authorizationHeader = authBasicHeader(options.username, options.password)
   }
@@ -59,6 +64,48 @@ const factory = async (trifid) => {
    * @returns {void}
    */
   const queryLogger = (msg) => logger[queryLogLevel](msg)
+
+  const worker = new Worker(options.serviceDescriptionWorkerUrl)
+  worker.postMessage({
+    type: 'config',
+    data: {
+      endpointUrl: options.endpointUrl,
+      serviceDescriptionTimeout: options.serviceDescriptionTimeout,
+      serviceDescriptionFormat: options.serviceDescriptionFormat,
+      authorizationHeader,
+    },
+  })
+
+  const serviceDescription = new Promise((resolve) => {
+    const minimalSD = rdf.clownface().blankNode().addOut(rdf.ns.rdf.type, rdf.ns.sd.Service)
+
+    worker.once('message', async (message) => {
+      const { type, data } = message
+      switch (type) {
+        case 'serviceDescription':
+          resolve(await rdf.dataset().import(
+            rdf.formats.parsers.import('application/n-triples', Readable.from(data)),
+          ))
+          break
+        case 'serviceDescriptionTimeOut':
+          logger.warn('The proxied SPARQL endpoint did not return a Service Description in a timely fashion. Will return a minimal document')
+          logger.info('You can increase the timeout using the \'serviceDescriptionTimeout\' configuration')
+          resolve(minimalSD.dataset)
+          break
+        case 'serviceDescriptionError':
+          logger.error('Error while fetching the Service Description. Will return a minimal document')
+          logger.error(data)
+          resolve(minimalSD.dataset)
+          break
+      }
+    })
+  })
+
+  trifidEvents.on('close', async () => {
+    logger.debug('Got "close" event from Trifid ; closing worker…')
+    await worker.terminate().catch(logger.error.bind(logger))
+    logger.debug('Worker terminated')
+  })
 
   return {
     defaultConfiguration: async () => {
@@ -148,6 +195,24 @@ const factory = async (trifid) => {
             break
           default:
             return reply.code(405).send('Method Not Allowed')
+        }
+
+        if (!query && method === 'GET') {
+          const dataset = await serviceDescription
+          rdf.clownface({ dataset })
+            .has(rdf.ns.rdf.type, rdf.ns.sd.Service)
+            .addOut(rdf.ns.sd.endpoint, rdf.namedNode(fullUrl))
+
+          const accept = request.accepts()
+          const negotiatedTypes = accept.type([...rdf.formats.serializers.keys()])
+          const negotiatedType = Array.isArray(negotiatedTypes) ? negotiatedTypes[0] : negotiatedTypes
+          if (!negotiatedType) {
+            return reply.code(405).send()
+          }
+
+          return reply
+            .header('content-type', negotiatedType)
+            .send(await dataset.serialize({ format: negotiatedType }))
         }
 
         if (rewriteResponse && options.rewriteQuery) {

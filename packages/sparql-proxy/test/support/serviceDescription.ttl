@@ -1,0 +1,38 @@
+PREFIX ex: <http://example.org/>
+@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
+@prefix ent: <http://www.w3.org/ns/entailment/> .
+@prefix prof: <http://www.w3.org/ns/owl-profile/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+
+[] a sd:Service ;
+  sd:endpoint <http://example.com/sparql> ;
+  sd:supportedLanguage sd:SPARQL11Query ;
+  sd:resultFormat <http://www.w3.org/ns/formats/RDF_XML>, <http://www.w3.org/ns/formats/Turtle> ;
+  sd:extensionFunction <http://example.org/Distance> ;
+  sd:feature sd:DereferencesURIs ;
+  sd:defaultEntailmentRegime ent:RDFS ;
+  sd:defaultDataset
+    [
+      a sd:Dataset ;
+      sd:defaultGraph
+        [
+          a sd:Graph ;
+          void:triples 100
+        ] ;
+      sd:namedGraph
+        [
+          a sd:NamedGraph ;
+          sd:name <http://www.example/named-graph> ;
+          sd:entailmentRegime ent:OWL-RDF-Based ;
+          sd:supportedEntailmentProfile prof:RL ;
+          sd:graph
+            [
+              a sd:Graph ;
+              void:triples 2000
+            ]
+        ]
+    ] ;
+  sd:nonStandardProp "foo" ;
+  ex:foo "bar" .
+
+<http://example.org/Distance> a sd:Function .
