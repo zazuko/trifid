@@ -1,14 +1,14 @@
 import { expect } from 'chai'
 import trifidCore, { getListenerURL } from 'trifid-core'
 import rdf from '@zazuko/env-node'
-import sinon from 'sinon'
+import { stub, restore } from 'sinon'
 import sparqlProxy from '../index.js'
 
 describe('sparql-proxy', () => {
   let trifidListener
   let defaultTestConfig
 
-  async function startTrifid(config) {
+  const startTrifid = async (config) => {
     const server = await trifidCore({
       server: {
         listener: {
@@ -51,11 +51,11 @@ describe('sparql-proxy', () => {
     ])
 
     beforeEach(() => {
-      sinon.stub(global, 'fetch')
+      stub(global, 'fetch')
     })
 
     afterEach(() => {
-      sinon.restore()
+      restore()
     })
 
     for (const [property] of forwardedProperties) {
@@ -187,9 +187,7 @@ describe('sparql-proxy', () => {
         }
       })
 
-      it('should work', async function () {
-        this.timeout(10000)
-
+      it('should work', async () => {
         // given
         const url = await startTrifid()
 
@@ -199,7 +197,7 @@ describe('sparql-proxy', () => {
 
         // then
         expect(dataset).to.have.property('size').greaterThan(2)
-      })
+      }).timeout(10000)
     })
   })
 })

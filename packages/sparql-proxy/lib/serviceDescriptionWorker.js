@@ -52,7 +52,7 @@ const allowedProperties = rdf.termSet(
     .terms,
 )
 
-function cbd({ level, quad: { predicate, subject } }) {
+const cbd = ({ level, quad: { predicate, subject } }) => {
   if (level === 0) {
     return !predicate.equals(rdf.ns.sd.endpoint) && allowedProperties.has(predicate)
   }
