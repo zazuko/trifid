@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-entity-renderer",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "description": "Renders a RDF entity in Trifid",
   "main": "index.js",
@@ -29,14 +29,14 @@
     "lit": "^3.1.4",
     "mimeparse": "^0.1.4",
     "p-queue": "^8.0.1",
-    "trifid-core": "^4.0.6"
+    "trifid-core": "^5.0.0"
   },
   "devDependencies": {
     "@rdfjs/types": "^1.1.0",
     "c8": "^10.1.2",
     "mocha": "^10.7.3",
-    "trifid-handler-fetch": "^3.1.0",
-    "trifid-plugin-yasgui": "^3.1.1"
+    "trifid-handler-fetch": "^3.3.1",
+    "trifid-plugin-yasgui": "^3.1.2"
   },
   "files": [
     "index.js",

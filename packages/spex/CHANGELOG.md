@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 2.1.1
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+
 ## 2.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-iiif
 
+## 1.0.4
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+
 ## 1.0.3
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.2.1
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+- Updated dependencies [1cafa55]
+- Updated dependencies [1cafa55]
+  - trifid-core@5.0.0
+
 ## 1.2.0
 
 ### Minor Changes

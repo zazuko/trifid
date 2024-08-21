@@ -1,5 +1,11 @@
 # trifid-plugin-graph-explorer
 
+## 2.0.3
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+
 ## 2.0.2
 
 ### Patch Changes

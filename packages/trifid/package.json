@@ -1,7 +1,7 @@
 {
   "name": "trifid",
   "description": "Trifid - Lightweight Linked Data Server and Proxy",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
   "type": "module",
@@ -23,15 +23,15 @@
     "trifid": "./server.js"
   },
   "dependencies": {
-    "@zazuko/trifid-plugin-sparql-proxy": "^2.1.0",
-    "@zazuko/trifid-entity-renderer": "^1.1.1",
+    "@zazuko/trifid-plugin-sparql-proxy": "^2.4.0",
+    "@zazuko/trifid-entity-renderer": "^1.2.1",
     "commander": "^12.1.0",
-    "trifid-core": "^4.0.6",
-    "trifid-handler-fetch": "^3.1.0",
-    "trifid-plugin-graph-explorer": "^2.0.2",
+    "trifid-core": "^5.0.0",
+    "trifid-handler-fetch": "^3.3.1",
+    "trifid-plugin-graph-explorer": "^2.0.3",
     "trifid-plugin-i18n": "^3.0.0",
-    "trifid-plugin-spex": "^2.0.2",
-    "trifid-plugin-yasgui": "^3.1.0"
+    "trifid-plugin-spex": "^2.1.1",
+    "trifid-plugin-yasgui": "^3.1.2"
   },
   "publishConfig": {
     "access": "public",
