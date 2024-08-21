@@ -1,5 +1,18 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.4.0
+
+### Minor Changes
+
+- 7729ed7: Serve a [SPARQL 1.1 Service Description](https://www.w3.org/TR/sparql11-service-description/), proxied from the original server (fixes #461)
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+- Updated dependencies [1cafa55]
+- Updated dependencies [1cafa55]
+  - trifid-core@5.0.0
+
 ## 2.3.0
 
 ### Minor Changes

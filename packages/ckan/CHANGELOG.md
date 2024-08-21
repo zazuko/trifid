@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 4.0.3
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+
 ## 4.0.2
 
 ### Patch Changes

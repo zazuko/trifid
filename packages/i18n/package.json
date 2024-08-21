@@ -29,7 +29,7 @@
     "@types/i18n": "^0.13.12",
     "c8": "^10.1.2",
     "mocha": "^10.7.3",
-    "trifid-core": "^4.0.3"
+    "trifid-core": "^5.0.0"
   },
   "publishConfig": {
     "access": "public",

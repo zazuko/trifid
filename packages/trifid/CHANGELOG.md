@@ -1,5 +1,20 @@
 # trifid
 
+## 5.0.7
+
+### Patch Changes
+
+- Updated dependencies [1cafa55]
+- Updated dependencies [1cafa55]
+- Updated dependencies [7729ed7]
+  - @zazuko/trifid-entity-renderer@1.2.1
+  - trifid-plugin-graph-explorer@2.0.3
+  - trifid-handler-fetch@3.3.1
+  - @zazuko/trifid-plugin-sparql-proxy@2.4.0
+  - trifid-plugin-yasgui@3.1.2
+  - trifid-core@5.0.0
+  - trifid-plugin-spex@2.1.1
+
 ## 5.0.6
 
 ### Patch Changes

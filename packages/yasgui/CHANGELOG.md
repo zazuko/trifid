@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.1.2
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+
 ## 3.1.1
 
 ### Patch Changes

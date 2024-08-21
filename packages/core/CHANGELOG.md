@@ -1,5 +1,19 @@
 # trifid-core
 
+## 5.0.0
+
+### Major Changes
+
+- 1cafa55: Support for compression by default.
+
+  This change is considered as a breaking change as the `routeHandler` now needs to return the `reply` object in order to be compatible with the support for compression. This is necessary to allow the server to handle the compression of the response.
+
+  Before migrating, make sure to update your custom plugins and upgrade all plugins to the latest version.
+
+### Patch Changes
+
+- 1cafa55: Return `reply` in the `routeHandler`, in order to be compatible with the support for compression.
+
 ## 4.1.0
 
 ### Minor Changes
