@@ -4,7 +4,7 @@ import { Readable } from 'node:stream'
 import { performance } from 'node:perf_hooks'
 import { Worker } from 'node:worker_threads'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
-import replaceStream from 'string-replace-stream'
+// import replaceStream from 'string-replace-stream'
 import rdf from '@zazuko/env-node'
 
 const defaultConfiguration = {
@@ -250,14 +250,15 @@ const factory = async (trifid) => {
 
           const contentType = response.headers.get('content-type')
 
-          let responseStream = response.body
+          let responseStream = await response.text() // response.body
           if (rewriteResponse && options.rewriteResults) {
-            responseStream = Readable
-              .from(responseStream)
-              .pipe(replaceStream(
-                rewriteResponse.origin,
-                rewriteResponse.replacement,
-              ))
+            responseStream = responseStream.replaceAll(rewriteResponse.origin, rewriteResponse.replacement)
+            // responseStream = Readable
+            //   .from(responseStream)
+            //   .pipe(replaceStream(
+            //     rewriteResponse.origin,
+            //     rewriteResponse.replacement,
+            //   ))
           }
 
           reply
