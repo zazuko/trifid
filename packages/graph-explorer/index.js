@@ -24,7 +24,7 @@ const factory = async (trifid) => {
   const view = !template ? `${currentDir}/views/graph-explorer.hbs` : template
 
   // Serve static files for graph-explorer
-  const distPath = await resolve('graph-explorer/dist/', import.meta.url)
+  const distPath = resolve('graph-explorer/dist/', import.meta.url)
   server.register(fastifyStatic, {
     root: distPath.replace(/^file:\/\//, ''),
     prefix: '/graph-explorer/assets/',
