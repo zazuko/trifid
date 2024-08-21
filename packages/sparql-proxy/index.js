@@ -209,7 +209,7 @@ const factory = async (trifid) => {
           const negotiatedTypes = accept.type([...rdf.formats.serializers.keys()])
           const negotiatedType = Array.isArray(negotiatedTypes) ? negotiatedTypes[0] : negotiatedTypes
           if (!negotiatedType) {
-            reply.code(405).send()
+            reply.code(406).send()
             return reply
           }
 
