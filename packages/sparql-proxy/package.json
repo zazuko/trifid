@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "files": [
+    "lib",
     "index.js"
   ],
   "dependencies": {
