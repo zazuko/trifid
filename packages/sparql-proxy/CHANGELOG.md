@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.4.1
+
+### Patch Changes
+
+- b986500: Include missing `lib` directory
+
 ## 2.4.0
 
 ### Minor Changes
