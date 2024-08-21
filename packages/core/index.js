@@ -3,6 +3,7 @@ import EventEmitter from 'node:events'
 
 import { pino } from 'pino'
 import fastify from 'fastify'
+import fastifyCompress from '@fastify/compress'
 import fastifyCors from '@fastify/cors'
 import fastifyCookie from '@fastify/cookie'
 import fastifyAccepts from '@fastify/accepts'
@@ -88,6 +89,7 @@ const trifid = async (config, additionalPlugins = {}) => {
     trustProxy: true,
     ...serverOptions,
   })
+  await server.register(fastifyCompress)
 
   // Add support for `application/sparql-query` content type
   server.addContentTypeParser('application/sparql-query', (_request, payload, done) => {
