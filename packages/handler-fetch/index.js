@@ -167,7 +167,7 @@ export const factory = async (trifid) => {
 
         if (!query) {
           reply.status(400).send('Missing query parameter')
-          return
+          return reply
         }
 
         queryLogger(`Received query via ${method}:\n${query}`)
@@ -184,7 +184,10 @@ export const factory = async (trifid) => {
         } catch (error) {
           logger.error(error)
           reply.status(500).send(error.message)
+          return reply
         }
+
+        return reply
       }
       return handler
     },
