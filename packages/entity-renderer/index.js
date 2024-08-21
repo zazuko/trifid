@@ -167,7 +167,8 @@ const factory = async (trifid) => {
         const currentPath = request.url.split('?')[0]
         // Check if it is a path that needs to be ignored (check of type is already done at the load of the plugin)
         if (ignoredPaths.includes(currentPath)) {
-          return reply.callNotFound()
+          reply.callNotFound()
+          return reply
         }
 
         // To avoid any languge issues, we will forward the i18n cookie to the SPARQL endpoint
@@ -204,7 +205,8 @@ const factory = async (trifid) => {
         const askQuery = isContainer ? mergedConfig.containerExistsQuery : mergedConfig.resourceExistsQuery
         const exists = await query(replaceIriInQuery(askQuery, iri), { ask: true, headers: queryHeaders })
         if (!exists) {
-          return reply.callNotFound()
+          reply.callNotFound()
+          return reply
         }
 
         try {
@@ -220,7 +222,8 @@ const factory = async (trifid) => {
               const { responseCode, location } = entityRedirect
               if (responseCode && location && responseCode.value && location.value) {
                 logger.debug(`Redirecting <${iri}> to <${location.value}> (HTTP ${responseCode.value})`)
-                return reply.status(parseInt(responseCode.value, 10)).redirect(location.value)
+                reply.status(parseInt(responseCode.value, 10)).redirect(location.value)
+                return reply
               } else {
                 logger.warn('Redirect query did not return the expected results')
               }
@@ -240,7 +243,8 @@ const factory = async (trifid) => {
           const entityContentType = entity.contentType || 'application/n-triples'
           const entityStream = entity.response
           if (!entityStream) {
-            return reply.callNotFound()
+            reply.callNotFound()
+            return reply
           }
 
           // Make sure the Content-Type is lower case and without parameters (e.g. charset)
@@ -250,7 +254,7 @@ const factory = async (trifid) => {
           if (sparqlSupportedTypes.includes(acceptHeader)) {
             const serialized = await sparqlSerializeQuadStream(quadStream, acceptHeader)
             reply.type(acceptHeader).send(serialized)
-            return
+            return reply
           }
 
           const dataset = await rdf.dataset().import(quadStream)
@@ -264,7 +268,8 @@ const factory = async (trifid) => {
             if (urls.length > 0) {
               const redirectUrl = urls[0]
               logger.debug(`Redirecting to ${redirectUrl}`)
-              return reply.redirect(redirectUrl)
+              reply.redirect(redirectUrl)
+              return reply
             }
           }
 
@@ -289,8 +294,11 @@ const factory = async (trifid) => {
           }))
         } catch (e) {
           logger.error(e)
-          return reply.callNotFound()
+          reply.callNotFound()
+          return reply
         }
+
+        return reply
       }
       return handler
     },
