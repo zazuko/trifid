@@ -49,8 +49,8 @@ plugins:
     module: trifid-handler-fetch
     paths: /query
     config:
-      url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt
-      contentType: application/n-triples
+      url: https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nq
+      contentType: application/n-quads
       baseIRI: http://localhost:8080
       graphName: http://example.com/graph
       unionDefaultGraph: true
