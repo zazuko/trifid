@@ -11,6 +11,14 @@
     "build": "tsc",
     "prepack": "npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/markdown-content"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid/issues"
+  },
   "author": "Zazuko GmbH",
   "license": "MIT",
   "dependencies": {
