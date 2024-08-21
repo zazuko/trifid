@@ -9,6 +9,7 @@
 const healthRouteHandler = async (request, reply) => {
   request.log.debug('reached health endpoint')
   reply.type('text/plain').send('OK\n')
+  return reply
 }
 
 /** @type {import('../types/index.js').TrifidPlugin} */

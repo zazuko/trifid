@@ -41,6 +41,7 @@ const factory = async (trifid) => {
        */
       const handler = async (request, reply) => {
         reply.status(200).type('text/html').send(await render(request, path, { ...context }, options))
+        return reply
       }
       return handler
     },
