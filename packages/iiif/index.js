@@ -45,14 +45,16 @@ const trifidFactory = async (trifid) => {
 
         if (!(uriPrefix || request.query.uri)) {
           logger.debug('No uri query parameter')
-          return reply.callNotFound()
+          reply.callNotFound()
+          return reply
         }
 
         const uri = uriPrefix ? rdf.namedNode(`${uriPrefix}${fullUrlPathname}`) : rdf.namedNode(request.query.uri)
         logger.debug(`uri: ${uri.value}`)
         if (!await api.exists(uri)) {
           logger.debug(`uri: ${uri} not found`)
-          return reply.callNotFound()
+          reply.callNotFound()
+          return reply
         }
         logger.debug(`fetching uri: ${uri}`)
 
@@ -61,7 +63,8 @@ const trifidFactory = async (trifid) => {
         const doc = await jsonld.fromRDF(augmented, {})
         const framed = await frame(doc)
 
-        return reply.send(framed)
+        reply.send(framed)
+        return reply
       }
       return handler
     },

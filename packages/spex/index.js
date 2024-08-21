@@ -59,7 +59,8 @@ const createPlugin = async (server, config, render) => {
 
     // Enforce trailing slash
     if (fullUrlPathname.slice(-1) !== '/') {
-      return reply.redirect(`${fullUrlPathname}/`)
+      reply.redirect(`${fullUrlPathname}/`)
+      return reply
     }
 
     // Create an absolute URL if a relative URL is provided
@@ -78,6 +79,7 @@ const createPlugin = async (server, config, render) => {
     )
 
     reply.type('text/html').send(content)
+    return reply
   }
   return handler
 }

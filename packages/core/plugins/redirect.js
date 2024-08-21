@@ -23,6 +23,7 @@ const factory = async (trifid) => {
       const handler = async (_request, reply) => {
         logger.debug(`redirect to: ${target}`)
         reply.redirect(target)
+        return reply
       }
       return handler
     },

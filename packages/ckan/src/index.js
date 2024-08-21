@@ -42,7 +42,7 @@ const factory = async (trifid) => {
         const organization = request.query?.organization
         if (!organization) {
           reply.status(400).send('Missing `organization` query param')
-          return
+          return reply
         }
 
         logger.debug(`Asked for the '${organization}' organization`)
@@ -60,6 +60,8 @@ const factory = async (trifid) => {
           logger.error(e)
           reply.status(500).send('Error')
         }
+
+        return reply
       }
       return handler
     },

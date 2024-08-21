@@ -69,7 +69,8 @@ const trifidFactory = async (trifid) => {
 
         // Enforce trailing slash
         if (fullUrlPathname.slice(-1) !== '/') {
-          return reply.redirect(`${fullUrlPathname}/`)
+          reply.redirect(`${fullUrlPathname}/`)
+          return reply
         }
 
         // Read SPARQL endpoint URL from configuration and resolve with full URL
@@ -93,6 +94,7 @@ const trifidFactory = async (trifid) => {
         )
 
         reply.type('text/html').send(content)
+        return reply
       }
       return handler
     },

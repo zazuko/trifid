@@ -4,7 +4,7 @@ import { Readable } from 'node:stream'
 import { performance } from 'node:perf_hooks'
 import { Worker } from 'node:worker_threads'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
-import replaceStream from 'string-replace-stream'
+// import replaceStream from 'string-replace-stream'
 import rdf from '@zazuko/env-node'
 
 const defaultConfiguration = {
@@ -150,7 +150,8 @@ const factory = async (trifid) => {
 
         // Enforce non-trailing slash
         if (fullUrlPathname.slice(-1) === '/') {
-          return reply.redirect(`${fullUrlPathname.slice(0, -1)}`)
+          reply.redirect(`${fullUrlPathname.slice(0, -1)}`)
+          return reply
         }
 
         let currentRewriteConfig = rewriteConfig
@@ -194,7 +195,8 @@ const factory = async (trifid) => {
 
             break
           default:
-            return reply.code(405).send('Method Not Allowed')
+            reply.code(405).send('Method Not Allowed')
+            return reply
         }
 
         if (!query && method === 'GET') {
@@ -207,12 +209,14 @@ const factory = async (trifid) => {
           const negotiatedTypes = accept.type([...rdf.formats.serializers.keys()])
           const negotiatedType = Array.isArray(negotiatedTypes) ? negotiatedTypes[0] : negotiatedTypes
           if (!negotiatedType) {
-            return reply.code(405).send()
+            reply.code(406).send()
+            return reply
           }
 
-          return reply
+          reply
             .header('content-type', negotiatedType)
             .send(await dataset.serialize({ format: negotiatedType }))
+          return reply
         }
 
         if (rewriteResponse && options.rewriteQuery) {
@@ -246,27 +250,30 @@ const factory = async (trifid) => {
 
           const contentType = response.headers.get('content-type')
 
-          let responseStream = response.body
+          let responseStream = await response.text() // response.body
           if (rewriteResponse && options.rewriteResults) {
-            responseStream = Readable
-              .from(responseStream)
-              .pipe(replaceStream(
-                rewriteResponse.origin,
-                rewriteResponse.replacement,
-              ))
+            responseStream = responseStream.replaceAll(rewriteResponse.origin, rewriteResponse.replacement)
+            // responseStream = Readable
+            //   .from(responseStream)
+            //   .pipe(replaceStream(
+            //     rewriteResponse.origin,
+            //     rewriteResponse.replacement,
+            //   ))
           }
 
-          return reply
+          reply
             .status(response.status)
             .header('Server-Timing', `sparql-proxy;dur=${duration};desc="Querying the endpoint"`)
             .header('content-type', contentType)
             .send(responseStream)
+          return reply
         } catch (error) {
           logger.error('Error while querying the endpoint')
           logger.error(error)
-          return reply
+          reply
             .code(500)
             .send('Error while querying the endpoint')
+          return reply
         }
       }
       return handler
