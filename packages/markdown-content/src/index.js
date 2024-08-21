@@ -229,7 +229,8 @@ const factory = async (trifid) => {
          * @returns {Promise<void>}
          */
         const redirectHandler = async (_request, reply) => {
-          return reply.redirect(`${routePath}/`)
+          reply.redirect(`${routePath}/`)
+          return reply
         }
 
         /**
@@ -239,9 +240,10 @@ const factory = async (trifid) => {
          * @returns {Promise<void>}
          */
         const routeHandler = async (request, reply) => {
-          return reply.type('text/html').send(await render(request, defaultValue('template', entry, template), {
+          reply.type('text/html').send(await render(request, defaultValue('template', entry, template), {
             content: request.session.get(LOCALS_PLUGIN_KEY)?.[namespace]?.[item.name] || '',
           }))
+          return reply
         }
 
         // Mount routes
