@@ -71,7 +71,8 @@ const factory = async (trifid) => {
 
         // Enforce trailing slash
         if (fullUrlPathname.slice(-1) !== '/') {
-          return reply.redirect(`${fullUrlPathname}/`)
+          reply.redirect(`${fullUrlPathname}/`)
+          return reply
         }
 
         const content = await render(
@@ -94,7 +95,8 @@ const factory = async (trifid) => {
           { title: 'Graph Explorer' },
         )
 
-        return reply.type('text/html').send(content)
+        reply.type('text/html').send(content)
+        return reply
       }
       return handler
     },
