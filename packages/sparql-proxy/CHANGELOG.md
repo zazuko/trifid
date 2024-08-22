@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.4.2
+
+### Patch Changes
+
+- a257043: Enable stream support back
+
 ## 2.4.1
 
 ### Patch Changes
