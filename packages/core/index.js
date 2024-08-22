@@ -89,7 +89,9 @@ const trifid = async (config, additionalPlugins = {}) => {
     trustProxy: true,
     ...serverOptions,
   })
-  await server.register(fastifyCompress)
+
+  // Register fastifyCompress and add custom compressible mime-types (in addition to mime-db)
+  await server.register(fastifyCompress, { customTypes: /(n-triples|n-quads|trig|json)(;.+)?$/ })
 
   // Add support for `application/sparql-query` content type
   server.addContentTypeParser('application/sparql-query', (_request, payload, done) => {
