@@ -1,5 +1,11 @@
 # trifid-core
 
+## 5.0.1
+
+### Patch Changes
+
+- 76c0832: Add compression support for additional content-types: n-triples, n-quads, trig and JSON SPARQL results.
+
 ## 5.0.0
 
 ### Major Changes
