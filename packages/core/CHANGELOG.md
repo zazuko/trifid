@@ -1,5 +1,11 @@
 # trifid-core
 
+## 5.0.2
+
+### Patch Changes
+
+- b26b6e9: Add support for turtle compression
+
 ## 5.0.1
 
 ### Patch Changes
