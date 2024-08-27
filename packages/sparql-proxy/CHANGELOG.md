@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.4.3
+
+### Patch Changes
+
+- 79a91eb: Fix issues in case of DestroyableTransform
+
 ## 2.4.2
 
 ### Patch Changes
