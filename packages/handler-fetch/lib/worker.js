@@ -70,7 +70,7 @@ const handleConfig = async (config) => {
   store.load(data, {
     format: contentType,
     base_iri: baseIri,
-    to_named_graph: graphNameIri,
+    to_graph_name: graphNameIri,
   })
   parentPort.postMessage({
     type: 'log',
