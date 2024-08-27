@@ -1,11 +1,12 @@
 // @ts-check
 
 import { Readable } from 'node:stream'
+import { ReadableStream } from 'node:stream/web'
 import { performance } from 'node:perf_hooks'
 import { Worker } from 'node:worker_threads'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
-import replaceStream from 'string-replace-stream'
 import rdf from '@zazuko/env-node'
+import ReplaceStream from './lib/ReplaceStream.js'
 
 const defaultConfiguration = {
   endpointUrl: '',
@@ -253,14 +254,16 @@ const factory = async (trifid) => {
           /** @type {any} */
           let responseStream = response.body
           if (rewriteResponse && options.rewriteResults) {
+            const replaceStream = new ReplaceStream(rewriteResponse.origin, rewriteResponse.replacement)
             responseStream = Readable
               .from(responseStream)
-              .pipe(replaceStream(
-                rewriteResponse.origin,
-                rewriteResponse.replacement,
-              ))
+              .pipe(replaceStream)
+            responseStream = Readable
+              .from(responseStream)
           }
-          responseStream = Readable.fromWeb(responseStream)
+          if (responseStream instanceof ReadableStream) {
+            responseStream = Readable.fromWeb(responseStream)
+          }
 
           reply
             .status(response.status)
