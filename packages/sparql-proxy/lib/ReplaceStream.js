@@ -6,40 +6,35 @@ class ReplaceStream extends Transform {
     this.searchStr = searchStr
     this.replaceStr = replaceStr
     this.tailPiece = '' // Holds trailing data from previous chunk
+    this.searchStrLen = searchStr.length
   }
 
   _transform (chunk, encoding, callback) {
     const data = this.tailPiece + chunk.toString() // Combine previous tail with new chunk
     let lastIndex = 0
-
-    // Array to hold the processed pieces
-    const processedPieces = []
-
     let index
-    // Search for the searchStr in the data
+
+    const pieces = []
+
+    // Search for occurrences of searchStr
     while ((index = data.indexOf(this.searchStr, lastIndex)) !== -1) {
-      // Push the data before the match and the replacement string
-      processedPieces.push(data.slice(lastIndex, index))
-      processedPieces.push(this.replaceStr)
-      lastIndex = index + this.searchStr.length
+      pieces.push(data.slice(lastIndex, index)) // Push the data before the match
+      pieces.push(this.replaceStr) // Push the replacement string
+      lastIndex = index + this.searchStrLen // Move the index past the match
     }
 
-    // Save the remaining data in tailPiece
+    // Save the remaining data after the last match as tailPiece
     this.tailPiece = data.slice(lastIndex)
 
-    // Push the processed pieces
-    this.push(processedPieces.join(''))
+    // Push the processed data
+    this.push(pieces.join(''))
 
     callback()
   }
 
   _flush (callback) {
-    // Handle any remaining data in tailPiece
-    if (this.tailPiece.includes(this.searchStr)) {
-      this.push(this.tailPiece.replace(this.searchStr, this.replaceStr))
-    } else {
-      this.push(this.tailPiece)
-    }
+    // Push out any remaining data in tailPiece, processing any matches in it
+    this.push(this.tailPiece.replace(new RegExp(this.searchStr, 'g'), this.replaceStr))
     callback()
   }
 }
