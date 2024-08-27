@@ -37,7 +37,7 @@ describe('trifid-handler-fetch', () => {
     `, {
       format: 'text/turtle',
       base_iri: 'http://example.org/',
-      to_named_graph: oxigraph.defaultGraph(),
+      to_graph_name: oxigraph.defaultGraph(),
     })
   })
 

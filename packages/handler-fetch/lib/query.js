@@ -19,19 +19,31 @@ export const performOxigraphQuery = async (store, query) => {
 
   try {
     if (isConstructQuery) {
-      contentType = 'application/n-quads'
-      results = store.query(query, {
+      const queryResults = store.query(query, {
         use_default_graph_as_union: true,
-      }).map((quad) => quad.toString()).join('.\n')
-      if (results) {
-        results = `${results}.\n`
+      })
+      if (Array.isArray(queryResults)) {
+        contentType = 'application/n-quads'
+        results = queryResults.map((quad) => quad.toString()).join('.\n')
+        if (results) {
+          results = `${results}.\n`
+        }
+      } else {
+        contentType = 'text/plain'
+        results = 'Something went wrong while getting the query results (expected array).'
       }
     } else {
-      contentType = 'application/sparql-results+json'
-      results = store.query(query, {
+      const queryResults = store.query(query, {
         use_default_graph_as_union: true,
         results_format: 'json',
       })
+      if (typeof queryResults === 'string') {
+        contentType = 'application/sparql-results+json'
+        results = queryResults
+      } else {
+        contentType = 'text/plain'
+        results = 'Something went wrong while getting the query results (expected string).'
+      }
     }
   } catch (error) {
     contentType = 'text/plain'
