@@ -58,6 +58,19 @@ describe('sparql-proxy', () => {
       restore()
     })
 
+    it('does not serve Service Description when there are any query string', async () => {
+      // given
+      const url = await startTrifid({
+        serviceDescriptionTimeout: 0,
+      })
+
+      // when
+      const response = await rdf.fetch(`${url}/query?foo=bar`)
+
+      // then
+      expect(response.headers.get('content-type')).to.match(/text\/plain/)
+    })
+
     for (const [property] of forwardedProperties) {
       if (rdf.ns.sd.endpoint.equals(property)) continue
 
@@ -80,12 +93,14 @@ describe('sparql-proxy', () => {
       const url = await startTrifid()
 
       // when
-      const response = await rdf.fetch(`${url}/query`)
-      const dataset = await response.dataset()
+      for (const path of ['query', 'query/']) {
+        const response = await rdf.fetch(`${url}/${path}`)
+        const dataset = await response.dataset()
 
-      // then
-      const service = rdf.clownface({ dataset }).has(rdf.ns.sd.endpoint)
-      expect(service.out(rdf.ns.sd.endpoint).term).to.deep.eq(rdf.namedNode(`${url}/query`))
+        // then
+        const service = rdf.clownface({ dataset }).has(rdf.ns.sd.endpoint)
+        expect(service.out(rdf.ns.sd.endpoint).term).to.deep.eq(rdf.namedNode(`${url}/${path}`))
+      }
     })
 
     it('serves minimal description if original service is too slow', async () => {
