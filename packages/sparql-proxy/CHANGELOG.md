@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.4.4
+
+### Patch Changes
+
+- c5ef560: Fixes Service Description to only respond to requests without **any** query strings, as it is required by the [spec](https://www.w3.org/TR/2013/REC-sparql11-service-description-20130321/#accessing).
+
 ## 2.4.3
 
 ### Patch Changes
