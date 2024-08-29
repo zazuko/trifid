@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-plugin-sparql-proxy",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "Trifid plugin for sparql-proxy",
   "main": "index.js",
   "type": "module",
