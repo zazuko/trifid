@@ -149,6 +149,26 @@ const factory = async (trifid) => {
         fullUrlObject.searchParams.forEach((_value, key) => fullUrlObject.searchParams.delete(key))
         const iriUrlString = fullUrlObject.toString()
 
+        if (Object.keys(request.query).length === 0 && request.method === 'GET') {
+          const dataset = rdf.dataset(await serviceDescription)
+          rdf.clownface({ dataset })
+            .has(rdf.ns.rdf.type, rdf.ns.sd.Service)
+            .addOut(rdf.ns.sd.endpoint, rdf.namedNode(fullUrl))
+
+          const accept = request.accepts()
+          const negotiatedTypes = accept.type([...rdf.formats.serializers.keys()])
+          const negotiatedType = Array.isArray(negotiatedTypes) ? negotiatedTypes[0] : negotiatedTypes
+          if (!negotiatedType) {
+            reply.code(406).send()
+            return reply
+          }
+
+          reply
+            .header('content-type', negotiatedType)
+            .send(await dataset.serialize({ format: negotiatedType }))
+          return reply
+        }
+
         // Enforce non-trailing slash
         if (fullUrlPathname.slice(-1) === '/') {
           reply.redirect(`${fullUrlPathname.slice(0, -1)}`)
@@ -198,26 +218,6 @@ const factory = async (trifid) => {
           default:
             reply.code(405).send('Method Not Allowed')
             return reply
-        }
-
-        if (!query && method === 'GET') {
-          const dataset = await serviceDescription
-          rdf.clownface({ dataset })
-            .has(rdf.ns.rdf.type, rdf.ns.sd.Service)
-            .addOut(rdf.ns.sd.endpoint, rdf.namedNode(fullUrl))
-
-          const accept = request.accepts()
-          const negotiatedTypes = accept.type([...rdf.formats.serializers.keys()])
-          const negotiatedType = Array.isArray(negotiatedTypes) ? negotiatedTypes[0] : negotiatedTypes
-          if (!negotiatedType) {
-            reply.code(406).send()
-            return reply
-          }
-
-          reply
-            .header('content-type', negotiatedType)
-            .send(await dataset.serialize({ format: negotiatedType }))
-          return reply
         }
 
         if (rewriteResponse && options.rewriteQuery) {
