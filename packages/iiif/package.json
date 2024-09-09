@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@tpluscode/rdf-string": "^1.3.3",
-    "@zazuko/env": "^2.2.1",
+    "@zazuko/env": "^2.3.0",
     "jsonld": "^8.3.2",
     "sparql-http-client": "^3.0.1",
     "through2": "^4.0.2"
