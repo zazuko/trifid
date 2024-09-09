@@ -48,7 +48,7 @@
     "@fastify/formbody": "^7.4.0",
     "@fastify/static": "^7.0.4",
     "@fontsource/playfair-display": "^5.0.25",
-    "@fontsource/roboto": "^5.0.14",
+    "@fontsource/roboto": "^5.0.15",
     "@rdfjs-elements/formats-pretty": "^0.6.7",
     "@types/sparql-http-client": "^3.0.2",
     "ajv": "^8.17.1",
