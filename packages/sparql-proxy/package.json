@@ -27,7 +27,7 @@
     "trifid-core": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.5.2",
+    "@types/node": "^22.5.4",
     "chai": "^5.1.1",
     "mocha": "^10.7.3",
     "sinon": "^18.0.0",
