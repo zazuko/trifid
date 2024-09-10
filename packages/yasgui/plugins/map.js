@@ -1,9 +1,19 @@
-/* global Yasr */
+/* global Yasr, YasguiMapPluginDefaultOptions */
+
+// Get some custom options from the global scope
+if (!YasguiMapPluginDefaultOptions) {
+  // eslint-disable-next-line no-global-assign
+  YasguiMapPluginDefaultOptions = {}
+}
+if (!YasguiMapPluginDefaultOptions.mapKind) {
+  YasguiMapPluginDefaultOptions.mapKind = 'default'
+}
 
 class YasguiMap {
   priority = 10
 
   hideFromSelection = false
+  wktLabels = new Map()
 
   // eslint-disable-next-line space-before-function-paren
   constructor(yasr) {
@@ -11,6 +21,7 @@ class YasguiMap {
   }
 
   getResults () {
+    this.wktLabels.clear()
     if (
       !this.yasr ||
       !this.yasr.results ||
@@ -29,10 +40,15 @@ class YasguiMap {
 
     const wktData = []
 
-    // eslint-disable-next-line array-callback-return
-    results.map((result, rowIndex) => {
+    results.forEach((result, rowIndex) => {
       if (!result) {
         return null
+      }
+
+      let wktLabel = null
+      const wktLabelItem = result.wktLabel
+      if (wktLabelItem && wktLabelItem.type === 'literal') {
+        wktLabel = wktLabelItem.value
       }
 
       Object.entries(result).forEach((entry) => {
@@ -53,8 +69,11 @@ class YasguiMap {
           return
         }
 
+        const id = `results-map-wkt-${entry[0]}-${rowIndex}`
+        this.wktLabels.set(id, wktLabel)
+
         wktData.push({
-          id: `results-map-wkt-${entry[0]}-${rowIndex}`,
+          id,
           wkt: value.value,
         })
       })
@@ -63,18 +82,99 @@ class YasguiMap {
     return wktData
   }
 
-  draw () {
+  async draw () {
+    await import('./deps.js')
+    const { Style, Stroke, Fill } = await import('./style.js')
+
     const results = this.getResults()
     const el = document.createElement('ol-map')
     el.style.height = '500px'
     el.style.width = '100%'
-    const osm = document.createElement('ol-layer-openstreetmap')
+
+    // The overlay is used to display the WKT label when a feature is selected
+    const overlay = document.createElement('div')
+    overlay.style.position = 'absolute'
+    overlay.style.bottom = '0px'
+    overlay.style.left = '0px'
+    overlay.style.background = 'rgb(255, 255, 255)'
+    overlay.style.padding = '8px'
+    overlay.style.display = 'none'
+    overlay.style.zIndex = '10'
+    overlay.style.borderTopRightRadius = '5px'
+    overlay.style.borderTop = '1px solid #000'
+    overlay.style.borderRight = '1px solid #000'
+    el.appendChild(overlay)
+
+    let mapLayer = document.createElement('div')
+    switch (YasguiMapPluginDefaultOptions?.mapKind) {
+      case 'swisstopo':
+        mapLayer = document.createElement('swisstopo-wmts')
+        mapLayer.setAttribute('layer-name', 'ch.swisstopo.pixelkarte-farbe')
+        mapLayer.setAttribute('z-index', '-1')
+        break
+      default:
+        mapLayer = document.createElement('ol-layer-openstreetmap')
+        break
+    }
+
     const wkt = document.createElement('ol-layer-wkt')
-    osm.appendChild(wkt)
-    el.appendChild(osm)
+    const select = document.createElement('ol-select')
+    select.style = new Style({
+      fill: new Fill({
+        color: 'rgba(200,200,255,0.6)',
+      }),
+      stroke: new Stroke({
+        color: '#ffb15e',
+        width: 5,
+      }),
+    })
+
+    mapLayer.appendChild(wkt)
+    mapLayer.appendChild(select)
+    el.appendChild(mapLayer)
     this.yasr.resultsEl.appendChild(el)
 
+    const editStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(255,255,255,0.4)',
+      }),
+      stroke: new Stroke({
+        color: '#ffb15e',
+        width: 5,
+      }),
+    })
+
+    select.addEventListener('feature-selected', (e) => {
+      const feature = e.detail.feature
+      feature.setStyle(editStyle)
+      const id = feature.getId()
+      if (!this.wktLabels.has(id)) {
+        return
+      }
+      const wktLabel = this.wktLabels.get(id)
+
+      if (wktLabel) {
+        overlay.innerText = wktLabel
+        overlay.style.display = 'block'
+      } else {
+        overlay.style.display = 'none'
+      }
+    })
+
+    select.addEventListener('feature-unselected', () => {
+      overlay.style.display = 'none'
+    })
+
     wkt.featureData = results
+    wkt.featureStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(200,200,150,0.6)',
+      }),
+      stroke: new Stroke({
+        color: '#ffb15e',
+        width: 5,
+      }),
+    })
 
     setTimeout(() => {
       wkt.fit()
