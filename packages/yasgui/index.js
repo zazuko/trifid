@@ -9,7 +9,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 /** @type {import('../core/types/index.js').TrifidPlugin} */
 const trifidFactory = async (trifid) => {
   const { config, render, server } = trifid
-  const { template, endpointUrl, urlShortener, catalog, defaultQuery } = config
+  const { template, endpointUrl, urlShortener, catalog, defaultQuery, mapKind } = config
 
   const endpoint = endpointUrl || '/query'
   const view = !template ? `${currentDir}/views/yasgui.hbs` : template
@@ -20,6 +20,10 @@ const trifidFactory = async (trifid) => {
   }
 
   const defaultQueryOption = defaultQuery || ''
+  const mapKindOption = mapKind || 'default'
+  if (!['default', 'swisstopo'].includes(mapKindOption)) {
+    throw new Error('Unsupported map kind')
+  }
 
   // Serve static files for YASGUI
   const yasguiPath = resolve('@zazuko/yasgui/build/', import.meta.url)
@@ -80,6 +84,7 @@ const trifidFactory = async (trifid) => {
             endpointUrl: endpointUrl.toString(),
             catalogueEndpoints,
             urlShortener,
+            mapKind: mapKindOption,
             defaultQuery: JSON.stringify(defaultQueryOption),
           },
           { title: 'YASGUI' },

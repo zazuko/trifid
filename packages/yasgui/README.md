@@ -43,3 +43,4 @@ The following options are supported:
 - `template`: Path to an alternative template (default: `views/yasgui.hbs`)
 - `catalog`: Array of SPARQL endpoints that will be shown in the YASGUI interface.
 - `defaultQuery`: Default query that will be shown in the YASGUI interface.
+- `mapKind`: Map kind to use in the YASGUI interface (default: `default` ; supported values: `default`, `swisstopo`)
