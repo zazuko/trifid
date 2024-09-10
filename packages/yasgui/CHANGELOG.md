@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.2.1
+
+### Patch Changes
+
+- 9d79fe7: Also support `xLabel` in case `wktLabel` is not defined.
+
 ## 3.2.0
 
 ### Minor Changes
