@@ -46,7 +46,7 @@ class YasguiMap {
       }
 
       let wktLabel = null
-      const wktLabelItem = result.wktLabel
+      const wktLabelItem = result.wktLabel || result.xLabel
       if (wktLabelItem && wktLabelItem.type === 'literal') {
         wktLabel = wktLabelItem.value
       }
