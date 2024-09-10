@@ -29,16 +29,8 @@ const trifidFactory = async (trifid) => {
     decorateReply: false,
   })
 
-  // Serve static files for openlayers (maps)
-  const olPath = resolve('@openlayers-elements/bundle/dist/', import.meta.url)
-  server.register(fastifyStatic, {
-    root: olPath.replace(/^file:\/\//, ''),
-    prefix: '/yasgui-ol/',
-    decorateReply: false,
-  })
-
   // Serve static files for custom plugins
-  const pluginsUrl = new URL('plugins/', import.meta.url)
+  const pluginsUrl = new URL('dist/', import.meta.url)
   const pluginsPath = fileURLToPath(pluginsUrl)
   server.register(fastifyStatic, {
     root: pluginsPath.replace(/^file:\/\//, ''),

@@ -64,6 +64,8 @@ class YasguiMap {
   }
 
   draw () {
+    import('./deps.js')
+
     const results = this.getResults()
     const el = document.createElement('ol-map')
     el.style.height = '500px'
