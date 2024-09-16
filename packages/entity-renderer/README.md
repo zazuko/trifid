@@ -95,6 +95,9 @@ The default redirect query supports `http://www.w3.org/2011/http#` and `http://w
   - `replace`: the string to replace with (optional, the default value will be the current hostname)
 - `enableSchemaUrlRedirect` (experimental): If set to `true`, the plugin will perform a redirect if the URI contains a `schema:URL` predicate pointing to a resource of type `xsd:anyURI`.
   The default value is `false`.
+  If enabled, the user can still disable this behavior by either:
+  - setting the `disableSchemaUrlRedirect` query parameter to `true`
+  - setting the `x-disable-schema-url-redirect` header to `true`
 
 ## Run an example instance
 
