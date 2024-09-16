@@ -260,12 +260,16 @@ const factory = async (trifid) => {
           const dataset = await rdf.dataset().import(quadStream)
 
           if (mergedConfig.enableSchemaUrlRedirect && acceptHeader === 'text/html') {
+            const disabledSchemaUrlRedirect =
+              request.headers['x-disable-schema-url-redirect'] === 'true' ||
+              request.query.disableSchemaUrlRedirect === 'true'
+
             // Get all triples that have a schema:URL property with value of type xsd:anyURI
             const urls = []
             dataset.match(iriUrlString, rdf.ns.schema.URL)
               .filter(({ object }) => object.datatype.value === 'xsd:anyURI')
               .map(({ object }) => urls.push(object.value))
-            if (urls.length > 0) {
+            if (!disabledSchemaUrlRedirect && urls.length > 0) {
               const redirectUrl = urls[0]
               logger.debug(`Redirecting to ${redirectUrl}`)
               reply.redirect(redirectUrl)
