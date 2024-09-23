@@ -67,7 +67,7 @@ const toXML = (dataset) => {
             }
             : null
 
-          const distributions = dataset.out(ns.schema.workExample)
+          const workExampleDstributions = dataset.out(ns.schema.workExample)
             .filter(workExample => workExample.out(ns.schema.encodingFormat).terms.length > 0)
             .map(workExample => ({
               'dcat:Distribution': {
@@ -82,6 +82,16 @@ const toXML = (dataset) => {
                     'rdf:resource': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)),
                   },
                 },
+              },
+            }))
+
+          const copiedDistributions = dataset.out(ns.dcat.distribution)
+            .map(distribution => ({
+              'dcat:Distribution': {
+                'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
+                'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
+                'dcterms:license': serializeTerm(copyright),
+                ...serializeProperties(distribution),
               },
             }))
 
@@ -148,7 +158,10 @@ const toXML = (dataset) => {
               'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
               // @ts-ignore
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
-              'dcat:distribution': distributions,
+              'dcat:distribution': [
+                ...workExampleDstributions,
+                ...copiedDistributions,
+              ],
               'foaf:page': serializeTerm(dataset.out(ns.foaf.page)),
             },
           }
@@ -242,16 +255,18 @@ const serializeBlankNode = (pointer, allowedTypesArr = []) => {
 
   if (!type) return {}
 
+  return {
+    [shrink(type.value)]: serializeProperties(pointer),
+  }
+}
+
+function serializeProperties (pointer) {
   const properties = rdf.termSet([...pointer.dataset.match(pointer.term)]
     .map(({ predicate }) => predicate)
     .filter((term) => !term.equals(ns.rdf.type)))
 
-  const resource = [...properties].reduce((acc, property) =>
+  return [...properties].reduce((acc, property) =>
     ({ ...acc, [shrink(property.value)]: serializeTerm(pointer.out(property)) }), {})
-
-  return {
-    [shrink(type.value)]: resource,
-  }
 }
 
 /**
