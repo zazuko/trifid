@@ -202,5 +202,23 @@ describe('@zazuko/trifid-plugin-ckan', () => {
 
       expect(format.$['rdf:resource']).to.eq('http://publications.europa.eu/resource/authority/file-type/SPARQLQ')
     })
+
+    it('should copy existing distributions', async () => {
+      const distributions = xpath.find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution')
+
+      expect(distributions).to.have.length(2)
+      const expected = await parser.parseStringPromise(`
+        <dcat:Distribution>
+          <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-02-01</dcterms:issued>
+          <dcterms:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/CSV"/>
+          <dcat:accessURL rdf:resource="http://foo.bar/"/>
+          <dcat:downloadURL rdf:resource="http://foo.bar/download.csv"/>
+          <dcterms:title xml:lang="en">Source table</dcterms:title>
+          <dcterms:description xml:lang="en">Comma-separated cude data</dcterms:description>
+          <dcat:byteSize rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1013</dcat:byteSize>
+          <dcat:mediaType rdf:resource="https://www.iana.org/assignments/media-types/text/csv"></dcat:mediaType>
+        </dcat:Distribution>`)
+      expect(distributions[1]).to.containSubset(expected)
+    })
   })
 })

@@ -154,7 +154,19 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     a dcterms:PeriodOfTime ;
     schema:startDate "2024-01-01"^^xsd:date ;
     schema:endDate "2024-12-31"^^xsd:date ;
-  ] .
+  ] ;
+  dcat:distribution
+    [
+      rdf:type dcat:Distribution ;
+      dcterms:title "Source table"@en ;
+      dcat:accessURL <http://foo.bar/> ;
+      dcat:byteSize "1013"^^xsd:decimal ;
+      dcterms:format <http://publications.europa.eu/resource/authority/file-type/CSV> ;
+      dcat:mediaType <https://www.iana.org/assignments/media-types/text/csv> ;
+      dcat:downloadURL <http://foo.bar/download.csv> ;
+      dcterms:description "Comma-separated cude data"@en ;
+    ] ;
+  .
 
 _:genid2de581ad199db849c2a2500f49babdf0072d0b695fb815fb9 a schema:ContactPoint, vcard:Organization ;
   dcterms:title "Bundesamt für Landwirtschaft, Fachbereich Marktanalysen" ;
