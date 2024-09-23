@@ -65,7 +65,7 @@
     "yaml": "^2.5.1"
   },
   "devDependencies": {
-    "@rdfjs/types": "^1.1.0",
+    "@rdfjs/types": "^1.1.2",
     "@types/node": "^22.5.5",
     "c8": "^10.1.2",
     "chai": "^5.1.1",
