@@ -288,12 +288,14 @@ const factory = async (trifid) => {
             },
           )
           const metadata = await metadataProvider(request, { dataset })
+          const jsonldSerialized = await sparqlSerializeQuadStream(dataset.toStream(), 'application/ld+json')
 
           reply.type('text/html').send(await render(request, entityTemplatePath, {
             dataset: entityHtml,
             entityLabel,
             entityUrl,
             metadata,
+            jsonld: jsonldSerialized,
             config,
           }))
         } catch (e) {
