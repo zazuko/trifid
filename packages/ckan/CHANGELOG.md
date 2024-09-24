@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 4.1.0
+
+### Minor Changes
+
+- 77fcfd4: Preserve existing objects of `dcat:distribution` (re https://gitlab.ldbar.ch/bafu/visualize/-/issues/560)
+
 ## 4.0.3
 
 ### Patch Changes

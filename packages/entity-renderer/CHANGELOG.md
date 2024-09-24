@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.3.0
+
+### Minor Changes
+
+- c1295d5: Expose `jsonld` string to the view, so that some complex logic could be done on top of it if needed.
+
 ## 1.2.2
 
 ### Patch Changes
