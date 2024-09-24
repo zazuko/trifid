@@ -1,5 +1,11 @@
 # trifid-plugin-graph-explorer
 
+## 2.0.4
+
+### Patch Changes
+
+- 4e21e24: Add integrity hash to external resources
+
 ## 2.0.3
 
 ### Patch Changes
