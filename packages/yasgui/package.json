@@ -33,7 +33,7 @@
     "@openlayers-elements/maps": "^0.3.0",
     "@openlayers-elements/swisstopo": "^0.3.0",
     "c8": "^10.1.2",
-    "esbuild": "^0.23.1",
+    "esbuild": "^0.24.0",
     "mocha": "^10.7.3",
     "trifid-core": "^5.0.0"
   },
