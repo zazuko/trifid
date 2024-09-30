@@ -30,7 +30,7 @@
     "@types/node": "^22.5.5",
     "chai": "^5.1.1",
     "mocha": "^10.7.3",
-    "sinon": "^18.0.0",
+    "sinon": "^19.0.2",
     "sinon-chai": "^4.0.0"
   },
   "publishConfig": {
