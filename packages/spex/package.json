@@ -18,7 +18,7 @@
     "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
   },
   "dependencies": {
-    "@fastify/static": "^7.0.4",
+    "@fastify/static": "^8.0.1",
     "@zazuko/spex": "^0.2.1",
     "import-meta-resolve": "^4.1.0"
   },
