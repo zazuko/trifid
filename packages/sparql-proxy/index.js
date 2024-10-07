@@ -140,7 +140,11 @@ const factory = async (trifid) => {
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
-        const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+        let requestPort = `:${request.port}`
+        if ((request.protocol === 'http' && requestPort === ':80') || (request.protocol === 'https' && requestPort === ':443')) {
+          requestPort = ''
+        }
+        const fullUrl = `${request.protocol}://${request.hostname}${requestPort}${request.url}`
         const fullUrlObject = new URL(fullUrl)
         const fullUrlPathname = fullUrlObject.pathname
 
@@ -165,6 +169,7 @@ const factory = async (trifid) => {
 
           reply
             .header('content-type', negotiatedType)
+            // @ts-ignore (cause: broken type definitions)
             .send(await dataset.serialize({ format: negotiatedType }))
           return reply
         }
@@ -241,13 +246,21 @@ const factory = async (trifid) => {
           }
 
           const start = performance.now()
-          const response = await fetch(options.endpointUrl, {
+          let response = await fetch(options.endpointUrl, {
             method: 'POST',
             headers,
             body: new URLSearchParams({ query }),
           })
           const end = performance.now()
           const duration = end - start
+
+          if (!response) {
+            logger.warn('No response from the endpoint, make sure that the endpoint is reachable')
+            response = new Response(JSON.stringify({
+              success: false,
+              message: 'No response from the endpoint',
+            }), { status: 502, headers: { 'content-type': 'application/json' } })
+          }
 
           const contentType = response.headers.get('content-type')
 
@@ -265,12 +278,14 @@ const factory = async (trifid) => {
             responseStream = Readable.fromWeb(responseStream)
           }
 
-          reply
+          let proxyReply = reply
             .status(response.status)
             .header('Server-Timing', `sparql-proxy;dur=${duration};desc="Querying the endpoint"`)
-            .header('content-type', contentType)
-            .send(responseStream)
-          return reply
+          if (contentType) {
+            proxyReply = proxyReply.header('content-type', contentType)
+          }
+          proxyReply.send(responseStream)
+          return proxyReply
         } catch (error) {
           logger.error('Error while querying the endpoint')
           logger.error(error)

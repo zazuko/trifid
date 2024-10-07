@@ -53,7 +53,11 @@ const createPlugin = async (server, config, render) => {
    * @param {import('fastify').FastifyReply} reply Reply.
    */
   const handler = async (request, reply) => {
-    const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+    let requestPort = `:${request.port}`
+    if ((request.protocol === 'http' && requestPort === ':80') || (request.protocol === 'https' && requestPort === ':443')) {
+      requestPort = ''
+    }
+    const fullUrl = `${request.protocol}://${request.hostname}${requestPort}${request.url}`
     const fullUrlObject = new URL(fullUrl)
     const fullUrlPathname = fullUrlObject.pathname
 

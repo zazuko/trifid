@@ -68,7 +68,7 @@ describe('sparql-proxy', () => {
       const response = await rdf.fetch(`${url}/query?foo=bar`)
 
       // then
-      expect(response.headers.get('content-type')).to.match(/text\/plain/)
+      expect(response.headers.get('content-type')).to.match(/^(text\/plain|application\/json).*/)
     })
 
     for (const [property] of forwardedProperties) {

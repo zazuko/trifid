@@ -59,7 +59,7 @@ const trifidFactory = async (trifid) => {
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
-        const fullUrl = `${request.protocol}://${request.hostname}${request.raw.url}`
+        const fullUrl = `${request.protocol}://${request.hostname}:${request.port}${request.url}`
         const fullUrlObject = new URL(fullUrl)
         const fullUrlPathname = fullUrlObject.pathname
 
