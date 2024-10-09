@@ -3,9 +3,9 @@
 import { strictEqual } from 'node:assert'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { describe, it, afterEach } from 'node:test'
 
 import trifidCore from 'trifid-core'
-import { describe } from 'mocha'
 
 import trifidPluginFactory from '../index.js'
 

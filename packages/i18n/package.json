@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "c8 --all --reporter=lcovonly mocha"
+    "test": "c8 --all --reporter=lcovonly --reporter=text node --test"
   },
   "author": "Zazuko GmbH",
   "license": "MIT",
@@ -28,7 +28,6 @@
   "devDependencies": {
     "@types/i18n": "^0.13.12",
     "c8": "^10.1.2",
-    "mocha": "^10.7.3",
     "trifid-core": "^5.0.0"
   },
   "publishConfig": {
