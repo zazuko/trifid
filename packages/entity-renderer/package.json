@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "example-instance": "node ./examples/run-instance.js",
-    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
+    "test": "c8 --all --reporter lcovonly --reporter text node --test **/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,6 @@
   "devDependencies": {
     "@rdfjs/types": "^1.1.2",
     "c8": "^10.1.2",
-    "mocha": "^10.7.3",
     "trifid-handler-fetch": "^3.3.1",
     "trifid-plugin-yasgui": "^3.1.2"
   },

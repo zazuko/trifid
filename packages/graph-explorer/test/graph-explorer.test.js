@@ -1,9 +1,9 @@
 // @ts-check
 
 import { strictEqual } from 'node:assert'
+import { describe, it, beforeEach, afterEach } from 'node:test'
 
 import trifidCore from 'trifid-core'
-import { describe } from 'mocha'
 
 import trifidPluginFactory from '../index.js'
 
@@ -28,7 +28,7 @@ const getListenerURL = (server) => {
   return addresses[0]
 }
 
-describe('trifid-plugin-spex', () => {
+describe('trifid-plugin-graph-explorer', () => {
   let trifidListener
 
   beforeEach(async () => {
@@ -42,11 +42,8 @@ describe('trifid-plugin-spex', () => {
         },
       },
       {
-        spex: {
+        graphExplorer: {
           module: trifidPluginFactory,
-          config: {
-            endpointUrl: '/test',
-          },
         },
       },
     )
@@ -57,28 +54,27 @@ describe('trifid-plugin-spex', () => {
     await trifidListener.close()
   })
 
-  it('can serve SPEX', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/spex/`)
+  it('can serve Graph Explorer', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/graph-explorer`)
     await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
-    strictEqual(res.redirected, false) // Should not redirect on this case
   })
 
   it('should redirect if trailing slash is missing', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/spex`)
+    const res = await fetch(`${getListenerURL(trifidListener)}/graph-explorer`)
     await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200) // The redirection should lead to a correct page
     strictEqual(res.redirected, true) // Check the redirection
   })
 
-  it('should serve the static JavaScript file', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/spex.umd.cjs`)
+  it('can serve static CSS style', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/graph-explorer/static/style.css`)
     await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
   })
 
-  it('should serve the static CSS file', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/style.css`)
+  it('can serve static JavaScript script', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/graph-explorer/static/app.js`)
     await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
   })

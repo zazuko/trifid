@@ -1,7 +1,7 @@
 // @ts-check
 
 import { strictEqual, notStrictEqual } from 'node:assert'
-import { describe, it } from 'mocha'
+import { describe, it, before } from 'node:test'
 import oxigraph from 'oxigraph'
 import { performOxigraphQuery } from '../lib/query.js'
 

@@ -1,9 +1,9 @@
 // @ts-check
 
 import { strictEqual } from 'node:assert'
+import { describe, it, beforeEach, afterEach } from 'node:test'
 
 import trifidCore from 'trifid-core'
-import { describe } from 'mocha'
 
 import trifidPluginFactory from '../index.js'
 

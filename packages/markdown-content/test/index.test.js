@@ -1,7 +1,7 @@
 // @ts-check
 
 import { strictEqual } from 'node:assert'
-import { describe, it } from 'mocha'
+import { describe, it } from 'node:test'
 
 import trifidCore, { getListenerURL } from 'trifid-core'
 import markdownContentTrifidPlugin from '../src/index.js'

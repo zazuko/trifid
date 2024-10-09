@@ -6,7 +6,7 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "c8 --all --reporter=lcovonly --reporter=text mocha",
+    "test": "c8 --all --reporter=lcovonly --reporter=text node --test **/*.test.js",
     "prebuild": "rimraf dist/",
     "build": "tsc",
     "prepack": "npm run build"
@@ -41,7 +41,6 @@
   "devDependencies": {
     "@types/node": "^22.7.4",
     "c8": "^10.1.2",
-    "mocha": "^10.7.3",
     "rimraf": "^6.0.1",
     "trifid-core": "^5.0.0"
   },

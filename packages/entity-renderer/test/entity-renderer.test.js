@@ -1,7 +1,7 @@
 // @ts-check
 
 import { strictEqual } from 'node:assert'
-import { describe, it, beforeEach, afterEach } from 'mocha'
+import { describe, it, beforeEach, afterEach } from 'node:test'
 import { getListenerURL } from 'trifid-core'
 
 import { createTrifidInstance } from '../examples/instance.js'

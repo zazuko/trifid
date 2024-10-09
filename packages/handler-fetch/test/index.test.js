@@ -3,8 +3,8 @@
 import { strictEqual } from 'node:assert'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { describe, it } from 'node:test'
 
-import { describe, it } from 'mocha'
 import trifidCore, { getListenerURL, assertRejection } from 'trifid-core'
 
 import handlerFetchTrifidPlugin from '../index.js'

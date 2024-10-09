@@ -16,7 +16,7 @@
   },
   "scripts": {
     "coverage": "codecov",
-    "test": "c8 --all --reporter=lcovonly --reporter=text mocha"
+    "test": "c8 --all --reporter=lcovonly --reporter=text node --test **/*.test.js"
   },
   "dependencies": {
     "@fastify/static": "^8.0.1",
@@ -26,7 +26,6 @@
   "devDependencies": {
     "@types/node": "^22.7.4",
     "c8": "^10.1.2",
-    "mocha": "^10.7.3",
     "trifid-core": "^5.0.0"
   },
   "publishConfig": {
