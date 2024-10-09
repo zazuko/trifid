@@ -1,5 +1,11 @@
 # trifid-plugin-graph-explorer
 
+## 2.1.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
 ## 2.0.4
 
 ### Patch Changes

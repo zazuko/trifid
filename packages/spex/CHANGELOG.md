@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 2.2.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
 ## 2.1.1
 
 ### Patch Changes
