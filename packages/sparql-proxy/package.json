@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "@vocabulary/sd": "^1.0.4",
-    "@zazuko/env-node": "^2.1.3",
+    "@zazuko/env-node": "^2.1.4",
     "trifid-core": "^5.0.0"
   },
   "devDependencies": {
