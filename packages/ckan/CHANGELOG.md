@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 4.2.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
 ## 4.1.0
 
 ### Minor Changes

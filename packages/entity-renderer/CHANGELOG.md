@@ -1,5 +1,16 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.4.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
+### Patch Changes
+
+- Updated dependencies [007e201]
+  - trifid-core@5.1.0
+
 ## 1.3.0
 
 ### Minor Changes

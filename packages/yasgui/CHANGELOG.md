@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.3.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
 ## 3.2.1
 
 ### Patch Changes
