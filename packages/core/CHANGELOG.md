@@ -1,5 +1,11 @@
 # trifid-core
 
+## 5.1.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
 ## 5.0.2
 
 ### Patch Changes
