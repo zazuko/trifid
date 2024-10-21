@@ -3,7 +3,7 @@
   "description": "Trifid Core",
   "type": "module",
   "version": "5.0.2",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",

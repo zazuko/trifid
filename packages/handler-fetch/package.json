@@ -3,7 +3,7 @@
   "description": "Fetch handler for Trifid",
   "type": "module",
   "version": "3.3.2",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "index.js",
   "types": "dist/index.d.ts",
   "homepage": "https://github.com/zazuko/trifid",

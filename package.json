@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "description": "Root package to handle all Trifid packages",
   "type": "module",
+  "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint . --quiet --ignore-path .gitignore",
     "test": "npx wsrun --report -msc test",

@@ -13,7 +13,7 @@
     "url": "https://github.com/zazuko/trifid.git",
     "directory": "packages/entity-renderer"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
   },

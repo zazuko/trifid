@@ -3,7 +3,7 @@
   "version": "1.0.4",
   "type": "module",
   "description": "Trifid plugin to handle IIIF data",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid#readme",
   "repository": {
     "type": "git",
