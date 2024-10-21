@@ -13,12 +13,20 @@
     "url": "https://github.com/zazuko/trifid.git",
     "directory": "packages/entity-renderer"
   },
-  "author": "Zazuko GmbH",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "homepage": "https://github.com/zazuko/trifid#readme",
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "entity-renderer"
+  ],
   "dependencies": {
     "@lit-labs/ssr": "^3.1.9",
     "@rdfjs/formats-common": "^3.1.0",

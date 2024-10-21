@@ -22,6 +22,15 @@
     "@zazuko/spex": "^0.2.1",
     "import-meta-resolve": "^4.1.0"
   },
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "spex"
+  ],
   "files": [
     "index.js",
     "views/"

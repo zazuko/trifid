@@ -27,6 +27,15 @@
     "build": "tsc",
     "prepack": "npm run build"
   },
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "handler-fetch"
+  ],
   "dependencies": {
     "oxigraph": "^0.4.1",
     "uuid": "^10.0.0"

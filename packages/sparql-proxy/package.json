@@ -21,6 +21,15 @@
     "lib",
     "index.js"
   ],
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "sparql-proxy"
+  ],
   "dependencies": {
     "@vocabulary/sd": "^1.0.4",
     "@zazuko/env-node": "^2.1.4",

@@ -24,6 +24,15 @@
     "prepare": "esbuild --minify --bundle plugins/map.js --outdir=dist --splitting --format=esm",
     "test": "c8 --all --exclude dist --reporter=lcovonly --reporter=text node --test **/*.test.js"
   },
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "yasgui"
+  ],
   "dependencies": {
     "@fastify/static": "^8.0.1",
     "@zazuko/yasgui": "^4.3.3",
