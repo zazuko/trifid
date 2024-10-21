@@ -13,6 +13,8 @@
     "emitDeclarationOnly": true,
     "declarationMap": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "composite": true,
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "outDir": "dist"
