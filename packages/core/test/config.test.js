@@ -12,6 +12,7 @@ describe('config', () => {
   })
 
   it('sould throw if we add some non-supported fields', () => {
+    // @ts-ignore (this is what we want to test)
     expect(() => parser({ thisFieldIsNotSupported: true })).to.throw()
   })
 
@@ -50,6 +51,7 @@ describe('config', () => {
     // this is a string instead of an array of strings
     expect(() => {
       parser({
+        // @ts-ignore (this is what we want to test)
         extends: 'this is a string instead of an array',
       })
     }).to.throw()
@@ -57,6 +59,7 @@ describe('config', () => {
     // this is not an array of strings, but an array of integers
     expect(() => {
       parser({
+        // @ts-ignore (this is what we want to test)
         extends: [1, 2, 3],
       })
     }).to.throw()
@@ -116,6 +119,7 @@ describe('config', () => {
     // this is a string instead of an object
     expect(() => {
       parser({
+        // @ts-ignore (this is what we want to test)
         server: 'this is a string instead of an object',
       })
     }).to.throw()
@@ -126,6 +130,7 @@ describe('config', () => {
         server: {
           listener: {},
           options: {},
+          // @ts-ignore (this is what we want to test)
           unsupportedField: true,
         },
       })
@@ -149,6 +154,7 @@ describe('config', () => {
         server: {
           listener: {
             port: 8080,
+            // @ts-ignore (this is what we want to test)
             unsupportedField: true,
           },
           options: {},
@@ -197,6 +203,7 @@ describe('config', () => {
     // this is a string instead of an object
     expect(() => {
       parser({
+        // @ts-ignore (this is what we want to test)
         globals: 'this is a string instead of an object',
       })
     }).to.throw()
@@ -271,6 +278,7 @@ describe('config', () => {
     it('should throw if plugins is a string', () => {
       return expect(() => {
         parser({
+          // @ts-ignore (this is what we want to test)
           plugins: 'this is a string instead of an object',
         })
       }).to.throw()
@@ -280,7 +288,9 @@ describe('config', () => {
       return expect(() => {
         parser({
           plugins: {
+            // @ts-ignore (this is what we want to test)
             order: 42,
+            // @ts-ignore (this is what we want to test)
             name: 'module',
           },
         })
