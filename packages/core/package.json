@@ -55,7 +55,7 @@
     "@fastify/cookie": "^10.0.1",
     "@fastify/cors": "^10.0.1",
     "@fastify/formbody": "^8.0.1",
-    "@fastify/static": "^8.0.1",
+    "@fastify/static": "^8.0.2",
     "@fontsource/playfair-display": "^5.1.0",
     "@fontsource/roboto": "^5.1.0",
     "@rdfjs-elements/formats-pretty": "^0.6.7",
