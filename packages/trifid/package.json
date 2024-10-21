@@ -22,6 +22,14 @@
   "bin": {
     "trifid": "./server.js"
   },
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "linked-data"
+  ],
   "dependencies": {
     "@zazuko/trifid-plugin-sparql-proxy": "^2.4.0",
     "@zazuko/trifid-entity-renderer": "^1.2.1",

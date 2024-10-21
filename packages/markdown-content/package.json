@@ -19,8 +19,16 @@
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
   },
-  "author": "Zazuko GmbH",
   "license": "MIT",
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "markdown-content"
+  ],
   "dependencies": {
     "hast-util-select": "^6.0.2",
     "rehype-autolink-headings": "^7.1.0",
