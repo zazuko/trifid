@@ -33,7 +33,7 @@
     "import-meta-resolve": "^4.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.7.7",
     "c8": "^10.1.2",
     "trifid-core": "^5.0.0"
   },
