@@ -1,13 +1,13 @@
 // @ts-check
 
 import { strictEqual } from 'node:assert'
-import { readFile } from 'fs/promises'
+import { readFile } from 'node:fs/promises'
+import { describe, it, beforeEach, afterEach } from 'node:test'
 import { expect } from 'chai'
 import * as chai from 'chai'
 import chaiSubset from 'chai-subset'
 import * as xml from 'xml2js'
 import xpath from 'xml2js-xpath'
-import { describe, it } from 'mocha'
 import { convertLegacyFrequency } from '../src/xml.js'
 import { createTrifidInstance, getListenerURL } from './support/utils.js'
 
