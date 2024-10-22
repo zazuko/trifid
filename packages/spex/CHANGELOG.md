@@ -1,5 +1,16 @@
 # trifid-plugin-spex
 
+## 2.2.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
+### Patch Changes
+
+- 080f5d8: Harmonize author and keywords fields
+- a97a6a0: Use Apache 2.0 license
+
 ## 2.1.1
 
 ### Patch Changes

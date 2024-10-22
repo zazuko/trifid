@@ -1,6 +1,6 @@
 {
   "name": "trifid-plugin-i18n",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Trifid plugin for i18n support",
   "type": "module",
   "main": "index.js",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/i18n": "^0.13.12",
     "c8": "^10.1.2",
-    "trifid-core": "^5.0.0"
+    "trifid-core": "^5.1.0"
   },
   "publishConfig": {
     "access": "public",

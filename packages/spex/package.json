@@ -3,7 +3,7 @@
   "description": "Trifid SPEX plugin",
   "type": "module",
   "main": "index.js",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
@@ -37,7 +37,7 @@
   ],
   "devDependencies": {
     "c8": "^10.1.2",
-    "trifid-core": "^5.0.0"
+    "trifid-core": "^5.1.0"
   },
   "publishConfig": {
     "access": "public",

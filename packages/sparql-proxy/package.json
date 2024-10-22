@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-plugin-sparql-proxy",
-  "version": "2.4.4",
+  "version": "2.5.0",
   "description": "Trifid plugin for sparql-proxy",
   "main": "index.js",
   "type": "module",
@@ -33,7 +33,7 @@
   "dependencies": {
     "@vocabulary/sd": "^1.0.4",
     "@zazuko/env-node": "^2.1.4",
-    "trifid-core": "^5.0.0"
+    "trifid-core": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.7.7",

@@ -2,7 +2,7 @@
   "name": "trifid-handler-fetch",
   "description": "Fetch handler for Trifid",
   "type": "module",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "license": "Apache-2.0",
   "main": "index.js",
   "types": "dist/index.d.ts",
@@ -45,7 +45,7 @@
     "@types/uuid": "^10.0.0",
     "c8": "^10.1.2",
     "rimraf": "^6.0.1",
-    "trifid-core": "^5.0.0",
+    "trifid-core": "^5.1.0",
     "typescript": "^5.6.3"
   },
   "publishConfig": {

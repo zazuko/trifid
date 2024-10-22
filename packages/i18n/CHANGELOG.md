@@ -1,5 +1,12 @@
 # trifid-plugin-i18n
 
+## 3.0.2
+
+### Patch Changes
+
+- 080f5d8: Harmonize author and keywords fields
+- a97a6a0: Use Apache 2.0 license
+
 ## 3.0.1
 
 ### Patch Changes
