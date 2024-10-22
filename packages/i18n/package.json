@@ -7,7 +7,7 @@
   "scripts": {
     "test": "c8 --all --reporter=lcovonly --reporter=text node --test **/*.test.js"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/zazuko/trifid.git",

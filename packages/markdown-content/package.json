@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/zazuko/trifid/issues"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": {
     "name": "Zazuko GmbH",
     "url": "https://zazuko.com/"
