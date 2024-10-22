@@ -1,5 +1,24 @@
 # trifid
 
+## 5.0.8
+
+### Patch Changes
+
+- e3d7ac0: Upgrade container base image from Node 20 to 22.
+- 080f5d8: Harmonize author and keywords fields
+- a97a6a0: Use Apache 2.0 license
+- Updated dependencies [080f5d8]
+- Updated dependencies [a97a6a0]
+- Updated dependencies [007e201]
+  - @zazuko/trifid-entity-renderer@1.4.0
+  - trifid-plugin-graph-explorer@2.1.0
+  - trifid-handler-fetch@3.3.3
+  - @zazuko/trifid-plugin-sparql-proxy@2.5.0
+  - trifid-plugin-yasgui@3.3.0
+  - trifid-core@5.1.0
+  - trifid-plugin-i18n@3.0.2
+  - trifid-plugin-spex@2.2.0
+
 ## 5.0.7
 
 ### Patch Changes

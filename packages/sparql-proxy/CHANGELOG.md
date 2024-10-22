@@ -1,5 +1,20 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.5.0
+
+### Minor Changes
+
+- 007e201: Upgrade Fastify to v5.
+
+### Patch Changes
+
+- 080f5d8: Harmonize author and keywords fields
+- a97a6a0: Use Apache 2.0 license
+- Updated dependencies [080f5d8]
+- Updated dependencies [a97a6a0]
+- Updated dependencies [007e201]
+  - trifid-core@5.1.0
+
 ## 2.4.4
 
 ### Patch Changes
