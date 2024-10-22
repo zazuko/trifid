@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.3.1
+
+### Patch Changes
+
+- 5476c37: Fix `requestPort` value, to handle `null` cases
+
 ## 3.3.0
 
 ### Minor Changes
