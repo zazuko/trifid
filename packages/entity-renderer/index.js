@@ -180,9 +180,9 @@ const factory = async (trifid) => {
         const acceptHeader = getAcceptHeader(request)
 
         // Generate the IRI we expect
-        let requestPort = `:${request.port}`
-        if ((request.protocol === 'http' && requestPort === ':80') || (request.protocol === 'https' && requestPort === ':443')) {
-          requestPort = ''
+        let requestPort = ''
+        if (request.port) {
+          requestPort = `:${request.port}`
         }
         const fullUrl = `${request.protocol}://${request.hostname}${requestPort}${request.url}`
         const iriUrl = new URL(fullUrl)
