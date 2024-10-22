@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 2.2.1
+
+### Patch Changes
+
+- 724f2ed: Fix `requestPort` value, to handle `null` cases and simplify the logic
+
 ## 2.2.0
 
 ### Minor Changes
