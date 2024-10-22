@@ -1,6 +1,6 @@
 {
   "name": "@zazuko/trifid-plugin-iiif",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "Trifid plugin to handle IIIF data",
   "license": "Apache-2.0",

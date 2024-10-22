@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.4.1
+
+### Patch Changes
+
+- 724f2ed: Fix `requestPort` value, to handle `null` cases and simplify the logic
+
 ## 1.4.0
 
 ### Minor Changes

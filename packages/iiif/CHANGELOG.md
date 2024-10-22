@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-iiif
 
+## 1.1.1
+
+### Patch Changes
+
+- 724f2ed: Fix `requestPort` value, to handle `null` cases and simplify the logic
+
 ## 1.1.0
 
 ### Minor Changes
