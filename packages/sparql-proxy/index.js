@@ -4,6 +4,7 @@ import { Readable } from 'node:stream'
 import { ReadableStream } from 'node:stream/web'
 import { performance } from 'node:perf_hooks'
 import { Worker } from 'node:worker_threads'
+
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import rdf from '@zazuko/env-node'
 import ReplaceStream from './lib/ReplaceStream.js'
@@ -36,7 +37,7 @@ const authBasicHeader = (user, password) => {
   return `Basic ${base64String}`
 }
 
-/** @type {import('../core/types/index.js').TrifidPlugin} */
+/** @type {import('trifid-core/types').TrifidPlugin} */
 const factory = async (trifid) => {
   const { logger, config, trifidEvents } = trifid
 
@@ -136,7 +137,7 @@ const factory = async (trifid) => {
 
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody | string }>} request Request.
+       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody | string }> & { accepts: () => { type: (types: string[]) => string[] | string | false }}} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {

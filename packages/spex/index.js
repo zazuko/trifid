@@ -88,7 +88,7 @@ const createPlugin = async (server, config, render) => {
   return handler
 }
 
-/** @type {import('../core/types/index.js').TrifidPlugin} */
+/** @type {import('trifid-core/types').TrifidPlugin} */
 const trifidFactory = async (trifid) => {
   const { server, config, render } = trifid
 

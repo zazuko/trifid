@@ -18,5 +18,19 @@
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "outDir": "dist"
-  }
+  },
+  "references": [
+    { "path": "./packages/ckan" },
+    { "path": "./packages/core" },
+    // { "path": "./packages/entity-renderer" },
+    { "path": "./packages/graph-explorer" },
+    { "path": "./packages/handler-fetch" },
+    // { "path": "./packages/i18n" },
+    // { "path": "./packages/iiif" },
+    { "path": "./packages/markdown-content" },
+    { "path": "./packages/sparql-proxy" }
+    // { "path": "./packages/spex" },
+    // { "path": "./packages/trifid" },
+    // { "path": "./packages/yasgui" }
+  ]
 }

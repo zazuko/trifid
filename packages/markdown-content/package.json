@@ -4,7 +4,7 @@
   "description": "Trifid plugin to handle Markdown files",
   "main": "src/index.js",
   "type": "module",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "test": "c8 --all --reporter=lcovonly --reporter=text node --test **/*.test.js",
     "prebuild": "rimraf dist/",
