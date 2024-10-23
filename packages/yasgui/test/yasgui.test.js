@@ -32,6 +32,7 @@ describe('trifid-plugin-yasgui', () => {
   describe('trifidPluginFactory', () => {
     it('should throw if the catalog option is not an array', async () => {
       try {
+        // @ts-ignore (The other fields are not needed for this test)
         await trifidPluginFactory({ config: { catalog: 'not an array' } })
       } catch (err) {
         strictEqual(err.message, '"catalog" option must be an array')
