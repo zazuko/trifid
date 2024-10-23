@@ -132,6 +132,9 @@ class YasguiMap {
     mapLayer.appendChild(wkt)
     mapLayer.appendChild(select)
     el.appendChild(mapLayer)
+
+    // Clear the results element and append the map
+    this.yasr.resultsEl.textContent = ''
     this.yasr.resultsEl.appendChild(el)
 
     const editStyle = new Style({
