@@ -90,5 +90,11 @@ describe('trifid-plugin-yasgui', () => {
       await res.text() // Just make sure that the stream is consumed
       strictEqual(res.status, 200)
     })
+
+    it('can serve static Map plugin script', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-plugins/map.js`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 200)
+    })
   })
 })
