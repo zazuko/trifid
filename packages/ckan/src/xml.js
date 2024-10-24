@@ -86,8 +86,9 @@ const toXML = (dataset) => {
             }))
 
           const copiedDistributions = dataset.out(ns.dcat.distribution)
-            .map(distribution => ({
+            .map((distribution, index) => ({
               'dcat:Distribution': {
+                '@': { 'rdf:about': `${dataset.value}/distribution/${index + 1}` },
                 'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
                 'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
                 'dcterms:license': serializeTerm(copyright),

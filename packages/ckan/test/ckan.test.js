@@ -208,7 +208,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
 
       expect(distributions).to.have.length(2)
       const expected = await parser.parseStringPromise(`
-        <dcat:Distribution>
+        <dcat:Distribution rdf:about="https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/distribution/1">
           <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-02-01</dcterms:issued>
           <dcterms:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/CSV"/>
           <dcat:accessURL rdf:resource="http://foo.bar/"/>
