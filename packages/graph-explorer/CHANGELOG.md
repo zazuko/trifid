@@ -1,5 +1,11 @@
 # trifid-plugin-graph-explorer
 
+## 2.1.2
+
+### Patch Changes
+
+- f0e3b13: Fix and improve types references
+
 ## 2.1.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.3.2
+
+### Patch Changes
+
+- f0e3b13: Fix and improve types references
+
 ## 3.3.1
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.5.2
+
+### Patch Changes
+
+- 3b59e77: Export types
+- f0e3b13: Fix and improve types references
+
 ## 2.5.1
 
 ### Patch Changes

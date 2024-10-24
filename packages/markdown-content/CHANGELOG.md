@@ -1,5 +1,11 @@
 # @zazuko/trifid-markdown-content
 
+## 2.0.5
+
+### Patch Changes
+
+- f0e3b13: Fix and improve types references
+
 ## 2.0.4
 
 ### Patch Changes
