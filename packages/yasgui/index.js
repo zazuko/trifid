@@ -34,7 +34,7 @@ const trifidFactory = async (trifid) => {
   })
 
   // Serve static files for custom plugins
-  const pluginsUrl = new URL('dist/', import.meta.url)
+  const pluginsUrl = new URL('build/', import.meta.url)
   const pluginsPath = fileURLToPath(pluginsUrl)
   server.register(fastifyStatic, {
     root: pluginsPath.replace(/^file:\/\//, ''),
