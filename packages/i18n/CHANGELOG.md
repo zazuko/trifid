@@ -1,5 +1,11 @@
 # trifid-plugin-i18n
 
+## 3.0.3
+
+### Patch Changes
+
+- f0e3b13: Fix and improve types references
+
 ## 3.0.2
 
 ### Patch Changes

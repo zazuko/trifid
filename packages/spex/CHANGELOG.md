@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 2.2.2
+
+### Patch Changes
+
+- f0e3b13: Fix and improve types references
+
 ## 2.2.1
 
 ### Patch Changes

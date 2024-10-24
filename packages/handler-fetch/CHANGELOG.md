@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 3.3.4
+
+### Patch Changes
+
+- f0e3b13: Fix and improve types references
+
 ## 3.3.3
 
 ### Patch Changes
