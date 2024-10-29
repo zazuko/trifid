@@ -1,5 +1,17 @@
 # trifid-plugin-yasgui
 
+## 3.4.0
+
+### Minor Changes
+
+- d3d2bd2: Types are now exposed in the `dist` directory ; the builded version of the plugins are now exported in the `build` directory instead of the `dist` directory.
+- d3d2bd2: Export types
+
+### Patch Changes
+
+- b6ad4ef: Upgrade @zazuko/yasgui to v4.4.0
+- d7f35c0: Fix duplicate map shown in some specific cases.
+
 ## 3.3.2
 
 ### Patch Changes
