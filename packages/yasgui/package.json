@@ -5,6 +5,7 @@
   "version": "3.3.2",
   "license": "Apache-2.0",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
@@ -18,11 +19,16 @@
     "test",
     "views",
     "dist",
+    "build",
     "index.js"
   ],
   "scripts": {
-    "prepare": "esbuild --minify --bundle plugins/map.js --outdir=dist --splitting --format=esm",
-    "test": "c8 --all --exclude dist --reporter=lcovonly --reporter=text node --test **/*.test.js"
+    "prepare": "esbuild --minify --bundle plugins/map.js --outdir=build --splitting --format=esm",
+    "test": "c8 --all --exclude build --reporter=lcovonly --reporter=text node --test **/*.test.js",
+    "clean": "rimraf dist/",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "author": {
     "name": "Zazuko GmbH",
@@ -35,15 +41,18 @@
   ],
   "dependencies": {
     "@fastify/static": "^8.0.2",
-    "@zazuko/yasgui": "^4.3.3",
+    "@zazuko/yasgui": "^4.4.0",
     "import-meta-resolve": "^4.1.0"
   },
   "devDependencies": {
     "@openlayers-elements/maps": "^0.3.0",
     "@openlayers-elements/swisstopo": "^0.3.0",
+    "@types/node": "^22.7.9",
     "c8": "^10.1.2",
     "esbuild": "^0.24.0",
-    "trifid-core": "^5.1.0"
+    "rimraf": "^6.0.1",
+    "trifid-core": "^5.1.0",
+    "typescript": "^5.6.3"
   },
   "publishConfig": {
     "access": "public",

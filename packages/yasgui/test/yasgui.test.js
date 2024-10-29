@@ -32,6 +32,7 @@ describe('trifid-plugin-yasgui', () => {
   describe('trifidPluginFactory', () => {
     it('should throw if the catalog option is not an array', async () => {
       try {
+        // @ts-ignore (The other fields are not needed for this test)
         await trifidPluginFactory({ config: { catalog: 'not an array' } })
       } catch (err) {
         strictEqual(err.message, '"catalog" option must be an array')
@@ -86,6 +87,12 @@ describe('trifid-plugin-yasgui', () => {
 
     it('can serve static JavaScript script', async () => {
       const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-dist/yasgui.min.js`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 200)
+    })
+
+    it('can serve static Map plugin script', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-plugins/map.js`)
       await res.text() // Just make sure that the stream is consumed
       strictEqual(res.status, 200)
     })
