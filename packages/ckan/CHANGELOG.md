@@ -1,5 +1,12 @@
 # @zazuko/trifid-plugin-ckan
 
+## 4.2.2
+
+### Patch Changes
+
+- 842fad6: The CKAN harvester ignored blank node distributions. All distributions are named nodes now
+- f0e3b13: Fix and improve types references
+
 ## 4.2.1
 
 ### Patch Changes
