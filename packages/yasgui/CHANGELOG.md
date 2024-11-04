@@ -1,5 +1,12 @@
 # trifid-plugin-yasgui
 
+## 3.4.1
+
+### Patch Changes
+
+- 98ae876: Dynamic row name support for labels
+- 57c2403: More contrasted colors for Map plugin
+
 ## 3.4.0
 
 ### Minor Changes
