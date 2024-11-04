@@ -117,17 +117,28 @@ class YasguiMap {
         break
     }
 
-    const wkt = document.createElement('ol-layer-wkt')
-    const select = document.createElement('ol-select')
-    select.style = new Style({
+    const editStyle = new Style({
       fill: new Fill({
-        color: 'rgba(200,200,255,0.6)',
+        color: 'rgba(255, 68, 28, 0.6)',
       }),
       stroke: new Stroke({
-        color: '#ffb15e',
+        color: '#ff441c',
         width: 5,
       }),
     })
+    const featureStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(255, 68, 28, 0.2)',
+      }),
+      stroke: new Stroke({
+        color: '#ff441c',
+        width: 5,
+      }),
+    })
+
+    const wkt = document.createElement('ol-layer-wkt')
+    const select = document.createElement('ol-select')
+    select.style = featureStyle
 
     mapLayer.appendChild(wkt)
     mapLayer.appendChild(select)
@@ -136,16 +147,6 @@ class YasguiMap {
     // Clear the results element and append the map
     this.yasr.resultsEl.textContent = ''
     this.yasr.resultsEl.appendChild(el)
-
-    const editStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(255,255,255,0.4)',
-      }),
-      stroke: new Stroke({
-        color: '#ffb15e',
-        width: 5,
-      }),
-    })
 
     select.addEventListener('feature-selected', (e) => {
       const feature = e.detail.feature
@@ -164,20 +165,14 @@ class YasguiMap {
       }
     })
 
-    select.addEventListener('feature-unselected', () => {
+    select.addEventListener('feature-unselected', (e) => {
+      const feature = e.detail.feature
+      feature.setStyle(featureStyle)
       overlay.style.display = 'none'
     })
 
     wkt.featureData = results
-    wkt.featureStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(200,200,150,0.6)',
-      }),
-      stroke: new Stroke({
-        color: '#ffb15e',
-        width: 5,
-      }),
-    })
+    wkt.featureStyle = featureStyle
 
     setTimeout(() => {
       wkt.fit()
