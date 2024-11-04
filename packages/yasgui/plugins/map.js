@@ -45,37 +45,50 @@ class YasguiMap {
         return null
       }
 
-      let wktLabel = null
-      const wktLabelItem = result.wktLabel || result.xLabel
-      if (wktLabelItem && wktLabelItem.type === 'literal') {
-        wktLabel = wktLabelItem.value
-      }
-
-      Object.entries(result).forEach((entry) => {
-        if (!entry[1]) {
-          return
-        }
+      const wktEntries = Object.entries(result).filter((entry) => {
         const value = entry[1]
+        if (!value) {
+          return false
+        }
         if (!value.type || value.type !== 'literal') {
-          return
+          return false
         }
         if (
           !value.datatype ||
           value.datatype !== 'http://www.opengis.net/ont/geosparql#wktLiteral'
         ) {
-          return
+          return false
         }
         if (!value.value) {
-          return
+          return false
         }
+        return true
+      })
 
-        const id = `results-map-wkt-${entry[0]}-${rowIndex}`
-        this.wktLabels.set(id, wktLabel)
+      if (wktEntries.length === 0) {
+        return null
+      }
+
+      wktEntries.forEach((entry) => {
+        const columnName = entry[0]
+        const id = `results-map-wkt-${columnName}-${rowIndex}`
+        const wktEntry = entry[1]
 
         wktData.push({
           id,
-          wkt: value.value,
+          wkt: wktEntry.value,
         })
+
+        if (!result || !result[`${columnName}Label`]) {
+          return
+        }
+        const wktLabelField = result[`${columnName}Label`]
+        if (!wktLabelField || wktLabelField.type !== 'literal') {
+          return
+        }
+        const wktLabel = wktLabelField.value
+
+        this.wktLabels.set(id, wktLabel)
       })
     })
 
