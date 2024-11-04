@@ -45,37 +45,50 @@ class YasguiMap {
         return null
       }
 
-      let wktLabel = null
-      const wktLabelItem = result.wktLabel || result.xLabel
-      if (wktLabelItem && wktLabelItem.type === 'literal') {
-        wktLabel = wktLabelItem.value
-      }
-
-      Object.entries(result).forEach((entry) => {
-        if (!entry[1]) {
-          return
-        }
+      const wktEntries = Object.entries(result).filter((entry) => {
         const value = entry[1]
+        if (!value) {
+          return false
+        }
         if (!value.type || value.type !== 'literal') {
-          return
+          return false
         }
         if (
           !value.datatype ||
           value.datatype !== 'http://www.opengis.net/ont/geosparql#wktLiteral'
         ) {
-          return
+          return false
         }
         if (!value.value) {
-          return
+          return false
         }
+        return true
+      })
 
-        const id = `results-map-wkt-${entry[0]}-${rowIndex}`
-        this.wktLabels.set(id, wktLabel)
+      if (wktEntries.length === 0) {
+        return null
+      }
+
+      wktEntries.forEach((entry) => {
+        const columnName = entry[0]
+        const id = `results-map-wkt-${columnName}-${rowIndex}`
+        const wktEntry = entry[1]
 
         wktData.push({
           id,
-          wkt: value.value,
+          wkt: wktEntry.value,
         })
+
+        if (!result || !result[`${columnName}Label`]) {
+          return
+        }
+        const wktLabelField = result[`${columnName}Label`]
+        if (!wktLabelField || wktLabelField.type !== 'literal') {
+          return
+        }
+        const wktLabel = wktLabelField.value
+
+        this.wktLabels.set(id, wktLabel)
       })
     })
 
@@ -117,17 +130,28 @@ class YasguiMap {
         break
     }
 
-    const wkt = document.createElement('ol-layer-wkt')
-    const select = document.createElement('ol-select')
-    select.style = new Style({
+    const editStyle = new Style({
       fill: new Fill({
-        color: 'rgba(200,200,255,0.6)',
+        color: 'rgba(255, 68, 28, 0.6)',
       }),
       stroke: new Stroke({
-        color: '#ffb15e',
+        color: '#ff441c',
         width: 5,
       }),
     })
+    const featureStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(255, 68, 28, 0.2)',
+      }),
+      stroke: new Stroke({
+        color: '#ff441c',
+        width: 5,
+      }),
+    })
+
+    const wkt = document.createElement('ol-layer-wkt')
+    const select = document.createElement('ol-select')
+    select.style = featureStyle
 
     mapLayer.appendChild(wkt)
     mapLayer.appendChild(select)
@@ -136,16 +160,6 @@ class YasguiMap {
     // Clear the results element and append the map
     this.yasr.resultsEl.textContent = ''
     this.yasr.resultsEl.appendChild(el)
-
-    const editStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(255,255,255,0.4)',
-      }),
-      stroke: new Stroke({
-        color: '#ffb15e',
-        width: 5,
-      }),
-    })
 
     select.addEventListener('feature-selected', (e) => {
       const feature = e.detail.feature
@@ -164,20 +178,14 @@ class YasguiMap {
       }
     })
 
-    select.addEventListener('feature-unselected', () => {
+    select.addEventListener('feature-unselected', (e) => {
+      const feature = e.detail.feature
+      feature.setStyle(featureStyle)
       overlay.style.display = 'none'
     })
 
     wkt.featureData = results
-    wkt.featureStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(200,200,150,0.6)',
-      }),
-      stroke: new Stroke({
-        color: '#ffb15e',
-        width: 5,
-      }),
-    })
+    wkt.featureStyle = featureStyle
 
     setTimeout(() => {
       wkt.fit()
