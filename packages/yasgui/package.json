@@ -26,7 +26,7 @@
     "prepare": "esbuild --minify --bundle plugins/map.js --outdir=build --splitting --format=esm",
     "test": "c8 --all --exclude build --reporter=lcovonly --reporter=text node --test **/*.test.js",
     "clean": "rimraf dist/",
-    "prebuild": "npm run clean",
+    "prebuild": "npm run clean && npm run prepare",
     "build": "tsc",
     "prepack": "npm run build"
   },
