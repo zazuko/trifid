@@ -26,7 +26,7 @@
     "prepare": "esbuild --minify --bundle plugins/map.js --outdir=build --splitting --format=esm",
     "test": "c8 --all --exclude build --reporter=lcovonly --reporter=text node --test **/*.test.js",
     "clean": "rimraf dist/",
-    "prebuild": "npm run clean",
+    "prebuild": "npm run clean && npm run prepare",
     "build": "tsc",
     "prepack": "npm run build"
   },
@@ -45,8 +45,8 @@
     "import-meta-resolve": "^4.1.0"
   },
   "devDependencies": {
-    "@openlayers-elements/maps": "^0.3.0",
-    "@openlayers-elements/swisstopo": "^0.3.0",
+    "@openlayers-elements/maps": "^0.4.0",
+    "@openlayers-elements/swisstopo": "^0.4.0",
     "@types/node": "^22.8.7",
     "c8": "^10.1.2",
     "esbuild": "^0.24.0",
