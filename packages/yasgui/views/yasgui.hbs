@@ -36,13 +36,16 @@
   {{#if urlShortener }}
   <script>
     config.yasqe = {
-      createShortLink: function(yasqe, longString) {
-        return yasqe.superagent
-          .post('{{ urlShortener }}')
-          .send({ url: longString })
-          .then(function(resp) {
-            return resp.text
-          });
+      createShortLink: (yasqe, longString) => {
+        return fetch('{{ urlShortener }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url: longString })
+        }).then((resp) => {
+          return resp.text()
+        });
       }
     }
   </script>
