@@ -155,8 +155,8 @@ You can use the following environment variables:
 - `TRIFID_CONFIG`: the configuration file to use (default value: [`instances/docker-sparql/config.yaml`](./packages/trifid/instances/docker-sparql/config.yaml), which enable the following environment variables)
 - `SPARQL_ENDPOINT_URL`: the SPARQL endpoint URL to use
 - `DATASET_BASE_URL`: the base URL to use to enable rewriting
-- `SPARQL_USER`: the user to use to authenticate against the SPARQL endpoint
-- `SPARQL_PASSWORD`: the password to use to authenticate against the SPARQL endpoint
+- `SPARQL_ENDPOINT_USERNAME`: the user to use to authenticate against the SPARQL endpoint
+- `SPARQL_ENDPOINT_PASSWORD`: the password to use to authenticate against the SPARQL endpoint
 
 If you want to use a file that contains your triples instead of a SPARQL endpoint, you can set `TRIFID_CONFIG` to [`instances/docker-fetch/config.yaml`](./packages/trifid/instances/docker-fetch/config.yaml), and you will be able to use the following environment variables to configure your instance:
 
