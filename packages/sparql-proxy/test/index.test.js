@@ -191,28 +191,5 @@ describe('sparql-proxy', () => {
       // then
       expect(response.headers.get('content-type')).to.eq('text/turtle')
     })
-
-    context('against a real SPARQL endpoint', () => {
-      beforeEach(() => {
-        defaultTestConfig = {
-          endpointUrl: 'https://dbpedia.org/sparql',
-          serviceDescriptionTimeout: 10000,
-          // dbpedia does not do content negotiation 🙄
-          serviceDescriptionFormat: 'text/turtle',
-        }
-      })
-
-      it('should work', async () => {
-        // given
-        const url = await startTrifid()
-
-        // when
-        const response = await rdf.fetch(`${url}/query`)
-        const dataset = await response.dataset()
-
-        // then
-        expect(dataset).to.have.property('size').greaterThan(2)
-      }).timeout(10000)
-    })
   })
 })
