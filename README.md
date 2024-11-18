@@ -193,8 +193,6 @@ Here is the list of all packages that are maintained here:
 | [`trifid-plugin-spex`](./packages/spex)                          | [![](https://badge.fury.io/js/trifid-plugin-spex.svg)](https://npm.im/trifid-plugin-spex)                                   | SPEX plugin for Trifid            |
 | [`trifid-plugin-yasgui`](./packages/yasgui)                      | [![](https://badge.fury.io/js/trifid-plugin-yasgui.svg)](https://npm.im/trifid-plugin-yasgui)                               | YASGUI plugin for Trifid          |
 
-More to come as we gradually consolidate other, initially separate repositories.
-
 ## Support
 
 Issues & feature requests should be reported on [GitHub](https://github.com/zazuko/trifid).
