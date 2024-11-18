@@ -1,5 +1,13 @@
 # trifid-plugin-yasgui
 
+## 3.4.2
+
+### Patch Changes
+
+- a23f8dd: Bump openlayers-elements to 0.4.0
+- 57c85d5: Use standard `fetch` to shorten URLs
+- c62f009: Upgrade Yasgui to 4.4.1
+
 ## 3.4.1
 
 ### Patch Changes
