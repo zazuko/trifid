@@ -163,7 +163,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
 
       const expected = await parser.parseStringPromise(`
         <foaf:Organization rdf:about="https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw">
-          <foaf:name>Bundesamt für Landwirtschaft</foaf:name>
+          <foaf:name xml:lang="de">Bundesamt für Landwirtschaft</foaf:name>
+          <foaf:name xml:lang="en">Federal Office for Agriculture</foaf:name>
+          <foaf:name xml:lang="fr">Office fédéral de l'agriculture</foaf:name>
+          <foaf:name xml:lang="it">Ufficio federale dell'agricoltura</foaf:name>
         </foaf:Organization>`)
       expect(publisher).to.containSubset(expected)
     })
