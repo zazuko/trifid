@@ -1,7 +1,7 @@
 // @ts-check
 
 import { sparql } from '@tpluscode/rdf-string'
-import * as ns from './namespace.js'
+import rdf from '@zazuko/env'
 
 /**
  * Query to retrieve all datasets for a given organization.
@@ -14,20 +14,20 @@ const datasetsQuery = (organizationId) => {
     CONSTRUCT {
       ?dataset ?p ?o .
       ?o ?nestedP ?nestedO .
-      ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
-      ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
-      ?publisher ${ns.schema.name} ?publisherName .
-      ?dataset ${ns.dcat.theme} ?euTheme .
+      ?copyright ${rdf.ns.schema.identifier} ?copyrightIdentifier .
+      ?dataset ${rdf.ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
+      ?publisher ${rdf.ns.schema.name} ?publisherName .
+      ?dataset ${rdf.ns.dcat.theme} ?euTheme .
     }
     WHERE {
       ?dataset ?p ?o .
 
-      ?dataset ${ns.dcterms.creator} ${organizationId} .
-      ?dataset ${ns.schema.workExample} <https://ld.admin.ch/application/opendataswiss> .
-      ?dataset ${ns.schema.creativeWorkStatus} <https://ld.admin.ch/vocabulary/CreativeWorkStatus/Published> .
+      ?dataset ${rdf.ns.dcterms.creator} ${organizationId} .
+      ?dataset ${rdf.ns.schema.workExample} <https://ld.admin.ch/application/opendataswiss> .
+      ?dataset ${rdf.ns.schema.creativeWorkStatus} <https://ld.admin.ch/vocabulary/CreativeWorkStatus/Published> .
 
-      FILTER ( NOT EXISTS { ?dataset ${ns.schema.validThrough} ?expiration1 . } )
-      FILTER ( NOT EXISTS { ?dataset ${ns.schema.expires} ?expiration2 . } )
+      FILTER ( NOT EXISTS { ?dataset ${rdf.ns.schema.validThrough} ?expiration1 . } )
+      FILTER ( NOT EXISTS { ?dataset ${rdf.ns.schema.expires} ?expiration2 . } )
 
       OPTIONAL {
         ?o ?nestedP ?nestedO .
@@ -35,27 +35,27 @@ const datasetsQuery = (organizationId) => {
       }
 
       OPTIONAL {
-        ?dataset ${ns.dcterms.rights} ?copyright .
+        ?dataset ${rdf.ns.dcterms.rights} ?copyright .
         GRAPH ?copyrightGraph {
-          ?copyright ${ns.schema.identifier} ?copyrightIdentifier .
+          ?copyright ${rdf.ns.schema.identifier} ?copyrightIdentifier .
         }
       }
 
       OPTIONAL {
-        ?dataset ${ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
+        ?dataset ${rdf.ns.dcterms.accrualPeriodicity} ?accrualPeriodicity .
       }
 
       OPTIONAL {
-        ?dataset ${ns.dcterms.publisher} ?publisher .
-        ?publisher ${ns.schema.name} ?publisherName .
+        ?dataset ${rdf.ns.dcterms.publisher} ?publisher .
+        ?publisher ${rdf.ns.schema.name} ?publisherName .
       }
 
       OPTIONAL {
-        ?dataset ${ns.dcat.theme} ?theme .
-        ?theme ${ns.schema.supersededBy}?/${ns.schema.sameAs} ?euTheme .
+        ?dataset ${rdf.ns.dcat.theme} ?theme .
+        ?theme ${rdf.ns.schema.supersededBy}?/${rdf.ns.schema.sameAs} ?euTheme .
       }
 
-      FILTER (?p != ${ns.dcat.theme})
+      FILTER (?p != ${rdf.ns.dcat.theme})
     }
   `
 }

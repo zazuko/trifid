@@ -240,7 +240,7 @@ export const generateClient = (sparqlEndpoint, options) => {
   const query = async (query, options = {}) => {
     const isAsk = options && options.ask
     const isSelect = options && options.select
-    const headers = options && options.headers
+    const headers = (options && options.headers) || {}
     const rewriteResponse = (options && options.rewriteResponse) || []
 
     if (isAsk) {
