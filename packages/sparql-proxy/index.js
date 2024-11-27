@@ -8,11 +8,13 @@ import { Worker } from 'node:worker_threads'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import rdf from '@zazuko/env-node'
 import ReplaceStream from './lib/ReplaceStream.js'
+import { authBasicHeader, objectLength } from './lib/utils.js'
 
 const defaultConfiguration = {
   endpointUrl: '',
   username: '',
   password: '',
+  endpoints: {},
   datasetBaseUrl: '',
   allowRewriteToggle: true, // Allow the user to toggle the rewrite configuration using the `rewrite` query parameter.
   rewrite: false, // Rewrite by default
@@ -25,23 +27,18 @@ const defaultConfiguration = {
   serviceDescriptionFormat: undefined, // override the accept header for the service description request. by default, will use content negotiation using formats `@zazuko/env-node` can parse
 }
 
-/**
- * Generate the value for the Authorization header for basic authentication.
- *
- * @param {string} user The username.
- * @param {string} password The password of that user.
- * @returns {string} The value of the Authorization header to use.
- */
-const authBasicHeader = (user, password) => {
-  const base64String = Buffer.from(`${user}:${password}`).toString('base64')
-  return `Basic ${base64String}`
-}
-
 /** @type {import('trifid-core/types').TrifidPlugin} */
 const factory = async (trifid) => {
   const { logger, config, trifidEvents } = trifid
 
   const options = { ...defaultConfiguration, ...config }
+  let dynamicEndpoints = false
+
+  if (objectLength(options.endpoints) > 0) {
+    // Support for multiple endpoints
+    dynamicEndpoints = true
+  }
+
   if (!options.endpointUrl) {
     throw Error('Missing endpointUrl parameter')
   }

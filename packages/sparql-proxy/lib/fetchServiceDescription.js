@@ -10,6 +10,4 @@ const fetchServiceDescription = async (endpointUrl, { format, authorization }) =
   return response.dataset()
 }
 
-export default {
-  fetchServiceDescription,
-}
+export default { fetchServiceDescription }
