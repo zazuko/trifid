@@ -4,7 +4,6 @@ import rdf from '@zazuko/env'
 import prefixes, { shrink } from '@zazuko/prefixes'
 import { create as createXml } from 'xmlbuilder2'
 import { isBlankNode, isLiteral, isNamedNode } from 'is-graph-pointer'
-import * as ns from './namespace.js'
 
 /**
  * Generate a CKAN-compatible XML representation of the dataset.
@@ -14,7 +13,7 @@ import * as ns from './namespace.js'
  */
 const toXML = (dataset) => {
   const pointer = rdf.clownface({ dataset: rdf.dataset(dataset) })
-  const datasetsPointer = pointer.node(ns.dcat.Dataset).in(ns.rdf.type)
+  const datasetsPointer = pointer.node(rdf.ns.dcat.Dataset).in(rdf.ns.rdf.type)
 
   const pf = Object.entries(prefixes)
     // `xml` prefix is reserved and must not be re-declared
@@ -37,7 +36,7 @@ const toXML = (dataset) => {
       'dcat:Catalog': {
         'dcat:dataset': datasetsPointer.map((dataset) => {
           // Verify that identifiers is CKAN-valid, ignore the dataset otherwise
-          const identifiers = dataset.out(ns.dcterms.identifier)
+          const identifiers = dataset.out(rdf.ns.dcterms.identifier)
           if (!identifiers.value) {
             // eslint-disable-next-line no-console
             console.error(`Ignoring dataset ${dataset.value} because it has no or multiple identifiers`)
@@ -45,7 +44,7 @@ const toXML = (dataset) => {
           }
 
           // The initial query ensures that there is a creator
-          const creators = dataset.out(ns.dcterms.creator)
+          const creators = dataset.out(rdf.ns.dcterms.creator)
           const creatorSlug = creators.values[0].split('/').slice(-1)[0]
           const identifier = identifiers.value.includes('@')
             ? identifiers.value
@@ -53,11 +52,11 @@ const toXML = (dataset) => {
 
           // Ignore keywords without a language specified because CKAN rejects them
           // @ts-ignore
-          const keywords = dataset.out(ns.dcat.keyword).filter(({ term: { language } }) => !!language)
+          const keywords = dataset.out(rdf.ns.dcat.keyword).filter(({ term: { language } }) => !!language)
 
-          const copyright = dataset.out(ns.dcterms.rights).out(ns.schema.identifier)
+          const copyright = dataset.out(rdf.ns.dcterms.rights).out(rdf.ns.schema.identifier)
 
-          const legalBasisPointer = dataset.out(ns.dcterms.license)
+          const legalBasisPointer = dataset.out(rdf.ns.dcterms.license)
           const legalBasis = legalBasisPointer.term
             ? {
               'rdf:Description': {
@@ -67,36 +66,36 @@ const toXML = (dataset) => {
             }
             : null
 
-          const workExampleDstributions = dataset.out(ns.schema.workExample)
-            .filter(workExample => workExample.out(ns.schema.encodingFormat).terms.length > 0)
+          const workExampleDstributions = dataset.out(rdf.ns.schema.workExample)
+            .filter(workExample => workExample.out(rdf.ns.schema.encodingFormat).terms.length > 0)
             .map(workExample => ({
               'dcat:Distribution': {
-                '@': { 'rdf:about': workExample.out(ns.schema.url).value },
-                'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
-                'dcat:mediaType': serializeTerm(workExample.out(ns.schema.encodingFormat)),
-                'dcat:accessURL': serializeTerm(workExample.out(ns.schema.url)),
-                'dcterms:title': serializeTerm(workExample.out(ns.schema.name)),
+                '@': { 'rdf:about': workExample.out(rdf.ns.schema.url).value },
+                'dcterms:issued': serializeTerm(dataset.out(rdf.ns.dcterms.issued)),
+                'dcat:mediaType': serializeTerm(workExample.out(rdf.ns.schema.encodingFormat)),
+                'dcat:accessURL': serializeTerm(workExample.out(rdf.ns.schema.url)),
+                'dcterms:title': serializeTerm(workExample.out(rdf.ns.schema.name)),
                 'dcterms:license': serializeTerm(copyright),
                 'dcterms:format': {
                   '@': {
-                    'rdf:resource': distributionFormatFromEncoding(workExample.out(ns.schema.encodingFormat)),
+                    'rdf:resource': distributionFormatFromEncoding(workExample.out(rdf.ns.schema.encodingFormat)),
                   },
                 },
               },
             }))
 
-          const copiedDistributions = dataset.out(ns.dcat.distribution)
+          const copiedDistributions = dataset.out(rdf.ns.dcat.distribution)
             .map((distribution, index) => ({
               'dcat:Distribution': {
                 '@': { 'rdf:about': `${dataset.value}/distribution/${index + 1}` },
-                'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
-                'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
+                'dcterms:issued': serializeTerm(dataset.out(rdf.ns.dcterms.issued)),
+                'dcterms:modified': serializeTerm(dataset.out(rdf.ns.dcterms.modified)),
                 'dcterms:license': serializeTerm(copyright),
                 ...serializeProperties(distribution),
               },
             }))
 
-          const publishers = dataset.out(ns.dcterms.publisher)
+          const publishers = dataset.out(rdf.ns.dcterms.publisher)
             .map(publisher => {
               const attr = {}
               /** @type {string | string[]} */
@@ -104,8 +103,8 @@ const toXML = (dataset) => {
 
               if (isNamedNode(publisher)) {
                 attr['rdf:about'] = publisher.value
-                if (publisher.out(ns.schema.name).values.length > 0) {
-                  name = publisher.out(ns.schema.name).values
+                if (publisher.out(rdf.ns.schema.name).values.length > 0) {
+                  name = publisher.out(rdf.ns.schema.name).values
                 }
               }
 
@@ -121,7 +120,7 @@ const toXML = (dataset) => {
           // The query makes sure we get both legacy and new ones, we only
           // provide the new ones to CKAN, by converting legacy ones if needed.
           const euFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency/'
-          const accrualPeriodicity = dataset.out(ns.dcterms.accrualPeriodicity)
+          const accrualPeriodicity = dataset.out(rdf.ns.dcterms.accrualPeriodicity)
             .map((t) => {
               if (!t.term || !t.term.value) {
                 return t
@@ -136,34 +135,34 @@ const toXML = (dataset) => {
             'dcat:Dataset': {
               '@': { 'rdf:about': dataset.value },
               'dcterms:identifier': { '#': identifier },
-              'dcterms:title': serializeTerm(dataset.out(ns.dcterms.title)),
-              'dcterms:description': serializeTerm(dataset.out(ns.dcterms.description)),
-              'dcterms:issued': serializeTerm(dataset.out(ns.dcterms.issued)),
-              'dcterms:modified': serializeTerm(dataset.out(ns.dcterms.modified)),
+              'dcterms:title': serializeTerm(dataset.out(rdf.ns.dcterms.title)),
+              'dcterms:description': serializeTerm(dataset.out(rdf.ns.dcterms.description)),
+              'dcterms:issued': serializeTerm(dataset.out(rdf.ns.dcterms.issued)),
+              'dcterms:modified': serializeTerm(dataset.out(rdf.ns.dcterms.modified)),
               'dcterms:publisher': publishers,
               'dcterms:creator': serializeTerm(creators),
               'dcat:contactPoint': serializeBlankNode(
-                dataset.out(ns.dcat.contactPoint),
-                [ns.vcard.Organization, ns.vcard.Individual],
+                dataset.out(rdf.ns.dcat.contactPoint),
+                [rdf.ns.vcard.Organization, rdf.ns.vcard.Individual],
               ),
-              'dcat:theme': serializeTerm(dataset.out(ns.dcat.theme)),
-              'dcterms:language': serializeTerm(dataset.out(ns.dcterms.language)),
+              'dcat:theme': serializeTerm(dataset.out(rdf.ns.dcat.theme)),
+              'dcterms:language': serializeTerm(dataset.out(rdf.ns.dcterms.language)),
               'dcterms:relation': [
                 legalBasis,
-                serializeTerm(dataset.out(ns.dcterms.relation), { properties: [ns.rdfs.label] }),
+                serializeTerm(dataset.out(rdf.ns.dcterms.relation), { properties: [rdf.ns.rdfs.label] }),
               ],
               'dcat:keyword': serializeTerm(keywords),
-              'dcat:landingPage': serializeTerm(dataset.out(ns.dcat.landingPage)),
-              'dcterms:spatial': serializeTerm(dataset.out(ns.dcterms.spatial)),
-              'dcterms:coverage': serializeTerm(dataset.out(ns.dcterms.coverage)),
-              'dcterms:temporal': serializeTerm(dataset.out(ns.dcterms.temporal)),
+              'dcat:landingPage': serializeTerm(dataset.out(rdf.ns.dcat.landingPage)),
+              'dcterms:spatial': serializeTerm(dataset.out(rdf.ns.dcterms.spatial)),
+              'dcterms:coverage': serializeTerm(dataset.out(rdf.ns.dcterms.coverage)),
+              'dcterms:temporal': serializeTerm(dataset.out(rdf.ns.dcterms.temporal)),
               // @ts-ignore
               'dcterms:accrualPeriodicity': serializeTerm(accrualPeriodicity),
               'dcat:distribution': [
                 ...workExampleDstributions,
                 ...copiedDistributions,
               ],
-              'foaf:page': serializeTerm(dataset.out(ns.foaf.page)),
+              'foaf:page': serializeTerm(dataset.out(rdf.ns.foaf.page)),
             },
           }
         }).filter(Boolean),
@@ -201,7 +200,7 @@ const serializeLiteral = (pointer) => {
     attrs['xml:lang'] = term.language
   }
 
-  if (term.datatype && !term.datatype.equals(ns.rdf.langString) && !term.datatype.equals(ns.xsd.string)) {
+  if (term.datatype && !term.datatype.equals(rdf.ns.rdf.langString) && !term.datatype.equals(rdf.ns.xsd.string)) {
     attrs['rdf:datatype'] = term.datatype.value
   }
 
@@ -251,7 +250,7 @@ const serializeBlankNode = (pointer, allowedTypesArr = []) => {
   if (!isBlankNode(pointer)) return null
 
   const allowedTypes = rdf.termSet(allowedTypesArr)
-  const types = pointer.out(ns.rdf.type).terms
+  const types = pointer.out(rdf.ns.rdf.type).terms
   const type = types.find((term) => !allowedTypes.size || allowedTypes.has(term))
 
   if (!type) return {}
@@ -264,7 +263,7 @@ const serializeBlankNode = (pointer, allowedTypesArr = []) => {
 function serializeProperties (pointer) {
   const properties = rdf.termSet([...pointer.dataset.match(pointer.term)]
     .map(({ predicate }) => predicate)
-    .filter((term) => !term.equals(ns.rdf.type)))
+    .filter((term) => !term.equals(rdf.ns.rdf.type)))
 
   return [...properties].reduce((acc, property) =>
     ({ ...acc, [shrink(property.value)]: serializeTerm(pointer.out(property)) }), {})
