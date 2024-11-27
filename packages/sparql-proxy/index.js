@@ -225,12 +225,6 @@ const factory = async (trifid) => {
         fullUrlObject.searchParams.forEach((_value, key) => fullUrlObject.searchParams.delete(key))
         const iriUrlString = fullUrlObject.toString()
 
-        // Enforce non-trailing slash
-        if (fullUrlPathname.slice(-1) === '/') {
-          reply.redirect(`${fullUrlPathname.slice(0, -1)}`)
-          return reply
-        }
-
         // Handle Service Description request
         if (Object.keys(request.query).length === 0 && request.method === 'GET') {
           const dataset = rdf.dataset(await serviceDescription)
@@ -250,6 +244,12 @@ const factory = async (trifid) => {
             .header('content-type', negotiatedType)
             // @ts-ignore (cause: broken type definitions)
             .send(await dataset.serialize({ format: negotiatedType }))
+          return reply
+        }
+
+        // Enforce non-trailing slash
+        if (fullUrlPathname.slice(-1) === '/') {
+          reply.redirect(`${fullUrlPathname.slice(0, -1)}`)
           return reply
         }
 
