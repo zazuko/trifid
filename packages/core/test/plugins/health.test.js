@@ -1,8 +1,8 @@
 // @ts-check
 
+import { describe, it } from 'node:test'
 import { strictEqual } from 'node:assert'
 
-import { describe, it } from 'mocha'
 import trifidCore, { getListenerURL } from '../../index.js'
 
 import healthPlugin from '../../plugins/health.js'
@@ -11,7 +11,7 @@ const createTrifidInstance = async () => {
   return await trifidCore({
     server: {
       listener: {
-        port: 4242,
+        port: 0,
       },
       logLevel: 'warn',
     },

@@ -1,96 +1,96 @@
 // @ts-check
 
-import { describe, it } from 'mocha'
-import { expect } from 'chai'
+import { describe, it } from 'node:test'
+import { throws, doesNotThrow } from 'node:assert'
 
 import parser from '../lib/config/parser.js'
 
 describe('config', () => {
   it('should not throw if the configuration is empty', () => {
-    expect(() => parser()).to.not.throw()
-    expect(() => parser({})).to.not.throw()
+    doesNotThrow(() => parser())
+    doesNotThrow(() => parser({}))
   })
 
   it('sould throw if we add some non-supported fields', () => {
-    // @ts-ignore (this is what we want to test)
-    expect(() => parser({ thisFieldIsNotSupported: true })).to.throw()
+    // @ts-expect-error
+    throws(() => parser({ thisFieldIsNotSupported: true }))
   })
 
   it('should not throw if supported properties are empty', () => {
-    expect(() =>
+    doesNotThrow(() =>
       parser({
         extends: [],
         globals: {},
         server: {},
         plugins: {},
       }),
-    ).to.not.throw()
+    )
   })
 
   it('should not throw on valid values for extends', () => {
-    expect(() =>
+    doesNotThrow(() =>
       parser({
         extends: [],
       }),
-    ).to.not.throw()
+    )
 
-    expect(() =>
+    doesNotThrow(() =>
       parser({
         extends: ['path'],
       }),
-    ).to.not.throw()
+    )
 
-    expect(() =>
+    doesNotThrow(() =>
       parser({
         extends: ['path1', 'path2', 'path3'],
       }),
-    ).to.not.throw()
+    )
   })
 
   it('should throw on invalid values for extends', () => {
     // this is a string instead of an array of strings
-    expect(() => {
+    throws(() => {
       parser({
-        // @ts-ignore (this is what we want to test)
+        // @ts-expect-error
         extends: 'this is a string instead of an array',
       })
-    }).to.throw()
+    })
 
     // this is not an array of strings, but an array of integers
-    expect(() => {
+    throws(() => {
       parser({
-        // @ts-ignore (this is what we want to test)
+        // @ts-expect-error
         extends: [1, 2, 3],
       })
-    }).to.throw()
+    })
   })
 
   it('should not throw on valid values for server', () => {
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         server: {},
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         server: {
           listener: {},
           options: {},
         },
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         server: {
           listener: {},
           options: {},
         },
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         server: {
           listener: {
@@ -99,9 +99,9 @@ describe('config', () => {
           options: {},
         },
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         server: {
           listener: {
@@ -112,32 +112,32 @@ describe('config', () => {
           },
         },
       })
-    }).to.not.throw()
+    })
   })
 
   it('should throw on invalid values for server', () => {
     // this is a string instead of an object
-    expect(() => {
+    throws(() => {
       parser({
-        // @ts-ignore (this is what we want to test)
+        // @ts-expect-error
         server: 'this is a string instead of an object',
       })
-    }).to.throw()
+    })
 
     // unsupported field
-    expect(() => {
+    throws(() => {
       parser({
         server: {
           listener: {},
           options: {},
-          // @ts-ignore (this is what we want to test)
+          // @ts-expect-error
           unsupportedField: true,
         },
       })
-    }).to.throw()
+    })
 
     // invalid port number
-    expect(() => {
+    throws(() => {
       parser({
         server: {
           listener: {
@@ -146,49 +146,49 @@ describe('config', () => {
           options: {},
         },
       })
-    }).to.throw()
+    })
 
     // unsupported listener property
-    expect(() => {
+    throws(() => {
       parser({
         server: {
           listener: {
             port: 8080,
-            // @ts-ignore (this is what we want to test)
+            // @ts-expect-error
             unsupportedField: true,
           },
           options: {},
         },
       })
-    }).to.throw()
+    })
   })
 
   it('should not throw on valid values for globals', () => {
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         globals: {},
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         globals: {
           foo: 'bar',
         },
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         globals: {
           foo: 'bar',
           jon: 'doe',
         },
       })
-    }).to.not.throw()
+    })
 
     // multi-level globals
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         globals: {
           foo: {
@@ -196,27 +196,27 @@ describe('config', () => {
           },
         },
       })
-    }).to.not.throw()
+    })
   })
 
   it('should throw on invalid values for globals', () => {
     // this is a string instead of an object
-    expect(() => {
+    throws(() => {
       parser({
-        // @ts-ignore (this is what we want to test)
+        // @ts-expect-error
         globals: 'this is a string instead of an object',
       })
-    }).to.throw()
+    })
   })
 
   it('should not throw on valid values for plugins', () => {
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         plugins: {},
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         plugins: {
           module: {
@@ -225,9 +225,9 @@ describe('config', () => {
           },
         },
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         plugins: {
           module: {
@@ -239,9 +239,9 @@ describe('config', () => {
           },
         },
       })
-    }).to.not.throw()
+    })
 
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         plugins: {
           module: {
@@ -254,10 +254,10 @@ describe('config', () => {
           },
         },
       })
-    }).to.not.throw()
+    })
 
     // allow complex config object
-    expect(() => {
+    doesNotThrow(() => {
       parser({
         plugins: {
           module: {
@@ -271,34 +271,34 @@ describe('config', () => {
           },
         },
       })
-    }).to.not.throw()
+    })
   })
 
   describe('should throw on invalid values for plugins', () => {
     it('should throw if plugins is a string', () => {
-      return expect(() => {
+      throws(() => {
         parser({
-          // @ts-ignore (this is what we want to test)
+          // @ts-expect-error
           plugins: 'this is a string instead of an object',
         })
-      }).to.throw()
+      })
     })
 
     it('should throw if plugins is not an object of plugins', () => {
-      return expect(() => {
+      throws(() => {
         parser({
           plugins: {
-            // @ts-ignore (this is what we want to test)
+            // @ts-expect-error
             order: 42,
-            // @ts-ignore (this is what we want to test)
+            // @ts-expect-error
             name: 'module',
           },
         })
-      }).to.throw()
+      })
     })
 
     it('should throw if the "module" property is missing', () => {
-      expect(() => {
+      throws(() => {
         parser({
           plugins: {
             module: {
@@ -306,7 +306,7 @@ describe('config', () => {
             },
           },
         })
-      }).to.throw()
+      })
     })
   })
 })

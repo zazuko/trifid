@@ -1,10 +1,9 @@
 // @ts-check
 
+import { describe, it } from 'node:test'
+import { equal, ok, doesNotThrow } from 'node:assert'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-
-import { describe, it } from 'mocha'
-import { expect } from 'chai'
 
 import handler from '../lib/config/handler.js'
 import { fileCallback } from '../lib/resolvers.js'
@@ -42,9 +41,9 @@ const assertResolution = (promise) => {
 describe('config handler', () => {
   it('should not throw when loading an empty configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url))
-    return expect(
-      handler(fileCallback(currentDir)('./support/empty.json')),
-    ).to.not.throw
+    doesNotThrow(
+      () => handler(fileCallback(currentDir)('./support/empty.json')),
+    )
   })
 
   it('should not throw when loading an empty configuration', () => {
@@ -123,15 +122,16 @@ describe('config handler', () => {
     const config = await handler(
       fileCallback(currentDir)('./support/chain/chain1.json'),
     )
-    expect(config.globals).to.not.be.undefined
-    expect(config.globals.value3).to.not.be.undefined
-    expect(config.globals.value3).to.equal('chain3')
-    expect(config.globals.value2).to.not.be.undefined
-    expect(config.globals.value2).to.equal('chain2')
-    expect(config.globals.value1).to.not.be.undefined
-    expect(config.globals.value1).to.equal('chain1')
-    expect(config.globals.value).to.not.be.undefined
-    expect(config.globals.value).to.equal('chain1')
+
+    ok(config.globals !== undefined)
+    ok(config.globals.value3 !== undefined)
+    equal(config.globals.value3, 'chain3')
+    ok(config.globals.value2 !== undefined)
+    equal(config.globals.value2, 'chain2')
+    ok(config.globals.value1 !== undefined)
+    equal(config.globals.value1, 'chain1')
+    ok(config.globals.value !== undefined)
+    equal(config.globals.value, 'chain1')
   })
 
   it('simple check using the file resolver should work', () => {
@@ -146,15 +146,16 @@ describe('config handler', () => {
     const config = await handler(
       fileCallback(currentDir)('./support/chain-file/chain1.json'),
     )
-    expect(config.globals).to.not.be.undefined
-    expect(config.globals.value3).to.not.be.undefined
-    expect(config.globals.value3).to.equal('chain3')
-    expect(config.globals.value2).to.not.be.undefined
-    expect(config.globals.value2).to.equal('chain2')
-    expect(config.globals.value1).to.not.be.undefined
-    expect(config.globals.value1).to.equal('chain1')
-    expect(config.globals.value).to.not.be.undefined
-    expect(config.globals.value).to.equal('chain1')
+
+    ok(config.globals !== undefined)
+    ok(config.globals.value3 !== undefined)
+    equal(config.globals.value3, 'chain3')
+    ok(config.globals.value2 !== undefined)
+    equal(config.globals.value2, 'chain2')
+    ok(config.globals.value1 !== undefined)
+    equal(config.globals.value1, 'chain1')
+    ok(config.globals.value !== undefined)
+    equal(config.globals.value, 'chain1')
   })
 
   it('should throw in case of infinite loop', () => {

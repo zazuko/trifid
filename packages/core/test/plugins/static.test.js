@@ -1,10 +1,10 @@
 // @ts-check
 
+import { describe, it } from 'node:test'
 import { strictEqual } from 'node:assert'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { describe, it } from 'mocha'
 import trifidCore, { getListenerURL, assertRejection } from '../../index.js'
 
 import staticPlugin from '../../plugins/static.js'
@@ -15,7 +15,7 @@ const createTrifidInstance = async (config, paths) => {
   return await trifidCore({
     server: {
       listener: {
-        port: 4242,
+        port: 0,
       },
       logLevel: 'warn',
     },
