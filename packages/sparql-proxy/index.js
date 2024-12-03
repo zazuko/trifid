@@ -197,14 +197,19 @@ const factory = async (trifid) => {
       /**
        * Route handler.
        * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody | string }> & { cookies: { endpointName?: string }, accepts: () => { type: (types: string[]) => string[] | string | false }}} request Request.
-       * @param {import('fastify').FastifyReply & { setCookie: (name: string, value: string, opts?: any) => {}}} reply Reply.
+       * @param {import('fastify').FastifyReply & { setCookie: (name: string, value: string, opts?: any) => {}, clearCookie: (name: string, opts?: any) => {}}} reply Reply.
        */
       const handler = async (request, reply) => {
         const savedEndpointName = request.cookies.endpointName || DEFAULT_ENDPOINT_NAME
         const endpointName = request.query.endpoint || savedEndpointName
 
-        // TODO: only set the cookie if the endpointName is different from the saved one and if it is not the default one
-        reply.setCookie('endpointName', endpointName, { maxAge: oneMonthMilliseconds, path: '/' })
+        // Only set the cookie if the endpoint name has changed and if it's not the default endpoint
+        if (request.cookies.endpointName !== endpointName && endpointName !== DEFAULT_ENDPOINT_NAME) {
+          reply.setCookie('endpointName', endpointName, { maxAge: oneMonthMilliseconds, path: '/' })
+          // Clear the cookie if the endpoint name is the default one
+        } else if (endpointName === DEFAULT_ENDPOINT_NAME && request.cookies.endpointName !== undefined) {
+          reply.clearCookie('endpointName', { path: '/' })
+        }
 
         const endpoint = endpoints.get(endpointName)
         if (!endpoint) {

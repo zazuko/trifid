@@ -98,6 +98,10 @@ The default redirect query supports `http://www.w3.org/2011/http#` and `http://w
   If enabled, the user can still disable this behavior by either:
   - setting the `disableSchemaUrlRedirect` query parameter to `true`
   - setting the `x-disable-schema-url-redirect` header to `true`
+- `allowEndpointSwitch`: If set to `true`, the plugin will allow the user to switch the endpoint by setting the `endpoint` query parameter.
+  This will inject a `endpointName` cookie while querying the SPARQL endpoint and is meant to be used with the `sparql-proxy` Trifid plugin.
+  The default value is `false`.
+  This option is experimental and might change or be removed in the future.
 
 ## Run an example instance
 
