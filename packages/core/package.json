@@ -14,7 +14,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --all --reporter=lcov --reporter=text mocha test/**.test.js test/**/*.test.js",
+    "test": "c8 --all --reporter=lcov --reporter=text node --test test/**.test.js test/**/*.test.js",
     "watch": "nodemon server.js",
     "typings": "tsc",
     "clean": "rimraf *.tgz dist/",
@@ -77,8 +77,6 @@
     "@rdfjs/types": "^1.1.2",
     "@types/node": "^22.9.3",
     "c8": "^10.1.2",
-    "chai": "^5.1.2",
-    "mocha": "^10.8.2",
     "nodemon": "^3.1.7",
     "rimraf": "^6.0.1",
     "typescript": "^5.6.3"

@@ -1,8 +1,8 @@
 // @ts-check
 
+import { describe, it } from 'node:test'
 import { strictEqual } from 'node:assert'
 
-import { describe, it } from 'mocha'
 import trifidCore, { getListenerURL, assertRejection } from '../../index.js'
 
 import redirectPlugin from '../../plugins/redirect.js'
@@ -11,7 +11,7 @@ const createTrifidInstance = async (config) => {
   return await trifidCore({
     server: {
       listener: {
-        port: 4242,
+        port: 0,
       },
       logLevel: 'warn',
     },
@@ -26,6 +26,7 @@ const createTrifidInstance = async (config) => {
 
 describe('redirect plugin', () => {
   it('should throw if the target parameter is not set', () => {
+    // @ts-expect-error
     assertRejection(redirectPlugin({ config: {}, logger: { debug: (/** @type {any} */ _) => { } } }))
   })
 

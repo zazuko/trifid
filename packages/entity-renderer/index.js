@@ -11,6 +11,8 @@ import { createMetadataProvider } from './renderer/metadata.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+const DEFAULT_ENDPOINT_NAME = 'default'
+
 const getAcceptHeader = (req) => {
   const queryStringValue = req.query.format
 
@@ -104,6 +106,7 @@ const defaultConfiguration = {
   `,
   followRedirects: false,
   enableSchemaUrlRedirect: false, // Experimental
+  allowEndpointSwitch: false, // Experimental
 }
 
 const fixContentTypeHeader = (contentType) => {
@@ -116,7 +119,8 @@ const factory = async (trifid) => {
   const entityRenderer = createEntityRenderer({ options: config, logger, query })
   const metadataProvider = createMetadataProvider({ options: config })
 
-  const { path, ignorePaths, rewrite: rewriteConfigValue, datasetBaseUrl } = config
+  const { path, ignorePaths, rewrite: rewriteConfigValue, datasetBaseUrl, allowEndpointSwitch: allowEndpointSwitchConfigValue } = config
+  const allowEndpointSwitch = `${allowEndpointSwitchConfigValue}` === 'true'
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`
   const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
   const { rewrite: rewriteValue, replaceIri, iriOrigin } = rewriteConfig
@@ -171,9 +175,16 @@ const factory = async (trifid) => {
           return reply
         }
 
-        // To avoid any languge issues, we will forward the i18n cookie to the SPARQL endpoint
+        // Get the endpoint name from the query parameter or from the cookie (if allowed)
+        const savedEndpointName = request.cookies.endpointName || DEFAULT_ENDPOINT_NAME
+        let endpointName = request.query.endpoint || savedEndpointName
+        endpointName = endpointName.replace(/[^a-z0-9-]/gi, '')
+
+        const i18nValue = `${request.session.get('currentLanguage') || 'en'}`.replace(/[^a-z0-9-]/gi, '')
+
+        // To avoid any languge issues, we will forward the i18n cookie to the SPARQL endpoint + add the endpointName cookie
         const queryHeaders = {
-          cookie: `i18n=${request.session.get('currentLanguage') || 'en'}; Path=/; SameSite=Lax; Secure; HttpOnly`,
+          cookie: `i18n=${i18nValue}${allowEndpointSwitch && endpointName !== DEFAULT_ENDPOINT_NAME ? `; endpointName=${endpointName}` : ''}`,
         }
 
         // Get the expected format from the Accept header or from the `format` query parameter
@@ -220,6 +231,7 @@ const factory = async (trifid) => {
               ask: false,
               select: true, // Force the parsing of the response
               rewriteResponse,
+              headers: queryHeaders,
             })
             if (redirect.length > 0) {
               const entityRedirect = redirect[0]

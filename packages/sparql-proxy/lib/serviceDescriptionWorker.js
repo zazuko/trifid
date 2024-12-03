@@ -1,7 +1,25 @@
 import { parentPort } from 'node:worker_threads'
 import rdf from '@zazuko/env-node'
 import sd from '@vocabulary/sd'
-import fetch from './fetchServiceDescription.js'
+import fsd from './fetchServiceDescription.js'
+
+const serviceDescriptionVocab = rdf.clownface({
+  dataset: rdf.dataset(sd({ factory: rdf })),
+})
+
+const allowedProperties = rdf.termSet(
+  serviceDescriptionVocab
+    .has(rdf.ns.rdf.type, rdf.ns.rdf.Property)
+    .terms,
+)
+
+const cbd = ({ level, quad: { predicate, subject } }) => {
+  if (level === 0) {
+    return !predicate.equals(rdf.ns.sd.endpoint) && allowedProperties.has(predicate)
+  }
+
+  return subject.termType === 'BlankNode'
+}
 
 parentPort.once('message', async (message) => {
   const { type, data: { endpointUrl, serviceDescriptionTimeout, ...rest } } = message
@@ -13,7 +31,7 @@ parentPort.once('message', async (message) => {
     }, serviceDescriptionTimeout)
 
     try {
-      const dataset = await fetch.fetchServiceDescription(endpointUrl, {
+      const dataset = await fsd.fetchServiceDescription(endpointUrl, {
         format: rest.serviceDescriptionFormat,
         authorization: rest.authorizationHeader,
       })
@@ -42,20 +60,3 @@ parentPort.once('message', async (message) => {
     }
   }
 })
-
-const serviceDescriptionVocab = rdf.clownface({
-  dataset: rdf.dataset(sd({ factory: rdf })),
-})
-const allowedProperties = rdf.termSet(
-  serviceDescriptionVocab
-    .has(rdf.ns.rdf.type, rdf.ns.rdf.Property)
-    .terms,
-)
-
-const cbd = ({ level, quad: { predicate, subject } }) => {
-  if (level === 0) {
-    return !predicate.equals(rdf.ns.sd.endpoint) && allowedProperties.has(predicate)
-  }
-
-  return subject.termType === 'BlankNode'
-}

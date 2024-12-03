@@ -24,6 +24,19 @@ plugins:
       username: admin
       password: secret
 
+      # # In case you want to add support for multiple endpoints
+      # # Define the endpoints in the following way (the "default" endpoint is required)
+      # # The default endpoint value will override the endpointUrl, username and password values
+      # endpoints:
+      #   default:
+      #     endpointUrl: https://example.com/query
+      #     username: admin1
+      #     password: secret2
+      #   other:
+      #     endpointUrl: https://example.com/other-query
+      #     username: admin2
+      #     password: secret2
+
       # Rewriting configuration
       allowRewriteToggle: true # Allow the user to toggle the rewrite configuration using the `rewrite` query parameter, even if `rewrite` is set to false
       rewrite: false # Rewrite by default

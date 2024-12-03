@@ -8,11 +8,13 @@ import { Worker } from 'node:worker_threads'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import rdf from '@zazuko/env-node'
 import ReplaceStream from './lib/ReplaceStream.js'
+import { authBasicHeader, objectLength } from './lib/utils.js'
 
 const defaultConfiguration = {
   endpointUrl: '',
   username: '',
   password: '',
+  endpoints: {},
   datasetBaseUrl: '',
   allowRewriteToggle: true, // Allow the user to toggle the rewrite configuration using the `rewrite` query parameter.
   rewrite: false, // Rewrite by default
@@ -25,25 +27,39 @@ const defaultConfiguration = {
   serviceDescriptionFormat: undefined, // override the accept header for the service description request. by default, will use content negotiation using formats `@zazuko/env-node` can parse
 }
 
-/**
- * Generate the value for the Authorization header for basic authentication.
- *
- * @param {string} user The username.
- * @param {string} password The password of that user.
- * @returns {string} The value of the Authorization header to use.
- */
-const authBasicHeader = (user, password) => {
-  const base64String = Buffer.from(`${user}:${password}`).toString('base64')
-  return `Basic ${base64String}`
-}
+const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000
+const DEFAULT_ENDPOINT_NAME = 'default'
 
 /** @type {import('trifid-core/types').TrifidPlugin} */
 const factory = async (trifid) => {
   const { logger, config, trifidEvents } = trifid
 
+  const endpoints = new Map()
+
   const options = { ...defaultConfiguration, ...config }
+  let dynamicEndpoints = false
+
+  if (objectLength(options.endpoints) > 0) {
+    // Check if the default endpoint is defined
+    if (!Object.hasOwnProperty.call(options.endpoints, DEFAULT_ENDPOINT_NAME)) {
+      throw Error('Missing default endpoint in the endpoints configuration')
+    }
+
+    // Override default values with the default endpoint values
+    options.endpointUrl = options.endpoints.default.url || ''
+    options.username = options.endpoints.default.username || ''
+    options.password = options.endpoints.default.password || ''
+
+    // Support for multiple endpoints
+    dynamicEndpoints = true
+  }
+
   if (!options.endpointUrl) {
-    throw Error('Missing endpointUrl parameter')
+    throw Error(
+      dynamicEndpoints
+        ? `Missing endpoints.${DEFAULT_ENDPOINT_NAME}.url parameter`
+        : 'Missing endpointUrl parameter',
+    )
   }
 
   let authorizationHeader
@@ -55,6 +71,48 @@ const factory = async (trifid) => {
   const allowRewriteToggle = options.allowRewriteToggle
   const rewriteConfigValue = options.rewrite
   const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl)
+
+  endpoints.set(DEFAULT_ENDPOINT_NAME, {
+    endpointUrl: options.endpointUrl,
+    username: options.username,
+    password: options.password,
+    authorizationHeader,
+    datasetBaseUrl,
+    allowRewriteToggle,
+    rewriteConfigValue,
+    rewriteConfig,
+  })
+
+  if (dynamicEndpoints) {
+    for (const [endpointName, endpointConfig] of Object.entries(options.endpoints)) {
+      if (endpointName === DEFAULT_ENDPOINT_NAME) {
+        continue
+      }
+
+      if (!endpointConfig.url) {
+        throw Error(`Missing endpoints.${endpointName}.url parameter`)
+      }
+
+      let endpointAuthorizationHeader
+      if (endpointConfig.username && endpointConfig.password) {
+        endpointAuthorizationHeader = authBasicHeader(endpointConfig.username, endpointConfig.password)
+      }
+
+      const endpointDatasetBaseUrl = endpointConfig.datasetBaseUrl || datasetBaseUrl
+      const endpointRewriteConfigValue = endpointConfig.rewrite ?? rewriteConfigValue
+
+      endpoints.set(endpointName, {
+        endpointUrl: endpointConfig.url || '',
+        username: endpointConfig.username || '',
+        password: endpointConfig.password || '',
+        authorizationHeader: endpointAuthorizationHeader,
+        datasetBaseUrl: endpointDatasetBaseUrl,
+        allowRewriteToggle: endpointConfig.allowRewriteToggle ?? allowRewriteToggle,
+        rewriteConfigValue: endpointRewriteConfigValue,
+        rewriteConfig: sparqlGetRewriteConfiguration(endpointRewriteConfigValue, endpointDatasetBaseUrl),
+      })
+    }
+  }
 
   const queryLogLevel = options.queryLogLevel
   if (!logger[queryLogLevel]) {
@@ -127,6 +185,7 @@ const factory = async (trifid) => {
        * @property {string} [query] The SPARQL query.
        * @property {string} [rewrite] Should the query and the results be rewritten?
        * @property {string} [format] The format of the results.
+       * @property {string} [endpoint] The name of the endpoint to use (default: DEFAULT_ENDPOINT_NAME).
        */
 
       /**
@@ -137,10 +196,28 @@ const factory = async (trifid) => {
 
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody | string }> & { accepts: () => { type: (types: string[]) => string[] | string | false }}} request Request.
-       * @param {import('fastify').FastifyReply} reply Reply.
+       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody | string }> & { cookies: { endpointName?: string }, accepts: () => { type: (types: string[]) => string[] | string | false }}} request Request.
+       * @param {import('fastify').FastifyReply & { setCookie: (name: string, value: string, opts?: any) => {}, clearCookie: (name: string, opts?: any) => {}}} reply Reply.
        */
       const handler = async (request, reply) => {
+        const savedEndpointName = request.cookies.endpointName || DEFAULT_ENDPOINT_NAME
+        let endpointName = request.query.endpoint || savedEndpointName
+        endpointName = endpointName.replace(/[^a-z0-9-]/gi, '')
+
+        // Only set the cookie if the endpoint name has changed and if it's not the default endpoint
+        if (request.cookies.endpointName !== endpointName && endpointName !== DEFAULT_ENDPOINT_NAME) {
+          reply.setCookie('endpointName', endpointName, { maxAge: oneMonthMilliseconds, path: '/' })
+          // Clear the cookie if the endpoint name is the default one
+        } else if (endpointName === DEFAULT_ENDPOINT_NAME && request.cookies.endpointName !== undefined) {
+          reply.clearCookie('endpointName', { path: '/' })
+        }
+
+        const endpoint = endpoints.get(endpointName)
+        if (!endpoint) {
+          return reply.callNotFound()
+        }
+        logger.debug(`Using endpoint: ${endpointName}`)
+
         let requestPort = ''
         if (request.port) {
           requestPort = `:${request.port}`
@@ -154,6 +231,7 @@ const factory = async (trifid) => {
         fullUrlObject.searchParams.forEach((_value, key) => fullUrlObject.searchParams.delete(key))
         const iriUrlString = fullUrlObject.toString()
 
+        // Handle Service Description request
         if (Object.keys(request.query).length === 0 && request.method === 'GET') {
           const dataset = rdf.dataset(await serviceDescription)
           rdf.clownface({ dataset })
@@ -181,22 +259,20 @@ const factory = async (trifid) => {
           return reply
         }
 
-        let currentRewriteConfig = rewriteConfig
-        if (allowRewriteToggle) {
-          let rewriteConfigValueFromQuery = rewriteConfigValue
+        let currentRewriteConfig = endpoint.rewriteConfig
+        if (endpoint.allowRewriteToggle) {
+          let rewriteConfigValueFromQuery = endpoint.rewriteConfigValue
           if (`${request.query.rewrite}` === 'false') {
             rewriteConfigValueFromQuery = false
           } else if (`${request.query.rewrite}` === 'true') {
             rewriteConfigValueFromQuery = true
-          } else {
-            rewriteConfigValueFromQuery = rewriteConfigValue
           }
-          currentRewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValueFromQuery, datasetBaseUrl)
+          currentRewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValueFromQuery, endpoint.datasetBaseUrl)
         }
         const { rewrite: rewriteValue, iriOrigin } = currentRewriteConfig
         const rewriteResponse = rewriteValue
           ? {
-            origin: datasetBaseUrl,
+            origin: endpoint.datasetBaseUrl,
             replacement: iriOrigin(iriUrlString),
           }
           : false
@@ -242,12 +318,12 @@ const factory = async (trifid) => {
             'Content-Type': 'application/x-www-form-urlencoded',
             Accept: acceptHeader,
           }
-          if (authorizationHeader) {
-            headers.Authorization = authorizationHeader
+          if (endpoint.authorizationHeader) {
+            headers.Authorization = endpoint.authorizationHeader
           }
 
           const start = performance.now()
-          let response = await fetch(options.endpointUrl, {
+          let response = await fetch(endpoint.endpointUrl, {
             method: 'POST',
             headers,
             body: new URLSearchParams({ query }),

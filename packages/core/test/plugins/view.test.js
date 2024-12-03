@@ -1,10 +1,10 @@
 // @ts-check
 
+import { describe, it } from 'node:test'
 import { strictEqual, match } from 'node:assert'
-
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { describe, it } from 'mocha'
+
 import trifidCore, { assertRejection, getListenerURL } from '../../index.js'
 
 import viewPlugin from '../../plugins/view.js'
@@ -15,7 +15,7 @@ const createTrifidInstance = async (config) => {
   return await trifidCore({
     server: {
       listener: {
-        port: 4242,
+        port: 0,
       },
       logLevel: 'warn',
     },
@@ -30,11 +30,13 @@ const createTrifidInstance = async (config) => {
 
 describe('view plugin', () => {
   it('should throw if the path parameter is not set', () => {
+    // @ts-expect-error
     assertRejection(viewPlugin({}))
   })
 
   it('should throw if the path parameter is set to an empty string', () => {
     assertRejection(viewPlugin({
+      // @ts-expect-error
       path: '',
     }))
   })
