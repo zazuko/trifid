@@ -177,11 +177,14 @@ const factory = async (trifid) => {
 
         // Get the endpoint name from the query parameter or from the cookie (if allowed)
         const savedEndpointName = request.cookies.endpointName || DEFAULT_ENDPOINT_NAME
-        const endpointName = request.query.endpoint || savedEndpointName
+        let endpointName = request.query.endpoint || savedEndpointName
+        endpointName = endpointName.replace(/[^a-z0-9-]/gi, '')
+
+        const i18nValue = `${request.session.get('currentLanguage') || 'en'}`.replace(/[^a-z0-9-]/gi, '')
 
         // To avoid any languge issues, we will forward the i18n cookie to the SPARQL endpoint + add the endpointName cookie
         const queryHeaders = {
-          cookie: `i18n=${request.session.get('currentLanguage') || 'en'}${allowEndpointSwitch && endpointName !== DEFAULT_ENDPOINT_NAME ? `; endpointName=${endpointName}` : ''}`,
+          cookie: `i18n=${i18nValue}${allowEndpointSwitch && endpointName !== DEFAULT_ENDPOINT_NAME ? `; endpointName=${endpointName}` : ''}`,
         }
 
         // Get the expected format from the Accept header or from the `format` query parameter
