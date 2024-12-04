@@ -4,42 +4,14 @@ import { fileURLToPath } from 'node:url'
 import { parsers } from '@rdfjs/formats-common'
 import rdf from '@zazuko/env'
 import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core'
-import mimeparse from 'mimeparse'
 
+import { getAcceptHeader } from './lib/headers.js'
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const DEFAULT_ENDPOINT_NAME = 'default'
-
-const getAcceptHeader = (req) => {
-  const queryStringValue = req.query.format
-
-  const supportedQueryStringValues = {
-    ttl: 'text/turtle',
-    jsonld: 'application/ld+json',
-    xml: 'application/rdf+xml',
-    nt: 'application/n-triples',
-    trig: 'application/trig',
-    csv: 'text/csv',
-    html: 'text/html',
-  }
-
-  if (
-    Object.hasOwnProperty.call(supportedQueryStringValues, queryStringValue)
-  ) {
-    return supportedQueryStringValues[queryStringValue]
-  }
-
-  const acceptHeader = `${req.headers.accept || ''}`.toLocaleLowerCase()
-  const selectedHeader = mimeparse.bestMatch([
-    ...sparqlSupportedTypes,
-    'text/html',
-  ], acceptHeader)
-
-  return selectedHeader || acceptHeader
-}
 
 const replaceIriInQuery = (query, iri) => {
   return query.split('{{iri}}').join(iri)
