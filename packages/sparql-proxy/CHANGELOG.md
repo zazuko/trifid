@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.6.1
+
+### Patch Changes
+
+- 7e61d2a: Check if a URL is valid, during the replacement of the default endpoint
+
 ## 2.6.0
 
 ### Minor Changes
