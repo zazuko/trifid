@@ -8,7 +8,7 @@ import { Worker } from 'node:worker_threads'
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import rdf from '@zazuko/env-node'
 import ReplaceStream from './lib/ReplaceStream.js'
-import { authBasicHeader, objectLength } from './lib/utils.js'
+import { authBasicHeader, objectLength, isValidUrl } from './lib/utils.js'
 
 const defaultConfiguration = {
   endpointUrl: '',
@@ -45,10 +45,12 @@ const factory = async (trifid) => {
       throw Error('Missing default endpoint in the endpoints configuration')
     }
 
-    // Override default values with the default endpoint values
-    options.endpointUrl = options.endpoints.default.url || ''
-    options.username = options.endpoints.default.username || ''
-    options.password = options.endpoints.default.password || ''
+    // Override default values with the default endpoint values (in case it's a valid URL ; else it might be the default /query)
+    if (isValidUrl(options.endpoints.default)) {
+      options.endpointUrl = options.endpoints.default.url || ''
+      options.username = options.endpoints.default.username || ''
+      options.password = options.endpoints.default.password || ''
+    }
 
     // Support for multiple endpoints
     dynamicEndpoints = true

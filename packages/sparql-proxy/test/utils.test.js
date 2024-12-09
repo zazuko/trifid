@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import { equal, deepEqual } from 'node:assert'
 
-import { authBasicHeader, assertObject, objectLength } from '../lib/utils.js'
+import { authBasicHeader, assertObject, objectLength, isValidUrl } from '../lib/utils.js'
 
 describe('utils', () => {
   describe('authBasicHeader', () => {
@@ -91,6 +91,48 @@ describe('utils', () => {
 
     it('should return 3 for an object with three properties', () => {
       equal(objectLength({ one: '1', two: '2', three: '2' }), 3)
+    })
+  })
+
+  describe('isValidUrl', () => {
+    it('should return true for a valid URL', () => {
+      equal(isValidUrl('http://example.com/'), true)
+    })
+
+    it('should return false for an invalid URL', () => {
+      equal(isValidUrl('not a URL'), false)
+    })
+
+    it('should return false for an empty string', () => {
+      equal(isValidUrl(''), false)
+    })
+
+    it('should return false for undefined', () => {
+      equal(isValidUrl(undefined), false)
+    })
+
+    it('should return false for null', () => {
+      equal(isValidUrl(null), false)
+    })
+
+    it('should return false for a number', () => {
+      equal(isValidUrl(42), false)
+    })
+
+    it('should return false for an object', () => {
+      equal(isValidUrl({}), false)
+    })
+
+    it('should return false for an array', () => {
+      equal(isValidUrl([]), false)
+    })
+
+    it('should return false for a boolean', () => {
+      equal(isValidUrl(true), false)
+    })
+
+    it('should return false for a function', () => {
+      equal(isValidUrl(() => { }), false)
     })
   })
 })
