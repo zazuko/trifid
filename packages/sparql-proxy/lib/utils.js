@@ -35,3 +35,19 @@ export const objectLength = (obj) => {
   }
   return Object.keys(obj).length
 }
+
+/**
+ * Check if a string is a valid URL.
+ *
+ * @param {string} url The URL to check.
+ * @returns {boolean} True if the URL is valid, false otherwise.
+ */
+export const isValidUrl = (url) => {
+  try {
+    // eslint-disable-next-line no-new
+    new URL(url)
+    return true
+  } catch {
+    return false
+  }
+}
