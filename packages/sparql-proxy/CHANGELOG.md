@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.6.0
+
+### Minor Changes
+
+- d3bc56f: Add support for multiple endpoints
+
 ## 2.5.2
 
 ### Patch Changes
