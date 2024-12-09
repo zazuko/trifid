@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.5.1
+
+### Patch Changes
+
+- e2e27b3: Add missing `lib` directory
+
 ## 1.5.0
 
 ### Minor Changes
