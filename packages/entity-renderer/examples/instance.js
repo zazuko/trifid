@@ -4,7 +4,7 @@ import entityRendererTrifidPlugin from '../index.js'
 
 const port = 3000
 
-export const createTrifidInstance = async (configFilePath, logLevel = 'debug') => {
+export const createTrifidInstance = async (configFilePath, logLevel = 'debug', additionalConfig = {}) => {
   const configFile = join(process.cwd(), configFilePath)
   return await trifid({
     extends: [configFile],
@@ -20,6 +20,7 @@ export const createTrifidInstance = async (configFilePath, logLevel = 'debug') =
       module: entityRendererTrifidPlugin,
       config: {
         followRedirects: true,
+        ...additionalConfig,
       },
     },
   })

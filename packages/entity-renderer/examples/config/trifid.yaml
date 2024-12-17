@@ -27,7 +27,7 @@ plugins:
     module: trifid-handler-fetch
     paths: /query
     config:
-      url: file:../data/people.ttl
+      url: file:../data/data.ttl
       contentType: text/turtle
       baseIRI: http://example.com
       graphName: http://example.com/graph
