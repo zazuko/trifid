@@ -224,7 +224,7 @@ const factory = async (trifid) => {
             // Get all triples that have a schema:URL property with value of type xsd:anyURI
             const urls = []
             dataset.match(iriUrlString, rdf.ns.schema.URL)
-              .filter(({ object }) => object.datatype.value === 'xsd:anyURI')
+              .filter(({ object }) => object?.datatype?.value === 'xsd:anyURI')
               .map(({ object }) => urls.push(object.value))
             if (!disabledSchemaUrlRedirect && urls.length > 0) {
               const redirectUrl = urls[0]
