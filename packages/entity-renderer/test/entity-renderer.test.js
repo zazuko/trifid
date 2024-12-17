@@ -115,5 +115,69 @@ describe('@zazuko/trifid-entity-renderer', () => {
         strictEqual(res.status, 200)
       })
     })
+
+    describe('disabled', () => {
+      beforeEach(async () => {
+        const trifidInstance = await createTrifidInstance(trifidConfigUrl, 'warn', {
+          enableSchemaUrlRedirect: false,
+        })
+        trifidListener = await trifidInstance.start()
+      })
+
+      afterEach(async () => {
+        await trifidListener.close()
+      })
+
+      it('should not redirect for non-html content', async () => {
+        const entityUrl = `${getListenerURL(trifidListener)}/test/shouldRedirect`
+        const res = await fetch(entityUrl, { redirect: 'manual' })
+        strictEqual(res.status, 200)
+      })
+
+      it('should not redirect for html content', async () => {
+        const entityUrl = `${getListenerURL(trifidListener)}/test/shouldRedirect`
+        const res = await fetch(entityUrl, {
+          headers: {
+            accept: 'text/html',
+          },
+          redirect: 'manual',
+        })
+        strictEqual(res.status, 200)
+      })
+
+      it('should not redirect when disableSchemaUrlRedirect=true', async () => {
+        const entityUrl = `${getListenerURL(trifidListener)}/test/shouldRedirect?disableSchemaUrlRedirect=true`
+        const res = await fetch(entityUrl, {
+          headers: {
+            accept: 'text/html',
+          },
+          redirect: 'manual',
+        })
+        strictEqual(res.status, 200)
+      })
+
+      it('should not redirect when x-disable-schema-url-redirect=true', async () => {
+        const entityUrl = `${getListenerURL(trifidListener)}/test/shouldRedirect`
+        const res = await fetch(entityUrl, {
+          headers: {
+            accept: 'text/html',
+            'x-disable-schema-url-redirect': 'true',
+          },
+          redirect: 'manual',
+        })
+        strictEqual(res.status, 200)
+      })
+
+      it('should not redirect when the value is not an xsd:anyURI', async () => {
+        const entityUrl = `${getListenerURL(trifidListener)}/test/shouldNotRedirect`
+        const res = await fetch(entityUrl, {
+          headers: {
+            accept: 'text/html',
+          },
+          redirect: 'manual',
+        })
+        strictEqual(res.status, 200)
+      })
+    })
   })
 })
