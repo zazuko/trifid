@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.4.3
+
+### Patch Changes
+
+- 84de470: Add basic support for POINT WKT elements for the Map plugin
+
 ## 3.4.2
 
 ### Patch Changes
