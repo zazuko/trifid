@@ -58,6 +58,6 @@ export const defaultConfiguration = {
     LIMIT 1
   `,
   followRedirects: false,
-  enableSchemaUrlRedirect: false, // Experimental
+  enableSchemaUrlRedirect: false,
   allowEndpointSwitch: false, // Experimental
 }

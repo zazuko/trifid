@@ -1,0 +1,260 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix schema: <http://schema.org/> .
+@prefix adams: <http://localhost:3000/adams/> .
+@prefix ex: <http://localhost:3000/person/> .
+@prefix ex0: <http://0.0.0.0:3000/person/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix test: <http://localhost:3000/test/> .
+
+adams:eudora foaf:name "Eudora Addams" ;
+	adams:hasPartner adams:gomez ;
+	adams:hasChild adams:pugsley, adams:wednesday ;
+	adams:gender adams:F ;
+	adams:likes "Manger"@fr, "Comer"@es, "Eat"@en ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/4/44/Gr1.jpg/revision/latest?cb=20170324004607> .
+
+adams:gender foaf:name "Gender (en)"@en .
+
+adams:todoList rdfs:label "Todo List", "Todo List (De)"@de, "Todo List (Fr)"@fr, "Todo List (Es)"@es .
+
+adams:gomez foaf:name "Gomez Addams" ;
+	a foaf:Person, adams:Celebrity ;
+	adams:gender adams:M ;
+	adams:livesWith adams:morticia ;
+	adams:hasPartner adams:morticia ;
+	adams:hasBrother adams:uncle ;
+	adams:hasChild adams:pugsley, adams:wednesday ;
+	rdfs:label "Gomez Addamz" ;
+	adams:lives_at [
+		rdf:type schema:PostalAddress ;
+		rdfs:label "Address" ;
+		adams:street "Cemetery Lane" ;
+		adams:number "001" ;
+	] ;
+	adams:todoList (
+		adams:drinkTea
+		"Go to the supermarket"
+		adams:readNewspaper
+	) ;
+	adams:spouseIn adams:second_generation ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/d/db/Little_helper_gomez.jpg/revision/latest?cb=20150403201303> .
+
+adams:drinkTea foaf:name "Drink tea" ;
+	adams:amount 2 .
+
+adams:readNewspaper foaf:name "Read the newspaper" .
+
+adams:morticia foaf:name "Morticia A. Addams" ;
+	adams:gender adams:F ;
+	adams:hasPartner adams:gomez ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/8/88/MorticiaOrgApp.jpg/revision/latest?cb=20091209074043> .
+
+adams:uncle foaf:name "Uncle Fester" ;
+	adams:gender adams:M ;
+	adams:likes "Manger"@fr, "Comer"@es, "Eat"@en ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/3/30/FesterOrgApp.jpg/revision/latest?cb=20091221151414&format=original> .
+
+adams:pugsley foaf:name "Pugsley Addams" ;
+	adams:gender adams:M ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/2/20/PugsOrgApp.jpg/revision/latest?cb=20091221151620> .
+
+adams:wednesday foaf:name "Wednesday Friday Addams" ;
+	adams:gender adams:F ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/d/d6/Wednesday.png/revision/latest?cb=20140225145056> .
+
+adams:lurch foaf:name "Lurch" ;
+	adams:gender adams:M ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/0/08/Lurch4.jpg/revision/latest?cb=20110707003536> .
+
+adams:thing foaf:name "Thing" ;
+	adams:romanceWith adams:ladyfingers ;
+	adams:gender adams:M ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/8/82/Thing_1991.jpg/revision/latest?cb=20100108153017> .
+
+adams:ladyfingers foaf:name "Lady Fingers" ;
+	adams:gender adams:F ;
+	foaf:img <https://vignette.wikia.nocookie.net/addamsfamily/images/2/2e/36._Thing%27s_Romance_026.jpg/revision/latest?cb=20121020154800> .
+
+ex:amy-farrah-fowler a schema:Person ;
+	schema:additionalName "Farrah" ;
+	<http://localhost:3000/data/nickName> "Farrah" ;
+	schema:familyName "Fowler" ;
+	schema:name "Amy" ;
+	schema:givenName "Amy" ;
+	schema:jobTitle "neurobiologist" ;
+	schema:knows ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:bernadette-rostenkowski a schema:Person ;
+	schema:additionalName "Maryann" ;
+	schema:familyName "Rostenkowski-Wolowitz" ;
+	schema:givenName "Bernadette" ;
+	schema:jobTitle "microbiologist" ;
+	schema:knows ex:amy-farrah-fowler, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom ;
+	schema:spouse ex:howard-wolowitz .
+
+ex:howard-wolowitz a schema:Person ;
+	schema:additionalName "Joel" ;
+	schema:familyName "Wolowitz" ;
+	schema:givenName "Howard" ;
+	schema:jobTitle "aerospace engineer" ;
+	schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom ;
+	schema:spouse ex:bernadette-rostenkowski .
+
+ex:leonard-hofstadter a schema:Person ;
+	schema:additionalName "Leakey" ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressLocality "Pasadena" ;
+		schema:addressRegion "CA" ;
+		schema:postalCode "91104" ;
+		schema:streetAddress "2311 North Los Robles Avenue, Apartment 4A" ;
+	] ;
+	schema:familyName "Hofstadter" ;
+	schema:givenName "Leonard" ;
+	schema:jobTitle "experimental physicist" ;
+	schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:mary-cooper, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:mary-cooper a schema:Person ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressRegion "TX" ;
+	] ;
+	schema:children ex:sheldon-cooper ;
+	schema:familyName "Cooper" ;
+	schema:givenName "Mary" ;
+	schema:knows ex:howard-wolowitz, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper .
+
+ex:penny a schema:Person ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressLocality "Pasadena" ;
+		schema:addressRegion "CA" ;
+		schema:postalCode "91104" ;
+		schema:streetAddress "2311 North Los Robles Avenue, Apartment 4B" ;
+	] ;
+	schema:givenName "Penny" ;
+	schema:jobTitle "pharmaceutical sales representative" ;
+	schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:rajesh-koothrappali, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:rajesh-koothrappali a schema:Person ;
+	schema:additionalName "Ramayan Raj" ;
+	schema:familyName "Koothrappali" ;
+	schema:givenName "Rajesh" ;
+	schema:jobTitle "astrophysicist" ;
+	schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:sheldon-cooper, ex:stuart-bloom .
+
+ex:sheldon-cooper a schema:Person ;
+	schema:additionalName "Lee" ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressLocality "Pasadena" ;
+		schema:addressRegion "CA" ;
+		schema:postalCode "91104" ;
+		schema:streetAddress "2311 North Los Robles Avenue, Apartment 4A" ;
+	] ;
+	schema:familyName "Cooper" ;
+	schema:givenName "Sheldon" ;
+	schema:jobTitle "theoretical physicist" ;
+	schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:stuart-bloom ;
+	schema:parent ex:mary-cooper .
+
+ex:stuart-bloom a schema:Person ;
+	schema:familyName "Bloom" ;
+	schema:givenName "Stuart" ;
+	schema:jobTitle "comic book store owner" ;
+	schema:knows ex:amy-farrah-fowler, ex:bernadette-rostenkowski, ex:howard-wolowitz, ex:leonard-hofstadter, ex:penny, ex:rajesh-koothrappali, ex:sheldon-cooper .
+
+ex0:amy-farrah-fowler a schema:Person ;
+	schema:additionalName "Farrah" ;
+	<http://localhost:3000/data/nickName> "Farrah" ;
+	schema:familyName "Fowler" ;
+	schema:name "Amy" ;
+	schema:givenName "Amy" ;
+	schema:jobTitle "neurobiologist" ;
+	schema:knows ex0:bernadette-rostenkowski, ex0:howard-wolowitz, ex0:leonard-hofstadter, ex0:penny, ex0:rajesh-koothrappali, ex0:sheldon-cooper, ex0:stuart-bloom .
+
+ex0:bernadette-rostenkowski a schema:Person ;
+	schema:additionalName "Maryann" ;
+	schema:familyName "Rostenkowski-Wolowitz" ;
+	schema:givenName "Bernadette" ;
+	schema:jobTitle "microbiologist" ;
+	schema:knows ex0:amy-farrah-fowler, ex0:howard-wolowitz, ex0:leonard-hofstadter, ex0:penny, ex0:rajesh-koothrappali, ex0:sheldon-cooper, ex0:stuart-bloom ;
+	schema:spouse ex0:howard-wolowitz .
+
+ex0:howard-wolowitz a schema:Person ;
+	schema:additionalName "Joel" ;
+	schema:familyName "Wolowitz" ;
+	schema:givenName "Howard" ;
+	schema:jobTitle "aerospace engineer" ;
+	schema:knows ex0:amy-farrah-fowler, ex0:bernadette-rostenkowski, ex0:leonard-hofstadter, ex0:penny, ex0:rajesh-koothrappali, ex0:sheldon-cooper, ex0:stuart-bloom ;
+	schema:spouse ex0:bernadette-rostenkowski .
+
+ex0:leonard-hofstadter a schema:Person ;
+	schema:additionalName "Leakey" ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressLocality "Pasadena" ;
+		schema:addressRegion "CA" ;
+		schema:postalCode "91104" ;
+		schema:streetAddress "2311 North Los Robles Avenue, Apartment 4A" ;
+	] ;
+	schema:familyName "Hofstadter" ;
+	schema:givenName "Leonard" ;
+	schema:jobTitle "experimental physicist" ;
+	schema:knows ex0:amy-farrah-fowler, ex0:bernadette-rostenkowski, ex0:howard-wolowitz, ex0:mary-cooper, ex0:penny, ex0:rajesh-koothrappali, ex0:sheldon-cooper, ex0:stuart-bloom .
+
+ex0:mary-cooper a schema:Person ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressRegion "TX" ;
+	] ;
+	schema:children ex0:sheldon-cooper ;
+	schema:familyName "Cooper" ;
+	schema:givenName "Mary" ;
+	schema:knows ex0:howard-wolowitz, ex0:penny, ex0:rajesh-koothrappali, ex0:sheldon-cooper .
+
+ex0:penny a schema:Person ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressLocality "Pasadena" ;
+		schema:addressRegion "CA" ;
+		schema:postalCode "91104" ;
+		schema:streetAddress "2311 North Los Robles Avenue, Apartment 4B" ;
+	] ;
+	schema:givenName "Penny" ;
+	schema:jobTitle "pharmaceutical sales representative" ;
+	schema:knows ex0:amy-farrah-fowler, ex0:bernadette-rostenkowski, ex0:howard-wolowitz, ex0:leonard-hofstadter, ex0:rajesh-koothrappali, ex0:sheldon-cooper, ex0:stuart-bloom .
+
+ex0:rajesh-koothrappali a schema:Person ;
+	schema:additionalName "Ramayan Raj" ;
+	schema:familyName "Koothrappali" ;
+	schema:givenName "Rajesh" ;
+	schema:jobTitle "astrophysicist" ;
+	schema:knows ex0:amy-farrah-fowler, ex0:bernadette-rostenkowski, ex0:howard-wolowitz, ex0:leonard-hofstadter, ex0:penny, ex0:sheldon-cooper, ex0:stuart-bloom .
+
+ex0:sheldon-cooper a schema:Person ;
+	schema:additionalName "Lee" ;
+	schema:address [
+		schema:addressCountry "US" ;
+		schema:addressLocality "Pasadena" ;
+		schema:addressRegion "CA" ;
+		schema:postalCode "91104" ;
+		schema:streetAddress "2311 North Los Robles Avenue, Apartment 4A" ;
+	] ;
+	schema:familyName "Cooper" ;
+	schema:givenName "Sheldon" ;
+	schema:jobTitle "theoretical physicist" ;
+	schema:knows ex0:amy-farrah-fowler, ex0:bernadette-rostenkowski, ex0:howard-wolowitz, ex0:leonard-hofstadter, ex0:penny, ex0:rajesh-koothrappali, ex0:stuart-bloom ;
+	schema:parent ex0:mary-cooper .
+
+ex0:stuart-bloom a schema:Person ;
+	schema:familyName "Bloom" ;
+	schema:givenName "Stuart" ;
+	schema:jobTitle "comic book store owner" ;
+	schema:knows ex0:amy-farrah-fowler, ex0:bernadette-rostenkowski, ex0:howard-wolowitz, ex0:leonard-hofstadter, ex0:penny, ex0:rajesh-koothrappali, ex0:sheldon-cooper .
+
+# Custom data to test the redirect
+test:shouldRedirect schema:URL "http://example.com/"^^xsd:anyURI .
+test:shouldNotRedirect schema:URL "http://example.com/" .
