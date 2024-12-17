@@ -33,6 +33,15 @@ const trifidFactory = async (trifid) => {
     decorateReply: false,
   })
 
+  // Serve files from the public directory
+  const publicDirectory = new URL('public/', import.meta.url)
+  const publicPath = fileURLToPath(publicDirectory)
+  server.register(fastifyStatic, {
+    root: publicPath.replace(/^file:\/\//, ''),
+    prefix: '/yasgui-public/',
+    decorateReply: false,
+  })
+
   // Serve static files for custom plugins
   const pluginsUrl = new URL('build/', import.meta.url)
   const pluginsPath = fileURLToPath(pluginsUrl)
