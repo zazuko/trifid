@@ -149,10 +149,12 @@ class YasguiMap {
       }),
     })
 
+    const vectorLayer = document.createElement('ol-layer-vector')
     const wkt = document.createElement('ol-layer-wkt')
     const select = document.createElement('ol-select')
     select.style = featureStyle
 
+    mapLayer.appendChild(vectorLayer)
     mapLayer.appendChild(wkt)
     mapLayer.appendChild(select)
     el.appendChild(mapLayer)
@@ -162,6 +164,10 @@ class YasguiMap {
     this.yasr.resultsEl.appendChild(el)
 
     select.addEventListener('feature-selected', (e) => {
+      if (!e?.detail?.feature) {
+        return
+      }
+
       const feature = e.detail.feature
       feature.setStyle(editStyle)
       const id = feature.getId()
@@ -179,11 +185,30 @@ class YasguiMap {
     })
 
     select.addEventListener('feature-unselected', (e) => {
+      if (!e?.detail?.feature) {
+        return
+      }
+
       const feature = e.detail.feature
       feature.setStyle(featureStyle)
       overlay.style.display = 'none'
     })
 
+    // Explicitly add POINT data to the map
+    const pointResults = results.filter((result) => result.wkt.includes('POINT'))
+    pointResults.forEach((result) => {
+      const markerIcon = document.createElement('ol-marker-icon')
+      const coords = result.wkt.match(/POINT *\(([^)]+)\)/)[1].split(' ')
+      if (coords.length !== 2) {
+        return
+      }
+      markerIcon.setAttribute('lat', coords[1])
+      markerIcon.setAttribute('lon', coords[0])
+      markerIcon.setAttribute('src', '/yasgui-public/marker-icon.svg')
+      vectorLayer.appendChild(markerIcon)
+    })
+
+    // Also contains POINT data, to correctly fit the map
     wkt.featureData = results
     wkt.featureStyle = featureStyle
 

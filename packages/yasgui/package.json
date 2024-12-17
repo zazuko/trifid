@@ -16,6 +16,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "files": [
+    "public",
     "test",
     "views",
     "dist",

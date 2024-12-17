@@ -96,5 +96,11 @@ describe('trifid-plugin-yasgui', () => {
       await res.text() // Just make sure that the stream is consumed
       strictEqual(res.status, 200)
     })
+
+    it('can serve marker icon SVG', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-public/marker-icon.svg`)
+      await res.text() // Just make sure that the stream is consumed
+      strictEqual(res.status, 200)
+    })
   })
 })
