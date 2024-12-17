@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.5.2
+
+### Patch Changes
+
+- c7bb52d: Fix handling of schema:URL that is not a xsd:anyURL
+
 ## 1.5.1
 
 ### Patch Changes
