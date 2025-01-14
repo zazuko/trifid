@@ -33,7 +33,7 @@
     "graph-explorer"
   ],
   "dependencies": {
-    "@fastify/static": "^8.0.3",
+    "@fastify/static": "^8.0.4",
     "graph-explorer": "^1.2.0",
     "import-meta-resolve": "^4.1.0"
   },
