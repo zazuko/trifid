@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 3.0.0
+
+### Major Changes
+
+- 499601f: The path to the CSS file needs to be changed from `static/style.css` to `static/spex.css` in case you are using a custom template for the SPEX plugin.
+
 ## 2.2.3
 
 ### Patch Changes
