@@ -1,5 +1,11 @@
 # trifid-plugin-spex
 
+## 2.2.3
+
+### Patch Changes
+
+- a8a1f21: Set `@zazuko/spex` version to be exactly equal to `0.2.1`, as `0.2.2` will include a breaking change in the generated style file name, and might break some custom templates.
+
 ## 2.2.2
 
 ### Patch Changes
