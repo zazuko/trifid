@@ -159,7 +159,7 @@ const entriesForLanguage = (store, language = 'en') => {
   return finalStore
 }
 
-/** @type {import('trifid-core/types').TrifidPlugin} */
+/** @type {import('../../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
   const { config, server, render } = trifid
 
