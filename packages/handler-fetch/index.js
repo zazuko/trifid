@@ -5,7 +5,7 @@ import { performance } from 'node:perf_hooks'
 import { v4 as uuidv4 } from 'uuid'
 import { waitForVariableToBeTrue } from './lib/utils.js'
 
-/** @type {import('trifid-core/types').TrifidPlugin} */
+/** @type {import('../core/types/index.js').TrifidPlugin} */
 export const factory = async (trifid) => {
   const { config, logger, trifidEvents } = trifid
   const { contentType, url, baseIri, graphName, unionDefaultGraph } = config
