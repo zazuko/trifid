@@ -30,7 +30,7 @@ const defaultConfiguration = {
 const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000
 const DEFAULT_ENDPOINT_NAME = 'default'
 
-/** @type {import('trifid-core/types').TrifidPlugin} */
+/** @type {import('../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
   const { logger, config, trifidEvents } = trifid
 
