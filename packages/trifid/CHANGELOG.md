@@ -1,5 +1,12 @@
 # trifid
 
+## 5.0.9
+
+### Patch Changes
+
+- Updated dependencies [499601f]
+  - trifid-plugin-spex@3.0.0
+
 ## 5.0.8
 
 ### Patch Changes
