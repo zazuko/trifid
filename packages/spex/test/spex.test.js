@@ -78,7 +78,7 @@ describe('trifid-plugin-spex', () => {
   })
 
   it('should serve the static CSS file', async () => {
-    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/style.css`)
+    const res = await fetch(`${getListenerURL(trifidListener)}/spex/static/spex.css`)
     await res.text() // Just make sure that the stream is consumed
     strictEqual(res.status, 200)
   })
