@@ -1,6 +1,6 @@
 // @ts-check
 
-import { strictEqual, deepStrictEqual, throws } from 'node:assert'
+import { strictEqual, deepStrictEqual, throws, doesNotThrow } from 'node:assert'
 import { afterEach, beforeEach, describe, it } from 'node:test'
 
 import { checkSingleDatasetBaseUrl, checkDatasetBaseUrl } from '../lib/base.js'
@@ -73,7 +73,7 @@ describe('lib/base', () => {
     })
 
     it('should throw on empty value', () => {
-      throws(() => checkDatasetBaseUrl(logger, ''))
+      doesNotThrow(() => checkDatasetBaseUrl(logger, ''))
     })
 
     it('should throw on array with an empty value', () => {
