@@ -13,20 +13,14 @@ jobs:
 
     timeout-minutes: 5
 
-    strategy:
-      matrix:
-        node-version:
-          - 20
-          - 22
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up NodeJS ${{ matrix.node-version }}
+      - name: Set up NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "lts/*"
           cache: npm
 
       - name: Install dependencies
@@ -43,20 +37,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version:
-          - 20
-          - 22
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up NodeJS ${{ matrix.node-version }}
+      - name: Set up NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "lts/*"
           cache: npm
 
       - name: Install dependencies
