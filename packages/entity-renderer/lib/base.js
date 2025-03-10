@@ -29,7 +29,7 @@ export const checkSingleDatasetBaseUrl = (logger, datasetBaseUrl) => {
  * Check the dataset base URL, and make sure it returns an array.
  * Some hints are provided if the dataset base URL is not correctly formatted.
  * If the dataset base URL is an array, each value is checked.
- * If a value is empty, then an error is thrown.
+ * If there is no dataset base URL, an empty array is returned.
  *
  * @param {{warn: Function }} logger - The logger instance
  * @param {string | string[]} datasetBaseUrl - The dataset base URL
@@ -37,7 +37,7 @@ export const checkSingleDatasetBaseUrl = (logger, datasetBaseUrl) => {
  */
 export const checkDatasetBaseUrl = (logger, datasetBaseUrl) => {
   if (!datasetBaseUrl) {
-    throw new Error('No datasetBaseUrl provided')
+    return []
   }
 
   if (Array.isArray(datasetBaseUrl)) {

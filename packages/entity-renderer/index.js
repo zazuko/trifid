@@ -40,6 +40,10 @@ const factory = async (trifid) => {
    * @type {Map<string, { rewrite: boolean, replaceIri: (iri: string) => string, iriOrigin: (iri: string) => string, datasetBaseUrl: string }>}
    */
   const dbu = new Map()
+  if (datasetBaseUrls.length === 0) {
+    dbu.set('default', { rewrite: rewriteConfigValue, replaceIri: (iri) => iri, iriOrigin: (iri) => iri, datasetBaseUrl: '' })
+    logger.debug('No datasetBaseUrl provided, no rewriting will be done')
+  }
   datasetBaseUrls.forEach((value) => {
     const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, value)
     // Just to have all the fields explicitly defined
