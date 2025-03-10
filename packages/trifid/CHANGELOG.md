@@ -1,5 +1,15 @@
 # trifid
 
+## 5.0.10
+
+### Patch Changes
+
+- 5ddaa47: Bump `@zazuko/yasgui` to 4.5.0
+- Updated dependencies [5ddaa47]
+- Updated dependencies [a190193]
+  - trifid-plugin-yasgui@3.4.4
+  - @zazuko/trifid-entity-renderer@1.5.3
+
 ## 5.0.9
 
 ### Patch Changes
