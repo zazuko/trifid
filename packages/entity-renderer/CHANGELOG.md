@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.5.3
+
+### Patch Changes
+
+- a190193: Allow empty `datasetBaseUrl` configuration value
+
 ## 1.5.2
 
 ### Patch Changes

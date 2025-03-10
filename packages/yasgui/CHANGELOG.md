@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.4.4
+
+### Patch Changes
+
+- 5ddaa47: Bump `@zazuko/yasgui` to 4.5.0
+
 ## 3.4.3
 
 ### Patch Changes
