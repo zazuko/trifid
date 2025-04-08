@@ -71,7 +71,7 @@
     "pino-pretty": "^13.0.0",
     "sparql-http-client": "^3.0.1",
     "string-replace-stream": "^0.0.2",
-    "yaml": "^2.7.0"
+    "yaml": "^2.7.1"
   },
   "devDependencies": {
     "@rdfjs/types": "^2.0.1",
