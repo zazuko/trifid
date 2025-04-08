@@ -37,7 +37,7 @@
     "sparql-proxy"
   ],
   "dependencies": {
-    "@vocabulary/sd": "^1.0.4",
+    "@vocabulary/sd": "^1.0.5",
     "@zazuko/env-node": "^3.0.0",
     "trifid-core": "^5.1.0"
   },
