@@ -50,7 +50,7 @@
     "@openlayers-elements/swisstopo": "^0.4.0",
     "@types/node": "^22.14.1",
     "c8": "^10.1.3",
-    "esbuild": "^0.25.2",
+    "esbuild": "^0.25.3",
     "rimraf": "^6.0.1",
     "trifid-core": "^5.1.0",
     "typescript": "^5.8.3"
