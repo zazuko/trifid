@@ -1,5 +1,13 @@
 # trifid
 
+## 5.0.11
+
+### Patch Changes
+
+- d743dbb: Upgrade some dependencies
+- Updated dependencies [23bd23e]
+  - @zazuko/trifid-plugin-sparql-proxy@2.6.2
+
 ## 5.0.10
 
 ### Patch Changes

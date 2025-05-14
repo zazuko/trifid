@@ -1,7 +1,7 @@
 {
   "name": "trifid",
   "description": "Trifid - Lightweight Linked Data Server and Proxy",
-  "version": "5.0.10",
+  "version": "5.0.11",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
   "type": "module",
@@ -31,7 +31,7 @@
     "linked-data"
   ],
   "dependencies": {
-    "@zazuko/trifid-plugin-sparql-proxy": "^2.5.0",
+    "@zazuko/trifid-plugin-sparql-proxy": "^2.6.2",
     "@zazuko/trifid-entity-renderer": "^1.5.3",
     "commander": "^13.1.0",
     "trifid-core": "^5.1.0",
