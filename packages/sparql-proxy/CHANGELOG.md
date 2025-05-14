@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.6.2
+
+### Patch Changes
+
+- 23bd23e: A simple tweak so that we can have the sparql-proxy running on top of a QLever endpoint
+
 ## 2.6.1
 
 ### Patch Changes
