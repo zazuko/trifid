@@ -10,6 +10,9 @@ import rdf from '@zazuko/env-node'
 import ReplaceStream from './lib/ReplaceStream.js'
 import { authBasicHeader, objectLength, isValidUrl } from './lib/utils.js'
 
+// TODO: remove this once QLever supports other formats (experimental flag that would be removed at any time)
+const engineMode = process.env.TRIFID_ENGINE_MODE || 'default'
+
 const defaultConfiguration = {
   endpointUrl: '',
   username: '',
@@ -316,6 +319,12 @@ const factory = async (trifid) => {
           if (request.query.format) {
             acceptHeader = options.formats[request.query.format] || acceptHeader
           }
+
+          // TODO: remove this tweak once QLever supports other formats
+          if (engineMode === 'qlever' && !acceptHeader.startsWith('application/sparql-results+json')) {
+            acceptHeader = 'text/turtle'
+          }
+
           const headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             Accept: acceptHeader,
