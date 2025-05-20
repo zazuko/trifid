@@ -33,7 +33,7 @@
   "dependencies": {
     "@zazuko/trifid-plugin-sparql-proxy": "^2.6.2",
     "@zazuko/trifid-entity-renderer": "^1.5.3",
-    "commander": "^13.1.0",
+    "commander": "^14.0.0",
     "trifid-core": "^5.1.0",
     "trifid-handler-fetch": "^3.3.3",
     "trifid-plugin-graph-explorer": "^2.1.0",
