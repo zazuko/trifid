@@ -37,7 +37,7 @@
     "handler-fetch"
   ],
   "dependencies": {
-    "oxigraph": "^0.4.9",
+    "oxigraph": "^0.4.11",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
