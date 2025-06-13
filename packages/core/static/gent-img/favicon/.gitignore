@@ -1,0 +1,4 @@
+# TODO: Remove this ignore file when we can build favicons on our build server.
+!build
+build/*.svg
+build/*.json

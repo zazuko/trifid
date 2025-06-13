@@ -1,0 +1,28 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Category=Various, Type=Level, Style=Outline, Color=Dark grey">
+<g id="Group 7">
+<path id="Combined Shape" fill-rule="evenodd" clip-rule="evenodd" d="M7.30435 20C6.58348 20 6 20.671 6 21.5C6 22.329 6.58348 23 7.30435 23H24.6957C25.4165 23 26 22.329 26 21.5C26 20.671 25.4165 20 24.6957 20H7.30435Z" fill="#223239"/>
+<mask id="mask0_416_49027" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="20" width="20" height="3">
+<path id="Combined Shape_2" fill-rule="evenodd" clip-rule="evenodd" d="M7.30435 20C6.58348 20 6 20.671 6 21.5C6 22.329 6.58348 23 7.30435 23H24.6957C25.4165 23 26 22.329 26 21.5C26 20.671 25.4165 20 24.6957 20H7.30435Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_416_49027)">
+</g>
+</g>
+<g id="Group 8">
+<path id="Combined Shape_3" fill-rule="evenodd" clip-rule="evenodd" d="M11.9783 14C11.4376 14 11 14.671 11 15.5C11 16.329 11.4376 17 11.9783 17H25.0217C25.5624 17 26 16.329 26 15.5C26 14.671 25.5624 14 25.0217 14H11.9783Z" fill="#223239"/>
+<mask id="mask1_416_49027" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="14" width="15" height="3">
+<path id="Combined Shape_4" fill-rule="evenodd" clip-rule="evenodd" d="M11.9783 14C11.4376 14 11 14.671 11 15.5C11 16.329 11.4376 17 11.9783 17H25.0217C25.5624 17 26 16.329 26 15.5C26 14.671 25.5624 14 25.0217 14H11.9783Z" fill="white"/>
+</mask>
+<g mask="url(#mask1_416_49027)">
+</g>
+</g>
+<g id="Group 9">
+<path id="Combined Shape_5" fill-rule="evenodd" clip-rule="evenodd" d="M17.587 8C17.2626 8 17 8.671 17 9.5C17 10.329 17.2626 11 17.587 11H25.413C25.7374 11 26 10.329 26 9.5C26 8.671 25.7374 8 25.413 8H17.587Z" fill="#223239"/>
+<mask id="mask2_416_49027" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="17" y="8" width="9" height="3">
+<path id="Combined Shape_6" fill-rule="evenodd" clip-rule="evenodd" d="M17.587 8C17.2626 8 17 8.671 17 9.5C17 10.329 17.2626 11 17.587 11H25.413C25.7374 11 26 10.329 26 9.5C26 8.671 25.7374 8 25.413 8H17.587Z" fill="white"/>
+</mask>
+<g mask="url(#mask2_416_49027)">
+</g>
+</g>
+</g>
+</svg>

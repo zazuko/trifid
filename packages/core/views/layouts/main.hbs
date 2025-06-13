@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>{{#if title}}{{ title }}{{else}}Trifid{{/if}}</title>
+  <link rel="stylesheet" href="/static/core/gent-styleguide.css" />
   <link rel="stylesheet" href="/static/core/style.css" />
 {{#each styles}}
   <link rel="stylesheet" href="{{ this }}" />
@@ -11,13 +12,15 @@
   <link rel="shortcut icon" href="/static/core/favicon.ico" />
 </head>
 
-<body>
+<body class="cs--blue">
   {{#unless disableHeader}}
   {{{ header }}}
   {{/unless}}
 
   <main class="trifid-main">
-    {{{ body }}}
+    <div class="content-container">
+      {{{ body }}}
+    </div>
   </main>
 
   {{#unless disableFooter}}
