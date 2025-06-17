@@ -42,7 +42,7 @@
     "trifid-core": "^5.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.30",
+    "@types/node": "^24.0.3",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3"
   },
