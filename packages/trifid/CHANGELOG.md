@@ -1,5 +1,15 @@
 # trifid
 
+## 5.0.12
+
+### Patch Changes
+
+- 98fee3a: Upgrade `@fastify/compress` to 8.1.0 so that it supports zstd
+- Updated dependencies [98fee3a]
+- Updated dependencies [a421a32]
+  - trifid-core@5.1.2
+  - @zazuko/trifid-plugin-sparql-proxy@2.7.0
+
 ## 5.0.11
 
 ### Patch Changes

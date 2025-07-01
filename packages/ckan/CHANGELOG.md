@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 4.2.3
+
+### Patch Changes
+
+- 717d3c6: Remove `dotenv` dependency
+
 ## 4.2.2
 
 ### Patch Changes
