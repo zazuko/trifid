@@ -1,5 +1,11 @@
 # trifid-core
 
+## 5.1.2
+
+### Patch Changes
+
+- 98fee3a: Upgrade `@fastify/compress` to 8.1.0 so that it supports zstd
+
 ## 5.1.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.7.0
+
+### Minor Changes
+
+- a421a32: Add support for `headers` option, to allow sending custom headers to the endpoint
+
+### Patch Changes
+
+- Updated dependencies [98fee3a]
+  - trifid-core@5.1.2
+
 ## 2.6.2
 
 ### Patch Changes
