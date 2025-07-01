@@ -51,7 +51,7 @@
   ],
   "dependencies": {
     "@fastify/accepts": "^5.0.2",
-    "@fastify/compress": "^8.0.3",
+    "@fastify/compress": "^8.1.0",
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.0.1",
     "@fastify/formbody": "^8.0.2",
