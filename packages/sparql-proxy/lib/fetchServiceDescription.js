@@ -1,10 +1,10 @@
 import rdf from '@zazuko/env-node'
 
-const fetchServiceDescription = async (endpointUrl, { format, authorization }) => {
+const fetchServiceDescription = async (endpointUrl, { headers, format }) => {
   const response = await rdf.fetch(endpointUrl, {
     headers: {
+      ...headers,
       Accept: format || '*/*',
-      authorization,
     },
   })
   return response.dataset()

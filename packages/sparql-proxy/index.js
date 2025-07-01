@@ -17,6 +17,7 @@ const defaultConfiguration = {
   endpointUrl: '',
   username: '',
   password: '',
+  headers: {}, // Additional headers to send to the SPARQL endpoint
   endpoints: {},
   datasetBaseUrl: '',
   allowRewriteToggle: true, // Allow the user to toggle the rewrite configuration using the `rewrite` query parameter.
@@ -53,6 +54,7 @@ const factory = async (trifid) => {
       options.endpointUrl = options.endpoints.default.url || ''
       options.username = options.endpoints.default.username || ''
       options.password = options.endpoints.default.password || ''
+      options.headers = options.endpoints.default.headers || {}
     }
 
     // Support for multiple endpoints
@@ -67,9 +69,8 @@ const factory = async (trifid) => {
     )
   }
 
-  let authorizationHeader
   if (options.username && options.password) {
-    authorizationHeader = authBasicHeader(options.username, options.password)
+    options.headers.Authorization = authBasicHeader(options.username, options.password)
   }
 
   const datasetBaseUrl = options.datasetBaseUrl
@@ -81,7 +82,7 @@ const factory = async (trifid) => {
     endpointUrl: options.endpointUrl,
     username: options.username,
     password: options.password,
-    authorizationHeader,
+    headers: options.headers,
     datasetBaseUrl,
     allowRewriteToggle,
     rewriteConfigValue,
@@ -98,9 +99,9 @@ const factory = async (trifid) => {
         throw Error(`Missing endpoints.${endpointName}.url parameter`)
       }
 
-      let endpointAuthorizationHeader
+      const endpointHeaders = endpointConfig.headers || {}
       if (endpointConfig.username && endpointConfig.password) {
-        endpointAuthorizationHeader = authBasicHeader(endpointConfig.username, endpointConfig.password)
+        endpointHeaders.Authorization = authBasicHeader(endpointConfig.username, endpointConfig.password)
       }
 
       const endpointDatasetBaseUrl = endpointConfig.datasetBaseUrl || datasetBaseUrl
@@ -110,7 +111,7 @@ const factory = async (trifid) => {
         endpointUrl: endpointConfig.url || '',
         username: endpointConfig.username || '',
         password: endpointConfig.password || '',
-        authorizationHeader: endpointAuthorizationHeader,
+        headers: endpointHeaders,
         datasetBaseUrl: endpointDatasetBaseUrl,
         allowRewriteToggle: endpointConfig.allowRewriteToggle ?? allowRewriteToggle,
         rewriteConfigValue: endpointRewriteConfigValue,
@@ -137,7 +138,7 @@ const factory = async (trifid) => {
       endpointUrl: options.endpointUrl,
       serviceDescriptionTimeout: options.serviceDescriptionTimeout,
       serviceDescriptionFormat: options.serviceDescriptionFormat,
-      authorizationHeader,
+      headers: options.headers,
     },
   })
 
@@ -326,11 +327,9 @@ const factory = async (trifid) => {
           }
 
           const headers = {
+            ...endpoint.headers,
             'Content-Type': 'application/x-www-form-urlencoded',
             Accept: acceptHeader,
-          }
-          if (endpoint.authorizationHeader) {
-            headers.Authorization = endpoint.authorizationHeader
           }
 
           const start = performance.now()
