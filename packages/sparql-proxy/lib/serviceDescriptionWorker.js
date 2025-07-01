@@ -32,8 +32,8 @@ parentPort.once('message', async (message) => {
 
     try {
       const dataset = await fsd.fetchServiceDescription(endpointUrl, {
+        headers: rest.headers,
         format: rest.serviceDescriptionFormat,
-        authorization: rest.authorizationHeader,
       })
       clearTimeout(timeout)
 
