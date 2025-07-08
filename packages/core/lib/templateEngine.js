@@ -58,6 +58,14 @@ const templateEngine = async (defaultOptions, locals) => {
     return arg1 === arg2 ? options.fn(this) : options.inverse(this)
   })
 
+  registerHelper('parseJSON', (jsonString) => {
+    try {
+      return JSON.parse(jsonString)
+    } catch (e) {
+      return {}
+    }
+  })
+
   const templateOptions = merge({}, defaultConfig, defaultOptions)
 
   const resolvedTemplates = new Map()
