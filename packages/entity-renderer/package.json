@@ -34,7 +34,7 @@
     "@zazuko/env": "^3.0.1",
     "@zazuko/prefixes": "^2.4.0",
     "@zazuko/rdf-entity-webcomponent": "^0.7.7",
-    "lit": "^3.3.0",
+    "lit": "^3.3.1",
     "mimeparse": "^0.1.4",
     "p-queue": "^8.1.0",
     "trifid-core": "^5.1.0"
