@@ -208,7 +208,7 @@ const factory = async (trifid) => {
       const handler = async (request, reply) => {
         const savedEndpointName = request.cookies.endpointName || DEFAULT_ENDPOINT_NAME
         let endpointName = request.query.endpoint || savedEndpointName
-        endpointName = endpointName.replace(/[^a-z0-9-]/gi, '')
+        endpointName = String(endpointName).replace(/[^a-z0-9-]/gi, '')
 
         // Only set the cookie if the endpoint name has changed and if it's not the default endpoint
         if (request.cookies.endpointName !== endpointName && endpointName !== DEFAULT_ENDPOINT_NAME) {
