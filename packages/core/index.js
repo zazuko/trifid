@@ -1,7 +1,7 @@
 // @ts-check
 import EventEmitter from 'node:events'
 
-import { pino } from 'pino'
+import pino from 'pino'
 import fastify from 'fastify'
 import fastifyCompress from '@fastify/compress'
 import fastifyCors from '@fastify/cors'
