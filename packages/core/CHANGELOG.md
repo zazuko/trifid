@@ -1,5 +1,13 @@
 # trifid-core
 
+## 5.2.0
+
+### Minor Changes
+
+- 7d21f77: Add OpenTelemetry support.
+
+  Just start Trifid with the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable set to your OpenTelemetry endpoint, like `https://example.com/v1/traces`.
+
 ## 5.1.2
 
 ### Patch Changes
