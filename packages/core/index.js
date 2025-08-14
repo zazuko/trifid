@@ -1,4 +1,6 @@
 // @ts-check
+import './tracing.js'
+
 import EventEmitter from 'node:events'
 
 import pino from 'pino'
@@ -84,7 +86,7 @@ const trifid = async (config, additionalPlugins = {}) => {
   // Custom logger instance
   const logger = pino(loggerConfig)
 
-  const server = fastify({
+  const server = await fastify({
     logger: false,
     trustProxy: true,
     ...serverOptions,
