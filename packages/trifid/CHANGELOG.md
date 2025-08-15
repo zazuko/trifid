@@ -1,5 +1,14 @@
 # trifid
 
+## 5.1.1
+
+### Patch Changes
+
+- 7d2ac00: Forward the SPARQL queries in the OpenTelemetry traces
+- Updated dependencies [7d2ac00]
+  - trifid-handler-fetch@3.4.0
+  - @zazuko/trifid-plugin-sparql-proxy@2.8.0
+
 ## 5.1.0
 
 ### Minor Changes

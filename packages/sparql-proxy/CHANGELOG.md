@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.8.0
+
+### Minor Changes
+
+- 7d2ac00: Forward the SPARQL queries in the OpenTelemetry traces
+
 ## 2.7.0
 
 ### Minor Changes
