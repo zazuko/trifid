@@ -1,5 +1,6 @@
 // @ts-check
 
+import { createHash } from 'node:crypto'
 import { Worker } from 'node:worker_threads'
 import { performance } from 'node:perf_hooks'
 import { v4 as uuidv4 } from 'uuid'
@@ -147,7 +148,7 @@ export const factory = async (trifid) => {
 
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody}>} request Request.
+       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody}> & { opentelemetry: () => import('@fastify/otel/types/types.d.ts').FastifyOtelRequestContext}} request Request.
        * @param {import('fastify').FastifyReply} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -171,6 +172,13 @@ export const factory = async (trifid) => {
         }
 
         queryLogger(`Received query via ${method}:\n${query}`)
+
+        if (request.opentelemetry) {
+          const { span } = request.opentelemetry()
+          span.setAttribute('db.system', 'sparql')
+          span.setAttribute('sparql.query.hash', createHash('sha256').update(query).digest('hex'))
+          span.addEvent('sparql.query', { statement: query })
+        }
 
         try {
           const start = performance.now()

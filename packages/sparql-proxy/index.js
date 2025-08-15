@@ -4,6 +4,7 @@ import { Readable } from 'node:stream'
 import { ReadableStream } from 'node:stream/web'
 import { performance } from 'node:perf_hooks'
 import { Worker } from 'node:worker_threads'
+import { createHash } from 'node:crypto'
 
 import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import rdf from '@zazuko/env-node'
@@ -202,7 +203,7 @@ const factory = async (trifid) => {
 
       /**
        * Route handler.
-       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody | string }> & { cookies: { endpointName?: string }, accepts: () => { type: (types: string[]) => string[] | string | false }}} request Request.
+       * @param {import('fastify').FastifyRequest<{ Querystring: QueryString, Body: RequestBody | string }> & { cookies: { endpointName?: string }, accepts: () => { type: (types: string[]) => string[] | string | false }} & { opentelemetry: () => import('@fastify/otel/types/types.d.ts').FastifyOtelRequestContext}} request Request.
        * @param {import('fastify').FastifyReply & { setCookie: (name: string, value: string, opts?: any) => {}, clearCookie: (name: string, opts?: any) => {}}} reply Reply.
        */
       const handler = async (request, reply) => {
@@ -314,6 +315,13 @@ const factory = async (trifid) => {
 
         logger.debug('Got a request to the sparql proxy')
         queryLogger(`Received query${rewriteValue ? ' (rewritten)' : ''} via ${method}:\n${query}`)
+
+        if (request.opentelemetry) {
+          const { span } = request.opentelemetry()
+          span.setAttribute('db.system', 'sparql')
+          span.setAttribute('sparql.query.hash', createHash('sha256').update(query).digest('hex'))
+          span.addEvent('sparql.query', { statement: query })
+        }
 
         try {
           let acceptHeader = request.headers.accept || 'application/sparql-results+json'
