@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 3.4.0
+
+### Minor Changes
+
+- 7d2ac00: Forward the SPARQL queries in the OpenTelemetry traces
+
 ## 3.3.4
 
 ### Patch Changes
