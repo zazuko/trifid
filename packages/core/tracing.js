@@ -5,10 +5,7 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 import FastifyOtelInstrumentation from '@fastify/otel'
 
-const traceExporter = new OTLPTraceExporter({
-  url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
-  headers: {},
-})
+const traceExporter = new OTLPTraceExporter()
 
 const sdk = new NodeSDK({
   resource: resourceFromAttributes({
