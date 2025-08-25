@@ -33,6 +33,7 @@
     "logo.svg",
     "index.js",
     "server.js",
+    "otel.js",
     "CHANGELOG.md"
   ],
   "main": "index.js",
