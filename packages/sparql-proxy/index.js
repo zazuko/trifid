@@ -6,8 +6,9 @@ import { performance } from 'node:perf_hooks'
 import { Worker } from 'node:worker_threads'
 import { createHash } from 'node:crypto'
 
-import { sparqlGetRewriteConfiguration } from 'trifid-core'
+import { metrics } from '@opentelemetry/api'
 import rdf from '@zazuko/env-node'
+import { sparqlGetRewriteConfiguration } from 'trifid-core'
 import ReplaceStream from './lib/ReplaceStream.js'
 import { authBasicHeader, objectLength, isValidUrl } from './lib/utils.js'
 
@@ -34,6 +35,11 @@ const defaultConfiguration = {
 
 const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000
 const DEFAULT_ENDPOINT_NAME = 'default'
+
+const meter = metrics.getMeter('sparql-proxy')
+const sparqlQueryCounter = meter.createCounter('sparql_queries_total', {
+  description: 'Number of SPARQL queries received',
+})
 
 /** @type {import('../core/types/index.js').TrifidPlugin} */
 const factory = async (trifid) => {
@@ -321,6 +327,8 @@ const factory = async (trifid) => {
           span.setAttribute('db.system', 'sparql')
           span.setAttribute('sparql.query.hash', createHash('sha256').update(query).digest('hex'))
           span.addEvent('sparql.query', { statement: query })
+
+          sparqlQueryCounter.add(1, { endpoint_name: endpointName, method })
         }
 
         try {

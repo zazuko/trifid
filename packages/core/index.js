@@ -1,5 +1,5 @@
 // @ts-check
-import './tracing.js'
+import './otel.js'
 
 import EventEmitter from 'node:events'
 

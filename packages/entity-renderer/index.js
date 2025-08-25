@@ -1,6 +1,7 @@
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { metrics } from '@opentelemetry/api'
 import { parsers } from '@rdfjs/formats-common'
 import rdf from '@zazuko/env'
 import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core'
@@ -11,6 +12,14 @@ import { checkDatasetBaseUrl } from './lib/base.js'
 
 import { createEntityRenderer } from './renderer/entity.js'
 import { createMetadataProvider } from './renderer/metadata.js'
+
+const meter = metrics.getMeter('entity-renderer')
+const dereferencedCounter = meter.createCounter('sparql_entities_dereferenced_total', {
+  description: 'Number of entities dereferenced in total',
+})
+const redirectedCounter = meter.createCounter('sparql_entities_redirected_total', {
+  description: 'Number of entities redirected in total',
+})
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -183,6 +192,7 @@ const factory = async (trifid) => {
               const { responseCode, location } = entityRedirect
               if (responseCode && location && responseCode.value && location.value) {
                 logger.debug(`Redirecting <${iri}> to <${location.value}> (HTTP ${responseCode.value})`)
+                redirectedCounter.add(1, { iri, location: location.value, response_code: responseCode.value, endpoint_name: endpointName, kind: 'sparql' })
                 reply.status(parseInt(responseCode.value, 10)).redirect(location.value)
                 return reply
               } else {
@@ -213,6 +223,7 @@ const factory = async (trifid) => {
           const quadStream = parsers.import(fixedContentType, entityStream)
 
           if (sparqlSupportedTypes.includes(acceptHeader)) {
+            dereferencedCounter.add(1, { iri, format: acceptHeader, endpoint_name: endpointName })
             const serialized = await sparqlSerializeQuadStream(quadStream, acceptHeader)
             reply.type(acceptHeader).send(serialized)
             return reply
@@ -232,6 +243,7 @@ const factory = async (trifid) => {
             if (!disabledSchemaUrlRedirect && urls.length > 0) {
               const redirectUrl = urls[0]
               logger.debug(`Redirecting to ${redirectUrl}`)
+              redirectedCounter.add(1, { iri, location: redirectUrl, response_code: 302, endpoint_name: endpointName, kind: 'schema_url' })
               reply.redirect(redirectUrl)
               return reply
             }
@@ -250,6 +262,7 @@ const factory = async (trifid) => {
           const metadata = await metadataProvider(request, { dataset })
           const jsonldSerialized = await sparqlSerializeQuadStream(dataset.toStream(), 'application/ld+json')
 
+          dereferencedCounter.add(1, { iri, format: 'text/html', endpoint_name: endpointName })
           reply.type('text/html').send(await render(request, entityTemplatePath, {
             dataset: entityHtml,
             entityLabel,
