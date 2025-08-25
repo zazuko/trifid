@@ -3,8 +3,16 @@
 import { createHash } from 'node:crypto'
 import { Worker } from 'node:worker_threads'
 import { performance } from 'node:perf_hooks'
+
+import { metrics } from '@opentelemetry/api'
 import { v4 as uuidv4 } from 'uuid'
+
 import { waitForVariableToBeTrue } from './lib/utils.js'
+
+const meter = metrics.getMeter('sparql-proxy')
+const sparqlQueryCounter = meter.createCounter('sparql_queries_total', {
+  description: 'Number of SPARQL queries received',
+})
 
 /** @type {import('../core/types/index.js').TrifidPlugin} */
 export const factory = async (trifid) => {
@@ -178,6 +186,8 @@ export const factory = async (trifid) => {
           span.setAttribute('db.system', 'sparql')
           span.setAttribute('sparql.query.hash', createHash('sha256').update(query).digest('hex'))
           span.addEvent('sparql.query', { statement: query })
+
+          sparqlQueryCounter.add(1, { method })
         }
 
         try {
