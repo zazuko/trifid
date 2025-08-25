@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 3.5.0
+
+### Minor Changes
+
+- c1b8591: Export `sparql_queries_total` OpenTelemetry metric
+
 ## 3.4.0
 
 ### Minor Changes
