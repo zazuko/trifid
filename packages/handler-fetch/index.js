@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { waitForVariableToBeTrue } from './lib/utils.js'
 
-const meter = metrics.getMeter('sparql-proxy')
+const meter = metrics.getMeter('handler-fetch')
 const sparqlQueryCounter = meter.createCounter('sparql_queries_total', {
   description: 'Number of SPARQL queries received',
 })

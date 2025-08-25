@@ -328,7 +328,7 @@ const factory = async (trifid) => {
           span.setAttribute('sparql.query.hash', createHash('sha256').update(query).digest('hex'))
           span.addEvent('sparql.query', { statement: query })
 
-          sparqlQueryCounter.add(1, { 'endpoint.name': endpointName, method })
+          sparqlQueryCounter.add(1, { endpoint_name: endpointName, method })
         }
 
         try {
