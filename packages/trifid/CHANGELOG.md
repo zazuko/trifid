@@ -1,5 +1,13 @@
 # trifid
 
+## 5.1.3
+
+### Patch Changes
+
+- b3137cd: Include `otel.js` which was missing if using the npm module directly.
+- Updated dependencies [b3137cd]
+  - trifid-core@5.3.1
+
 ## 5.1.2
 
 ### Patch Changes
