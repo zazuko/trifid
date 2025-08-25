@@ -1,5 +1,17 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.6.0
+
+### Minor Changes
+
+- 06bd35b: Export `sparql_entities_dereferenced_total` and `sparql_entities_redirected_total` metrics using OpenTelemetry
+
+### Patch Changes
+
+- Updated dependencies [c1b8591]
+- Updated dependencies [e124f78]
+  - trifid-core@5.3.0
+
 ## 1.5.3
 
 ### Patch Changes

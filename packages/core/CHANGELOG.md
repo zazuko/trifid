@@ -1,5 +1,15 @@
 # trifid-core
 
+## 5.3.0
+
+### Minor Changes
+
+- c1b8591: Export OpenTelemetry metrics
+
+### Patch Changes
+
+- e124f78: Use default environment variables to configure OpenTelemetry
+
 ## 5.2.0
 
 ### Minor Changes

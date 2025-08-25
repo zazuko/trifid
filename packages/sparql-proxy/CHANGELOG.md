@@ -1,5 +1,17 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.9.0
+
+### Minor Changes
+
+- c1b8591: Export `sparql_queries_total` OpenTelemetry metric
+
+### Patch Changes
+
+- Updated dependencies [c1b8591]
+- Updated dependencies [e124f78]
+  - trifid-core@5.3.0
+
 ## 2.8.0
 
 ### Minor Changes

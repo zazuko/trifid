@@ -1,5 +1,19 @@
 # trifid
 
+## 5.1.2
+
+### Patch Changes
+
+- 06bd35b: Export some metrics using OpenTelemetry
+- Updated dependencies [c1b8591]
+- Updated dependencies [06bd35b]
+- Updated dependencies [c1b8591]
+- Updated dependencies [e124f78]
+  - trifid-core@5.3.0
+  - @zazuko/trifid-entity-renderer@1.6.0
+  - trifid-handler-fetch@3.5.0
+  - @zazuko/trifid-plugin-sparql-proxy@2.9.0
+
 ## 5.1.1
 
 ### Patch Changes
