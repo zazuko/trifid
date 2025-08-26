@@ -1,6 +1,5 @@
 // @ts-check
 
-import { createHash } from 'node:crypto'
 import { Worker } from 'node:worker_threads'
 import { performance } from 'node:perf_hooks'
 
@@ -184,7 +183,6 @@ export const factory = async (trifid) => {
         if (request.opentelemetry) {
           const { span } = request.opentelemetry()
           span.setAttribute('db.system', 'sparql')
-          span.setAttribute('sparql.query.hash', createHash('sha256').update(query).digest('hex'))
           span.addEvent('sparql.query', { statement: query })
 
           sparqlQueryCounter.add(1, { method })
