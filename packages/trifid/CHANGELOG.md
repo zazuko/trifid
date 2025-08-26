@@ -1,5 +1,15 @@
 # trifid
 
+## 5.1.4
+
+### Patch Changes
+
+- c41beea: Lower the OpenTelemetry cardinality
+- Updated dependencies [c41beea]
+  - trifid-handler-fetch@3.5.1
+  - @zazuko/trifid-plugin-sparql-proxy@2.9.1
+  - @zazuko/trifid-entity-renderer@1.6.1
+
 ## 5.1.3
 
 ### Patch Changes

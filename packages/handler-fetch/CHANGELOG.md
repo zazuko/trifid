@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 3.5.1
+
+### Patch Changes
+
+- c41beea: Lower the OpenTelemetry cardinality
+
 ## 3.5.0
 
 ### Minor Changes
