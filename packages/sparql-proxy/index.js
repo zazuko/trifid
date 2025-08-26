@@ -4,7 +4,6 @@ import { Readable } from 'node:stream'
 import { ReadableStream } from 'node:stream/web'
 import { performance } from 'node:perf_hooks'
 import { Worker } from 'node:worker_threads'
-import { createHash } from 'node:crypto'
 
 import { metrics } from '@opentelemetry/api'
 import rdf from '@zazuko/env-node'
@@ -325,7 +324,6 @@ const factory = async (trifid) => {
         if (request.opentelemetry) {
           const { span } = request.opentelemetry()
           span.setAttribute('db.system', 'sparql')
-          span.setAttribute('sparql.query.hash', createHash('sha256').update(query).digest('hex'))
           span.addEvent('sparql.query', { statement: query })
 
           sparqlQueryCounter.add(1, { endpoint_name: endpointName, method })
