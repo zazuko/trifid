@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 2.9.1
+
+### Patch Changes
+
+- c41beea: Lower the OpenTelemetry cardinality
+
 ## 2.9.0
 
 ### Minor Changes

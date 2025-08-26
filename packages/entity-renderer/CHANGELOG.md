@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.6.1
+
+### Patch Changes
+
+- c41beea: Lower the OpenTelemetry cardinality
+
 ## 1.6.0
 
 ### Minor Changes
