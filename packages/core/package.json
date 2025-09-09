@@ -66,7 +66,7 @@
     "@opentelemetry/exporter-trace-otlp-http": "^0.203.0",
     "@opentelemetry/resources": "^2.1.0",
     "@opentelemetry/sdk-metrics": "^2.0.1",
-    "@opentelemetry/sdk-node": "^0.203.0",
+    "@opentelemetry/sdk-node": "^0.204.0",
     "@opentelemetry/semantic-conventions": "^1.36.0",
     "@rdfjs-elements/formats-pretty": "^0.6.8",
     "@types/sparql-http-client": "^3.0.5",
