@@ -25,7 +25,7 @@ const sdk = new NodeSDK({
     [ATTR_SERVICE_NAME]: 'trifid',
   }),
   traceExporter,
-  metricReader,
+  metricReaders: [metricReader],
   instrumentations: [
     getNodeAutoInstrumentations(),
     new FastifyOtelInstrumentation({
