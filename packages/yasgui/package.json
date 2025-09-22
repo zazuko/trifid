@@ -48,7 +48,7 @@
   "devDependencies": {
     "@openlayers-elements/maps": "^0.4.0",
     "@openlayers-elements/swisstopo": "^0.4.0",
-    "@types/node": "^24.4.0",
+    "@types/node": "^24.5.2",
     "c8": "^10.1.3",
     "esbuild": "^0.25.8",
     "rimraf": "^6.0.1",
