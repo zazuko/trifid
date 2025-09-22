@@ -58,7 +58,7 @@
     "@fastify/formbody": "^8.0.2",
     "@fastify/otel": "^0.9.4",
     "@fastify/static": "^8.2.0",
-    "@fontsource/playfair-display": "^5.2.6",
+    "@fontsource/playfair-display": "^5.2.8",
     "@fontsource/roboto": "^5.2.6",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.62.1",
