@@ -27,7 +27,7 @@
     "i18n"
   ],
   "dependencies": {
-    "i18n": "^0.15.1"
+    "i18n": "^0.15.2"
   },
   "files": [
     "index.js",
