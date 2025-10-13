@@ -38,7 +38,7 @@
   ],
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
-    "oxigraph": "^0.4.11",
+    "oxigraph": "^0.5.1",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
