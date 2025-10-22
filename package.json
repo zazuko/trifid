@@ -7,11 +7,11 @@
   "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint . --quiet --ignore-path .gitignore",
-    "test": "npx wsrun --report -msc test",
+    "test": "npm run test --workspaces --if-present",
     "release": "changeset publish",
     "prepare": "husky",
-    "build": "npx wsrun --report -msc prepack",
-    "clean": "npx wsrun --report -msc clean"
+    "build": "npm run prepack --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present"
   },
   "workspaces": [
     "packages/*"
@@ -27,7 +27,6 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
     "type-detect": "^4.1.0",
-    "typescript": "^5.9.3",
-    "wsrun": "^5.2.4"
+    "typescript": "^5.9.3"
   }
 }
