@@ -28,3 +28,6 @@ updates:
         patterns:
           - "fastify"
           - "@fastify/*"
+      opentelemetry:
+        patterns:
+          - "@opentelemetry/*"
