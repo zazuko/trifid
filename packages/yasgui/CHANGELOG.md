@@ -1,5 +1,11 @@
 # trifid-plugin-yasgui
 
+## 3.4.5
+
+### Patch Changes
+
+- ea0b33f: Upgrade YASGUI to v4.6.0
+
 ## 3.4.4
 
 ### Patch Changes

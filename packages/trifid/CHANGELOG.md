@@ -1,5 +1,13 @@
 # trifid
 
+## 5.1.5
+
+### Patch Changes
+
+- 6ab19f1: Upgrade container base image to Node 24.
+- Updated dependencies [ea0b33f]
+  - trifid-plugin-yasgui@3.4.5
+
 ## 5.1.4
 
 ### Patch Changes
