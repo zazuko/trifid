@@ -19,6 +19,7 @@ const factory = async (trifid) => {
     schemaLabelProperty: schemaLabelPropertyConfig,
     language: languageConfig,
     languages: languagesConfig,
+    title: titleConfig,
   } = config
 
   const view = !template ? `${currentDir}/views/graph-explorer.hbs` : template
@@ -47,6 +48,7 @@ const factory = async (trifid) => {
     { code: 'fr', label: 'French' },
     { code: 'it', label: 'Italian' },
   ]
+  const title = titleConfig || 'Graph Explorer'
 
   return {
     defaultConfiguration: async () => {
@@ -96,7 +98,7 @@ const factory = async (trifid) => {
               languages,
             }).replace(/'/g, "\\'"),
           },
-          { title: 'Graph Explorer' },
+          { title: title },
         )
 
         reply.type('text/html').send(content)

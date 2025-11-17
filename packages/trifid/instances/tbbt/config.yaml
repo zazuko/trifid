@@ -30,6 +30,8 @@ plugins:
     paths:
       - /graph-explorer
       - /graph-explorer/
+    config:
+      title: "The Big Bang Theory"
 
   spex:
     module: trifid-plugin-spex
