@@ -42,7 +42,7 @@
     "@zazuko/env": "^3.0.1",
     "@zazuko/prefixes": "^2.4.0",
     "is-graph-pointer": "^2.2.0",
-    "sparql-http-client": "^3.0.1",
+    "sparql-http-client": "^3.1.0",
     "xmlbuilder2": "^4.0.0"
   },
   "devDependencies": {
