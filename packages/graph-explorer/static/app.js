@@ -12,6 +12,7 @@ const onWorkspaceMounted = async (workspace) => {
   const model = workspace.getModel()
 
   model.importLayout({
+    diagram: graphExplorerConfig.serializedDiagram,
     dataProvider: new GraphExplorer.SparqlDataProvider(
       {
         endpointUrl: graphExplorerConfig.endpointUrl,
@@ -60,8 +61,19 @@ const onWorkspaceMounted = async (workspace) => {
 
 const props = {
   ref: onWorkspaceMounted,
+  onSaveDiagram: graphExplorerConfig.onSaveDiagram,
+  onPointerDown: graphExplorerConfig.onPointerDown,
+  onPointerMove: graphExplorerConfig.onPointerMove,
+  onPointerUp: graphExplorerConfig.onPointerUp,
   languages: graphExplorerConfig.languages,
   language: graphExplorerConfig.language,
+  hidePanels: graphExplorerConfig.hidePanels,
+  hideScrollBars: graphExplorerConfig.hideScrollBars,
+  hideHalo: graphExplorerConfig.hideHalo,
+  hideNavigator: graphExplorerConfig.hideNavigator,
+  collapseNavigator: graphExplorerConfig.collapseNavigator,
+  leftPanelInitiallyOpen: graphExplorerConfig.leftPanelInitiallyOpen,
+  rightPanelInitiallyOpen: graphExplorerConfig.rightPanelInitiallyOpen,
 }
 
 ReactDOM.render(
