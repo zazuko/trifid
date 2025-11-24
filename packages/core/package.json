@@ -69,7 +69,7 @@
     "@opentelemetry/sdk-node": "^0.208.0",
     "@opentelemetry/semantic-conventions": "^1.38.0",
     "@rdfjs-elements/formats-pretty": "^0.6.8",
-    "@types/sparql-http-client": "^3.0.5",
+    "@types/sparql-http-client": "^3.1.0",
     "ajv": "^8.17.1",
     "commander": "^14.0.2",
     "fastify": "^5.6.2",
