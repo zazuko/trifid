@@ -34,7 +34,7 @@ export const pathResolver = (base, path) => {
  */
 
 export const envCallback = (name) => {
-  if (!process.env[name]) {
+  if (process.env[name] === undefined) {
     // eslint-disable-next-line no-console
     console.warn(`WARNING: '${name}' environment variable is not set`)
     return ''
