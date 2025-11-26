@@ -33,6 +33,7 @@ The following options are supported:
 - `endpointUrl`: URL to the SPARQL endpoint which will be used in the YASGUI interface
 - `template`: Path to an alternative template (default: `views/graph-explorer.hbs`)
 - `acceptBlankNodes`: Show blank nodes
+- `title`: Title of the Graph Explorer page
 
 Example:
 
