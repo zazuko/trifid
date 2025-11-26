@@ -1,5 +1,11 @@
 # trifid-plugin-graph-explorer
 
+## 2.2.0
+
+### Minor Changes
+
+- 65a2625: Make the title configurable.
+
 ## 2.1.2
 
 ### Patch Changes

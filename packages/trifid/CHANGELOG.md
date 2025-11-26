@@ -1,5 +1,18 @@
 # trifid
 
+## 5.2.0
+
+### Minor Changes
+
+- 60d4ae3: Remove the default value for username and password for the SPARQL endpoint in the container image.
+
+### Patch Changes
+
+- Updated dependencies [65a2625]
+- Updated dependencies [cc82fa2]
+  - trifid-plugin-graph-explorer@2.2.0
+  - trifid-core@5.3.2
+
 ## 5.1.5
 
 ### Patch Changes

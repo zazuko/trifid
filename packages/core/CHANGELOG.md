@@ -1,5 +1,11 @@
 # trifid-core
 
+## 5.3.2
+
+### Patch Changes
+
+- cc82fa2: Do not show warnings for empty (but defined) environment variables.
+
 ## 5.3.1
 
 ### Patch Changes
