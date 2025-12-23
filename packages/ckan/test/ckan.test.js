@@ -4,14 +4,10 @@ import { strictEqual } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { describe, it, beforeEach, afterEach } from 'node:test'
 import { expect } from 'chai'
-import * as chai from 'chai'
-import chaiSubset from 'chai-subset'
-import * as xml from 'xml2js'
+import { Parser as XMLParser } from 'xml2js'
 import xpath from 'xml2js-xpath'
 import { convertLegacyFrequency } from '../src/xml.js'
 import { createTrifidInstance, getListenerURL } from './support/utils.js'
-
-chai.use(chaiSubset)
 
 /**
  * Remove prefixes from the body.
@@ -24,10 +20,8 @@ const removePrefixesFromBody = (body) => {
 }
 
 describe('@zazuko/trifid-plugin-ckan', () => {
+  /** @type {import('fastify').FastifyInstance} */
   let trifidListener
-  const parser = new xml.Parser({
-    explicitArray: false,
-  })
 
   beforeEach(async () => {
     const trifidInstance = await createTrifidInstance({ logLevel: 'warn' })
@@ -39,6 +33,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
   })
 
   describe('basic tests', () => {
+    const parser = new XMLParser({
+      explicitArray: false,
+    })
+
     it('should answer with a 400 status code if the organization parameter is missing', async () => {
       const ckanUrl = `${getListenerURL(trifidListener)}/ckan`
       const res = await fetch(ckanUrl)
@@ -57,8 +55,11 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     })
 
     describe('example organization', () => {
+      /** @type {Response} */
       let res
+      /** @type {string} */
       let xmlText
+      /** @type {any} */
       let xmlBody
 
       beforeEach(async () => {
@@ -139,6 +140,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
   })
 
   describe('BLW tests', () => {
+    const parser = new XMLParser({
+      explicitArray: false,
+    })
+    /** @type {any} */
     let xmlBody
 
     beforeEach(async () => {
