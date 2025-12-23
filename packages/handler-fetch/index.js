@@ -59,7 +59,11 @@ export const factory = async (trifid) => {
 
   worker.on('error', (error) => {
     ready = false
-    logger.error(`Error from worker: ${error.message}`)
+    if (error instanceof Error) {
+      logger.error(`Error from worker: ${error.message}`)
+    } else {
+      logger.error(`Error from worker: ${String(error)}`)
+    }
   })
 
   worker.on('exit', (code) => {
