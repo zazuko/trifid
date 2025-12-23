@@ -4,3 +4,7 @@ npm-debug.log
 Dockerfile
 .changeset
 .github
+.husky
+build
+coverage
+dist
