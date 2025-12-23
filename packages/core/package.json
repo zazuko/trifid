@@ -52,7 +52,7 @@
   ],
   "dependencies": {
     "@fastify/accepts": "^5.0.4",
-    "@fastify/compress": "^8.3.0",
+    "@fastify/compress": "^8.3.1",
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.2.0",
     "@fastify/formbody": "^8.0.2",
@@ -61,7 +61,7 @@
     "@fontsource/playfair-display": "^5.2.8",
     "@fontsource/roboto": "^5.2.9",
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.67.2",
+    "@opentelemetry/auto-instrumentations-node": "^0.67.3",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.208.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.208.0",
     "@opentelemetry/resources": "^2.2.0",
