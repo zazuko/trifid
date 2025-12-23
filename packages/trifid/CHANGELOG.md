@@ -1,5 +1,15 @@
 # trifid
 
+## 5.3.0
+
+### Minor Changes
+
+- 1875a00: Use hardened container image
+
+### Patch Changes
+
+- 1875a00: Upgrade some dependencies
+
 ## 5.2.0
 
 ### Minor Changes
