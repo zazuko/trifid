@@ -1,11 +1,12 @@
 // @ts-check
 
-import { strictEqual } from 'node:assert'
+import { strictEqual, ok } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { describe, it, beforeEach, afterEach } from 'node:test'
-import { expect } from 'chai'
+
 import { Parser as XMLParser } from 'xml2js'
 import xpath from 'xml2js-xpath'
+
 import { convertLegacyFrequency } from '../src/xml.js'
 import { createTrifidInstance, getListenerURL } from './support/utils.js'
 
@@ -17,6 +18,23 @@ import { createTrifidInstance, getListenerURL } from './support/utils.js'
  */
 const removePrefixesFromBody = (body) => {
   return body.replace(/<rdf:RDF.*>/g, '<rdf:RDF>')
+}
+
+/**
+ * Checks if all properties in subset are present in superset (recursively).
+ *
+ * @param {any} superset
+ * @param {any} subset
+ */
+const assertContainsSubset = (superset, subset) => {
+  if (typeof subset !== 'object' || subset === null) {
+    strictEqual(superset, subset)
+    return
+  }
+  for (const key of Object.keys(subset)) {
+    ok(key in superset, `Missing key: ${key}`)
+    assertContainsSubset(superset[key], subset[key])
+  }
 }
 
 describe('@zazuko/trifid-plugin-ckan', () => {
@@ -83,13 +101,13 @@ describe('@zazuko/trifid-plugin-ckan', () => {
         <foaf:Organization>
           <foaf:name>http://example.com/my-org</foaf:name>
         </foaf:Organization>`)
-        expect(publisher).to.containSubset(expected)
+        assertContainsSubset(publisher, expected)
       })
 
       it('should get landing page resource', () => {
         const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage')
 
-        expect(landingPage.$['rdf:resource']).to.eq('https://example.com/')
+        strictEqual(landingPage.$['rdf:resource'], 'https://example.com/')
       })
     })
 
@@ -160,7 +178,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
           <vcard:fn>Bundesamt für Landwirtschaft, Fachbereich Marktanalysen</vcard:fn>
           <vcard:hasEmail rdf:resource="mailto:marktanalysen@blw.admin.ch"/>
         </vcard:Organization>`)
-      expect(contactPoint).to.containSubset(expected)
+      assertContainsSubset(contactPoint, expected)
     })
 
     it('should get structured publisher', async () => {
@@ -170,25 +188,26 @@ describe('@zazuko/trifid-plugin-ckan', () => {
         <foaf:Organization rdf:about="https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw">
           <foaf:name>Bundesamt für Landwirtschaft</foaf:name>
         </foaf:Organization>`)
-      expect(publisher).to.containSubset(expected)
+      assertContainsSubset(publisher, expected)
     })
 
     it('should get landing page resource', () => {
       const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage')
 
-      expect(landingPage.$['rdf:resource']).to.eq('https://agrarmarktdaten.admin.ch')
+      strictEqual(landingPage.$['rdf:resource'], 'https://agrarmarktdaten.admin.ch')
     })
 
     it('should use mapped themes', () => {
       const themes = xpath.find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:theme')
         .map(theme => theme.$['rdf:resource'])
 
-      expect(themes).to.contain.all.members([
+      const expectedThemes = [
         'http://publications.europa.eu/resource/authority/data-theme/AGRI',
         'http://publications.europa.eu/resource/authority/data-theme/GOVE',
         'http://publications.europa.eu/resource/authority/data-theme/ECON',
-      ])
-      expect(themes).to.have.length(3)
+      ]
+      expectedThemes.forEach(theme => ok(themes.includes(theme), `Theme missing: ${theme}`))
+      strictEqual(themes.length, 3)
     })
 
     it('should get temporal PeriodOfTime', async () => {
@@ -199,19 +218,19 @@ describe('@zazuko/trifid-plugin-ckan', () => {
           <schema:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-01-01</schema:startDate>
           <schema:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-12-31</schema:endDate>
         </dcterms:PeriodOfTime>`)
-      expect(themes).to.containSubset(expected)
+      assertContainsSubset(themes, expected)
     })
 
     it('should build correct distribution format', async () => {
       const format = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution/dcat:Distribution/dcterms:format')
 
-      expect(format.$['rdf:resource']).to.eq('http://publications.europa.eu/resource/authority/file-type/SPARQLQ')
+      strictEqual(format.$['rdf:resource'], 'http://publications.europa.eu/resource/authority/file-type/SPARQLQ')
     })
 
     it('should copy existing distributions', async () => {
       const distributions = xpath.find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution')
 
-      expect(distributions).to.have.length(2)
+      strictEqual(distributions.length, 2)
       const expected = await parser.parseStringPromise(`
         <dcat:Distribution rdf:about="https://agriculture.ld.admin.ch/foag/cube/MilkDairyProducts/Production_Quantity_Month/distribution/1">
           <dcterms:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2024-02-01</dcterms:issued>
@@ -223,7 +242,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
           <dcat:byteSize rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1013</dcat:byteSize>
           <dcat:mediaType rdf:resource="https://www.iana.org/assignments/media-types/text/csv"></dcat:mediaType>
         </dcat:Distribution>`)
-      expect(distributions[1]).to.containSubset(expected)
+      assertContainsSubset(distributions[1], expected)
     })
   })
 })
