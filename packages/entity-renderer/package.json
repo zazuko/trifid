@@ -37,7 +37,7 @@
     "@zazuko/rdf-entity-webcomponent": "^0.7.7",
     "lit": "^3.3.2",
     "mimeparse": "^0.1.4",
-    "p-queue": "^9.0.1",
+    "p-queue": "^9.1.0",
     "trifid-core": "^5.3.0"
   },
   "devDependencies": {
