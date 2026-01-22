@@ -33,7 +33,7 @@
     "@rdfjs/formats-common": "^3.1.0",
     "@rdfjs/to-ntriples": "^3.0.1",
     "@zazuko/env": "^3.0.1",
-    "@zazuko/prefixes": "^2.6.0",
+    "@zazuko/prefixes": "^2.6.1",
     "@zazuko/rdf-entity-webcomponent": "^0.7.7",
     "lit": "^3.3.2",
     "mimeparse": "^0.1.4",
