@@ -70,7 +70,7 @@
     "@opentelemetry/semantic-conventions": "^1.39.0",
     "@rdfjs-elements/formats-pretty": "^0.6.8",
     "@types/sparql-http-client": "^3.1.0",
-    "ajv": "^8.17.1",
+    "ajv": "^8.18.0",
     "commander": "^14.0.3",
     "fastify": "^5.7.4",
     "handlebars": "^4.7.8",
