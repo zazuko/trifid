@@ -1,5 +1,11 @@
 # @zazuko/trifid-renderer-entity
 
+## 1.7.0
+
+### Minor Changes
+
+- dfb29d8: Make `Accept` headers configurable for DESCRIBE queries
+
 ## 1.6.1
 
 ### Patch Changes
