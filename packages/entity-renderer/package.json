@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@rdfjs/types": "^2.0.1",
-    "c8": "^10.1.3",
+    "c8": "^11.0.0",
     "trifid-handler-fetch": "^3.5.1",
     "trifid-plugin-yasgui": "^3.4.4"
   },
