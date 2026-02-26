@@ -203,12 +203,13 @@ const factory = async (trifid) => {
 
           // Get the entity from the dataset
           const describeQuery = isContainer ? mergedConfig.containerGraphQuery : mergedConfig.resourceGraphQuery
+          const describeQueryAcceptHeader = isContainer ? mergedConfig.containerGraphQueryAcceptHeader : mergedConfig.resourceGraphQueryAcceptHeader
           const entity = await query(replaceIriInQuery(describeQuery, iri), {
             ask: false,
             rewriteResponse,
             headers: {
               ...queryHeaders,
-              accept: 'application/n-quads',
+              accept: describeQueryAcceptHeader || 'application/n-quads',
             },
           })
           const entityContentType = entity.contentType || 'application/n-triples'
