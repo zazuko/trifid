@@ -20,7 +20,7 @@ jobs:
     steps:
       # This allow GitHub Actions to trigger the jobs for tags if needed
       - name: Generate token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         id: app-token
         with:
           app-id: ${{ secrets.GH_APP_ID }}
