@@ -73,7 +73,7 @@
     "ajv": "^8.18.0",
     "commander": "^14.0.3",
     "fastify": "^5.8.3",
-    "handlebars": "^4.7.8",
+    "handlebars": "^4.7.9",
     "import-meta-resolve": "^4.2.0",
     "json5": "^2.2.3",
     "lodash": "^4.17.23",
