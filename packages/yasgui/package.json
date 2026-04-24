@@ -41,7 +41,7 @@
     "yasgui"
   ],
   "dependencies": {
-    "@fastify/static": "^9.1.1",
+    "@fastify/static": "^9.1.3",
     "@zazuko/yasgui": "^4.6.1",
     "import-meta-resolve": "^4.2.0"
   },
