@@ -32,7 +32,7 @@ Make sure they follow [the CKAN spec](https://handbook.opendata.swiss/fr/content
 - `dcterms:spatial`
 - `dcterms:coverage`
 - `dcterms:temporal`
-- `dcterms:keyword` (literals without a language are ignored)
+- `dcat:keyword` (literals without a language are ignored)
 
 The following properties are populated by the endpoint:
 
