@@ -16,19 +16,19 @@ globals:
 plugins:
   staticFiles:
     order: 100
-    module: file:./plugins/static.js
+    module: file:./plugins/static.ts
     paths: "/sources"
     config:
       directory: cwd:.
 
   zazuko-redirect:
-    module: file:./plugins/redirect.js
+    module: file:./plugins/redirect.ts
     paths: "/zazuko"
     config:
       target: https://zazuko.com/
 
   throw:
-    module: file:./plugins/throw.js
+    module: file:./plugins/throw.ts
     paths: "/oops"
     config:
       message: This is a custom error message!

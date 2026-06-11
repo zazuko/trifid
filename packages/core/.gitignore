@@ -3,6 +3,9 @@ coverage
 node_modules
 npm-debug.log
 *.tgz
-*.d.ts
+dist
+
+# The root .gitignore ignores all *.d.ts files (generated declarations now live
+# in dist/), but the hand-written ambient declarations under types/ are source
+# files and must be tracked.
 !types/*.d.ts
-*.d.ts.map

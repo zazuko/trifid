@@ -7,7 +7,7 @@
   "plugins": {
     "tests": {
       "order": 120,
-      "module": "file:./plugins/static.js",
+      "module": "file:./plugins/static.ts",
       "paths": "/tests-dir",
       "config": {
         "directory": "cwd:./test"
