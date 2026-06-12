@@ -5,6 +5,9 @@ WORKDIR /app
 # Copy everything, so that it uses local dependencies
 COPY . .
 RUN npm install && npm cache clean --force
+# Build all packages
+RUN npm run build \
+  && chmod +x /app/packages/trifid/dist/server.js
 
 # Runtime stage
 FROM dhi.io/node:24-alpine3.22 AS runtime
@@ -18,8 +21,8 @@ ENV TRIFID_CONFIG="instances/docker-sparql/config.yaml"
 ENV FETCH_HANDLER_FILE="https://raw.githubusercontent.com/zazuko/tbbt-ld/master/dist/tbbt.nt"
 ENV FETCH_HANDLER_FILE_TYPE="application/n-triples"
 
-WORKDIR /app/packages/trifid
+WORKDIR /app/packages/trifid/dist
 
-ENTRYPOINT [ "/app/packages/trifid/server.js" ]
+ENTRYPOINT [ "/app/packages/trifid/dist/server.js" ]
 
 COPY --from=build /app/ /app/
