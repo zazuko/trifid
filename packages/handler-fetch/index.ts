@@ -37,7 +37,7 @@ export const factory: TrifidPlugin = async (trifid) => {
    *
    * @param msg Message to log
    */
-  const queryLogger = (msg: string) => logFn(msg);
+  const queryLogger = (msg: string) => logFn.call(logger, msg);
 
   const queryTimeout = 30000;
 

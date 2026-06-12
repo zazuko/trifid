@@ -37,7 +37,7 @@ const fixContentTypeHeader = (contentType: string) => {
 };
 
 const factory: TrifidPlugin = async (trifid) => {
-  const { render, logger, query } = trifid;
+  const { render, logger, query, notFound } = trifid;
   // The entity-renderer configuration is highly dynamic; values are narrowed
   // where it matters and otherwise treated as opaque.
   const config = trifid.config as Record<string, any>;
@@ -109,8 +109,8 @@ const factory: TrifidPlugin = async (trifid) => {
         const currentPath = request.url.split('?')[0];
         // Check if it is a path that needs to be ignored (check of type is already done at the load of the plugin)
         if (ignoredPaths.includes(currentPath)) {
-          reply.callNotFound();
-          return reply;
+          await notFound(request, reply);
+          return;
         }
 
         // Get the endpoint name from the query parameter or from the cookie (if allowed)
@@ -185,8 +185,8 @@ const factory: TrifidPlugin = async (trifid) => {
 
         // If the IRI is not found, we return a 404
         if (!iri) {
-          reply.callNotFound();
-          return reply;
+          await notFound(request, reply);
+          return;
         }
 
         try {
@@ -226,8 +226,8 @@ const factory: TrifidPlugin = async (trifid) => {
           const entityContentType = entity.contentType || 'application/n-triples';
           const entityStream = entity.response;
           if (!entityStream) {
-            reply.callNotFound();
-            return reply;
+            await notFound(request, reply);
+            return;
           }
 
           // Make sure the Content-Type is lower case and without parameters (e.g. charset)
@@ -285,8 +285,8 @@ const factory: TrifidPlugin = async (trifid) => {
           }));
         } catch (e) {
           logger.error(e);
-          reply.callNotFound();
-          return reply;
+          await notFound(request, reply);
+          return;
         }
 
         return reply;

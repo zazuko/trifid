@@ -188,7 +188,25 @@ const trifid = async (
 
   // Add error and not found handlers (requires template engine to be ready)
   server.setErrorHandler(errorsHandler);
-  server.setNotFoundHandler(await notFoundHandler({ render }));
+  const notFoundHandlerFn = await notFoundHandler({ render });
+  server.setNotFoundHandler(notFoundHandlerFn);
+
+  // Wrapper exposed to plugins: uses reply.callNotFound() (which switches the
+  // route context to the 404 context, bypassing per-route onSend hooks such as
+  // compression) and waits for the raw response to be fully written before
+  // resolving.  This lets async plugin handlers return safely without
+  // wrapThenable racing and sending a second, empty response.
+  const notFound = (_request: FastifyRequest, reply: FastifyReply): Promise<void> =>
+    new Promise<void>((resolve) => {
+      const onDone = () => {
+        reply.raw.off('finish', onDone);
+        reply.raw.off('close', onDone);
+        resolve();
+      };
+      reply.raw.once('finish', onDone);
+      reply.raw.once('close', onDone);
+      reply.callNotFound();
+    });
 
   const plugins = await pluginsAssembler(
     fullConfig,
@@ -202,6 +220,7 @@ const trifid = async (
     templateEngineInstance,
     `http://${host}:${portNumber}/`,
     trifidEvents,
+    notFound,
   );
 
   const start = async () => {

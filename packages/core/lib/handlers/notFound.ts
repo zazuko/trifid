@@ -15,43 +15,65 @@ const factory = async ({ render }: { render: RenderFunction }) => {
   /**
    * Not found handler.
    *
+   * Returns a Promise that resolves only after the raw response stream emits
+   * `finish` or `close`.  This prevents Fastify's wrapThenable from racing
+   * and calling `reply.send(undefined)` while an async onSend hook (e.g.
+   * @fastify/compress) is still streaming the body — which would cause
+   * Fastify to write `content-length: 0` and flush headers before the
+   * compressed body arrives.
+   *
    * @param request Request.
    * @param reply Reply.
    */
-  const handler = async (request: FastifyRequest, reply: FastifyReply) => {
-    request.log.debug(`path '${request.url}' returned a 404 error (Not Found)`);
+  const handler = (request: FastifyRequest, reply: FastifyReply): Promise<void> =>
+    new Promise<void>((resolve, reject) => {
+      const onDone = () => {
+        reply.raw.off('finish', onDone);
+        reply.raw.off('close', onDone);
+        resolve();
+      };
+      reply.raw.once('finish', onDone);
+      reply.raw.once('close', onDone);
 
-    const accept = request.accepts();
+      (async () => {
+        request.log.debug(`path '${request.url}' returned a 404 error (Not Found)`);
 
-    reply.status(404);
+        const accept = request.accepts();
 
-    switch (accept.type([
-      'text/plain',
-      'json',
-      'html',
-    ])) {
-      case 'json':
-        reply.send({ success: false, message: 'Not found', status: 404 });
-        break;
+        reply.status(404);
 
-      case 'html':
-        reply.type('text/html').send(
-          await render(
-            request,
-            `${currentDir}/../../views/404.hbs`,
-            {
-              url: request.url,
-            },
-            { title: 'Not Found' },
-          ),
-        );
-        break;
+        switch (accept.type([
+          'text/plain',
+          'json',
+          'html',
+        ])) {
+          case 'json':
+            reply.send({ success: false, message: 'Not found', status: 404 });
+            break;
 
-      default:
-        reply.type('text/plain').send('Not Found\n');
-        break;
-    }
-  };
+          case 'html':
+            reply.type('text/html').send(
+              await render(
+                request,
+                `${currentDir}/../../views/404.hbs`,
+                {
+                  url: request.url,
+                },
+                { title: 'Not Found' },
+              ),
+            );
+            break;
+
+          default:
+            reply.type('text/plain').send('Not Found\n');
+            break;
+        }
+      })().catch((err) => {
+        reply.raw.off('finish', onDone);
+        reply.raw.off('close', onDone);
+        reject(err as Error);
+      });
+    });
 
   return handler;
 };

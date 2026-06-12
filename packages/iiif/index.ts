@@ -9,7 +9,7 @@ import frame from './src/frame.ts';
 import { createApi } from './src/iiif.ts';
 
 const trifidFactory: TrifidPlugin = async (trifid) => {
-  const { config, logger } = trifid;
+  const { config, logger, notFound } = trifid;
 
   if (!config || !config.endpointUrl) {
     throw Error('missing endpointUrl parameter');
@@ -54,16 +54,16 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
         const query = request.query as { uri?: string };
         if (!(uriPrefix || query.uri)) {
           logger.debug('No uri query parameter');
-          reply.callNotFound();
-          return reply;
+          await notFound(request, reply);
+          return;
         }
 
         const uri = uriPrefix ? rdf.namedNode(`${uriPrefix}${fullUrlPathname}`) : rdf.namedNode(query.uri as string);
         logger.debug(`uri: ${uri.value}`);
         if (!await api.exists(uri)) {
           logger.debug(`uri: ${uri.value} not found`);
-          reply.callNotFound();
-          return reply;
+          await notFound(request, reply);
+          return;
         }
         logger.debug(`fetching uri: ${uri.value}`);
 

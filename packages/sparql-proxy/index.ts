@@ -95,7 +95,7 @@ const sparqlQueryCounter = meter.createCounter('sparql_queries_total', {
 });
 
 const factory: TrifidPlugin = async (trifid) => {
-  const { logger, config, trifidEvents } = trifid;
+  const { logger, config, trifidEvents, notFound } = trifid;
 
   const endpoints = new Map<string, EndpointEntry>();
 
@@ -298,7 +298,8 @@ const factory: TrifidPlugin = async (trifid) => {
 
         const endpoint = endpoints.get(endpointName);
         if (!endpoint) {
-          return reply.callNotFound();
+          await notFound(request, reply);
+          return;
         }
         logger.debug(`Using endpoint: ${endpointName}`);
 

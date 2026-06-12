@@ -176,6 +176,8 @@ export interface TrifidPluginArgument {
   query: TrifidQuery;
   /** The Trifid events emitter. */
   trifidEvents: EventEmitter;
+  /** Send a 404 Not Found response using the core's registered handler. */
+  notFound: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
   /** Register a template helper, that can be used by the template engine. */
   registerTemplateHelper: RegisterTemplateHelper;
 }

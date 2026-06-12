@@ -2,7 +2,7 @@ import merge from 'lodash/merge.js';
 
 import type { EventEmitter } from 'node:events';
 
-import type { FastifyInstance, HTTPMethods } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest, HTTPMethods } from 'fastify';
 import type { Logger } from 'pino';
 
 import { initQuery } from '../sparql.ts';
@@ -28,6 +28,7 @@ const apply = async (
   templateEngine: TemplateEngineInstance,
   instanceHostname: string,
   trifidEvents: EventEmitter,
+  notFound: (request: FastifyRequest, reply: FastifyReply) => Promise<void>,
 ) => {
   const { query: querySparql } = initQuery(
     logger,
@@ -55,6 +56,7 @@ const apply = async (
       logger: pluginLogger,
       render,
       query,
+      notFound,
       registerTemplateHelper: registerHelper,
       trifidEvents,
     });
