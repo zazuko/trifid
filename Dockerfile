@@ -4,9 +4,9 @@ WORKDIR /app
 
 # Copy everything, so that it uses local dependencies
 COPY . .
-RUN npm install && npm cache clean --force
+RUN corepack enable && pnpm install --frozen-lockfile
 # Build all packages
-RUN npm run build \
+RUN pnpm build \
   && chmod +x /app/packages/trifid/dist/server.js
 
 # Runtime stage

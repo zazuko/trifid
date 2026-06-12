@@ -18,13 +18,13 @@ plugins:
       path: file:../views/welcome.hbs
 
   yasgui:
-    module: trifid-plugin-yasgui
+    module: file:../../../yasgui/index.ts
     paths:
       - /sparql
       - /sparql/
 
   fetch-handler:
-    module: trifid-handler-fetch
+    module: file:../../../handler-fetch/index.ts
     paths: /query
     config:
       url: file:../data/data.ttl

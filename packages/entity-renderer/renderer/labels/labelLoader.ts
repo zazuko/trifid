@@ -2,6 +2,7 @@ import { ns } from '@zazuko/rdf-entity-webcomponent/src/namespaces.js';
 import PQueue from 'p-queue';
 import rdf from '@zazuko/env';
 import { parsers } from '@rdfjs/formats-common';
+import type { Term } from '@rdfjs/types';
 
 /**
  * labelNamespace: If specified, only fetches labels for iris starting with this
@@ -71,7 +72,7 @@ class LabelLoader {
     return false;
   }
 
-  getTermsWithoutLabel(pointer: any) {
+  getTermsWithoutLabel(pointer: any): Set<Term> {
     const result = rdf.termSet();
     pointer.dataset.map((quad: any) => {
       if (this.labelFilter(pointer, quad.subject)) {
