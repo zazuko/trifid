@@ -1,4 +1,4 @@
-import { resolve, join } from 'node:path'
+import { resolve, join } from 'node:path';
 
 /**
  * Register a resolver.
@@ -12,27 +12,27 @@ export const registerResolver = (
   callback: (name: string) => string,
   value: string,
 ): string => {
-  const split = value.split(':')
+  const split = value.split(':');
   if (split.length === 1) {
-    return value
+    return value;
   }
 
   if (split[0] !== name) {
-    return value
+    return value;
   }
 
-  split.shift()
-  return callback(split.join(':'))
-}
+  split.shift();
+  return callback(split.join(':'));
+};
 
 export const pathResolver = (base: string, path: string): string => {
-  const resolvedPath = resolve(path)
+  const resolvedPath = resolve(path);
   if (resolvedPath === path) {
-    return path
+    return path;
   }
 
-  return join(base, path)
-}
+  return join(base, path);
+};
 
 /**
  * Environment resolver
@@ -41,27 +41,27 @@ export const pathResolver = (base: string, path: string): string => {
 export const envCallback = (name: string): string => {
   if (process.env[name] === undefined) {
     // eslint-disable-next-line no-console
-    console.warn(`WARNING: '${name}' environment variable is not set`)
-    return ''
+    console.warn(`WARNING: '${name}' environment variable is not set`);
+    return '';
   }
-  return process.env[name]
-}
+  return process.env[name];
+};
 
 export const envResolver = (value: string): string => {
-  return registerResolver('env', envCallback, value)
-}
+  return registerResolver('env', envCallback, value);
+};
 
 /**
  * Current working directory resolver.
  */
 
 export const cwdCallback = (name: string): string => {
-  return pathResolver(process.cwd(), name)
-}
+  return pathResolver(process.cwd(), name);
+};
 
 export const cwdResolver = (value: string): string => {
-  return registerResolver('cwd', cwdCallback, value)
-}
+  return registerResolver('cwd', cwdCallback, value);
+};
 
 /**
  * File resolver.
@@ -71,11 +71,11 @@ export const cwdResolver = (value: string): string => {
 export const fileCallback = (base?: string) => {
   return (name: string): string => {
     if (base === undefined) {
-      base = process.cwd()
+      base = process.cwd();
     }
-    return pathResolver(base, name)
-  }
-}
+    return pathResolver(base, name);
+  };
+};
 
 /**
  * Register the file resolver.
@@ -84,5 +84,5 @@ export const fileCallback = (base?: string) => {
  * @param base Base path to resolve from.
  */
 export const fileResolver = (value: string, base?: string): string => {
-  return registerResolver('file', fileCallback(base), value)
-}
+  return registerResolver('file', fileCallback(base), value);
+};

@@ -1,4 +1,4 @@
-import type { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
+import type { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 
 /**
  * Error handler.
@@ -12,16 +12,11 @@ const handler = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  request.log.error(error)
+  request.log.error(error);
 
-  let statusCode = error.statusCode || 500
+  // Errors are deliberately masked as a generic 500 response, so that no
+  // internal details leak to the client.
+  reply.status(500).send('Internal Server Error');
+};
 
-  // Handle the case where there is an error, but no specific status code has been set
-  if (statusCode < 400) {
-    statusCode = 500
-  }
-
-  reply.status(500).send('Internal Server Error')
-}
-
-export default handler
+export default handler;

@@ -4,8 +4,16 @@
   "type": "module",
   "version": "3.5.1",
   "license": "Apache-2.0",
-  "main": "index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "source": "./index.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
@@ -17,15 +25,14 @@
   },
   "files": [
     "dist",
-    "lib",
-    "index.js",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "c8 --all --reporter lcovonly --reporter text node --test **/*.test.js",
-    "prebuild": "rimraf dist/",
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='test/**' --exclude=dist --exclude=coverage --reporter lcovonly --reporter text node --conditions=source --test **/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf *.tgz dist/ coverage/",
     "build": "tsc",
-    "prepack": "npm run build"
+    "prepack": "npm run clean && npm run build"
   },
   "author": {
     "name": "Zazuko GmbH",

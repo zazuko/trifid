@@ -1,4 +1,5 @@
 /dist
 .env
-*.d.ts
-*.d.ts.map
+coverage
+node_modules
+*.tgz

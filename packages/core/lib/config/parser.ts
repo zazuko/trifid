@@ -1,18 +1,18 @@
-import { readFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { readFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import Ajv from 'ajv'
+import Ajv from 'ajv';
 
-import type { TrifidConfigWithExtends } from '../../types/index.ts'
+import type { TrifidConfigWithExtends } from '../../types/index.ts';
 
-const currentDir = dirname(fileURLToPath(import.meta.url))
-const schemaPath = join(currentDir, 'schema.json')
-const schemaContent = await readFile(schemaPath, 'utf8')
-const schema = JSON.parse(schemaContent)
+const currentDir = dirname(fileURLToPath(import.meta.url));
+const schemaPath = join(currentDir, 'schema.json');
+const schemaContent = await readFile(schemaPath, 'utf8');
+const schema = JSON.parse(schemaContent);
 
 // @ts-ignore -- Ajv's CommonJS default export is not seen as constructable under NodeNext
-const ajv = new Ajv()
+const ajv = new Ajv();
 
 /**
  * Return the configuration object if it is valid or throw an error in other cases.
@@ -21,12 +21,12 @@ const ajv = new Ajv()
  * @returns Valid configuration.
  */
 const parser = (config?: TrifidConfigWithExtends): TrifidConfigWithExtends => {
-  const data = !config ? {} : config
-  const valid = ajv.validate(schema, data)
+  const data = !config ? {} : config;
+  const valid = ajv.validate(schema, data);
   if (!valid) {
-    throw new Error(ajv.errorsText())
+    throw new Error(ajv.errorsText());
   }
-  return data
-}
+  return data;
+};
 
-export default parser
+export default parser;

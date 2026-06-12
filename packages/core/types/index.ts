@@ -2,11 +2,27 @@
  * @module trifid-core/types/index.ts
  */
 
-import type { EventEmitter } from 'node:events'
+import type { EventEmitter } from 'node:events';
 
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import type { Logger } from 'pino'
-import type { HelperDelegate } from 'handlebars'
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import type { Logger } from 'pino';
+import type { HelperDelegate } from 'handlebars';
+
+// Trifid Core decorates every request with a per-request session map and the
+// server instance with shared locals, and registers `@fastify/cookie` (which
+// decorates requests with `cookies`). Declaring the augmentation here — in a
+// module that is part of the emitted declarations — makes it apply
+// automatically to every package that imports `trifid-core`, so plugins do not
+// need their own copy.
+declare module 'fastify' {
+  interface FastifyRequest {
+    session: Map<string, unknown>;
+    cookies: { [cookieName: string]: string | undefined };
+  }
+  interface FastifyInstance {
+    locals: Map<string, unknown>;
+  }
+}
 
 /**
  * A bag of user-provided configuration values.
@@ -14,44 +30,44 @@ import type { HelperDelegate } from 'handlebars'
  * Values come from YAML/JSON config files (after resolver expansion) and are
  * therefore not statically known: consumers must narrow them before use.
  */
-export type ConfigRecord = Record<string, unknown>
+export type ConfigRecord = Record<string, unknown>;
 
 /**
  * Per-request session store, decorated on the Fastify request by the core.
  */
-export type SessionData = Map<string, unknown>
+export type SessionData = Map<string, unknown>;
 
 /**
  * A Fastify request that carries the Trifid session.
  */
-export type RequestWithSession = FastifyRequest & { session: SessionData }
+export type RequestWithSession = FastifyRequest & { session: SessionData };
 
 /**
  * The supported log levels.
  */
-export type LogLevel = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace' | 'silent'
+export type LogLevel = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace' | 'silent';
 
 /**
  * The supported log formats.
  */
-export type LogFormat = 'pretty' | 'json'
+export type LogFormat = 'pretty' | 'json';
 
 /**
  * Trifid Plugin Configuration.
  */
 export interface TrifidPluginConfig {
   /** The order of the plugin (for loading them). */
-  order?: number
+  order?: number;
   /** The NPM module of the plugin. */
-  module?: string
+  module?: string;
   /** The paths to apply the plugin to. */
-  paths?: string | string[]
+  paths?: string | string[];
   /** The HTTP methods to apply the plugin to. */
-  methods?: string | string[]
+  methods?: string | string[];
   /** The hosts to apply the plugin to. */
-  hosts?: string | string[]
+  hosts?: string | string[];
   /** The plugin configuration. */
-  config?: ConfigRecord
+  config?: ConfigRecord;
 }
 
 /**
@@ -61,16 +77,16 @@ export interface TrifidServerConfig {
   /** Fastify server listener. */
   listener?: {
     /** The host to listen on. */
-    host?: string
+    host?: string;
     /** The port to listen on. */
-    port?: number | string
-  }
+    port?: number | string;
+  };
   /** The log level. */
-  logLevel?: LogLevel
+  logLevel?: LogLevel;
   /** The log format. */
-  logFormat?: LogFormat
+  logFormat?: LogFormat;
   /** Server options. */
-  options?: ConfigRecord
+  options?: ConfigRecord;
 }
 
 /**
@@ -78,13 +94,13 @@ export interface TrifidServerConfig {
  */
 export interface TrifidConfig {
   /** Fastify server. */
-  server?: TrifidServerConfig
+  server?: TrifidServerConfig;
   /** Global settings. */
-  globals?: ConfigRecord
+  globals?: ConfigRecord;
   /** Template settings. */
-  template?: ConfigRecord
+  template?: ConfigRecord;
   /** Plugins. */
-  plugins?: Record<string, TrifidPluginConfig>
+  plugins?: Record<string, TrifidPluginConfig>;
 }
 
 /**
@@ -92,13 +108,13 @@ export interface TrifidConfig {
  */
 export interface ObjectWithExtends {
   /** The configuration to extend. */
-  extends?: string[]
+  extends?: string[];
 }
 
 /**
  * Trifid configuration with `extends` field.
  */
-export type TrifidConfigWithExtends = TrifidConfig & ObjectWithExtends
+export type TrifidConfigWithExtends = TrifidConfig & ObjectWithExtends;
 
 /**
  * Fastify route handler.
@@ -106,7 +122,7 @@ export type TrifidConfigWithExtends = TrifidConfig & ObjectWithExtends
 export type FastifyRouteHandler = (
   request: FastifyRequest,
   reply: FastifyReply,
-) => void | Promise<void>
+) => void | Promise<void>;
 
 /**
  * Render a view to an HTML string.
@@ -116,52 +132,52 @@ export type RenderFunction = (
   templatePath: string,
   context: ConfigRecord,
   options?: ConfigRecord,
-) => Promise<string>
+) => Promise<string>;
 
 /**
  * Register a template helper, that can be used by the template engine.
  */
-export type RegisterTemplateHelper = (name: string, fn: HelperDelegate) => void
+export type RegisterTemplateHelper = (name: string, fn: HelperDelegate) => void;
 
 /**
  * A ready-to-use template engine instance.
  */
 export interface TemplateEngineInstance {
   /** Render a view to an HTML string. */
-  render: RenderFunction
+  render: RenderFunction;
   /** Register a template helper. */
-  registerHelper: RegisterTemplateHelper
+  registerHelper: RegisterTemplateHelper;
 }
 
 /**
  * The Fastify server instance, decorated with the Trifid locals.
  */
-export type TrifidServer = FastifyInstance & { locals: Map<string, unknown> }
+export type TrifidServer = FastifyInstance & { locals: Map<string, unknown> };
 
 /**
  * Trifid Plugin Argument.
  */
 export interface TrifidPluginArgument {
   /** The paths to apply the plugin to. */
-  paths?: string[]
+  paths?: string[];
   /** The HTTP methods to apply the plugin to. */
-  methods?: string[]
+  methods?: string[];
   /** The hosts to apply the plugin to. */
-  hosts?: string[]
+  hosts?: string[];
   /** The logger instance. */
-  logger: Logger
+  logger: Logger;
   /** The Fastify server instance. */
-  server: TrifidServer
+  server: TrifidServer;
   /** The Trifid configuration. */
-  config: ConfigRecord
+  config: ConfigRecord;
   /** The render function. */
-  render: RenderFunction
+  render: RenderFunction;
   /** The SPARQL query function. */
-  query: TrifidQuery
+  query: TrifidQuery;
   /** The Trifid events emitter. */
-  trifidEvents: EventEmitter
+  trifidEvents: EventEmitter;
   /** Register a template helper, that can be used by the template engine. */
-  registerTemplateHelper: RegisterTemplateHelper
+  registerTemplateHelper: RegisterTemplateHelper;
 }
 
 /**
@@ -169,9 +185,9 @@ export interface TrifidPluginArgument {
  */
 export interface TrifidPluginSetup {
   /** Default configurations for this plugin. */
-  defaultConfiguration?: () => Promise<TrifidPluginConfig>
+  defaultConfiguration?: () => Promise<TrifidPluginConfig>;
   /** Route handler. */
-  routeHandler?: () => Promise<FastifyRouteHandler>
+  routeHandler?: () => Promise<FastifyRouteHandler>;
 }
 
 /**
@@ -179,22 +195,22 @@ export interface TrifidPluginSetup {
  */
 export type TrifidPlugin = (
   trifid: TrifidPluginArgument,
-) => Promise<TrifidPluginSetup | void>
+) => Promise<TrifidPluginSetup | void>;
 
 /**
  * Options accepted by a Trifid SPARQL query.
  */
 export interface TrifidQueryOptions {
   /** The configured endpoint to query (defaults to `default`). */
-  endpoint?: string
+  endpoint?: string;
   /** Is it an ASK query? */
-  ask?: boolean
+  ask?: boolean;
   /** Is it a SELECT query? */
-  select?: boolean
+  select?: boolean;
   /** Headers to use in the request. */
-  headers?: Record<string, string>
+  headers?: Record<string, string>;
   /** Replace strings in the response. */
-  rewriteResponse?: Array<{ find: string, replace: string }>
+  rewriteResponse?: Array<{ find: string; replace: string }>;
 }
 
 /**
@@ -203,4 +219,4 @@ export interface TrifidQueryOptions {
 export type TrifidQuery = (
   query: string,
   options?: TrifidQueryOptions,
-) => Promise<unknown>
+) => Promise<unknown>;

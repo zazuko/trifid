@@ -1,9 +1,9 @@
-import { describe, it } from 'node:test'
-import { strictEqual } from 'node:assert'
+import { describe, it } from 'node:test';
+import { strictEqual } from 'node:assert';
 
-import trifidCore, { getListenerURL, assertRejection } from '../../index.ts'
+import trifidCore, { getListenerURL, assertRejection } from '../../index.ts';
 
-import redirectPlugin from '../../plugins/redirect.ts'
+import redirectPlugin from '../../plugins/redirect.ts';
 
 const createTrifidInstance = async (config) => {
   return await trifidCore({
@@ -19,32 +19,32 @@ const createTrifidInstance = async (config) => {
       paths: ['/redirect'],
       config,
     },
-  })
-}
+  });
+};
 
 describe('redirect plugin', () => {
   it('should throw if the target parameter is not set', () => {
     // @ts-expect-error
-    assertRejection(redirectPlugin({ config: {}, logger: { debug: (_: any) => { } } }))
-  })
+    assertRejection(redirectPlugin({ config: {}, logger: { debug: (_: any) => { } } }));
+  });
 
   it('should redirect request', async () => {
-    const trifidInstance = await createTrifidInstance({ target: '/' })
-    const trifidListener = await trifidInstance.start()
-    const pluginUrl = `${getListenerURL(trifidListener)}/redirect`
-    const response = await fetch(pluginUrl, { redirect: 'manual' })
-    await trifidListener.close()
+    const trifidInstance = await createTrifidInstance({ target: '/' });
+    const trifidListener = await trifidInstance.start();
+    const pluginUrl = `${getListenerURL(trifidListener)}/redirect`;
+    const response = await fetch(pluginUrl, { redirect: 'manual' });
+    await trifidListener.close();
 
-    strictEqual(response.status, 302)
-  })
+    strictEqual(response.status, 302);
+  });
 
   it('should not redirect request', async () => {
-    const trifidInstance = await createTrifidInstance({ target: '/' })
-    const trifidListener = await trifidInstance.start()
-    const pluginUrl = `${getListenerURL(trifidListener)}/non-existant-route`
-    const response = await fetch(pluginUrl, { redirect: 'manual' })
-    await trifidListener.close()
+    const trifidInstance = await createTrifidInstance({ target: '/' });
+    const trifidListener = await trifidInstance.start();
+    const pluginUrl = `${getListenerURL(trifidListener)}/non-existant-route`;
+    const response = await fetch(pluginUrl, { redirect: 'manual' });
+    await trifidListener.close();
 
-    strictEqual(response.status, 404)
-  })
-})
+    strictEqual(response.status, 404);
+  });
+});

@@ -1,11 +1,11 @@
-import { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import type { RenderFunction } from '../../types/index.ts'
+import type { RenderFunction } from '../../types/index.ts';
 
-const currentDir = dirname(fileURLToPath(import.meta.url))
+const currentDir = dirname(fileURLToPath(import.meta.url));
 
 /*
  * Using the factory pattern to create the handler,
@@ -19,11 +19,11 @@ const factory = async ({ render }: { render: RenderFunction }) => {
    * @param reply Reply.
    */
   const handler = async (request: FastifyRequest, reply: FastifyReply) => {
-    request.log.debug(`path '${request.url}' returned a 404 error (Not Found)`)
+    request.log.debug(`path '${request.url}' returned a 404 error (Not Found)`);
 
-    const accept = request.accepts()
+    const accept = request.accepts();
 
-    reply.status(404)
+    reply.status(404);
 
     switch (accept.type([
       'text/plain',
@@ -31,8 +31,8 @@ const factory = async ({ render }: { render: RenderFunction }) => {
       'html',
     ])) {
       case 'json':
-        reply.send({ success: false, message: 'Not found', status: 404 })
-        break
+        reply.send({ success: false, message: 'Not found', status: 404 });
+        break;
 
       case 'html':
         reply.type('text/html').send(
@@ -44,16 +44,16 @@ const factory = async ({ render }: { render: RenderFunction }) => {
             },
             { title: 'Not Found' },
           ),
-        )
-        break
+        );
+        break;
 
       default:
-        reply.type('text/plain').send('Not Found\n')
-        break
+        reply.type('text/plain').send('Not Found\n');
+        break;
     }
-  }
+  };
 
-  return handler
-}
+  return handler;
+};
 
-export default factory
+export default factory;

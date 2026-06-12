@@ -3,7 +3,7 @@
  * This can be used to test any other plugin.
  */
 
-import type { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify';
 
 /**
  * Get an endpoint of the Fastify Instance.
@@ -13,18 +13,18 @@ import type { FastifyInstance } from 'fastify'
 export const getListenerURL = (server: FastifyInstance): string => {
   const addresses = server.addresses().map((address) => {
     if (typeof address === 'string') {
-      return address
+      return address;
     }
-    return `http://${address.address}:${address.port}`
-  })
+    return `http://${address.address}:${address.port}`;
+  });
 
-  const [firstAddress] = addresses
+  const [firstAddress] = addresses;
   if (firstAddress === undefined) {
-    throw new Error('The listener is not listening')
+    throw new Error('The listener is not listening');
   }
 
-  return firstAddress
-}
+  return firstAddress;
+};
 
 /**
  * Assert that a promise is rejected.
@@ -35,8 +35,8 @@ export const getListenerURL = (server: FastifyInstance): string => {
 export const assertRejection = (promise: Promise<unknown>): Promise<void> => {
   return promise.then(
     () => {
-      throw new Error('Expected promise to be rejected')
+      throw new Error('Expected promise to be rejected');
     },
     () => { },
-  )
-}
+  );
+};

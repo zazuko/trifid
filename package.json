@@ -6,26 +6,32 @@
   "type": "module",
   "license": "Apache-2.0",
   "scripts": {
-    "lint": "eslint . --quiet --ignore-path .gitignore",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "npm run test --workspaces --if-present",
     "release": "changeset publish",
     "prepare": "husky",
-    "build": "npm run prepack --workspaces --if-present",
+    "build": "npm run build --workspace trifid-core && npm run prepack --workspaces --if-present",
     "clean": "npm run clean --workspaces --if-present"
   },
   "workspaces": [
     "packages/*"
   ],
   "lint-staged": {
-    "*.js": [
-      "eslint --fix --quiet"
+    "*.{js,mjs,cjs,ts}": [
+      "eslint --fix"
     ]
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "type-detect": "^4.1.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.61.0"
   }
 }

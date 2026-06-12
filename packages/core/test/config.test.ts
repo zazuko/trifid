@@ -1,18 +1,18 @@
-import { describe, it } from 'node:test'
-import { throws, doesNotThrow } from 'node:assert'
+import { describe, it } from 'node:test';
+import { throws, doesNotThrow } from 'node:assert';
 
-import parser from '../lib/config/parser.ts'
+import parser from '../lib/config/parser.ts';
 
 describe('config', () => {
   it('should not throw if the configuration is empty', () => {
-    doesNotThrow(() => parser())
-    doesNotThrow(() => parser({}))
-  })
+    doesNotThrow(() => parser());
+    doesNotThrow(() => parser({}));
+  });
 
   it('sould throw if we add some non-supported fields', () => {
     // @ts-expect-error
-    throws(() => parser({ thisFieldIsNotSupported: true }))
-  })
+    throws(() => parser({ thisFieldIsNotSupported: true }));
+  });
 
   it('should not throw if supported properties are empty', () => {
     doesNotThrow(() =>
@@ -22,28 +22,28 @@ describe('config', () => {
         server: {},
         plugins: {},
       }),
-    )
-  })
+    );
+  });
 
   it('should not throw on valid values for extends', () => {
     doesNotThrow(() =>
       parser({
         extends: [],
       }),
-    )
+    );
 
     doesNotThrow(() =>
       parser({
         extends: ['path'],
       }),
-    )
+    );
 
     doesNotThrow(() =>
       parser({
         extends: ['path1', 'path2', 'path3'],
       }),
-    )
-  })
+    );
+  });
 
   it('should throw on invalid values for extends', () => {
     // this is a string instead of an array of strings
@@ -51,24 +51,24 @@ describe('config', () => {
       parser({
         // @ts-expect-error
         extends: 'this is a string instead of an array',
-      })
-    })
+      });
+    });
 
     // this is not an array of strings, but an array of integers
     throws(() => {
       parser({
         // @ts-expect-error
         extends: [1, 2, 3],
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('should not throw on valid values for server', () => {
     doesNotThrow(() => {
       parser({
         server: {},
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -76,8 +76,8 @@ describe('config', () => {
           listener: {},
           options: {},
         },
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -85,8 +85,8 @@ describe('config', () => {
           listener: {},
           options: {},
         },
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -96,8 +96,8 @@ describe('config', () => {
           },
           options: {},
         },
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -109,9 +109,9 @@ describe('config', () => {
             foo: 'bar',
           },
         },
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('should throw on invalid values for server', () => {
     // this is a string instead of an object
@@ -119,8 +119,8 @@ describe('config', () => {
       parser({
         // @ts-expect-error
         server: 'this is a string instead of an object',
-      })
-    })
+      });
+    });
 
     // unsupported field
     throws(() => {
@@ -131,8 +131,8 @@ describe('config', () => {
           // @ts-expect-error
           unsupportedField: true,
         },
-      })
-    })
+      });
+    });
 
     // invalid port number
     throws(() => {
@@ -143,8 +143,8 @@ describe('config', () => {
           },
           options: {},
         },
-      })
-    })
+      });
+    });
 
     // unsupported listener property
     throws(() => {
@@ -157,24 +157,24 @@ describe('config', () => {
           },
           options: {},
         },
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('should not throw on valid values for globals', () => {
     doesNotThrow(() => {
       parser({
         globals: {},
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
         globals: {
           foo: 'bar',
         },
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -182,8 +182,8 @@ describe('config', () => {
           foo: 'bar',
           jon: 'doe',
         },
-      })
-    })
+      });
+    });
 
     // multi-level globals
     doesNotThrow(() => {
@@ -193,9 +193,9 @@ describe('config', () => {
             bar: 'baz',
           },
         },
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('should throw on invalid values for globals', () => {
     // this is a string instead of an object
@@ -203,16 +203,16 @@ describe('config', () => {
       parser({
         // @ts-expect-error
         globals: 'this is a string instead of an object',
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('should not throw on valid values for plugins', () => {
     doesNotThrow(() => {
       parser({
         plugins: {},
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -222,8 +222,8 @@ describe('config', () => {
             module: 'module',
           },
         },
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -236,8 +236,8 @@ describe('config', () => {
             },
           },
         },
-      })
-    })
+      });
+    });
 
     doesNotThrow(() => {
       parser({
@@ -251,8 +251,8 @@ describe('config', () => {
             },
           },
         },
-      })
-    })
+      });
+    });
 
     // allow complex config object
     doesNotThrow(() => {
@@ -268,9 +268,9 @@ describe('config', () => {
             },
           },
         },
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('should throw on invalid values for plugins', () => {
     it('should throw if plugins is a string', () => {
@@ -278,9 +278,9 @@ describe('config', () => {
         parser({
           // @ts-expect-error
           plugins: 'this is a string instead of an object',
-        })
-      })
-    })
+        });
+      });
+    });
 
     it('should throw if plugins is not an object of plugins', () => {
       throws(() => {
@@ -291,9 +291,9 @@ describe('config', () => {
             // @ts-expect-error
             name: 'module',
           },
-        })
-      })
-    })
+        });
+      });
+    });
 
     it('should throw if the "module" property is missing', () => {
       throws(() => {
@@ -303,8 +303,8 @@ describe('config', () => {
               order: 42,
             },
           },
-        })
-      })
-    })
-  })
-})
+        });
+      });
+    });
+  });
+});

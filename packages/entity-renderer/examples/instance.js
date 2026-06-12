@@ -1,11 +1,13 @@
-import { join } from 'path'
-import trifid from 'trifid-core'
-import entityRendererTrifidPlugin from '../index.js'
+import { join } from 'path';
+import trifid from 'trifid-core';
+import entityRendererTrifidPlugin from '../index.ts';
 
-const port = 3000
+// A fixed port is required because the entity renderer resolves its SPARQL
+// endpoint against the configured host/port (it queries itself over HTTP).
+const port = 3000;
 
 export const createTrifidInstance = async (configFilePath, logLevel = 'debug', additionalConfig = {}) => {
-  const configFile = join(process.cwd(), configFilePath)
+  const configFile = join(process.cwd(), configFilePath);
   return await trifid({
     extends: [configFile],
     server: {
@@ -23,5 +25,5 @@ export const createTrifidInstance = async (configFilePath, logLevel = 'debug', a
         ...additionalConfig,
       },
     },
-  })
-}
+  });
+};

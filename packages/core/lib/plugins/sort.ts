@@ -1,4 +1,4 @@
-import type { StandardizedPlugin } from './standardize.ts'
+import type { StandardizedPlugin } from './standardize.ts';
 
 /**
  * Sort plugins
@@ -9,7 +9,7 @@ const sort = (
   plugins: Array<[string, StandardizedPlugin]>,
 ): Array<[string, StandardizedPlugin]> =>
   plugins.sort((a, b) => {
-    return a[1].order - b[1].order
-  })
+    return a[1].order - b[1].order;
+  });
 
-export default sort
+export default sort;

@@ -14,7 +14,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --all --exclude=dist --exclude=scripts --exclude=coverage --reporter=lcov --reporter=text node --test test/**.test.ts test/**/*.test.ts",
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=coverage --reporter=lcov --reporter=text node --conditions=source --test test/**.test.ts test/**/*.test.ts",
     "watch": "nodemon server.ts",
     "typecheck": "tsc --noEmit",
     "build": "tsc && node scripts/copy-assets.ts",
@@ -32,6 +32,18 @@
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "source": "./index.ts",
+      "default": "./dist/index.js"
+    },
+    "./plugins/*.js": {
+      "source": "./plugins/*.ts",
+      "default": "./dist/plugins/*.js"
+    },
+    "./package.json": "./package.json"
+  },
   "bin": {
     "trifid-core": "./dist/server.js"
   },

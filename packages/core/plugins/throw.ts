@@ -1,20 +1,20 @@
-import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import type { TrifidPlugin } from '../types/index.ts'
+import type { TrifidPlugin } from '../types/index.ts';
 
 const factory: TrifidPlugin = async (trifid) => {
-  const { message } = trifid.config
+  const { message } = trifid.config;
 
-  let messageToThrow = 'Oops, something went wrong :-('
+  let messageToThrow = 'Oops, something went wrong :-(';
   if (message) {
-    messageToThrow = String(message)
+    messageToThrow = String(message);
   }
 
   return {
     defaultConfiguration: async () => {
       return {
         methods: ['GET'],
-      }
+      };
     },
     routeHandler: async () => {
       /**
@@ -24,11 +24,11 @@ const factory: TrifidPlugin = async (trifid) => {
        * @param _reply Reply.
        */
       const handler = async (_request: FastifyRequest, _reply: FastifyReply) => {
-        throw new Error(messageToThrow)
-      }
-      return handler
+        throw new Error(messageToThrow);
+      };
+      return handler;
     },
-  }
-}
+  };
+};
 
-export default factory
+export default factory;

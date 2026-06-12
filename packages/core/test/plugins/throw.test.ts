@@ -1,9 +1,9 @@
-import { describe, it } from 'node:test'
-import { strictEqual } from 'node:assert'
+import { describe, it } from 'node:test';
+import { strictEqual } from 'node:assert';
 
-import trifidCore, { getListenerURL } from '../../index.ts'
+import trifidCore, { getListenerURL } from '../../index.ts';
 
-import throwPlugin from '../../plugins/throw.ts'
+import throwPlugin from '../../plugins/throw.ts';
 
 const createTrifidInstance = async (config) => {
   return await trifidCore({
@@ -19,29 +19,29 @@ const createTrifidInstance = async (config) => {
       paths: ['/throw'],
       config,
     },
-  })
-}
+  });
+};
 
 describe('throw plugin', () => {
   it('should throw using the default configuration', async () => {
-    const trifidInstance = await createTrifidInstance({})
-    const trifidListener = await trifidInstance.start()
-    const pluginUrl = `${getListenerURL(trifidListener)}/throw`
-    const response = await fetch(pluginUrl)
-    await trifidListener.close()
+    const trifidInstance = await createTrifidInstance({});
+    const trifidListener = await trifidInstance.start();
+    const pluginUrl = `${getListenerURL(trifidListener)}/throw`;
+    const response = await fetch(pluginUrl);
+    await trifidListener.close();
 
-    strictEqual(response.status, 500)
-  })
+    strictEqual(response.status, 500);
+  });
 
   it('should allow a custom message', async () => {
     const trifidInstance = await createTrifidInstance({
       message: 'This is a custom error message',
-    })
-    const trifidListener = await trifidInstance.start()
-    const pluginUrl = `${getListenerURL(trifidListener)}/throw`
-    const response = await fetch(pluginUrl)
-    await trifidListener.close()
+    });
+    const trifidListener = await trifidInstance.start();
+    const pluginUrl = `${getListenerURL(trifidListener)}/throw`;
+    const response = await fetch(pluginUrl);
+    await trifidListener.close();
 
-    strictEqual(response.status, 500)
-  })
-})
+    strictEqual(response.status, 500);
+  });
+});

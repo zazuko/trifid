@@ -1,15 +1,15 @@
 // @ts-check
 
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import trifidCore from 'trifid-core'
-import handlerFetch from 'trifid-handler-fetch'
-import ckanTrifidPlugin from '../../src/index.js'
+import trifidCore from 'trifid-core';
+import handlerFetch from 'trifid-handler-fetch';
+import ckanTrifidPlugin from '../../src/index.ts';
 
-export { getListenerURL } from 'trifid-core'
+export { getListenerURL } from 'trifid-core';
 
-const currentDir = dirname(fileURLToPath(import.meta.url))
+const currentDir = dirname(fileURLToPath(import.meta.url));
 
 export const createTrifidInstance = async ({ logLevel }) => {
   return await trifidCore({
@@ -40,5 +40,5 @@ export const createTrifidInstance = async ({ logLevel }) => {
         endpointUrl: '/query',
       },
     },
-  })
-}
+  });
+};

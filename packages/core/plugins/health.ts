@@ -1,6 +1,6 @@
-import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import type { TrifidPlugin } from '../types/index.ts'
+import type { TrifidPlugin } from '../types/index.ts';
 
 /**
  * Health route handler.
@@ -9,10 +9,10 @@ import type { TrifidPlugin } from '../types/index.ts'
  * @param reply Reply.
  */
 const healthRouteHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-  request.log.debug('reached health endpoint')
-  reply.type('text/plain').send('OK\n')
-  return reply
-}
+  request.log.debug('reached health endpoint');
+  reply.type('text/plain').send('OK\n');
+  return reply;
+};
 
 const factory: TrifidPlugin = async (_trifid) => {
   return {
@@ -20,12 +20,12 @@ const factory: TrifidPlugin = async (_trifid) => {
       return {
         paths: ['/healthz'],
         methods: ['GET'],
-      }
+      };
     },
     routeHandler: async () => {
-      return healthRouteHandler
+      return healthRouteHandler;
     },
-  }
-}
+  };
+};
 
-export default factory
+export default factory;
