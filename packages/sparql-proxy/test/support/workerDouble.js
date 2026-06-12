@@ -1,12 +1,12 @@
-import { fileURLToPath } from 'node:url'
-import rdf from '@zazuko/env-node'
+import { fileURLToPath } from 'node:url';
+import rdf from '@zazuko/env-node';
 
-import fsd from '../../lib/fetchServiceDescription.js'
+import fsd from '../../lib/fetchServiceDescription.ts';
 
-const serviceDescriptionPath = fileURLToPath(new URL('./serviceDescription.ttl', import.meta.url))
+const serviceDescriptionPath = fileURLToPath(new URL('./serviceDescription.ttl', import.meta.url));
 
 fsd.fetchServiceDescription = async (_endpointUrl, _opts) => {
-  return rdf.dataset().import(rdf.fromFile(serviceDescriptionPath))
-}
+  return rdf.dataset().import(rdf.fromFile(serviceDescriptionPath));
+};
 
-import('../../lib/serviceDescriptionWorker.js')
+import('../../lib/serviceDescriptionWorker.ts');

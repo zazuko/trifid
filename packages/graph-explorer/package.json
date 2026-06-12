@@ -2,8 +2,8 @@
   "name": "trifid-plugin-graph-explorer",
   "description": "Trifid Graph Explorer plugin",
   "type": "module",
-  "main": "index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "version": "2.2.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
@@ -17,11 +17,11 @@
   },
   "scripts": {
     "coverage": "codecov",
-    "test": "c8 --all --reporter=lcovonly --reporter=text node --test **/*.test.js",
-    "clean": "rimraf dist/",
-    "prebuild": "npm run clean",
-    "build": "tsc",
-    "prepack": "npm run build"
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=static --exclude=scripts --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf *.tgz dist/ coverage/",
+    "build": "tsc && node scripts/copy-assets.ts",
+    "prepack": "npm run clean && npm run build"
   },
   "author": {
     "name": "Zazuko GmbH",
@@ -31,6 +31,10 @@
     "trifid",
     "trifid-plugin",
     "graph-explorer"
+  ],
+  "files": [
+    "dist",
+    "CHANGELOG.md"
   ],
   "dependencies": {
     "@fastify/static": "^9.1.3",

@@ -14,32 +14,38 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --all --reporter=lcov --reporter=text node --test test/**.test.js test/**/*.test.js",
-    "watch": "nodemon server.js",
-    "typings": "tsc",
-    "clean": "rimraf *.tgz dist/",
-    "prepack": "npm run clean && npm run typings",
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=coverage --reporter=lcov --reporter=text node --conditions=source --test test/**.test.ts test/**/*.test.ts",
+    "watch": "nodemon server.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc && node scripts/copy-assets.ts",
+    "clean": "rimraf *.tgz dist/ coverage/",
+    "prepack": "npm run clean && npm run build",
     "postpublish": "npm run clean",
     "release": "changeset publish"
   },
   "files": [
     "dist/",
-    "lib/",
-    "plugins/",
-    "static/",
-    "views/",
     "config.yaml",
     "config2.json",
     "logo.svg",
-    "index.js",
-    "server.js",
-    "otel.js",
     "CHANGELOG.md"
   ],
-  "main": "index.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "source": "./index.ts",
+      "default": "./dist/index.js"
+    },
+    "./plugins/*.js": {
+      "source": "./plugins/*.ts",
+      "default": "./dist/plugins/*.js"
+    },
+    "./package.json": "./package.json"
+  },
   "bin": {
-    "trifid-core": "./server.js"
+    "trifid-core": "./dist/server.js"
   },
   "author": {
     "name": "Zazuko GmbH",
@@ -85,6 +91,7 @@
   },
   "devDependencies": {
     "@rdfjs/types": "^2.0.1",
+    "@types/lodash": "^4.17.24",
     "@types/node": "^25.5.0",
     "c8": "^11.0.0",
     "nodemon": "^3.1.11",

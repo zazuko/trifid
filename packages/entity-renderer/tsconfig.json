@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "allowJs": false,
+    "emitDeclarationOnly": false,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "exclude": [
+    "dist",
+    "coverage",
+    "node_modules",
+    "test",
+    "examples"
+  ],
+  "include": [
+    "index.ts",
+    "lib/**/*.ts",
+    "renderer/**/*.ts",
+    "types/**/*.ts"
+  ]
+}

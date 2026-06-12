@@ -1,7 +1,7 @@
-import fsd from '../../lib/fetchServiceDescription.js'
+import fsd from '../../lib/fetchServiceDescription.ts';
 
 fsd.fetchServiceDescription = async (_endpointUrl, _opts) => {
-  throw new Error('Failed to fetch service description')
-}
+  throw new Error('Failed to fetch service description');
+};
 
-import('../../lib/serviceDescriptionWorker.js')
+import('../../lib/serviceDescriptionWorker.ts');

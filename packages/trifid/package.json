@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/zazuko/trifid",
   "type": "module",
-  "main": "server.js",
+  "main": "./dist/server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/zazuko/trifid.git",
@@ -15,13 +15,21 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "help": "node server.js --help",
-    "start:tbbt": "node server.js -c instances/tbbt/config.yaml",
-    "start": "npm run start:tbbt"
+    "help": "node server.ts --help",
+    "start:tbbt": "node server.ts -c instances/tbbt/config.yaml",
+    "start": "npm run start:tbbt",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf *.tgz dist/ coverage/",
+    "build": "tsc && node scripts/copy-assets.ts",
+    "prepack": "npm run clean && npm run build"
   },
   "bin": {
-    "trifid": "./server.js"
+    "trifid": "./dist/server.js"
   },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
   "author": {
     "name": "Zazuko GmbH",
     "url": "https://zazuko.com/"
@@ -40,6 +48,11 @@
     "trifid-plugin-i18n": "^3.0.2",
     "trifid-plugin-spex": "^3.0.0",
     "trifid-plugin-yasgui": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "rimraf": "^6.1.3",
+    "typescript": "^5.9.3"
   },
   "publishConfig": {
     "access": "public",

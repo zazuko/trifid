@@ -1,3 +1,8 @@
 node_modules/
 *.tgz
 coverage/
+dist
+
+# The root .gitignore ignores all *.d.ts files; the hand-written ambient
+# declarations under types/ are source files and must be tracked.
+!types/*.d.ts

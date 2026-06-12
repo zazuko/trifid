@@ -1,7 +1,26 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": ".",
+    "allowJs": false,
+    "emitDeclarationOnly": false,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
   },
-  "exclude": ["./build", "./dist", "./test"]
+  "exclude": [
+    "dist",
+    "coverage",
+    "node_modules",
+    "build",
+    "plugins",
+    "test"
+  ],
+  "include": [
+    "index.ts"
+  ]
 }

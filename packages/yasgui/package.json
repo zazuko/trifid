@@ -4,8 +4,16 @@
   "type": "module",
   "version": "3.4.5",
   "license": "Apache-2.0",
-  "main": "index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "source": "./index.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "homepage": "https://github.com/zazuko/trifid",
   "repository": {
     "type": "git",
@@ -16,19 +24,16 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "files": [
-    "public",
-    "test",
-    "views",
     "dist",
-    "build",
-    "index.js"
+    "CHANGELOG.md"
   ],
   "scripts": {
     "prepare": "esbuild --minify --bundle plugins/map.js --outdir=build --splitting --format=esm",
-    "test": "c8 --all --exclude build --reporter=lcovonly --reporter=text node --test **/*.test.js",
-    "clean": "rimraf dist/",
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=build --exclude=plugins --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf *.tgz dist/ coverage/",
     "prebuild": "npm run clean && npm run prepare",
-    "build": "tsc",
+    "build": "tsc && node scripts/copy-assets.ts",
     "prepack": "npm run build"
   },
   "author": {

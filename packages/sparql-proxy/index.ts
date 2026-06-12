@@ -1,0 +1,475 @@
+import { Readable } from 'node:stream';
+import { ReadableStream } from 'node:stream/web';
+import { performance } from 'node:perf_hooks';
+import { Worker } from 'node:worker_threads';
+
+import { metrics } from '@opentelemetry/api';
+import rdf from '@zazuko/env-node';
+import { sparqlGetRewriteConfiguration } from 'trifid-core';
+
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { TrifidPlugin } from 'trifid-core';
+
+import ReplaceStream from './lib/ReplaceStream.ts';
+import { authBasicHeader, objectLength, isValidUrl } from './lib/utils.ts';
+
+// Reference the worker with the extension matching how this module runs:
+// `.ts` when executed from source (type-stripping), `.js` from the build.
+const workerExtension = import.meta.url.endsWith('.ts') ? '.ts' : '.js';
+
+// TODO: remove this once QLever supports other formats (experimental flag that would be removed at any time)
+const engineMode = process.env.TRIFID_ENGINE_MODE || 'default';
+
+/**
+ * Configuration of a single proxied endpoint.
+ */
+interface EndpointConfig {
+  url?: string;
+  username?: string;
+  password?: string;
+  headers?: Record<string, string>;
+  datasetBaseUrl?: string;
+  rewrite?: boolean | string;
+  allowRewriteToggle?: boolean;
+}
+
+/**
+ * The resolved plugin options.
+ */
+interface SparqlProxyOptions {
+  endpointUrl: string;
+  username: string;
+  password: string;
+  headers: Record<string, string>;
+  endpoints: Record<string, EndpointConfig>;
+  datasetBaseUrl: string;
+  allowRewriteToggle: boolean;
+  rewrite: boolean | string;
+  rewriteQuery: boolean;
+  rewriteResults: boolean;
+  formats: Record<string, string>;
+  queryLogLevel: string;
+  serviceDescriptionWorkerUrl: URL;
+  serviceDescriptionTimeout: number;
+  serviceDescriptionFormat: string | undefined;
+}
+
+/**
+ * A resolved endpoint entry stored in the endpoints map.
+ */
+interface EndpointEntry {
+  endpointUrl: string;
+  username: string;
+  password: string;
+  headers: Record<string, string>;
+  datasetBaseUrl: string;
+  allowRewriteToggle: boolean;
+  rewriteConfigValue: boolean | string;
+  rewriteConfig: ReturnType<typeof sparqlGetRewriteConfiguration>;
+}
+
+const defaultConfiguration: SparqlProxyOptions = {
+  endpointUrl: '',
+  username: '',
+  password: '',
+  headers: {}, // Additional headers to send to the SPARQL endpoint
+  endpoints: {},
+  datasetBaseUrl: '',
+  allowRewriteToggle: true, // Allow the user to toggle the rewrite configuration using the `rewrite` query parameter.
+  rewrite: false, // Rewrite by default
+  rewriteQuery: true, // Allow rewriting the query
+  rewriteResults: true, // Allow rewriting the results
+  formats: {},
+  queryLogLevel: 'debug', // Log level for queries
+  serviceDescriptionWorkerUrl: new URL(`./lib/serviceDescriptionWorker${workerExtension}`, import.meta.url),
+  serviceDescriptionTimeout: 5000, // max time to wait for the service description
+  serviceDescriptionFormat: undefined, // override the accept header for the service description request. by default, will use content negotiation using formats `@zazuko/env-node` can parse
+};
+
+const oneMonthMilliseconds = 60 * 60 * 24 * 30 * 1000;
+const DEFAULT_ENDPOINT_NAME = 'default';
+
+const meter = metrics.getMeter('sparql-proxy');
+const sparqlQueryCounter = meter.createCounter('sparql_queries_total', {
+  description: 'Number of SPARQL queries received',
+});
+
+const factory: TrifidPlugin = async (trifid) => {
+  const { logger, config, trifidEvents } = trifid;
+
+  const endpoints = new Map<string, EndpointEntry>();
+
+  const options: SparqlProxyOptions = { ...defaultConfiguration, ...(config as Partial<SparqlProxyOptions>) };
+  let dynamicEndpoints = false;
+
+  if (objectLength(options.endpoints) > 0) {
+    // Check if the default endpoint is defined
+    if (!Object.hasOwnProperty.call(options.endpoints, DEFAULT_ENDPOINT_NAME)) {
+      throw Error('Missing default endpoint in the endpoints configuration');
+    }
+
+    // Override default values with the default endpoint values (in case it's a valid URL ; else it might be the default /query)
+    if (isValidUrl(options.endpoints.default)) {
+      options.endpointUrl = options.endpoints.default?.url || '';
+      options.username = options.endpoints.default?.username || '';
+      options.password = options.endpoints.default?.password || '';
+      options.headers = options.endpoints.default?.headers || {};
+    }
+
+    // Support for multiple endpoints
+    dynamicEndpoints = true;
+  }
+
+  if (!options.endpointUrl) {
+    throw Error(
+      dynamicEndpoints
+        ? `Missing endpoints.${DEFAULT_ENDPOINT_NAME}.url parameter`
+        : 'Missing endpointUrl parameter',
+    );
+  }
+
+  if (options.username && options.password) {
+    options.headers.Authorization = authBasicHeader(options.username, options.password);
+  }
+
+  const datasetBaseUrl = options.datasetBaseUrl;
+  const allowRewriteToggle = options.allowRewriteToggle;
+  const rewriteConfigValue = options.rewrite;
+  const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl);
+
+  endpoints.set(DEFAULT_ENDPOINT_NAME, {
+    endpointUrl: options.endpointUrl,
+    username: options.username,
+    password: options.password,
+    headers: options.headers,
+    datasetBaseUrl,
+    allowRewriteToggle,
+    rewriteConfigValue,
+    rewriteConfig,
+  });
+
+  if (dynamicEndpoints) {
+    for (const [endpointName, endpointConfig] of Object.entries(options.endpoints)) {
+      if (endpointName === DEFAULT_ENDPOINT_NAME) {
+        continue;
+      }
+
+      if (!endpointConfig.url) {
+        throw Error(`Missing endpoints.${endpointName}.url parameter`);
+      }
+
+      const endpointHeaders = endpointConfig.headers || {};
+      if (endpointConfig.username && endpointConfig.password) {
+        endpointHeaders.Authorization = authBasicHeader(endpointConfig.username, endpointConfig.password);
+      }
+
+      const endpointDatasetBaseUrl = endpointConfig.datasetBaseUrl || datasetBaseUrl;
+      const endpointRewriteConfigValue = endpointConfig.rewrite ?? rewriteConfigValue;
+
+      endpoints.set(endpointName, {
+        endpointUrl: endpointConfig.url || '',
+        username: endpointConfig.username || '',
+        password: endpointConfig.password || '',
+        headers: endpointHeaders,
+        datasetBaseUrl: endpointDatasetBaseUrl,
+        allowRewriteToggle: endpointConfig.allowRewriteToggle ?? allowRewriteToggle,
+        rewriteConfigValue: endpointRewriteConfigValue,
+        rewriteConfig: sparqlGetRewriteConfiguration(endpointRewriteConfigValue, endpointDatasetBaseUrl),
+      });
+    }
+  }
+
+  const queryLogLevel = options.queryLogLevel;
+  const loggerByLevel = logger as unknown as Record<string, ((msg: string) => void) | undefined>;
+  const logFn = loggerByLevel[queryLogLevel];
+  if (!logFn) {
+    throw Error(`Invalid queryLogLevel: ${queryLogLevel}`);
+  }
+  /**
+   * Log a query, depending on the `queryLogLevel`.
+   *
+   * @param msg Message to log
+   */
+  const queryLogger = (msg: string) => logFn(msg);
+
+  const worker = new Worker(options.serviceDescriptionWorkerUrl);
+  // Do not let the worker keep the process alive on its own: it is explicitly
+  // terminated on the Trifid `close` event, but an un-terminated worker would
+  // otherwise hang the process forever.
+  worker.unref();
+  worker.postMessage({
+    type: 'config',
+    data: {
+      endpointUrl: options.endpointUrl,
+      serviceDescriptionTimeout: options.serviceDescriptionTimeout,
+      serviceDescriptionFormat: options.serviceDescriptionFormat,
+      headers: options.headers,
+    },
+  });
+
+  const minimalServiceDescription = () => rdf.clownface().blankNode().addOut(rdf.ns.rdf.type, rdf.ns.sd.Service).dataset;
+
+  let resolveServiceDescription: (value: ReturnType<typeof rdf.dataset>) => void;
+  const serviceDescription: Promise<ReturnType<typeof rdf.dataset>> = new Promise((resolve) => {
+    resolveServiceDescription = resolve;
+  });
+
+  worker.once('message', async (message) => {
+    const { type, data } = message;
+    switch (type) {
+      case 'serviceDescription':
+        resolveServiceDescription(await rdf.dataset().import(
+          rdf.formats.parsers.import('application/n-triples', Readable.from(data)) as never,
+        ));
+        break;
+      case 'serviceDescriptionTimeOut':
+        logger.warn('The proxied SPARQL endpoint did not return a Service Description in a timely fashion. Will return a minimal document');
+        logger.info('You can increase the timeout using the \'serviceDescriptionTimeout\' configuration');
+        resolveServiceDescription(minimalServiceDescription());
+        break;
+      case 'serviceDescriptionError':
+        logger.error('Error while fetching the Service Description. Will return a minimal document');
+        logger.error(data);
+        resolveServiceDescription(minimalServiceDescription());
+        break;
+    }
+  });
+
+  // A crashing worker must never take the whole process down, and must not
+  // leave the service description promise pending forever.
+  worker.on('error', (error) => {
+    logger.error(`Service description worker error: ${error instanceof Error ? error.message : String(error)}`);
+    resolveServiceDescription(minimalServiceDescription());
+  });
+
+  trifidEvents.on('close', async () => {
+    logger.debug('Got "close" event from Trifid ; closing worker…');
+    await worker.terminate().catch(logger.error.bind(logger));
+    logger.debug('Worker terminated');
+  });
+
+  return {
+    defaultConfiguration: async () => {
+      return {
+        methods: ['GET', 'POST'],
+        paths: [
+          '/query',
+          '/query/',
+        ],
+      };
+    },
+    routeHandler: async () => {
+      /**
+       * Route handler.
+       *
+       * @param request Request.
+       * @param reply Reply.
+       */
+      const handler = async (request: FastifyRequest, reply: FastifyReply) => {
+        const req = request as FastifyRequest & {
+          cookies: { endpointName?: string };
+          port?: string | number;
+          accepts: () => { type: (types: string[]) => string[] | string | false };
+          opentelemetry?: () => {
+            span: {
+              setAttribute: (key: string, value: unknown) => void;
+              addEvent: (name: string, attributes?: Record<string, unknown>) => void;
+            };
+          };
+        };
+        const rep = reply as FastifyReply & {
+          setCookie: (name: string, value: string, opts?: Record<string, unknown>) => unknown;
+          clearCookie: (name: string, opts?: Record<string, unknown>) => unknown;
+        };
+        const queryParams = request.query as { query?: string; rewrite?: string; format?: string; endpoint?: string };
+        const body = request.body as { query?: string } | string | undefined;
+
+        const savedEndpointName = req.cookies.endpointName || DEFAULT_ENDPOINT_NAME;
+        let endpointName = queryParams.endpoint || savedEndpointName;
+        endpointName = endpointName.replace(/[^a-z0-9-]/gi, '');
+
+        // Only set the cookie if the endpoint name has changed and if it's not the default endpoint
+        if (req.cookies.endpointName !== endpointName && endpointName !== DEFAULT_ENDPOINT_NAME) {
+          rep.setCookie('endpointName', endpointName, { maxAge: oneMonthMilliseconds, path: '/' });
+          // Clear the cookie if the endpoint name is the default one
+        } else if (endpointName === DEFAULT_ENDPOINT_NAME && req.cookies.endpointName !== undefined) {
+          rep.clearCookie('endpointName', { path: '/' });
+        }
+
+        const endpoint = endpoints.get(endpointName);
+        if (!endpoint) {
+          return reply.callNotFound();
+        }
+        logger.debug(`Using endpoint: ${endpointName}`);
+
+        let requestPort = '';
+        if (req.port) {
+          requestPort = `:${req.port}`;
+        }
+        const fullUrl = `${request.protocol}://${request.hostname}${requestPort}${request.url}`;
+        const fullUrlObject = new URL(fullUrl);
+        const fullUrlPathname = fullUrlObject.pathname;
+
+        // Generate the IRI we expect
+        fullUrlObject.search = '';
+        fullUrlObject.searchParams.forEach((_value, key) => fullUrlObject.searchParams.delete(key));
+        const iriUrlString = fullUrlObject.toString();
+
+        // Handle Service Description request
+        if (Object.keys(queryParams).length === 0 && request.method === 'GET') {
+          const dataset = rdf.dataset(await serviceDescription);
+          rdf.clownface({ dataset })
+            .has(rdf.ns.rdf.type, rdf.ns.sd.Service)
+            .addOut(rdf.ns.sd.endpoint, rdf.namedNode(fullUrl));
+
+          const accept = req.accepts();
+          const negotiatedTypes = accept.type([...rdf.formats.serializers.keys()]);
+          const negotiatedType = Array.isArray(negotiatedTypes) ? negotiatedTypes[0] : negotiatedTypes;
+          if (!negotiatedType) {
+            reply.code(406).send();
+            return reply;
+          }
+
+          reply
+            .header('content-type', negotiatedType)
+            // @ts-ignore (cause: broken type definitions)
+            .send(await dataset.serialize({ format: negotiatedType }));
+          return reply;
+        }
+
+        // Enforce non-trailing slash
+        if (fullUrlPathname.slice(-1) === '/') {
+          reply.redirect(`${fullUrlPathname.slice(0, -1)}`);
+          return reply;
+        }
+
+        let currentRewriteConfig = endpoint.rewriteConfig;
+        if (endpoint.allowRewriteToggle) {
+          let rewriteConfigValueFromQuery: boolean | string = endpoint.rewriteConfigValue;
+          if (`${queryParams.rewrite}` === 'false') {
+            rewriteConfigValueFromQuery = false;
+          } else if (`${queryParams.rewrite}` === 'true') {
+            rewriteConfigValueFromQuery = true;
+          }
+          currentRewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValueFromQuery, endpoint.datasetBaseUrl);
+        }
+        const { rewrite: rewriteValue, iriOrigin } = currentRewriteConfig;
+        const rewriteResponse = rewriteValue
+          ? {
+              origin: endpoint.datasetBaseUrl,
+              replacement: iriOrigin(iriUrlString),
+            }
+          : false;
+
+        let query = '';
+        const method = request.method;
+        switch (method) {
+          case 'GET':
+            query = queryParams.query || '';
+            break;
+          case 'POST':
+            if (typeof body === 'string') {
+              query = body;
+            }
+
+            if (typeof body !== 'string' && body?.query) {
+              query = body.query;
+            }
+
+            if (typeof query !== 'string') {
+              query = JSON.stringify(query);
+            }
+
+            break;
+          default:
+            reply.code(405).send('Method Not Allowed');
+            return reply;
+        }
+
+        if (rewriteResponse && options.rewriteQuery) {
+          query = query.replaceAll(rewriteResponse.replacement, rewriteResponse.origin);
+        }
+
+        logger.debug('Got a request to the sparql proxy');
+        queryLogger(`Received query${rewriteValue ? ' (rewritten)' : ''} via ${method}:\n${query}`);
+
+        if (req.opentelemetry) {
+          const { span } = req.opentelemetry();
+          span.setAttribute('db.system', 'sparql');
+          span.addEvent('sparql.query', { statement: query });
+
+          sparqlQueryCounter.add(1, { endpoint_name: endpointName, method });
+        }
+
+        try {
+          let acceptHeader = request.headers.accept || 'application/sparql-results+json';
+          if (queryParams.format) {
+            acceptHeader = options.formats[queryParams.format] || acceptHeader;
+          }
+
+          // TODO: remove this tweak once QLever supports other formats
+          if (engineMode === 'qlever' && !acceptHeader.startsWith('application/sparql-results+json')) {
+            acceptHeader = 'text/turtle';
+          }
+
+          const headers = {
+            ...endpoint.headers,
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': acceptHeader,
+          };
+
+          const start = performance.now();
+          let response = await fetch(endpoint.endpointUrl, {
+            method: 'POST',
+            headers,
+            body: new URLSearchParams({ query }),
+          });
+          const end = performance.now();
+          const duration = end - start;
+
+          if (!response) {
+            logger.warn('No response from the endpoint, make sure that the endpoint is reachable');
+            response = new Response(JSON.stringify({
+              success: false,
+              message: 'No response from the endpoint',
+            }), { status: 502, headers: { 'content-type': 'application/json' } });
+          }
+
+          const contentType = response.headers.get('content-type');
+
+          let responseStream: any = response.body;
+          if (rewriteResponse && options.rewriteResults) {
+            const replaceStream = new ReplaceStream(rewriteResponse.origin, rewriteResponse.replacement);
+            responseStream = Readable
+              .from(responseStream)
+              .pipe(replaceStream);
+            responseStream = Readable
+              .from(responseStream);
+          }
+          if (responseStream instanceof ReadableStream) {
+            responseStream = Readable.fromWeb(responseStream);
+          }
+
+          let proxyReply = reply
+            .status(response.status)
+            .header('Server-Timing', `sparql-proxy;dur=${duration};desc="Querying the endpoint"`);
+          if (contentType) {
+            proxyReply = proxyReply.header('content-type', contentType);
+          }
+          proxyReply.send(responseStream);
+          return proxyReply;
+        } catch (error) {
+          logger.error('Error while querying the endpoint');
+          logger.error(error);
+          reply
+            .code(500)
+            .send('Error while querying the endpoint');
+          return reply;
+        }
+      };
+      return handler;
+    },
+  };
+};
+
+export default factory;

@@ -1,6 +1,28 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist"
-  }
+    "outDir": "dist",
+    "rootDir": ".",
+    "allowJs": false,
+    "emitDeclarationOnly": false,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "exclude": [
+    "dist",
+    "coverage",
+    "node_modules"
+  ],
+  "include": [
+    "index.ts",
+    "server.ts",
+    "otel.ts",
+    "lib/**/*.ts",
+    "plugins/**/*.ts",
+    "types/**/*.ts"
+  ]
 }
