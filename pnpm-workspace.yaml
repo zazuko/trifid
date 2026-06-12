@@ -1,6 +1,8 @@
 packages:
   - "packages/*"
 
+minimumReleaseAge: 1440
+
 allowBuilds:
   "@fortawesome/fontawesome-common-types": false
   "@fortawesome/free-solid-svg-icons": false
