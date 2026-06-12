@@ -228,8 +228,7 @@ const factory: TrifidPlugin = async (trifid) => {
         resolveServiceDescription(minimalServiceDescription());
         break;
       case 'serviceDescriptionError':
-        logger.error('Error while fetching the Service Description. Will return a minimal document');
-        logger.error(data);
+        logger.warn('Could not fetch the service description endpoint. A minimal one will be generated.');
         resolveServiceDescription(minimalServiceDescription());
         break;
     }
