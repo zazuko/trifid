@@ -190,7 +190,7 @@ const factory: TrifidPlugin = async (trifid) => {
    *
    * @param msg Message to log
    */
-  const queryLogger = (msg: string) => logFn(msg);
+  const queryLogger = (msg: string) => logFn.call(logger, msg);
 
   const worker = new Worker(options.serviceDescriptionWorkerUrl);
   // Do not let the worker keep the process alive on its own: it is explicitly
