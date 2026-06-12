@@ -19,8 +19,8 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && node scripts/copy-assets.ts",
     "clean": "rimraf *.tgz dist/ coverage/",
-    "prepack": "npm run clean && npm run build",
-    "postpublish": "npm run clean",
+    "prepack": "pnpm run clean && pnpm run build",
+    "postpublish": "pnpm run clean",
     "release": "changeset publish"
   },
   "files": [

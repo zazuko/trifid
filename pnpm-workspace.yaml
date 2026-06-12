@@ -1,0 +1,8 @@
+packages:
+  - "packages/*"
+
+allowBuilds:
+  "@fortawesome/fontawesome-common-types": true
+  "@fortawesome/free-solid-svg-icons": true
+  esbuild: true
+  protobufjs: true

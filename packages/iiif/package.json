@@ -24,7 +24,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rimraf *.tgz dist/ coverage/",
     "build": "tsc",
-    "prepack": "npm run clean && npm run build"
+    "prepack": "pnpm run clean && pnpm run build"
   },
   "author": {
     "name": "Zazuko GmbH",
@@ -49,7 +49,7 @@
     "@types/sparql-http-client": "^3.1.0",
     "c8": "^11.0.0",
     "rimraf": "^6.1.3",
-    "trifid-core": "^5.1.0",
+    "trifid-core": "workspace:^",
     "typescript": "^5.9.3"
   },
   "publishConfig": {
