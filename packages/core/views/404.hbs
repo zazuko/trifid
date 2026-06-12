@@ -1,12 +1,8 @@
-<div class="trifid-header-title-small">
-  <div class="trifid-content">
-    <div class="container">
-      <h1>Not Found</h1>
-    </div>
-  </div>
-</div>
-
 <div class="trifid-content">
-  <p>The requested path <strong>{{ url }}</strong> was not found.</p>
-  <p>Go back to the <a href="/">homepage</a>?</p>
+  <div class="trifid-error-page">
+    <span class="trifid-error-code">404</span>
+    <h1>Page not found</h1>
+    <p>The requested path <span class="trifid-error-path">{{ url }}</span> was not found on this server.</p>
+    <a class="trifid-button" href="/">Back to the homepage</a>
+  </div>
 </div>

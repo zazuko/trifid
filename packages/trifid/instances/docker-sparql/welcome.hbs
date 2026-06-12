@@ -1,4 +1,4 @@
-<div class="trifid-header-title-small">
+<div class="trifid-header-title">
   <div class="trifid-content">
     <div class="container">
       <h1>Welcome to Trifid!</h1>
@@ -9,14 +9,23 @@
 
 <div class="trifid-content">
   <h2>Explore</h2>
-  <ul>
-    <li><a href="/sparql/">YASGUI</a>: query the SPARQL endpoint</li>
-    <li><a href="/graph-explorer/">Graph Explorer</a>: explore the graph</li>
-    <li><a href="/spex/" target="_blank">SPEX</a>: inspect the structure of the data</li>
+  <ul class="trifid-card-grid">
+    <li class="trifid-card">
+      <h3><a href="/sparql/">YASGUI</a></h3>
+      <p>Query the SPARQL endpoint with an interactive editor</p>
+    </li>
+    <li class="trifid-card">
+      <h3><a href="/graph-explorer/">Graph Explorer</a></h3>
+      <p>Explore the graph visually, starting from any resource</p>
+    </li>
+    <li class="trifid-card">
+      <h3><a href="/spex/" target="_blank">SPEX</a></h3>
+      <p>Inspect the structure of the data</p>
+    </li>
   </ul>
 
   <h2>Resources</h2>
-  <ul>
+  <ul class="trifid-link-list">
     <li><a href="https://github.com/zazuko/trifid/wiki" target="_blank" rel="noopener noreferrer">Trifid documentation</a></li>
     <li><a href="https://github.com/zazuko/trifid" target="_blank" rel="noopener noreferrer">Trifid GitHub repository</a></li>
     <li><a href="https://github.com/zazuko/trifid/issues/new" target="_blank" rel="noopener noreferrer">Report a bug</a></li>
