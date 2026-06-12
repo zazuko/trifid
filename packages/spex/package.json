@@ -16,7 +16,7 @@
     "url": "https://github.com/zazuko/trifid/issues"
   },
   "scripts": {
-    "test": "c8 --all --exclude='**/*.d.ts' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
     "typecheck": "tsc --noEmit",
     "build": "tsc && node scripts/copy-assets.ts",
     "clean": "rimraf *.tgz dist/ coverage/",

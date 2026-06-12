@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "c8 --all --exclude='**/*.d.ts' --exclude='test/**' --exclude=dist --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf *.tgz dist/ coverage/",
     "build": "tsc",

@@ -6,7 +6,7 @@
   "types": "./dist/src/index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "c8 --all --exclude='**/*.d.ts' --exclude='test/**' --exclude=dist --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
+    "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
     "example-instance": "node test/support/run-instance.js",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf *.tgz dist/ coverage/",
