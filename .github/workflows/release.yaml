@@ -49,7 +49,7 @@ jobs:
         uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm release
+          publish: pnpm run release
           commit: "chore: release"
           title: "Merge to release"
         env:

@@ -30,7 +30,7 @@ jobs:
         run: pnpm ci
 
       - name: Run tests
-        run: pnpm test
+        run: pnpm run test
 
       - name: Codecov
         uses: codecov/codecov-action@v7
@@ -57,4 +57,4 @@ jobs:
         run: pnpm ci
 
       - name: Run build of each package (prepack script, mostly for typings)
-        run: pnpm build
+        run: pnpm run build
