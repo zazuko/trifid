@@ -1,16 +1,16 @@
 # Build stage: install dependencies
-FROM dhi.io/node:24-alpine3.22-dev AS build
+FROM dhi.io/node:24-alpine3.24-dev AS build
 WORKDIR /app
 
 # Copy everything, so that it uses local dependencies
 COPY . .
-RUN corepack enable && pnpm install --frozen-lockfile
+RUN corepack enable && pnpm ci
 # Build all packages
-RUN pnpm build \
+RUN pnpm run build \
   && chmod +x /app/packages/trifid/dist/server.js
 
 # Runtime stage
-FROM dhi.io/node:24-alpine3.22 AS runtime
+FROM dhi.io/node:24-alpine3.24 AS runtime
 
 EXPOSE 8080
 
