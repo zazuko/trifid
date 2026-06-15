@@ -20,8 +20,7 @@
     "start": "pnpm run start:tbbt",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf *.tgz dist/ coverage/",
-    "build": "tsc && node scripts/copy-assets.ts",
-    "prepack": "pnpm run clean && pnpm run build"
+    "build": "tsc && node scripts/copy-assets.ts"
   },
   "bin": {
     "trifid": "./dist/server.js"

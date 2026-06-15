@@ -9,9 +9,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "pnpm run -r --if-present test",
-    "release": "changeset publish",
+    "release": "pnpm run build && changeset publish",
     "prepare": "husky",
-    "build": "pnpm run --filter trifid-core build && pnpm run -r --if-present prepack",
+    "build": "pnpm run -r --if-present build",
     "clean": "pnpm run -r --if-present clean"
   },
   "lint-staged": {

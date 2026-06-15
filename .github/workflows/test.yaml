@@ -56,5 +56,5 @@ jobs:
       - name: Install dependencies
         run: pnpm ci
 
-      - name: Run build of each package (prepack script, mostly for typings)
+      - name: Run build of each package (in dependency order, mostly for typings)
         run: pnpm run build

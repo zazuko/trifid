@@ -33,8 +33,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rimraf *.tgz dist/ coverage/",
     "prebuild": "pnpm run clean && pnpm run prepare",
-    "build": "tsc && node scripts/copy-assets.ts",
-    "prepack": "pnpm run build"
+    "build": "tsc && node scripts/copy-assets.ts"
   },
   "author": {
     "name": "Zazuko GmbH",

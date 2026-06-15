@@ -10,8 +10,7 @@
     "example-instance": "node test/support/run-instance.js",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf *.tgz dist/ coverage/",
-    "build": "tsc",
-    "prepack": "pnpm run clean && pnpm run build"
+    "build": "tsc"
   },
   "files": [
     "dist",

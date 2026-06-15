@@ -20,8 +20,7 @@
     "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=static --exclude=scripts --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf *.tgz dist/ coverage/",
-    "build": "tsc && node scripts/copy-assets.ts",
-    "prepack": "pnpm run clean && pnpm run build"
+    "build": "tsc && node scripts/copy-assets.ts"
   },
   "author": {
     "name": "Zazuko GmbH",
