@@ -1,5 +1,19 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 3.0.0
+
+### Major Changes
+
+- 3c9ceba: Convert the whole codebase into TypeScript.
+
+  This is is marked as a major change, as some imports may need to be updated.
+
+### Patch Changes
+
+- Updated dependencies [3c9ceba]
+- Updated dependencies [51ea8bc]
+  - trifid-core@6.0.0
+
 ## 2.9.1
 
 ### Patch Changes

@@ -1,5 +1,28 @@
 # trifid
 
+## 6.0.0
+
+### Major Changes
+
+- 3c9ceba: Convert the whole codebase into TypeScript.
+
+  This is is marked as a major change, as some imports may need to be updated.
+
+- 51ea8bc: New design ; this updates some styles and elements. For people that were doing some customizations, it may be a breaking change.
+
+### Patch Changes
+
+- Updated dependencies [3c9ceba]
+- Updated dependencies [51ea8bc]
+  - @zazuko/trifid-entity-renderer@2.0.0
+  - trifid-plugin-graph-explorer@3.0.0
+  - trifid-handler-fetch@4.0.0
+  - @zazuko/trifid-plugin-sparql-proxy@3.0.0
+  - trifid-plugin-yasgui@4.0.0
+  - trifid-core@6.0.0
+  - trifid-plugin-i18n@4.0.0
+  - trifid-plugin-spex@4.0.0
+
 ## 5.3.0
 
 ### Minor Changes

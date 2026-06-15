@@ -1,5 +1,21 @@
 # @zazuko/trifid-renderer-entity
 
+## 2.0.0
+
+### Major Changes
+
+- 3c9ceba: Convert the whole codebase into TypeScript.
+
+  This is is marked as a major change, as some imports may need to be updated.
+
+- 51ea8bc: New design ; this updates some styles and elements. For people that were doing some customizations, it may be a breaking change.
+
+### Patch Changes
+
+- Updated dependencies [3c9ceba]
+- Updated dependencies [51ea8bc]
+  - trifid-core@6.0.0
+
 ## 1.7.0
 
 ### Minor Changes

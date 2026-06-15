@@ -1,5 +1,13 @@
 # trifid-plugin-yasgui
 
+## 4.0.0
+
+### Major Changes
+
+- 3c9ceba: Convert the whole codebase into TypeScript.
+
+  This is is marked as a major change, as some imports may need to be updated.
+
 ## 3.4.5
 
 ### Patch Changes

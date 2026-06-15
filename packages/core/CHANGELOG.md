@@ -1,5 +1,15 @@
 # trifid-core
 
+## 6.0.0
+
+### Major Changes
+
+- 3c9ceba: Convert the whole codebase into TypeScript.
+
+  This is is marked as a major change, as some imports may need to be updated.
+
+- 51ea8bc: New design ; this updates some styles and elements. For people that were doing some customizations, it may be a breaking change.
+
 ## 5.3.2
 
 ### Patch Changes
