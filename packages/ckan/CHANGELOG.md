@@ -1,5 +1,13 @@
 # @zazuko/trifid-plugin-ckan
 
+## 5.0.0
+
+### Major Changes
+
+- 3c9ceba: Convert the whole codebase into TypeScript.
+
+  This is is marked as a major change, as some imports may need to be updated.
+
 ## 4.2.3
 
 ### Patch Changes

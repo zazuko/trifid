@@ -1,5 +1,13 @@
 # @zazuko/trifid-markdown-content
 
+## 3.0.0
+
+### Major Changes
+
+- 3c9ceba: Convert the whole codebase into TypeScript.
+
+  This is is marked as a major change, as some imports may need to be updated.
+
 ## 2.0.5
 
 ### Patch Changes

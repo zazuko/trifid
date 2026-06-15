@@ -2,7 +2,7 @@
   "name": "trifid-plugin-yasgui",
   "description": "Trifid YASGUI plugin",
   "type": "module",
-  "version": "3.4.5",
+  "version": "4.0.0",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
