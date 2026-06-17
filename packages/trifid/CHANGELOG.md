@@ -1,5 +1,13 @@
 # trifid
 
+## 6.0.1
+
+### Patch Changes
+
+- b0af3b4: Fix module resolution in trifid-core.
+- Updated dependencies [b0af3b4]
+  - trifid-core@6.0.1
+
 ## 6.0.0
 
 ### Major Changes
