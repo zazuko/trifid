@@ -1,22 +1,41 @@
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import cloneDeep from 'lodash/cloneDeep.js';
-import { resolve as resolveModule } from 'import-meta-resolve';
+import { moduleResolve } from 'import-meta-resolve';
 
 import type { TrifidConfig, TrifidPlugin } from '../../types/index.ts';
 import type { LoadedPlugin } from './standardize.ts';
 
 /**
- * Base URL used to resolve bare plugin specifiers.
- *
- * Plugins are dependencies of the application that uses trifid-core, not of
- * trifid-core itself. Resolving them relative to this module would only work
- * when they happen to be hoisted above trifid-core (e.g. a flat npm layout),
- * which is not the case with pnpm's isolated node_modules. Resolving from the
- * application entry point (or, failing that, the current working directory)
- * makes plugin loading work regardless of the package manager layout.
+ * URL of the running application's entry point, used as the base to resolve
+ * plugins that are dependencies of the application rather than of trifid-core.
  */
-const applicationBase = pathToFileURL(process.argv[1] ?? `${process.cwd()}/`).href;
+const applicationBase = new URL(pathToFileURL(process.argv[1] ?? `${process.cwd()}/`).href);
+
+/**
+ * Export conditions Node was started with, so that resolving plugins relative
+ * to the application behaves like a regular import. The test suite relies on
+ * this to load TypeScript sources via `--conditions=source` instead of the
+ * built `dist/` output.
+ */
+const conditions = ((): Set<string> => {
+  const result = new Set(['node', 'import']);
+  const args = [
+    ...process.execArgv,
+    ...(process.env.NODE_OPTIONS ?? '').split(/\s+/).filter(Boolean),
+  ];
+  args.forEach((arg, index) => {
+    const next = args[index + 1];
+    if ((arg === '--conditions' || arg === '-C') && next) {
+      result.add(next);
+    } else if (arg.startsWith('--conditions=')) {
+      result.add(arg.slice('--conditions='.length));
+    } else if (arg.startsWith('-C') && arg.length > 2) {
+      result.add(arg.slice(2));
+    }
+  });
+  return result;
+})();
 
 const resolveModulePath = (modulePath: string): string => {
   // Local paths are resolved against the current working directory.
@@ -24,13 +43,16 @@ const resolveModulePath = (modulePath: string): string => {
     return pathToFileURL(resolve(modulePath)).href;
   }
 
-  // Bare specifiers are resolved relative to the application. Fall back to the
-  // raw specifier (resolved relative to this module) if that fails, so the
-  // original error is surfaced and flat layouts keep working.
+  // Prefer Node's own resolution, relative to this module: it honours the
+  // active export conditions and resolves trifid-core's own plugins as well as
+  // any plugin hoisted above it (e.g. a flat npm layout).
   try {
-    return resolveModule(modulePath, applicationBase);
+    return import.meta.resolve(modulePath);
   } catch {
-    return modulePath;
+    // The plugin is a dependency of the application, not of trifid-core, and is
+    // not reachable from here (e.g. pnpm's isolated node_modules). Resolve it
+    // relative to the application instead.
+    return moduleResolve(modulePath, applicationBase, conditions).href;
   }
 };
 
