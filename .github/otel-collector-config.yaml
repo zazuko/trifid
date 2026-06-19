@@ -1,0 +1,36 @@
+# OpenTelemetry Collector configuration used by the `otel` CI job.
+# It receives traces and metrics over OTLP (HTTP and gRPC) and writes them to a
+# file so the job can assert that Trifid actually exported telemetry. The debug
+# exporter mirrors everything to the collector logs to ease troubleshooting.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 1s
+
+exporters:
+  file:
+    path: /output/otel.json
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [file, debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [file, debug]
+  telemetry:
+    logs:
+      level: info

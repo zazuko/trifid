@@ -58,3 +58,121 @@ jobs:
 
       - name: Run build of each package (in dependency order, mostly for typings)
         run: pnpm run build
+
+  otel:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: "lts/*"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm ci
+
+      - name: Build packages
+        run: pnpm run build
+
+      - name: Start the OpenTelemetry collector
+        run: |
+          mkdir -p "${{ github.workspace }}/otel-output"
+          # The collector image runs as a non-root user, so the output
+          # directory must be writable by anyone for the file exporter.
+          chmod 777 "${{ github.workspace }}/otel-output"
+          docker run -d --name otel-collector \
+            -p 4317:4317 -p 4318:4318 \
+            -v "${{ github.workspace }}/.github/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro" \
+            -v "${{ github.workspace }}/otel-output:/output" \
+            otel/opentelemetry-collector-contrib:latest
+
+      - name: Start the Trifid tbbt instance
+        working-directory: packages/trifid
+        env:
+          # Point the SDK at the local collector to enable OTel (see otel.ts).
+          OTEL_EXPORTER_OTLP_ENDPOINT: http://localhost:4318
+          # Export metrics frequently so the job does not have to wait 30s.
+          OTEL_METRIC_EXPORT_INTERVAL: "2000"
+        run: |
+          node server.ts -c instances/tbbt/config.yaml > "${{ github.workspace }}/trifid.log" 2>&1 &
+          echo "TRIFID_PID=$!" >> "$GITHUB_ENV"
+
+      - name: Wait for the instance to be ready
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8080/ > /dev/null; then
+              echo "Trifid is up."
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Trifid did not become ready in time." >&2
+          cat "${{ github.workspace }}/trifid.log" >&2 || true
+          exit 1
+
+      - name: Generate some traffic to produce traces and metrics
+        run: |
+          for i in $(seq 1 5); do
+            curl -sf http://localhost:8080/ > /dev/null || true
+            curl -sf http://localhost:8080/sparql/ > /dev/null || true
+            curl -sf "http://localhost:8080/data/person/amy-farrah-fowler" > /dev/null || true
+          done
+
+      - name: Wait for telemetry to be exported
+        run: sleep 8
+
+      - name: Verify the collector received traces and metrics
+        run: |
+          OUTPUT="${{ github.workspace }}/otel-output/otel.json"
+
+          echo "::group::Collector output file"
+          ls -l "${{ github.workspace }}/otel-output" || true
+          echo "::endgroup::"
+
+          if [ ! -s "$OUTPUT" ]; then
+            echo "Collector output file is missing or empty." >&2
+            exit 1
+          fi
+
+          if ! grep -q '"resourceSpans"' "$OUTPUT"; then
+            echo "No traces (resourceSpans) were received by the collector." >&2
+            exit 1
+          fi
+          echo "Traces received."
+
+          if ! grep -q '"resourceMetrics"' "$OUTPUT"; then
+            echo "No metrics (resourceMetrics) were received by the collector." >&2
+            exit 1
+          fi
+          echo "Metrics received."
+
+          if ! grep -q '"trifid"' "$OUTPUT"; then
+            echo "Telemetry does not contain the expected 'trifid' service name." >&2
+            exit 1
+          fi
+          echo "Telemetry is tagged with the 'trifid' service name."
+
+      - name: Show logs on failure
+        if: failure()
+        run: |
+          echo "::group::Trifid logs"
+          cat "${{ github.workspace }}/trifid.log" || true
+          echo "::endgroup::"
+          echo "::group::Collector logs"
+          docker logs otel-collector || true
+          echo "::endgroup::"
+
+      - name: Stop the Trifid instance and the collector
+        if: always()
+        run: |
+          [ -n "$TRIFID_PID" ] && kill "$TRIFID_PID" || true
+          docker rm -f otel-collector || true
