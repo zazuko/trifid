@@ -161,6 +161,84 @@ jobs:
           fi
           echo "Telemetry is tagged with the 'trifid' service name."
 
+      - name: Print a sample of the collected telemetry
+        run: |
+          OUTPUT="${{ github.workspace }}/otel-output/otel.json"
+
+          echo "::group::Collected trace span names"
+          node -e '
+            const fs = require("fs");
+            const names = new Set();
+            for (const line of fs.readFileSync(process.argv[1], "utf8").trim().split("\n")) {
+              try {
+                const o = JSON.parse(line);
+                for (const rs of o.resourceSpans || []) {
+                  for (const ss of rs.scopeSpans || []) {
+                    for (const span of ss.spans || []) names.add(span.name);
+                  }
+                }
+              } catch {}
+            }
+            console.log([...names].sort().join("\n"));
+          ' "$OUTPUT"
+          echo "::endgroup::"
+
+          echo "::group::Collected metric names"
+          node -e '
+            const fs = require("fs");
+            const names = new Set();
+            for (const line of fs.readFileSync(process.argv[1], "utf8").trim().split("\n")) {
+              try {
+                const o = JSON.parse(line);
+                for (const rm of o.resourceMetrics || []) {
+                  for (const sm of rm.scopeMetrics || []) {
+                    for (const m of sm.metrics || []) names.add(m.name);
+                  }
+                }
+              } catch {}
+            }
+            console.log([...names].sort().join("\n"));
+          ' "$OUTPUT"
+          echo "::endgroup::"
+
+          echo "::group::Example trace span (pretty-printed)"
+          node -e '
+            const fs = require("fs");
+            for (const line of fs.readFileSync(process.argv[1], "utf8").trim().split("\n")) {
+              try {
+                const o = JSON.parse(line);
+                for (const rs of o.resourceSpans || []) {
+                  for (const ss of rs.scopeSpans || []) {
+                    if ((ss.spans || []).length) {
+                      console.log(JSON.stringify(ss.spans[0], null, 2));
+                      process.exit(0);
+                    }
+                  }
+                }
+              } catch {}
+            }
+          ' "$OUTPUT"
+          echo "::endgroup::"
+
+          echo "::group::Example metric (pretty-printed)"
+          node -e '
+            const fs = require("fs");
+            for (const line of fs.readFileSync(process.argv[1], "utf8").trim().split("\n")) {
+              try {
+                const o = JSON.parse(line);
+                for (const rm of o.resourceMetrics || []) {
+                  for (const sm of rm.scopeMetrics || []) {
+                    if ((sm.metrics || []).length) {
+                      console.log(JSON.stringify(sm.metrics[0], null, 2));
+                      process.exit(0);
+                    }
+                  }
+                }
+              } catch {}
+            }
+          ' "$OUTPUT"
+          echo "::endgroup::"
+
       - name: Show logs on failure
         if: failure()
         run: |
