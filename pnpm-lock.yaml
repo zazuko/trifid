@@ -579,8 +579,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@openlayers-elements/maps':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.5.0
+        version: 0.5.0
       '@openlayers-elements/swisstopo':
         specifier: ^0.4.0
         version: 0.4.0(geotiff@2.1.3)
@@ -1079,6 +1079,9 @@ packages:
       '@types/node':
         optional: true
 
+  '@lit/context@1.1.6':
+    resolution: {integrity: sha512-M26qDE6UkQbZA2mQ3RjJ3Gzd8TxP+/0obMgE5HfkfLhEEyYE3Bui4A5XHiGPjy0MUGAyxB3QgVuw2ciS0kHn6A==}
+
   '@lit/reactive-element@1.6.3':
     resolution: {integrity: sha512-QuTgnG52Poic7uM1AN5yJ09QMe0O28e10XzSvWDz02TJiiKee4stsiownEIadWm8nYzyDAyT+gKzUoZmiWQtsQ==}
 
@@ -1155,8 +1158,14 @@ packages:
   '@openlayers-elements/core@0.4.0':
     resolution: {integrity: sha512-msY2QGYCYf5Zph16j08KszgqtHmMORCK7B5afpe5iM8c3FFSfjijUffiw93MGeowoN4Yo5jfkxuI2plpyidR0A==}
 
+  '@openlayers-elements/core@0.5.1':
+    resolution: {integrity: sha512-nHKtnlT//t9fdeg++ZFKmLcuX7ok2ix+MmX594/t5VciErr9ntroqGK9ye2ABFPTms2dqXKB9/jD11EXgz4VCQ==}
+
   '@openlayers-elements/maps@0.4.0':
     resolution: {integrity: sha512-uxGW3Lt1BVA8eC0HykXLZA4a3EfCU44FdGaudC4Xu0s+XYPOEPxCGLDCsWSuy67NvEUTFb+odu6mRDLofxdquA==}
+
+  '@openlayers-elements/maps@0.5.0':
+    resolution: {integrity: sha512-73UiJprWGa7f9Wc1Eld6/Q7FVFI3woJkWQTV1jr22NoxYVNjDMm+GVkpbYdaaoUiFjYRWjC4+Swejp62HwzdDw==}
 
   '@openlayers-elements/swisstopo@0.4.0':
     resolution: {integrity: sha512-LNfF9Jewc5WdIx0zF257reG0IYqLrukeVwOnmihswPUgywU7dDQbuZ7HjkqQUyT4XDvNUUwZnL24mWikFGsCrg==}
@@ -2352,6 +2361,19 @@ packages:
 
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  color-name@2.1.0:
+    resolution: {integrity: sha512-1bPaDNFm0axzE4MEAzKPuqKWeRaT43U/hyxKPBdqTfmPF+d6n7FSoTFxLVULUJOmiLp01KjhIPPH+HrXZJN4Rg==}
+    engines: {node: '>=12.20'}
+
+  color-parse@2.0.2:
+    resolution: {integrity: sha512-eCtOz5w5ttWIUcaKLiktF+DxZO1R9KLNY/xhbV6CkhM7sR3GhVghmt6X6yOnzeaM24po+Z9/S1apbXMwA3Iepw==}
+
+  color-rgba@3.0.0:
+    resolution: {integrity: sha512-PPwZYkEY3M2THEHHV6Y95sGUie77S7X8v+h1r6LSAPF3/LL2xJ8duUXSrkic31Nzc4odPwHgUbiX/XuTYzQHQg==}
+
+  color-space@2.3.2:
+    resolution: {integrity: sha512-BcKnbOEsOarCwyoLstcoEztwT0IJxqqQkNwDuA3a65sICvvHL2yoeV13psoDFh5IuiOMnIOKdQDwB4Mk3BypiA==}
 
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
@@ -3556,6 +3578,9 @@ packages:
 
   ol@7.5.2:
     resolution: {integrity: sha512-HJbb3CxXrksM6ct367LsP3N+uh+iBBMdP3DeGGipdV9YAYTP0vTJzqGnoqQ6C2IW4qf8krw9yuyQbc9fjOIaOQ==}
+
+  ol@9.2.4:
+    resolution: {integrity: sha512-bsbu4ObaAlbELMIZWnYEvX4Z9jO+OyCBshtODhDKmqYTPEfnKOX3RieCr97tpJkqWTZvyV4tS9UQDvHoCdxS+A==}
 
   on-exit-leak-free@2.1.2:
     resolution: {integrity: sha512-0eJJY6hXLGf1udHwfNftBqH+g73EU4B504nZeKpz1sYRKafAghwxEJunB2O7rDZkL4PGfsMVnTXZ2EjibbqcsA==}
@@ -4939,6 +4964,10 @@ snapshots:
     optionalDependencies:
       '@types/node': 25.9.3
 
+  '@lit/context@1.1.6':
+    dependencies:
+      '@lit/reactive-element': 2.1.2
+
   '@lit/reactive-element@1.6.3':
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.6.0
@@ -5037,11 +5066,23 @@ snapshots:
       lit: 3.3.3
       ol: 7.5.2
 
+  '@openlayers-elements/core@0.5.1':
+    dependencies:
+      '@lit/context': 1.1.6
+      lit: 3.3.3
+      ol: 9.2.4
+
   '@openlayers-elements/maps@0.4.0':
     dependencies:
       '@openlayers-elements/core': 0.4.0
       lit: 3.3.3
       ol: 7.5.2
+
+  '@openlayers-elements/maps@0.5.0':
+    dependencies:
+      '@openlayers-elements/core': 0.5.1
+      lit: 3.3.3
+      ol: 9.2.4
 
   '@openlayers-elements/swisstopo@0.4.0(geotiff@2.1.3)':
     dependencies:
@@ -6759,6 +6800,19 @@ snapshots:
 
   color-name@1.1.4: {}
 
+  color-name@2.1.0: {}
+
+  color-parse@2.0.2:
+    dependencies:
+      color-name: 2.1.0
+
+  color-rgba@3.0.0:
+    dependencies:
+      color-parse: 2.0.2
+      color-space: 2.3.2
+
+  color-space@2.3.2: {}
+
   colorette@2.0.20: {}
 
   colors@1.4.0: {}
@@ -8244,6 +8298,15 @@ snapshots:
       earcut: 2.2.4
       geotiff: 2.1.3
       ol-mapbox-style: 10.7.0
+      pbf: 3.2.1
+      rbush: 3.0.1
+
+  ol@9.2.4:
+    dependencies:
+      color-rgba: 3.0.0
+      color-space: 2.3.2
+      earcut: 2.2.4
+      geotiff: 2.1.3
       pbf: 3.2.1
       rbush: 3.0.1
 
