@@ -44,7 +44,7 @@
   "devDependencies": {
     "@rdfjs/types": "^2.0.1",
     "@types/jsonld": "^1.5.15",
-    "@types/node": "^25.5.0",
+    "@types/node": "^26.1.0",
     "@types/sparql-http-client": "^3.1.0",
     "c8": "^11.0.0",
     "fastify": "^5.9.0",
