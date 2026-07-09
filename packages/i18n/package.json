@@ -39,7 +39,7 @@
   ],
   "devDependencies": {
     "@types/i18n": "^0.13.12",
-    "@types/node": "^26.1.0",
+    "@types/node": "^26.1.1",
     "c8": "^11.0.0",
     "fastify": "^5.9.0",
     "rimraf": "^6.1.3",
