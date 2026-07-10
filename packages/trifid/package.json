@@ -49,7 +49,7 @@
     "trifid-plugin-yasgui": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^26.1.0",
+    "@types/node": "^26.1.1",
     "rimraf": "^6.1.3",
     "typescript": "^6.0.3"
   },

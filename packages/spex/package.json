@@ -40,7 +40,7 @@
     "CHANGELOG.md"
   ],
   "devDependencies": {
-    "@types/node": "^26.1.0",
+    "@types/node": "^26.1.1",
     "c8": "^11.0.0",
     "fastify": "^5.10.0",
     "rimraf": "^6.1.3",
