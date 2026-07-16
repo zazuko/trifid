@@ -22,7 +22,7 @@
     "clean": "rimraf *.tgz dist/ coverage/"
   },
   "dependencies": {
-    "@fastify/static": "^9.1.3",
+    "@fastify/static": "^10.1.0",
     "@zazuko/spex": "^0.2.2",
     "import-meta-resolve": "^4.2.0"
   },
