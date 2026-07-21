@@ -28,10 +28,10 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "prepare": "esbuild --minify --bundle plugins/map.js --outdir=build --splitting --format=esm --external:ol-json-style",
+    "prepare": "esbuild --minify --bundle plugins/deps.js --format=esm --outfile=build/deps.js && esbuild --minify --bundle plugins/map.js plugins/pivot.js plugins/map.css --format=iife --outdir=build --external:./deps.js --loader:.png=dataurl",
     "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=build --exclude=plugins --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf *.tgz dist/ coverage/",
+    "clean": "rimraf *.tgz dist/ build/ coverage/",
     "prebuild": "pnpm run clean && pnpm run prepare",
     "build": "tsc && node scripts/copy-assets.ts"
   },
@@ -50,12 +50,12 @@
     "import-meta-resolve": "^4.2.0"
   },
   "devDependencies": {
-    "@openlayers-elements/maps": "^0.4.0",
-    "@openlayers-elements/swisstopo": "^0.4.0",
     "@types/node": "^26.1.1",
+    "betterknown": "^1.2.0",
     "c8": "^11.0.0",
     "esbuild": "^0.28.1",
     "fastify": "^5.10.0",
+    "leaflet": "^1.9.4",
     "rimraf": "^6.1.3",
     "trifid-core": "workspace:^",
     "typescript": "^6.0.3"

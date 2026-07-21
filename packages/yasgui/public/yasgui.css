@@ -1,0 +1,443 @@
+/*
+ * Trifid styling for YASGUI.
+ *
+ * Everything is scoped under `.yasgui` so that these rules cannot leak into the
+ * rest of the page, and it uses the Trifid design tokens so that the editor
+ * blends in with the surrounding layout.
+ */
+
+/* Endpoint bar
+   ------------------------------------------------------------------------- */
+
+/*
+ * YASGUI caps the endpoint input at 700px, which leaves it noticeably narrower
+ * than the query editor below it. Letting it grow instead lines the input and
+ * its clear button up with the right edge of the editor.
+ */
+.yasgui .autocompleteWrapper {
+  flex: 1;
+  max-width: none;
+}
+
+.yasgui .autocomplete {
+  border: 1px solid var(--trifid-color-border-strong);
+  border-radius: var(--trifid-radius);
+  padding: 4px 10px;
+  font-family: var(--trifid-font-mono);
+  font-size: .85rem;
+  color: var(--trifid-color-text);
+}
+
+.yasgui .autocomplete:focus {
+  outline: none;
+  border-color: var(--trifid-color-primary);
+  box-shadow: 0 0 0 3px rgba(247, 127, 0, .15);
+}
+
+.yasgui .clearEndpointBtn {
+  background-color: var(--trifid-color-surface);
+  border: 1px solid var(--trifid-color-border-strong);
+  border-radius: var(--trifid-radius);
+  color: var(--trifid-color-text-muted);
+  /* Line the button up with the right edge of the query editor */
+  margin-right: 0;
+}
+
+.yasgui .clearEndpointBtn:hover {
+  opacity: 1;
+  color: var(--trifid-color-text);
+  border-color: var(--trifid-color-primary);
+}
+
+/* Tab settings panel (behind the gear icon)
+   ------------------------------------------------------------------------- */
+
+/*
+ * `height` and the open/close transform are left alone, they drive the
+ * open/close animation.
+ */
+.yasgui .tabMenu {
+  background: var(--trifid-color-bg);
+  border: 1px solid var(--trifid-color-border);
+  border-radius: var(--trifid-radius);
+  box-shadow: var(--trifid-shadow-md);
+}
+
+.yasgui .tabMenu .requestConfigWrapper {
+  background: transparent;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--trifid-color-border);
+}
+
+.yasgui .tabMenu .requestConfigWrapper:last-child {
+  border-bottom: none;
+}
+
+.yasgui .tabMenu .label {
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--trifid-color-text-muted);
+  padding-right: 0;
+}
+
+/* Request method: a segmented control rather than underlined text */
+.yasgui .tabMenu .requestConfigWrapper .selectorButton {
+  height: auto;
+  padding: 5px 14px;
+  font-size: .85rem;
+  background-color: var(--trifid-color-bg);
+  border: 1px solid var(--trifid-color-border-strong);
+  border-radius: var(--trifid-radius);
+  color: var(--trifid-color-text-muted);
+}
+
+.yasgui .tabMenu .requestConfigWrapper .selectorButton:hover,
+.yasgui .tabMenu .requestConfigWrapper .selectorButton:focus-visible {
+  border-color: var(--trifid-color-primary);
+  color: var(--trifid-color-text);
+}
+
+.yasgui .tabMenu .requestConfigWrapper .selectorButton.selected {
+  background-color: var(--trifid-color-primary-soft);
+  border: 1px solid var(--trifid-color-primary);
+  color: var(--trifid-color-primary-darker);
+  font-weight: 600;
+}
+
+.yasgui .tabMenu .acceptWrapper .selector {
+  padding: 0;
+  gap: 4px;
+}
+
+.yasgui .tabMenu .acceptWrapper .selector .selectorLabel {
+  align-self: flex-start;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--trifid-color-text-faint);
+}
+
+.yasgui .tabMenu .textSetting .textRow,
+.yasgui .tabMenu .textSetting .graphInput {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.yasgui .tabMenu select,
+.yasgui .tabMenu input[type="text"] {
+  font-family: var(--trifid-font-body);
+  font-size: .85rem;
+  color: var(--trifid-color-text);
+  background-color: var(--trifid-color-bg);
+  border: 1px solid var(--trifid-color-border-strong);
+  border-radius: var(--trifid-radius);
+  padding: 5px 8px;
+  min-width: 0;
+}
+
+.yasgui .tabMenu select:focus,
+.yasgui .tabMenu input[type="text"]:focus {
+  outline: none;
+  border-color: var(--trifid-color-primary);
+  box-shadow: 0 0 0 3px rgba(247, 127, 0, .15);
+}
+
+.yasgui .tabMenu .textSetting .removeButton {
+  color: var(--trifid-color-text-faint);
+  border-radius: var(--trifid-radius);
+}
+
+.yasgui .tabMenu .textSetting .removeButton:hover {
+  color: var(--trifid-color-accent);
+}
+
+/* Query editor
+   ------------------------------------------------------------------------- */
+
+.yasgui .yasqe .CodeMirror {
+  font-family: var(--trifid-font-mono);
+  border-radius: var(--trifid-radius);
+}
+
+/* Result tabs
+   ------------------------------------------------------------------------- */
+
+.yasgui .yasr .yasr_btnGroup .selectorButton {
+  border-radius: var(--trifid-radius);
+  transition: background-color .15s ease-in-out, color .15s ease-in-out;
+}
+
+.yasgui .yasr .yasr_btnGroup .selectorButton:hover {
+  background-color: var(--trifid-color-surface);
+  color: var(--trifid-color-text);
+}
+
+.yasgui .yasr .yasr_btnGroup .selectorButton.selected {
+  color: var(--trifid-color-primary-dark);
+}
+
+/* Results toolbar
+   ------------------------------------------------------------------------- */
+
+.yasgui .yasr .yasr_header {
+  gap: 12px;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.yasgui .yasr .yasr_plugin_control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: .85rem;
+  color: var(--trifid-color-text-muted);
+}
+
+.yasgui .yasr .yasr_plugin_control input[type="text"],
+.yasgui .yasr .yasr_plugin_control input[type="search"],
+.yasgui .yasr .yasr_plugin_control select {
+  font-family: var(--trifid-font-body);
+  font-size: .85rem;
+  color: var(--trifid-color-text);
+  background-color: var(--trifid-color-bg);
+  border: 1px solid var(--trifid-color-border-strong);
+  border-radius: var(--trifid-radius);
+  padding: 4px 8px;
+}
+
+.yasgui .yasr .yasr_plugin_control input:focus,
+.yasgui .yasr .yasr_plugin_control select:focus {
+  outline: none;
+  border-color: var(--trifid-color-primary);
+  box-shadow: 0 0 0 3px rgba(247, 127, 0, .15);
+}
+
+/* Table plugin
+   ------------------------------------------------------------------------- */
+
+.yasgui .yasr table.dataTable {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: .9rem;
+}
+
+/* Header: quieter than the data, without the heavy default border */
+.yasgui .yasr table.dataTable thead th {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: bottom;
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--trifid-color-text-muted);
+  background-color: var(--trifid-color-surface);
+  border: none;
+  border-bottom: 1px solid var(--trifid-color-border-strong);
+}
+
+/*
+ * Data cells had no horizontal padding at all, which made the columns collide.
+ * The column resizer injects `padding-left/right: 0 !important` on
+ * `.grip-padding` cells at runtime, so `!important` is the only way to give the
+ * cells room again.
+ */
+.yasgui .yasr table.dataTable tbody td {
+  padding: 9px 14px;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  vertical-align: top;
+  border: none;
+  border-bottom: 1px solid var(--trifid-color-border);
+}
+
+.yasgui .yasr table.dataTable tbody tr:nth-child(even) {
+  background-color: var(--trifid-color-surface);
+}
+
+.yasgui .yasr table.dataTable tbody tr:hover {
+  background-color: var(--trifid-color-primary-soft);
+}
+
+/* Row numbers read as a gutter instead of as part of the first value */
+.yasgui .yasr table.dataTable tbody td:first-child {
+  width: 1%;
+  padding-right: 4px !important;
+  text-align: right;
+  color: var(--trifid-color-text-faint);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+/* Values: IRIs and literals get a slightly more technical look */
+.yasgui .yasr table.dataTable tbody td .iri,
+.yasgui .yasr table.dataTable tbody td .nonIri {
+  font-family: var(--trifid-font-mono);
+  font-size: .85rem;
+  overflow-wrap: anywhere;
+}
+
+.yasgui .yasr table.dataTable tbody td a.iri {
+  color: var(--trifid-color-primary-dark);
+}
+
+/* The `^^datatype` suffix is metadata, so it should not compete with the value */
+.yasgui .yasr table.dataTable tbody td sup {
+  color: var(--trifid-color-text-faint);
+}
+
+.yasgui .yasr table.dataTable tbody td sup a.iri {
+  color: var(--trifid-color-text-muted);
+}
+
+/* Pagination and info
+   ------------------------------------------------------------------------- */
+
+.yasgui .yasr .dt-info,
+.yasgui .yasr .yasr_fallback_info {
+  font-size: .85rem;
+  color: var(--trifid-color-text-muted);
+  padding-top: 12px;
+}
+
+.yasgui .yasr .dt-paging {
+  padding-top: 12px;
+}
+
+.yasgui .yasr .dt-paging .dt-paging-button {
+  border: 1px solid transparent;
+  border-radius: var(--trifid-radius);
+  background: none;
+  color: var(--trifid-color-text-muted);
+  padding: 4px 10px;
+  margin-left: 2px;
+  cursor: pointer;
+}
+
+.yasgui .yasr .dt-paging .dt-paging-button:hover:not(.disabled) {
+  background-color: var(--trifid-color-surface);
+  border-color: var(--trifid-color-border-strong);
+  color: var(--trifid-color-text);
+}
+
+.yasgui .yasr .dt-paging .dt-paging-button.current {
+  background-color: var(--trifid-color-primary-soft);
+  border-color: var(--trifid-color-primary);
+  color: var(--trifid-color-primary-darker);
+  font-weight: 600;
+}
+
+.yasgui .yasr .dt-paging .dt-paging-button.disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+/* Pivot table plugin
+   ------------------------------------------------------------------------- */
+
+.trifid-pivot-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  padding: 12px 0 16px;
+}
+
+.trifid-pivot-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--trifid-color-text-muted);
+}
+
+.trifid-pivot-field select {
+  font-family: var(--trifid-font-body);
+  font-size: .9rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--trifid-color-text);
+  background-color: var(--trifid-color-bg);
+  border: 1px solid var(--trifid-color-border-strong);
+  border-radius: var(--trifid-radius);
+  padding: 6px 10px;
+  min-width: 160px;
+  cursor: pointer;
+}
+
+.trifid-pivot-field select:focus {
+  outline: none;
+  border-color: var(--trifid-color-primary);
+  box-shadow: 0 0 0 3px rgba(247, 127, 0, .15);
+}
+
+/* The table can get wide, so it scrolls on its own instead of the page */
+.trifid-pivot-scroller {
+  overflow-x: auto;
+  border: 1px solid var(--trifid-color-border);
+  border-radius: var(--trifid-radius);
+}
+
+.trifid-pivot-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: .9rem;
+}
+
+.trifid-pivot-table th,
+.trifid-pivot-table td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--trifid-color-border);
+  white-space: nowrap;
+}
+
+.trifid-pivot-table thead th,
+.trifid-pivot-table tbody th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--trifid-color-text);
+}
+
+.trifid-pivot-table thead th {
+  background-color: var(--trifid-color-surface);
+  position: sticky;
+  top: 0;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--trifid-color-text-muted);
+}
+
+/* Keep the row headers readable while scrolling horizontally */
+.trifid-pivot-table tbody th {
+  position: sticky;
+  left: 0;
+  background-color: var(--trifid-color-bg);
+}
+
+.trifid-pivot-table tbody tr:hover td,
+.trifid-pivot-table tbody tr:hover th {
+  background-color: var(--trifid-color-primary-soft);
+}
+
+.trifid-pivot-table .trifid-pivot-total {
+  font-weight: 600;
+  background-color: var(--trifid-color-surface);
+}
+
+.trifid-pivot-table tfoot th {
+  text-align: left;
+  background-color: var(--trifid-color-surface);
+  font-weight: 600;
+}

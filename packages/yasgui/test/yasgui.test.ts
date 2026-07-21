@@ -95,6 +95,24 @@ describe('trifid-plugin-yasgui', () => {
       strictEqual(res.status, 200);
     });
 
+    it('can serve static Map plugin style', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-plugins/map.css`);
+      await res.text(); // Just make sure that the stream is consumed
+      strictEqual(res.status, 200);
+    });
+
+    it('can serve static Pivot plugin script', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-plugins/pivot.js`);
+      await res.text(); // Just make sure that the stream is consumed
+      strictEqual(res.status, 200);
+    });
+
+    it('can serve the Trifid style', async () => {
+      const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-public/yasgui.css`);
+      await res.text(); // Just make sure that the stream is consumed
+      strictEqual(res.status, 200);
+    });
+
     it('can serve marker icon SVG', async () => {
       const res = await fetch(`${getListenerURL(trifidListener)}/yasgui-public/marker-icon.svg`);
       await res.text(); // Just make sure that the stream is consumed

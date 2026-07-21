@@ -9,18 +9,154 @@ if (!YasguiMapPluginDefaultOptions.mapKind) {
   YasguiMapPluginDefaultOptions.mapKind = 'default';
 }
 
+const WKT_DATATYPE = 'http://www.opengis.net/ont/geosparql#wktLiteral';
+
+const FEATURE_COLOR = '#ff441c';
+const featureStyle = {
+  color: FEATURE_COLOR,
+  weight: 3,
+  fillColor: FEATURE_COLOR,
+  fillOpacity: 0.2,
+};
+const highlightStyle = {
+  color: FEATURE_COLOR,
+  weight: 4,
+  fillColor: FEATURE_COLOR,
+  fillOpacity: 0.6,
+};
+
+const OSM_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer noopener">OpenStreetMap</a> contributors';
+const SWISSTOPO_ATTRIBUTION = '&copy; <a href="https://www.swisstopo.admin.ch/" target="_blank" rel="noreferrer noopener">swisstopo</a>';
+
+// Swisstopo publishes its WMTS tiles in Web Mercator (EPSG:3857), which is the
+// projection Leaflet uses by default, so they can be used as plain XYZ tiles.
+const swisstopoUrl = (layerName) => `https://wmts.geo.admin.ch/1.0.0/${layerName}/default/current/3857/{z}/{x}/{y}.jpeg`;
+
+// Base layers, keyed by the `mapKind` option. The first one is the default, and
+// a layer switcher is only shown when a kind offers more than one.
+const baseLayers = {
+  default: [
+    {
+      name: 'Street map',
+      url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      options: { maxZoom: 19, attribution: OSM_ATTRIBUTION },
+    },
+  ],
+  swisstopo: [
+    {
+      name: 'National map',
+      url: swisstopoUrl('ch.swisstopo.pixelkarte-farbe'),
+      options: { maxZoom: 19, attribution: SWISSTOPO_ATTRIBUTION },
+    },
+    {
+      name: 'Aerial imagery',
+      url: swisstopoUrl('ch.swisstopo.swissimage'),
+      options: { maxZoom: 19, attribution: SWISSTOPO_ATTRIBUTION },
+    },
+  ],
+};
+
+/**
+ * GeoSPARQL WKT literals may carry a CRS URI prefix, for example
+ * `<http://www.opengis.net/def/crs/OGC/1.3/CRS84> POINT(7.44 46.94)`.
+ * Coordinates are always interpreted as WGS84, like the previous OpenLayers
+ * based implementation did, so the prefix is simply removed.
+ *
+ * @param {string} wkt Raw WKT literal.
+ * @returns {string} WKT literal without its optional CRS prefix.
+ */
+const stripCrsPrefix = (wkt) => wkt.replace(/^\s*<[^>]*>\s*/, '');
+
+/**
+ * Build the popup shown when a geometry is clicked. Besides the label, it lists
+ * the other values of the row the geometry comes from, which makes the map
+ * usable to explore the result set and not only to locate it.
+ *
+ * @param {string|undefined} label Label of the feature, if any.
+ * @param {Array<[string, string]>} properties Other values of the row.
+ * @returns {HTMLElement} Popup content.
+ */
+const buildPopup = (label, properties) => {
+  const content = document.createElement('div');
+
+  if (label) {
+    const title = document.createElement('div');
+    title.className = 'trifid-map-popup-title';
+    title.textContent = label;
+    content.appendChild(title);
+  }
+
+  if (properties.length > 0) {
+    const table = document.createElement('table');
+    table.className = 'trifid-map-popup-table';
+    properties.forEach(([name, value]) => {
+      const row = document.createElement('tr');
+      const nameCell = document.createElement('th');
+      nameCell.textContent = name;
+      const valueCell = document.createElement('td');
+      valueCell.textContent = value;
+      row.appendChild(nameCell);
+      row.appendChild(valueCell);
+      table.appendChild(row);
+    });
+    content.appendChild(table);
+  }
+
+  return content;
+};
+
+/**
+ * A Leaflet control toggling the fullscreen mode of the map container, so that
+ * a result set can be inspected on more than the 500px the plugin gets.
+ *
+ * @param {object} L Leaflet module.
+ * @returns {object} The control instance.
+ */
+const buildFullscreenControl = (L) => {
+  const control = L.control({ position: 'topleft' });
+
+  control.onAdd = (map) => {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const button = L.DomUtil.create('a', '', container);
+    button.href = '#';
+    button.title = 'Toggle fullscreen';
+    button.setAttribute('role', 'button');
+    button.style.fontSize = '16px';
+    button.style.textDecoration = 'none';
+    button.textContent = '⛶';
+
+    L.DomEvent.on(button, 'click', (event) => {
+      L.DomEvent.stop(event);
+      const target = map.getContainer();
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else if (target.requestFullscreen) {
+        target.requestFullscreen();
+      }
+    });
+
+    // Leaflet needs to re-measure the container after the transition
+    document.addEventListener('fullscreenchange', () => {
+      setTimeout(() => map.invalidateSize(), 100);
+    });
+
+    return container;
+  };
+
+  return control;
+};
+
 class YasguiMap {
   priority = 10;
 
   hideFromSelection = false;
-  wktLabels = new Map();
+  map = undefined;
 
   constructor(yasr) {
     this.yasr = yasr;
   }
 
   getResults() {
-    this.wktLabels.clear();
     if (
       !this.yasr
       || !this.yasr.results
@@ -39,7 +175,7 @@ class YasguiMap {
 
     const wktData = [];
 
-    results.forEach((result, rowIndex) => {
+    results.forEach((result) => {
       if (!result) {
         return null;
       }
@@ -52,10 +188,7 @@ class YasguiMap {
         if (!value.type || value.type !== 'literal') {
           return false;
         }
-        if (
-          !value.datatype
-          || value.datatype !== 'http://www.opengis.net/ont/geosparql#wktLiteral'
-        ) {
+        if (!value.datatype || value.datatype !== WKT_DATATYPE) {
           return false;
         }
         if (!value.value) {
@@ -68,26 +201,34 @@ class YasguiMap {
         return null;
       }
 
+      const geometryColumns = wktEntries.map((entry) => entry[0]);
+
       wktEntries.forEach((entry) => {
         const columnName = entry[0];
-        const id = `results-map-wkt-${columnName}-${rowIndex}`;
         const wktEntry = entry[1];
 
+        // A `<column>Label` column, if any, is used as the feature label
+        const labelField = result[`${columnName}Label`];
+        const label = labelField && labelField.type === 'literal'
+          ? labelField.value
+          : undefined;
+
+        // The remaining columns of the row are shown in the popup. Geometries
+        // and the label itself would only be noise there.
+        const properties = Object.entries(result)
+          .filter(([name, value]) => {
+            if (geometryColumns.includes(name) || name === `${columnName}Label`) {
+              return false;
+            }
+            return Boolean(value && value.value);
+          })
+          .map(([name, value]) => [name, value.value]);
+
         wktData.push({
-          id,
           wkt: wktEntry.value,
+          label,
+          properties,
         });
-
-        if (!result || !result[`${columnName}Label`]) {
-          return;
-        }
-        const wktLabelField = result[`${columnName}Label`];
-        if (!wktLabelField || wktLabelField.type !== 'literal') {
-          return;
-        }
-        const wktLabel = wktLabelField.value;
-
-        this.wktLabels.set(id, wktLabel);
       });
     });
 
@@ -95,125 +236,100 @@ class YasguiMap {
   }
 
   async draw() {
-    await import('./deps.js');
-    const { Style, Stroke, Fill } = await import('./style.js');
+    const { L, wktToGeoJSON } = await import('./deps.js');
 
     const results = this.getResults();
-    const el = document.createElement('ol-map');
-    el.style.height = '500px';
-    el.style.width = '100%';
 
-    // The overlay is used to display the WKT label when a feature is selected
-    const overlay = document.createElement('div');
-    overlay.style.position = 'absolute';
-    overlay.style.bottom = '0px';
-    overlay.style.left = '0px';
-    overlay.style.background = 'rgb(255, 255, 255)';
-    overlay.style.padding = '8px';
-    overlay.style.display = 'none';
-    overlay.style.zIndex = '10';
-    overlay.style.borderTopRightRadius = '5px';
-    overlay.style.borderTop = '1px solid #000';
-    overlay.style.borderRight = '1px solid #000';
-    el.appendChild(overlay);
+    const features = [];
+    results.forEach((result) => {
+      let geometry;
+      try {
+        geometry = wktToGeoJSON(stripCrsPrefix(result.wkt));
+      } catch {
+        // Ignore geometries that cannot be parsed, so that a single invalid
+        // value does not prevent the other ones from being displayed.
+        return;
+      }
+      if (!geometry) {
+        return;
+      }
+      features.push({
+        type: 'Feature',
+        geometry,
+        properties: { label: result.label, values: result.properties },
+      });
+    });
 
-    let mapLayer;
-    switch (YasguiMapPluginDefaultOptions?.mapKind) {
-      case 'swisstopo':
-        mapLayer = document.createElement('swisstopo-wmts');
-        mapLayer.setAttribute('layer-name', 'ch.swisstopo.pixelkarte-farbe');
-        mapLayer.setAttribute('z-index', '-1');
-        break;
-      default:
-        mapLayer = document.createElement('ol-layer-openstreetmap');
-        break;
+    // Leaflet cannot reuse a container that already holds a map
+    if (this.map) {
+      this.map.remove();
+      this.map = undefined;
     }
 
-    const editStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(255, 68, 28, 0.6)',
-      }),
-      stroke: new Stroke({
-        color: '#ff441c',
-        width: 5,
-      }),
-    });
-    const featureStyle = new Style({
-      fill: new Fill({
-        color: 'rgba(255, 68, 28, 0.2)',
-      }),
-      stroke: new Stroke({
-        color: '#ff441c',
-        width: 5,
-      }),
-    });
-
-    const vectorLayer = document.createElement('ol-layer-vector');
-    const wkt = document.createElement('ol-layer-wkt');
-    const select = document.createElement('ol-select');
-    select.style = featureStyle;
-
-    mapLayer.appendChild(vectorLayer);
-    mapLayer.appendChild(wkt);
-    mapLayer.appendChild(select);
-    el.appendChild(mapLayer);
+    const el = document.createElement('div');
+    el.style.height = '500px';
+    el.style.width = '100%';
 
     // Clear the results element and append the map
     this.yasr.resultsEl.textContent = '';
     this.yasr.resultsEl.appendChild(el);
 
-    select.addEventListener('feature-selected', (e) => {
-      if (!e?.detail?.feature) {
-        return;
-      }
+    const map = L.map(el);
+    this.map = map;
 
-      const feature = e.detail.feature;
-      feature.setStyle(editStyle);
-      const id = feature.getId();
-      if (!this.wktLabels.has(id)) {
-        return;
-      }
-      const wktLabel = this.wktLabels.get(id);
-
-      if (wktLabel) {
-        overlay.innerText = wktLabel;
-        overlay.style.display = 'block';
-      } else {
-        overlay.style.display = 'none';
+    const kinds = baseLayers[YasguiMapPluginDefaultOptions.mapKind] || baseLayers.default;
+    const tileLayers = {};
+    kinds.forEach((kind, index) => {
+      const tileLayer = L.tileLayer(kind.url, kind.options);
+      tileLayers[kind.name] = tileLayer;
+      // The first one is the default
+      if (index === 0) {
+        tileLayer.addTo(map);
       }
     });
+    if (kinds.length > 1) {
+      L.control.layers(tileLayers, undefined, { collapsed: false }).addTo(map);
+    }
 
-    select.addEventListener('feature-unselected', (e) => {
-      if (!e?.detail?.feature) {
-        return;
-      }
+    L.control.scale({ imperial: false }).addTo(map);
+    buildFullscreenControl(L).addTo(map);
 
-      const feature = e.detail.feature;
-      feature.setStyle(featureStyle);
-      overlay.style.display = 'none';
+    const markerIcon = L.icon({
+      iconUrl: '/yasgui-public/marker-icon.svg',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -12],
     });
 
-    // Explicitly add POINT data to the map
-    const pointResults = results.filter((result) => result.wkt.includes('POINT'));
-    pointResults.forEach((result) => {
-      const markerIcon = document.createElement('ol-marker-icon');
-      const coords = result.wkt.match(/POINT *\(([^)]+)\)/)[1].split(' ');
-      if (coords.length !== 2) {
-        return;
-      }
-      markerIcon.setAttribute('lat', coords[1]);
-      markerIcon.setAttribute('lon', coords[0]);
-      markerIcon.setAttribute('src', '/yasgui-public/marker-icon.svg');
-      vectorLayer.appendChild(markerIcon);
-    });
+    const layer = L.geoJSON(features, {
+      style: () => featureStyle,
+      pointToLayer: (_feature, latlng) => L.marker(latlng, { icon: markerIcon }),
+      onEachFeature: (feature, featureLayer) => {
+        const { label, values } = feature.properties || {};
+        if (label || (values && values.length > 0)) {
+          featureLayer.bindPopup(() => buildPopup(label, values || []));
+        }
 
-    // Also contains POINT data, to correctly fit the map
-    wkt.featureData = results;
-    wkt.featureStyle = featureStyle;
+        // Markers already have their own hover behaviour
+        if (typeof featureLayer.setStyle !== 'function') {
+          return;
+        }
+        featureLayer.on('mouseover', () => featureLayer.setStyle(highlightStyle));
+        featureLayer.on('mouseout', () => featureLayer.setStyle(featureStyle));
+      },
+    }).addTo(map);
 
-    setTimeout(() => {
-      wkt.fit();
-    }, 200);
+    const bounds = layer.getBounds();
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [20, 20], maxZoom: 18 });
+    } else {
+      // Fall back to a view of Switzerland when there is nothing to fit
+      map.setView([46.8, 8.2], 7);
+    }
+
+    // The plugin may be drawn while its tab is still hidden, in which case
+    // Leaflet cannot measure the container yet.
+    setTimeout(() => map.invalidateSize(), 200);
   }
 
   canHandleResults() {
