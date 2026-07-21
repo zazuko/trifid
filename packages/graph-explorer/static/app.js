@@ -1,4 +1,4 @@
-/* global ReactDOM, React, GraphExplorer, graphExplorerConfig */
+/* global GraphExplorer, graphExplorerConfig */
 
 const SparqlDialect = GraphExplorer.OWLStatsSettings;
 SparqlDialect.dataLabelProperty = graphExplorerConfig.dataLabelProperty;
@@ -11,7 +11,9 @@ const onWorkspaceMounted = async (workspace) => {
 
   const model = workspace.getModel();
 
-  model.importLayout({
+  // `importLayout` resets the diagram, so it has to be awaited before any
+  // element is added below, otherwise it wipes them once it resolves.
+  await model.importLayout({
     dataProvider: new GraphExplorer.SparqlDataProvider(
       {
         endpointUrl: graphExplorerConfig.endpointUrl,
@@ -34,11 +36,13 @@ const onWorkspaceMounted = async (workspace) => {
       elementIds: resources.split(';'),
     });
 
-    const elmIds = [];
+    const elmIds = {};
     resources.split(';').forEach((item) => {
+      if (!elm[item]) {
+        return;
+      }
       const node = model.createElement(elm[item]);
       elmIds[item] = node.id;
-      workspace.forceLayout();
     });
 
     /* now that we have the resources, add the links */
@@ -47,24 +51,36 @@ const onWorkspaceMounted = async (workspace) => {
     });
 
     lnk.forEach((link) => {
-      const newLink = new GraphExplorer.Link({
+      const sourceId = elmIds[link.sourceId];
+      const targetId = elmIds[link.targetId];
+      if (!sourceId || !targetId) {
+        return;
+      }
+      model.addLink(new GraphExplorer.Link({
         typeId: link.linkTypeId,
-        sourceId: elmIds[link.sourceId],
-        targetId: elmIds[link.targetId],
-      });
-      model.addLink(newLink);
-      workspace.forceLayout();
+        sourceId,
+        targetId,
+      }));
     });
+
+    workspace.forceLayout();
   }
 };
 
 const props = {
-  ref: onWorkspaceMounted,
+  // React 19 treats a value returned from a callback ref as a cleanup function,
+  // so the async handler must not have its promise returned here.
+  ref: (workspace) => {
+    onWorkspaceMounted(workspace);
+  },
   languages: graphExplorerConfig.languages,
   language: graphExplorerConfig.language,
 };
 
-ReactDOM.render(
-  React.createElement(GraphExplorer.Workspace, props),
+// `renderTo` is the mount helper exposed by graph-explorer; it uses the React 19
+// `createRoot` API from the React copy bundled inside the library.
+GraphExplorer.renderTo(
+  GraphExplorer.Workspace,
   document.getElementById('trifid-plugin-graph-explorer'),
+  props,
 );

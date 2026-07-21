@@ -1,3 +1,44 @@
+/*
+ * Make the graph explorer fill the whole viewport between the Trifid header and
+ * footer. The rules are scoped with `:has()` so that only the pages actually
+ * embedding the explorer get the full-height treatment.
+ */
+
+body:has(.trifid-graph-explorer) {
+  height: 100vh;
+  /* The explorer manages its own internal scrolling. */
+  overflow: hidden;
+}
+
+body:has(.trifid-graph-explorer) .trifid-main {
+  display: flex;
+  flex-direction: column;
+  /* Allow the flex child to shrink below its content size. */
+  min-height: 0;
+}
+
+body:has(.trifid-graph-explorer) .trifid-footer {
+  margin-top: 0;
+}
+
+.trifid-graph-explorer {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
 #trifid-plugin-graph-explorer {
-  height: 750px;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/*
+ * The `.graph-explorer` root rendered by the library relies on `height: 100%`,
+ * which needs a resolved height on its ancestors. Stretching it as a flex item
+ * keeps it correct regardless of percentage-height resolution.
+ */
+#trifid-plugin-graph-explorer > * {
+  flex: 1;
+  min-height: 0;
 }
