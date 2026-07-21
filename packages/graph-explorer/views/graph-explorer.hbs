@@ -1,20 +1,14 @@
-<div class="trifid-header-title-small">
-  <div class="trifid-content">
-    <div class="container">
-      <h1>Graph Explorer</h1>
-      <p>Explore RDF graphs from this instance</p>
-    </div>
-  </div>
-</div>
-
-<div class="trifid-content">
+<div class="trifid-graph-explorer">
   <style>
     @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
     @import url("/graph-explorer/static/style.css");
   </style>
+
+  {{!--
+    The "full" bundle already contains React 19 and its own styles (injected at
+    runtime), so no React needs to be loaded from a CDN here.
+  --}}
   <script src="/graph-explorer/assets/graph-explorer-full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.14.0/umd/react.production.min.js" integrity="sha512-2YCEuA9o4l9bZd4vpYo2iGMrg3fJ/2SHrPPnYwpXiIegB7i0eAroKyhlR20jxPXhlFXPYPzIyc0e2pTWv2eSpA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.14.0/umd/react-dom.production.min.js" integrity="sha512-JSgXhEcYuP4kZfUMZHZ9ItWdKuZYNPar2FWjPF5M6FJikUbcMZIjT4qKKZGgloVY+DsQYFPna4mGK59g2/tVPw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <div id="trifid-plugin-graph-explorer"></div>
 
