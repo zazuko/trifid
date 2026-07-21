@@ -44,3 +44,24 @@ The following options are supported:
 - `catalog`: Array of SPARQL endpoints that will be shown in the YASGUI interface.
 - `defaultQuery`: Default query that will be shown in the YASGUI interface.
 - `mapKind`: Map kind to use in the YASGUI interface (default: `default` ; supported values: `default`, `swisstopo`)
+
+## Result plugins
+
+On top of the plugins provided by YASGUI, this Trifid plugin registers two additional ways to look at the results of a query.
+
+### Map
+
+Renders the geometries of the result set on a [Leaflet](https://leafletjs.com/) map.
+It picks up every value typed as `geo:wktLiteral` (`http://www.opengis.net/ont/geosparql#wktLiteral`), and all the geometry types of WKT are supported.
+Coordinates are expected to be WGS84 (`EPSG:4326`).
+
+Clicking a geometry opens a popup with the other values of the row it comes from.
+If a `<column>Label` column exists next to a geometry column, its value is used as the title of that popup.
+
+The base map is controlled by the `mapKind` option: `swisstopo` uses the Swisstopo tiles, and lets users switch between the national map and the aerial imagery, while any other value uses OpenStreetMap tiles.
+
+### Pivot
+
+Cross-tabulates the result set: pick a variable for the rows, one for the columns, and an aggregation (count, count unique, sum, average, minimum or maximum) to compute for every cell.
+Totals are computed for each row and column.
+This is useful to summarise a result set without having to write a new query with `GROUP BY`.

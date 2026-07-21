@@ -1,0 +1,56 @@
+/*
+ * Stylesheet of the map plugin. esbuild bundles this into `build/map.css`,
+ * inlining the Leaflet stylesheet and the few images it references, so that a
+ * single self contained file has to be served.
+ */
+
+@import 'leaflet/dist/leaflet.css';
+
+/*
+ * Leaflet gives its panes and controls z-indexes between 400 and 1000. The map
+ * container itself is only `position: relative`, so it does not establish a
+ * stacking context and those z-indexes end up competing with the rest of the
+ * page, which makes the map paint over overlays such as the tab settings menu.
+ * A z-index on the container keeps them contained.
+ */
+.leaflet-container {
+  z-index: 0;
+}
+
+/*
+ * Trifid underlines links on hover, which would also apply to the Leaflet
+ * controls since those are anchors. The zoom and layer controls are buttons as
+ * far as users are concerned, so the underline is removed again here.
+ */
+.leaflet-container a.leaflet-control-zoom-in,
+.leaflet-container a.leaflet-control-zoom-out,
+.leaflet-control-layers a,
+.leaflet-control-container a.leaflet-control-fullscreen {
+  text-decoration: none;
+}
+
+/* Popups
+   ------------------------------------------------------------------------- */
+
+.leaflet-popup-content .trifid-map-popup-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.leaflet-popup-content .trifid-map-popup-table {
+  border-collapse: collapse;
+  font-size: .85em;
+}
+
+.leaflet-popup-content .trifid-map-popup-table th,
+.leaflet-popup-content .trifid-map-popup-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 1px 0;
+}
+
+.leaflet-popup-content .trifid-map-popup-table th {
+  font-weight: 600;
+  padding-right: 8px;
+  white-space: nowrap;
+}
