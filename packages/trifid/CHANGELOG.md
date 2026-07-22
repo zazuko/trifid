@@ -1,5 +1,11 @@
 # trifid
 
+## 6.0.3
+
+### Patch Changes
+
+- e127457: This includes some dependencies upgrades, including the some for the YASGUI plugin.
+
 ## 6.0.2
 
 ### Patch Changes
