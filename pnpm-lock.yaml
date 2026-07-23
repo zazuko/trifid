@@ -310,8 +310,8 @@ importers:
         specifier: ^1.9.1
         version: 1.9.1
       oxigraph:
-        specifier: ^0.5.8
-        version: 0.5.8
+        specifier: ^0.5.9
+        version: 0.5.9
       uuid:
         specifier: ^14.0.0
         version: 14.0.0
@@ -3530,8 +3530,8 @@ packages:
   outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
 
-  oxigraph@0.5.8:
-    resolution: {integrity: sha512-ZwAVUf/Vh8OCaIrnmsYie/A/hVPSvrIi+CFWe6YbaAp4llTb6ozPIHYqBvUQgGju0D4gcQAAyXjPV8pGNsPCbQ==}
+  oxigraph@0.5.9:
+    resolution: {integrity: sha512-Oyxo/NE9imMvTPcK/TkQmAPALnJOns0XBk/r90SjnWg1fwBPSSZaNlVQ8YDKqeXHD2QISe1FfIVQtbgpKulqCQ==}
 
   p-filter@2.1.0:
     resolution: {integrity: sha512-ZBxxZ5sL2HghephhpGAQdoskxplTwr7ICaehZwLIlfL6acuVgZPm8yBNuRAFBGEqtD/hmUeq9eqLg2ys9Xr/yw==}
@@ -8106,7 +8106,7 @@ snapshots:
 
   outdent@0.5.0: {}
 
-  oxigraph@0.5.8: {}
+  oxigraph@0.5.9: {}
 
   p-filter@2.1.0:
     dependencies:
