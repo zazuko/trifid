@@ -279,8 +279,8 @@ importers:
         specifier: ^10.1.2
         version: 10.1.2
       graph-explorer:
-        specifier: ^2.0.0
-        version: 2.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       import-meta-resolve:
         specifier: ^4.2.0
         version: 4.2.0
@@ -2022,6 +2022,9 @@ packages:
   '@types/node@26.1.1':
     resolution: {integrity: sha512-nxAkRSVkN1Y0JC1W8ky/fTfkGsMmcrRsbx+3XoZE+rMOX71kLYTV7fLXpqud1GpbpP5TuffXFqfX7fH2GgZREw==}
 
+  '@types/node@26.1.2':
+    resolution: {integrity: sha512-Vu4a5UFA9rIIFJ7rB/Vaafh9lrCQszopTCx6KjFboXTGQbPNasehVR5TEiithSDGyd1DEiUByggTZsg8jukeIg==}
+
   '@types/oracledb@6.5.2':
     resolution: {integrity: sha512-kK1eBS/Adeyis+3OlBDMeQQuasIDLUYXsi2T15ccNJ0iyUpQ4xDF7svFu3+bGVrI0CMBUclPciz+lsQR3JX3TQ==}
 
@@ -3102,8 +3105,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  graph-explorer@2.0.0:
-    resolution: {integrity: sha512-p8Q1bqr/+BrrXifBoeMAJpO2/Zy8b+rnGYSXe/7xcP0baTUZuHItXDtjO5DnFuhl7JrhSeE6M/GiZOCWiCbwnQ==}
+  graph-explorer@2.0.1:
+    resolution: {integrity: sha512-DwOlrTNrMai17jitB131AKTADZIn523bF/BCzBrftQmXAv0+rNhP/xHRZQt9KdcR31zgkmb2p6G6EhqBpUlXoQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -6092,7 +6095,7 @@ snapshots:
     dependencies:
       '@rdfjs-elements/editor-base': 0.5.2
       '@rdfjs-elements/formats-pretty': 0.6.8
-      '@rdfjs/data-model': 2.1.1
+      '@rdfjs/data-model': 2.1.2
       '@rdfjs/environment': 1.0.0
       '@rdfjs/formats': 4.0.1
       '@tpluscode/rdf-ns-builders': 5.0.0
@@ -6178,7 +6181,7 @@ snapshots:
 
   '@rdfjs/serializer-turtle@1.1.5':
     dependencies:
-      '@rdfjs/data-model': 2.1.1
+      '@rdfjs/data-model': 2.1.2
       '@rdfjs/namespace': 2.0.1
       '@rdfjs/prefix-map': 0.1.2
       '@rdfjs/sink': 2.0.1
@@ -6214,7 +6217,7 @@ snapshots:
 
   '@rdfjs/types@1.1.2':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@rdfjs/types@2.0.1':
     dependencies:
@@ -6276,7 +6279,7 @@ snapshots:
 
   '@types/bunyan@1.8.11':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/clownface@2.0.10':
     dependencies:
@@ -6285,7 +6288,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/debug@4.1.13':
     dependencies:
@@ -6303,7 +6306,7 @@ snapshots:
 
   '@types/http-link-header@1.0.7':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/i18n@0.13.12': {}
 
@@ -6321,18 +6324,18 @@ snapshots:
 
   '@types/memcached@2.2.10':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/ms@2.1.0': {}
 
   '@types/mysql@2.15.27':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/n3@1.26.1':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/node@12.20.55': {}
 
@@ -6348,9 +6351,13 @@ snapshots:
     dependencies:
       undici-types: 8.3.0
 
+  '@types/node@26.1.2':
+    dependencies:
+      undici-types: 8.3.0
+
   '@types/oracledb@6.5.2':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/pg-pool@2.0.7':
     dependencies:
@@ -6358,13 +6365,13 @@ snapshots:
 
   '@types/pg@8.15.6':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
       pg-protocol: 1.15.0
       pg-types: 2.2.0
 
   '@types/pg@8.20.0':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
       pg-protocol: 1.15.0
       pg-types: 2.2.0
 
@@ -6384,18 +6391,18 @@ snapshots:
   '@types/rdfjs__environment@1.0.0':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/rdfjs__fetch-lite@3.0.11':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
       '@types/rdfjs__formats': 4.0.1
 
   '@types/rdfjs__formats@4.0.1':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
       '@types/rdfjs__parser-jsonld': 2.1.7
       '@types/rdfjs__parser-n3': 2.0.6
       '@types/rdfjs__serializer-jsonld': 2.0.5
@@ -6426,7 +6433,7 @@ snapshots:
     dependencies:
       '@rdfjs/types': 2.0.1
       '@types/jsonld': 1.5.15
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/rdfjs__serializer-jsonld@2.0.5':
     dependencies:
@@ -6439,7 +6446,7 @@ snapshots:
   '@types/rdfjs__serializer-turtle@1.1.0':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
       '@types/rdfjs__prefix-map': 0.1.5
 
   '@types/rdfjs__sink-map@2.0.5':
@@ -6460,16 +6467,16 @@ snapshots:
 
   '@types/readable-stream@2.3.15':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
       safe-buffer: 5.1.2
 
   '@types/readable-stream@4.0.23':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/readable-stream@4.0.24':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/sparql-http-client@3.1.0':
     dependencies:
@@ -6482,7 +6489,7 @@ snapshots:
 
   '@types/tedious@4.0.14':
     dependencies:
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
 
   '@types/trusted-types@2.0.7': {}
 
@@ -6672,7 +6679,7 @@ snapshots:
 
   '@zazuko/env@2.5.3(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)':
     dependencies:
-      '@rdfjs/data-model': 2.1.1
+      '@rdfjs/data-model': 2.1.2
       '@rdfjs/dataset': 2.0.2
       '@rdfjs/formats': 4.0.1
       '@rdfjs/namespace': 2.0.1
@@ -7685,7 +7692,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  graph-explorer@2.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  graph-explorer@2.0.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
       '@rdfjs/data-model': 2.1.2
       '@rdfjs/types': 2.0.1
@@ -8693,7 +8700,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.2
-      '@types/node': 26.1.1
+      '@types/node': 26.1.2
       long: 5.3.2
 
   pstree.remy@1.1.8: {}
