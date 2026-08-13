@@ -74,7 +74,7 @@
     "@opentelemetry/sdk-metrics": "^2.10.0",
     "@opentelemetry/sdk-node": "^0.221.0",
     "@opentelemetry/semantic-conventions": "^1.43.0",
-    "@rdfjs-elements/formats-pretty": "^0.6.8",
+    "@rdfjs-elements/formats-pretty": "^0.6.9",
     "@types/sparql-http-client": "^3.1.0",
     "ajv": "^8.20.0",
     "commander": "^15.0.0",

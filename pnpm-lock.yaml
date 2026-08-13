@@ -148,8 +148,8 @@ importers:
         specifier: ^1.43.0
         version: 1.43.0
       '@rdfjs-elements/formats-pretty':
-        specifier: ^0.6.8
-        version: 0.6.8
+        specifier: ^0.6.9
+        version: 0.6.9
       '@types/sparql-http-client':
         specifier: ^3.1.0
         version: 3.1.0
@@ -1673,8 +1673,8 @@ packages:
   '@rdfjs-elements/editor-base@0.5.2':
     resolution: {integrity: sha512-deGah3IK/T1ZrUrXrbotYRgr/Wm+z9wUM+OhuG3kUhC2GSXiiK0nxnkVwdmTCoYwVdX9zVaVvqGjeA85hq9QVg==}
 
-  '@rdfjs-elements/formats-pretty@0.6.8':
-    resolution: {integrity: sha512-R8znFsMlfofDfvSXrPE8PNQptGloiArWke2PApfsBlwz9H7V+L6ba6gdfRyetiZLaExWH3Xl0PjnvoftY/0JXw==}
+  '@rdfjs-elements/formats-pretty@0.6.9':
+    resolution: {integrity: sha512-07WV3YS9aSo5hg/DX75C7pPmgIQbt+hg5PlEOtlQVrM74ktMA5ldC5yEkZFmXmN9ITSSJapMmaSsjBatbdWnsA==}
 
   '@rdfjs-elements/rdf-editor@0.5.11':
     resolution: {integrity: sha512-7OSt5/7DSu16lcMedZwduyGtD+R7JhvgO4Jx3xl9yr0v1DLjXjZXMZg/B4KmMeMzDpm8B5LMAb1rkW/Ok7aihA==}
@@ -1711,6 +1711,9 @@ packages:
 
   '@rdfjs/parser-n3@2.1.0':
     resolution: {integrity: sha512-/DiosB+0vPzgAs1WXcCB8MbA5hqq0fIh9VhMg7fBmoJ/I8Xl6Op/AOxVu9x1XZCHSNwO/VsJT/HYKEctZVRKSQ==}
+
+  '@rdfjs/parser-n3@2.2.0':
+    resolution: {integrity: sha512-gsQpcjAJ/uNoCt/SV/Eteuxjfbcmyh3cnh/Agixik8DqodLrcqxeeAJqDe+36jMxRQ08FDKTdKMxwKtTkS11vg==}
 
   '@rdfjs/prefix-map@0.1.2':
     resolution: {integrity: sha512-qapFYVPYyYepg0sFy7T512667iZsN9a3RNcyNBTBV+O8wrU3v/URQZOipCTNrEm1BXzZ7KCK1Yi8HrE1y+uRuQ==}
@@ -3510,6 +3513,10 @@ packages:
 
   n3@2.1.1:
     resolution: {integrity: sha512-kqg8ers6Lc+uAmHeS+ycd3b8mC4x8wr8V8Fi6+w7l4hX6b0KZ5bT05Tf49qM2mujwaqZT3+08zcgtXgfxivbVQ==}
+    engines: {node: '>=12.0'}
+
+  n3@2.2.0:
+    resolution: {integrity: sha512-K/Orb5XrUPocfYfhUT+muvK1I0n2AvVMt93fIExlgjo23u7q0lU0eIFrhBJqooyFWAnpEBz3QZqjHzEHMs1RZg==}
     engines: {node: '>=12.0'}
 
   nanoid@3.3.12:
@@ -5694,7 +5701,7 @@ snapshots:
       lit: 3.3.3
       throttle-debounce: 3.0.1
 
-  '@rdfjs-elements/formats-pretty@0.6.8':
+  '@rdfjs-elements/formats-pretty@0.6.9':
     dependencies:
       '@graphy/content.nq.read': 4.3.7
       '@graphy/content.trig.read': 4.3.7
@@ -5715,7 +5722,7 @@ snapshots:
   '@rdfjs-elements/rdf-editor@0.5.11':
     dependencies:
       '@rdfjs-elements/editor-base': 0.5.2
-      '@rdfjs-elements/formats-pretty': 0.6.8
+      '@rdfjs-elements/formats-pretty': 0.6.9
       '@rdfjs/data-model': 2.1.2
       '@rdfjs/environment': 1.0.0
       '@rdfjs/formats': 4.0.1
@@ -5775,6 +5782,14 @@ snapshots:
       '@rdfjs/sink': 2.0.1
       duplex-to: 2.0.0
       n3: 1.26.0
+      readable-stream: 4.7.0
+
+  '@rdfjs/parser-n3@2.2.0':
+    dependencies:
+      '@rdfjs/data-model': 2.1.2
+      '@rdfjs/sink': 2.0.1
+      duplex-to: 2.0.0
+      n3: 2.2.0
       readable-stream: 4.7.0
 
   '@rdfjs/prefix-map@0.1.2':
@@ -6355,7 +6370,7 @@ snapshots:
   '@zazuko/formats-lazy@1.0.2':
     dependencies:
       '@rdfjs/parser-jsonld': 2.1.3
-      '@rdfjs/parser-n3': 2.1.0
+      '@rdfjs/parser-n3': 2.2.0
       '@rdfjs/serializer-jsonld': 2.0.1
       '@rdfjs/serializer-ntriples': 2.0.1
       '@rdfjs/sink-map': 2.0.1
@@ -8104,6 +8119,11 @@ snapshots:
       readable-stream: 4.7.0
 
   n3@2.1.1:
+    dependencies:
+      buffer: 6.0.3
+      readable-stream: 4.7.0
+
+  n3@2.2.0:
     dependencies:
       buffer: 6.0.3
       readable-stream: 4.7.0
