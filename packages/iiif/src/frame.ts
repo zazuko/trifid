@@ -37,7 +37,7 @@ const iiifFrame = {
       },
     },
   ],
-  'type': 'Manifest',
+  type: 'Manifest',
 };
 
 /**
@@ -47,9 +47,9 @@ const iiifFrame = {
  */
 const frame = async (doc: jsonld.JsonLdDocument): Promise<Record<string, unknown>> => {
   // The `documentLoader` option is supported at runtime but missing from the typings.
-  const framed = await (jsonld.frame as any)(doc, iiifFrame, {
+  const framed = (await (jsonld.frame as any)(doc, iiifFrame, {
     documentLoader: customLoader,
-  }) as Record<string, unknown>;
+  })) as Record<string, unknown>;
   framed['@context'] = 'http://iiif.io/api/presentation/3/context.json';
   return framed;
 };

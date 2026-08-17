@@ -22,7 +22,9 @@ interface APIConfig {
  *
  * @param config API configuration.
  */
-export const createAPI = (config: APIConfig): {
+export const createAPI = (
+  config: APIConfig,
+): {
   fetchDatasets: (organizationId: NamedNode) => Promise<DatasetCore<Quad, Quad>>;
   toXML: (dataset: DatasetCore<Quad, Quad>) => string;
 } => {
@@ -34,7 +36,7 @@ export const createAPI = (config: APIConfig): {
 
   const fetchDatasets = async (organizationId: NamedNode): Promise<DatasetCore<Quad, Quad>> => {
     const query = datasetsQuery(organizationId);
-    return await client.query.construct(query.toString()) as unknown as DatasetCore<Quad, Quad>;
+    return (await client.query.construct(query.toString())) as unknown as DatasetCore<Quad, Quad>;
   };
 
   return {

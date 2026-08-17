@@ -14,7 +14,8 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
   const { template, endpointUrl, urlShortener, catalog, defaultQuery, mapKind } = config;
 
   const endpoint = typeof endpointUrl === 'string' && endpointUrl ? endpointUrl : '/query';
-  const view = typeof template === 'string' && template ? template : `${currentDir}/views/yasgui.hbs`;
+  const view =
+    typeof template === 'string' && template ? template : `${currentDir}/views/yasgui.hbs`;
 
   const catalogOption = catalog || [];
   if (!Array.isArray(catalogOption)) {
@@ -57,10 +58,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
     defaultConfiguration: async () => {
       return {
         methods: ['GET'],
-        paths: [
-          '/sparql',
-          '/sparql/',
-        ],
+        paths: ['/sparql', '/sparql/'],
       };
     },
     routeHandler: async () => {
@@ -89,10 +87,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
         // Read SPARQL endpoint URL from configuration and resolve with full URL
         const endpointUrl = new URL(endpoint, fullUrl);
 
-        const catalogueEndpoints = JSON.stringify([
-          ...catalogOption,
-          endpointUrl,
-        ]);
+        const catalogueEndpoints = JSON.stringify([...catalogOption, endpointUrl]);
 
         const content = await render(
           request,

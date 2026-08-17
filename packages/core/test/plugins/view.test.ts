@@ -10,20 +10,23 @@ import viewPlugin from '../../plugins/view.ts';
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
 const createTrifidInstance = async (config) => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 0,
+  return await trifidCore(
+    {
+      server: {
+        listener: {
+          port: 0,
+        },
+        logLevel: 'warn',
       },
-      logLevel: 'warn',
     },
-  }, {
-    view: {
-      module: viewPlugin,
-      paths: ['/view'],
-      config,
+    {
+      view: {
+        module: viewPlugin,
+        paths: ['/view'],
+        config,
+      },
     },
-  });
+  );
 };
 
 describe('view plugin', () => {
@@ -33,10 +36,12 @@ describe('view plugin', () => {
   });
 
   it('should throw if the path parameter is set to an empty string', () => {
-    assertRejection(viewPlugin({
-      // @ts-expect-error
-      path: '',
-    }));
+    assertRejection(
+      viewPlugin({
+        // @ts-expect-error
+        path: '',
+      }),
+    );
   });
 
   it('should throw if the file does not exist', async () => {

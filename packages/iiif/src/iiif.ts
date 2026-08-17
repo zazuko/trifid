@@ -53,14 +53,17 @@ const createApi = (client: SparqlClient, clientOptions: ClientOptions) => {
 
     // Find all important nodes (the namespace proxies are typed as possibly
     // `undefined` under `noUncheckedIndexedAccess`, but always resolve at runtime)
-    const nodes = ptr.has(ns.rdf.type as Term, [
-      ns.iiifPrezi.Manifest,
-      ns.iiifPrezi.Canvas,
-      ns.as.OrderedCollectionPage,
-      ns.oa.Annotation,
-      ns.dctypes.StillImage,
-      ns.dctypes.MovingImage,
-    ] as Term[]).terms;
+    const nodes = ptr.has(
+      ns.rdf.type as Term,
+      [
+        ns.iiifPrezi.Manifest,
+        ns.iiifPrezi.Canvas,
+        ns.as.OrderedCollectionPage,
+        ns.oa.Annotation,
+        ns.dctypes.StillImage,
+        ns.dctypes.MovingImage,
+      ] as Term[],
+    ).terms;
 
     // And describe them
     const stream = await client.query.construct(queries.describeNodes(nodes), clientOptions);

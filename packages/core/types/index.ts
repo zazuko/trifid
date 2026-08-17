@@ -195,9 +195,7 @@ export interface TrifidPluginSetup {
 /**
  * Trifid Plugin.
  */
-export type TrifidPlugin = (
-  trifid: TrifidPluginArgument,
-) => Promise<TrifidPluginSetup | void>;
+export type TrifidPlugin = (trifid: TrifidPluginArgument) => Promise<TrifidPluginSetup | void>;
 
 /**
  * Options accepted by a Trifid SPARQL query.
@@ -218,7 +216,4 @@ export interface TrifidQueryOptions {
 /**
  * Trifid Query.
  */
-export type TrifidQuery = (
-  query: string,
-  options?: TrifidQueryOptions,
-) => Promise<unknown>;
+export type TrifidQuery = (query: string, options?: TrifidQueryOptions) => Promise<unknown>;

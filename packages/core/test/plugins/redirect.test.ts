@@ -6,26 +6,29 @@ import trifidCore, { getListenerURL, assertRejection } from '../../index.ts';
 import redirectPlugin from '../../plugins/redirect.ts';
 
 const createTrifidInstance = async (config) => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 0,
+  return await trifidCore(
+    {
+      server: {
+        listener: {
+          port: 0,
+        },
+        logLevel: 'warn',
       },
-      logLevel: 'warn',
     },
-  }, {
-    redirect: {
-      module: redirectPlugin,
-      paths: ['/redirect'],
-      config,
+    {
+      redirect: {
+        module: redirectPlugin,
+        paths: ['/redirect'],
+        config,
+      },
     },
-  });
+  );
 };
 
 describe('redirect plugin', () => {
   it('should throw if the target parameter is not set', () => {
     // @ts-expect-error
-    assertRejection(redirectPlugin({ config: {}, logger: { debug: (_: any) => { } } }));
+    assertRejection(redirectPlugin({ config: {}, logger: { debug: (_: any) => {} } }));
   });
 
   it('should redirect request', async () => {

@@ -53,7 +53,10 @@ port.postMessage({
 const handleConfig = async (config: WorkerConfig) => {
   const { graphName, unionDefaultGraph, url, contentType, baseIri } = config;
   let graphNameIri: string | ReturnType<typeof oxigraph.defaultGraph> | undefined = graphName;
-  if ((typeof unionDefaultGraph === 'boolean' && unionDefaultGraph) || unionDefaultGraph === 'true') {
+  if (
+    (typeof unionDefaultGraph === 'boolean' && unionDefaultGraph) ||
+    unionDefaultGraph === 'true'
+  ) {
     graphNameIri = oxigraph.defaultGraph();
   }
 
@@ -108,7 +111,10 @@ const handleQuery = async (data: { query: string; queryId: string }) => {
 
   // Perform the query and catch any errors
   try {
-    const { response: storeResponse, contentType: storeContentType } = await performOxigraphQuery(store, query);
+    const { response: storeResponse, contentType: storeContentType } = await performOxigraphQuery(
+      store,
+      query,
+    );
     response = storeResponse;
     contentType = storeContentType;
     success = true;

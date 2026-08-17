@@ -17,7 +17,7 @@ const assertRejection = (promise: Promise<any>): Promise<void> => {
     () => {
       throw new Error('Expected promise to be rejected');
     },
-    () => { },
+    () => {},
   );
 };
 
@@ -29,7 +29,7 @@ const assertRejection = (promise: Promise<any>): Promise<void> => {
  */
 const assertResolution = (promise: Promise<any>): Promise<void> => {
   return promise.then(
-    () => { },
+    () => {},
     (error) => {
       throw new Error(`Expected promise to be resolved, but it was rejected with: ${error}`);
     },
@@ -39,9 +39,7 @@ const assertResolution = (promise: Promise<any>): Promise<void> => {
 describe('config handler', () => {
   it('should not throw when loading an empty configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    doesNotThrow(
-      () => handler(fileCallback(currentDir)('./support/empty.json')),
-    );
+    doesNotThrow(() => handler(fileCallback(currentDir)('./support/empty.json')));
   });
 
   it('should not throw when loading an empty configuration', () => {
@@ -68,58 +66,42 @@ describe('config handler', () => {
 
   it('should not throw when loading a basic configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertResolution(
-      handler(fileCallback(currentDir)('./support/basic.json')),
-    );
+    return assertResolution(handler(fileCallback(currentDir)('./support/basic.json')));
   });
 
   it('should not throw when loading a basic YAML configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertResolution(
-      handler(fileCallback(currentDir)('./support/basic.yaml')),
-    );
+    return assertResolution(handler(fileCallback(currentDir)('./support/basic.yaml')));
   });
 
   it('should throw when trying to load a non-existant configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertRejection(
-      handler(fileCallback(currentDir)('./support/non-existant.json')),
-    );
+    return assertRejection(handler(fileCallback(currentDir)('./support/non-existant.json')));
   });
 
   it('should throw when trying to read an invalid configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertRejection(
-      handler(fileCallback(currentDir)('./support/invalid.json')),
-    );
+    return assertRejection(handler(fileCallback(currentDir)('./support/invalid.json')));
   });
 
   it('should throw when trying to read an invalid JSON file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertRejection(
-      handler(fileCallback(currentDir)('./support/invalid-json.json')),
-    );
+    return assertRejection(handler(fileCallback(currentDir)('./support/invalid-json.json')));
   });
 
   it('should support comments in JSON configuration file', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertResolution(
-      handler(fileCallback(currentDir)('./support/basic-commented.json')),
-    );
+    return assertResolution(handler(fileCallback(currentDir)('./support/basic-commented.json')));
   });
 
   it('simple chain should work', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertResolution(
-      handler(fileCallback(currentDir)('./support/chain/chain1.json')),
-    );
+    return assertResolution(handler(fileCallback(currentDir)('./support/chain/chain1.json')));
   });
 
   it('check if expected values are here on extended config', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    const config = await handler(
-      fileCallback(currentDir)('./support/chain/chain1.json'),
-    );
+    const config = await handler(fileCallback(currentDir)('./support/chain/chain1.json'));
 
     ok(config.globals !== undefined);
     ok(config.globals.value3 !== undefined);
@@ -134,16 +116,12 @@ describe('config handler', () => {
 
   it('simple check using the file resolver should work', () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    return assertResolution(
-      handler(fileCallback(currentDir)('./support/chain-file/chain1.json')),
-    );
+    return assertResolution(handler(fileCallback(currentDir)('./support/chain-file/chain1.json')));
   });
 
   it('check if expected values are here on extended config with file prefix', async () => {
     const currentDir = dirname(fileURLToPath(import.meta.url));
-    const config = await handler(
-      fileCallback(currentDir)('./support/chain-file/chain1.json'),
-    );
+    const config = await handler(fileCallback(currentDir)('./support/chain-file/chain1.json'));
 
     ok(config.globals !== undefined);
     ok(config.globals.value3 !== undefined);

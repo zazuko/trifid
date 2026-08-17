@@ -6,7 +6,11 @@ import JSON5 from 'json5';
 import { parse } from 'yaml';
 import cloneDeep from 'lodash/cloneDeep.js';
 
-import type { TrifidConfig, TrifidConfigWithExtends, TrifidPluginConfig } from '../../types/index.ts';
+import type {
+  TrifidConfig,
+  TrifidConfigWithExtends,
+  TrifidPluginConfig,
+} from '../../types/index.ts';
 import { cwdCallback } from '../resolvers.ts';
 import parser from './parser.ts';
 import {
@@ -41,9 +45,7 @@ const resolveConfig = async (
   if (Array.isArray(config.extends) && config.extends.length > 0) {
     config.extends = extendsResolver(config.extends, context);
     configs = await Promise.all(
-      config.extends.map((configPath) =>
-        resolveConfigFile(configPath, depth + 1),
-      ),
+      config.extends.map((configPath) => resolveConfigFile(configPath, depth + 1)),
     );
   }
 
@@ -134,9 +136,7 @@ const addDefaultPort = (config: TrifidConfig): void => {
  *
  * @param configFile Configuration file path or configuration object.
  */
-const handler = async (
-  configFile: string | TrifidConfigWithExtends,
-): Promise<TrifidConfig> => {
+const handler = async (configFile: string | TrifidConfigWithExtends): Promise<TrifidConfig> => {
   let config: TrifidConfig;
   if (typeof configFile === 'string') {
     config = await resolveConfigFile(configFile);

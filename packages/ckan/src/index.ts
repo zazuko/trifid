@@ -9,7 +9,8 @@ const factory: TrifidPlugin = async (trifid) => {
   const { config, logger } = trifid;
 
   const { endpointUrl, user, password } = config;
-  const configuredEndpoint = typeof endpointUrl === 'string' && endpointUrl ? endpointUrl : '/query';
+  const configuredEndpoint =
+    typeof endpointUrl === 'string' && endpointUrl ? endpointUrl : '/query';
 
   return {
     defaultConfiguration: async () => {

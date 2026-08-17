@@ -10,19 +10,22 @@ import handlerFetchTrifidPlugin from '../index.ts';
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
 const createTrifidInstance = async (config) => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 4242,
+  return await trifidCore(
+    {
+      server: {
+        listener: {
+          port: 4242,
+        },
+        logLevel: 'warn',
       },
-      logLevel: 'warn',
     },
-  }, {
-    handlerFetch: {
-      module: handlerFetchTrifidPlugin,
-      config,
+    {
+      handlerFetch: {
+        module: handlerFetchTrifidPlugin,
+        config,
+      },
     },
-  });
+  );
 };
 
 describe('trifid-handler-fetch', () => {

@@ -25,12 +25,15 @@ const highlightStyle = {
   fillOpacity: 0.6,
 };
 
-const OSM_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer noopener">OpenStreetMap</a> contributors';
-const SWISSTOPO_ATTRIBUTION = '&copy; <a href="https://www.swisstopo.admin.ch/" target="_blank" rel="noreferrer noopener">swisstopo</a>';
+const OSM_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer noopener">OpenStreetMap</a> contributors';
+const SWISSTOPO_ATTRIBUTION =
+  '&copy; <a href="https://www.swisstopo.admin.ch/" target="_blank" rel="noreferrer noopener">swisstopo</a>';
 
 // Swisstopo publishes its WMTS tiles in Web Mercator (EPSG:3857), which is the
 // projection Leaflet uses by default, so they can be used as plain XYZ tiles.
-const swisstopoUrl = (layerName) => `https://wmts.geo.admin.ch/1.0.0/${layerName}/default/current/3857/{z}/{x}/{y}.jpeg`;
+const swisstopoUrl = (layerName) =>
+  `https://wmts.geo.admin.ch/1.0.0/${layerName}/default/current/3857/{z}/{x}/{y}.jpeg`;
 
 // Base layers, keyed by the `mapKind` option. The first one is the default, and
 // a layer switcher is only shown when a kind offers more than one.
@@ -158,11 +161,11 @@ class YasguiMap {
 
   getResults() {
     if (
-      !this.yasr
-      || !this.yasr.results
-      || !this.yasr.results.json
-      || !this.yasr.results.json.results
-      || !this.yasr.results.json.results.bindings
+      !this.yasr ||
+      !this.yasr.results ||
+      !this.yasr.results.json ||
+      !this.yasr.results.json.results ||
+      !this.yasr.results.json.results.bindings
     ) {
       return [];
     }
@@ -209,9 +212,7 @@ class YasguiMap {
 
         // A `<column>Label` column, if any, is used as the feature label
         const labelField = result[`${columnName}Label`];
-        const label = labelField && labelField.type === 'literal'
-          ? labelField.value
-          : undefined;
+        const label = labelField && labelField.type === 'literal' ? labelField.value : undefined;
 
         // The remaining columns of the row are shown in the popup. Geometries
         // and the label itself would only be noise there.
@@ -339,7 +340,8 @@ class YasguiMap {
 
   getIcon() {
     const textIcon = document.createElement('div');
-    textIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>';
+    textIcon.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>';
     return textIcon;
   }
 }

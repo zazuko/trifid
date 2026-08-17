@@ -4,7 +4,11 @@ import { fileURLToPath } from 'node:url';
 import { metrics } from '@opentelemetry/api';
 import { parsers } from '@rdfjs/formats-common';
 import rdf from '@zazuko/env';
-import { sparqlSerializeQuadStream, sparqlSupportedTypes, sparqlGetRewriteConfiguration } from 'trifid-core';
+import {
+  sparqlSerializeQuadStream,
+  sparqlSupportedTypes,
+  sparqlGetRewriteConfiguration,
+} from 'trifid-core';
 
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { TrifidPlugin } from 'trifid-core';
@@ -45,29 +49,50 @@ const factory: TrifidPlugin = async (trifid) => {
   const entityRenderer = createEntityRenderer({ options: config, logger, query });
   const metadataProvider = createMetadataProvider({ options: config });
 
-  const { path, ignorePaths, rewrite: rewriteConfigValue, datasetBaseUrl: datasetBaseUrlValue, allowEndpointSwitch: allowEndpointSwitchConfigValue } = config;
+  const {
+    path,
+    ignorePaths,
+    rewrite: rewriteConfigValue,
+    datasetBaseUrl: datasetBaseUrlValue,
+    allowEndpointSwitch: allowEndpointSwitchConfigValue,
+  } = config;
   const allowEndpointSwitch = `${allowEndpointSwitchConfigValue}` === 'true';
   const entityTemplatePath = path || `${currentDir}/views/render.hbs`;
   const datasetBaseUrls = checkDatasetBaseUrl(logger, datasetBaseUrlValue);
 
   // Map of dataset base URLs with their rewrite configuration.
-  const dbu = new Map<string, {
-    rewrite: boolean;
-    replaceIri: (iri: string) => string;
-    iriOrigin: (iri: string) => string;
-    datasetBaseUrl: string;
-  }>();
+  const dbu = new Map<
+    string,
+    {
+      rewrite: boolean;
+      replaceIri: (iri: string) => string;
+      iriOrigin: (iri: string) => string;
+      datasetBaseUrl: string;
+    }
+  >();
   if (datasetBaseUrls.length === 0) {
-    dbu.set('default', { rewrite: rewriteConfigValue, replaceIri: (iri) => iri, iriOrigin: (iri) => iri, datasetBaseUrl: '' });
+    dbu.set('default', {
+      rewrite: rewriteConfigValue,
+      replaceIri: (iri) => iri,
+      iriOrigin: (iri) => iri,
+      datasetBaseUrl: '',
+    });
     logger.debug('No datasetBaseUrl provided, no rewriting will be done');
   }
   datasetBaseUrls.forEach((value) => {
     const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, value);
     // Just to have all the fields explicitly defined
     const { rewrite: rewriteValue, replaceIri, iriOrigin, datasetBaseUrl } = rewriteConfig;
-    dbu.set(value, { rewrite: rewriteValue, replaceIri, iriOrigin, datasetBaseUrl: datasetBaseUrl ?? '' });
+    dbu.set(value, {
+      rewrite: rewriteValue,
+      replaceIri,
+      iriOrigin,
+      datasetBaseUrl: datasetBaseUrl ?? '',
+    });
 
-    logger.debug(`Rewriting is ${rewriteValue ? 'enabled' : 'disabled'} for '${value}' dataset base URL`);
+    logger.debug(
+      `Rewriting is ${rewriteValue ? 'enabled' : 'disabled'} for '${value}' dataset base URL`,
+    );
   });
 
   const additionalRewritesConfig = config.additionalRewrites || [];
@@ -118,7 +143,10 @@ const factory: TrifidPlugin = async (trifid) => {
         let endpointName = q.endpoint || savedEndpointName;
         endpointName = endpointName.replace(/[^a-z0-9-]/gi, '');
 
-        const i18nValue = `${request.session.get('currentLanguage') || 'en'}`.replace(/[^a-z0-9-]/gi, '');
+        const i18nValue = `${request.session.get('currentLanguage') || 'en'}`.replace(
+          /[^a-z0-9-]/gi,
+          '',
+        );
 
         // To avoid any languge issues, we will forward the i18n cookie to the SPARQL endpoint + add the endpointName cookie
         const queryHeaders = {
@@ -126,7 +154,9 @@ const factory: TrifidPlugin = async (trifid) => {
         };
 
         // Get the expected format from the Accept header or from the `format` query parameter
-        const acceptHeader = getAcceptHeader(request as { query?: Record<string, unknown>; headers?: Record<string, unknown> });
+        const acceptHeader = getAcceptHeader(
+          request as { query?: Record<string, unknown>; headers?: Record<string, unknown> },
+        );
 
         // Generate the IRI we expect
         let requestPort = '';
@@ -153,11 +183,18 @@ const factory: TrifidPlugin = async (trifid) => {
 
           const tmpIri = value.replaceIri(iriUrlString);
           const tmpIsContainer = mergedConfig.resourceNoSlash && tmpIri.endsWith('/');
-          logger.debug(`IRI value: ${tmpIri}${value.rewrite ? ' (rewritten)' : ''} - is container: ${tmpIsContainer ? 'true' : 'false'}`);
+          logger.debug(
+            `IRI value: ${tmpIri}${value.rewrite ? ' (rewritten)' : ''} - is container: ${tmpIsContainer ? 'true' : 'false'}`,
+          );
 
           // Check if the IRI exists in the dataset ; if so, use it for the rest of the process
-          const askQuery = tmpIsContainer ? mergedConfig.containerExistsQuery : mergedConfig.resourceExistsQuery;
-          const exists = await query(replaceIriInQuery(askQuery, tmpIri), { ask: true, headers: queryHeaders });
+          const askQuery = tmpIsContainer
+            ? mergedConfig.containerExistsQuery
+            : mergedConfig.resourceExistsQuery;
+          const exists = await query(replaceIriInQuery(askQuery, tmpIri), {
+            ask: true,
+            headers: queryHeaders,
+          });
           if (exists) {
             iriOrigin = value.iriOrigin;
             replaceIri = value.replaceIri;
@@ -192,18 +229,24 @@ const factory: TrifidPlugin = async (trifid) => {
         try {
           // Check if there is a redirect for the IRI
           if (mergedConfig.followRedirects) {
-            const redirect = await query(replaceIriInQuery(mergedConfig.redirectQuery, iri), {
+            const redirect = (await query(replaceIriInQuery(mergedConfig.redirectQuery, iri), {
               ask: false,
               select: true, // Force the parsing of the response
               rewriteResponse,
               headers: queryHeaders,
-            }) as any[];
+            })) as any[];
             if (redirect.length > 0) {
               const entityRedirect = redirect[0];
               const { responseCode, location } = entityRedirect;
               if (responseCode && location && responseCode.value && location.value) {
-                logger.debug(`Redirecting <${iri}> to <${location.value}> (HTTP ${responseCode.value})`);
-                redirectedCounter.add(1, { response_code: responseCode.value, endpoint_name: endpointName, kind: 'sparql' });
+                logger.debug(
+                  `Redirecting <${iri}> to <${location.value}> (HTTP ${responseCode.value})`,
+                );
+                redirectedCounter.add(1, {
+                  response_code: responseCode.value,
+                  endpoint_name: endpointName,
+                  kind: 'sparql',
+                });
                 reply.status(parseInt(responseCode.value, 10)).redirect(location.value);
                 return reply;
               } else {
@@ -213,16 +256,20 @@ const factory: TrifidPlugin = async (trifid) => {
           }
 
           // Get the entity from the dataset
-          const describeQuery = isContainer ? mergedConfig.containerGraphQuery : mergedConfig.resourceGraphQuery;
-          const describeQueryAcceptHeader = isContainer ? mergedConfig.containerGraphQueryAcceptHeader : mergedConfig.resourceGraphQueryAcceptHeader;
-          const entity = await query(replaceIriInQuery(describeQuery, iri), {
+          const describeQuery = isContainer
+            ? mergedConfig.containerGraphQuery
+            : mergedConfig.resourceGraphQuery;
+          const describeQueryAcceptHeader = isContainer
+            ? mergedConfig.containerGraphQueryAcceptHeader
+            : mergedConfig.resourceGraphQueryAcceptHeader;
+          const entity = (await query(replaceIriInQuery(describeQuery, iri), {
             ask: false,
             rewriteResponse,
             headers: {
               ...queryHeaders,
               accept: describeQueryAcceptHeader || 'application/n-quads',
             },
-          }) as any;
+          })) as any;
           const entityContentType = entity.contentType || 'application/n-triples';
           const entityStream = entity.response;
           if (!entityStream) {
@@ -243,46 +290,56 @@ const factory: TrifidPlugin = async (trifid) => {
 
           const dataset = await rdf.dataset().import(quadStream as never);
           if (mergedConfig.enableSchemaUrlRedirect && acceptHeader === 'text/html') {
-            const disabledSchemaUrlRedirect
-              = request.headers['x-disable-schema-url-redirect'] === 'true'
-                || q.disableSchemaUrlRedirect === 'true';
+            const disabledSchemaUrlRedirect =
+              request.headers['x-disable-schema-url-redirect'] === 'true' ||
+              q.disableSchemaUrlRedirect === 'true';
 
             // Get all triples that have a schema:URL property with value of type xsd:anyURI
-            const urls: string[] = []
-            ;(dataset.match(rdf.namedNode(iriUrlString), rdf.ns.schema.URL) as any)
-              .filter(({ object }: any) => ['xsd:anyURI', rdf.ns.xsd.anyURI.value].includes(object?.datatype?.value))
+            const urls: string[] = [];
+            (dataset.match(rdf.namedNode(iriUrlString), rdf.ns.schema.URL) as any)
+              .filter(({ object }: any) =>
+                ['xsd:anyURI', rdf.ns.xsd.anyURI.value].includes(object?.datatype?.value),
+              )
               .map(({ object }: any) => urls.push(object.value));
             if (!disabledSchemaUrlRedirect && urls.length > 0) {
               const redirectUrl = urls[0] as string;
               logger.debug(`Redirecting to ${redirectUrl}`);
-              redirectedCounter.add(1, { response_code: 302, endpoint_name: endpointName, kind: 'schema_url' });
+              redirectedCounter.add(1, {
+                response_code: 302,
+                endpoint_name: endpointName,
+                kind: 'schema_url',
+              });
               reply.redirect(redirectUrl);
               return reply;
             }
           }
 
-          const { entityHtml, entityLabel, entityUrl } = await entityRenderer(
-            request,
-            {
-              dataset,
-              rewriteResponse,
-              replaceIri,
-              headers: queryHeaders,
-              entityRoot: rewriteValue ? iri.replace(datasetBaseUrl ?? '', iriOrigin!(iriUrlString)) : iri,
-            },
-          );
+          const { entityHtml, entityLabel, entityUrl } = await entityRenderer(request, {
+            dataset,
+            rewriteResponse,
+            replaceIri,
+            headers: queryHeaders,
+            entityRoot: rewriteValue
+              ? iri.replace(datasetBaseUrl ?? '', iriOrigin!(iriUrlString))
+              : iri,
+          });
           const metadata = await metadataProvider(request, { dataset });
-          const jsonldSerialized = await sparqlSerializeQuadStream(dataset.toStream() as never, 'application/ld+json');
+          const jsonldSerialized = await sparqlSerializeQuadStream(
+            dataset.toStream() as never,
+            'application/ld+json',
+          );
 
           dereferencedCounter.add(1, { format: 'text/html', endpoint_name: endpointName });
-          reply.type('text/html').send(await render(request, entityTemplatePath, {
-            dataset: entityHtml,
-            entityLabel,
-            entityUrl,
-            metadata,
-            jsonld: jsonldSerialized,
-            config,
-          }));
+          reply.type('text/html').send(
+            await render(request, entityTemplatePath, {
+              dataset: entityHtml,
+              entityLabel,
+              entityUrl,
+              metadata,
+              jsonld: jsonldSerialized,
+              config,
+            }),
+          );
         } catch (e) {
           logger.error(e);
           await notFound(request, reply);

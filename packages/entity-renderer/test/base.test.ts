@@ -11,7 +11,9 @@ describe('lib/base', () => {
     beforeEach(() => {
       loggerValues = [];
       logger = {
-        warn: (/** @type {string} */ msg) => { loggerValues.push(msg); },
+        warn: (/** @type {string} */ msg) => {
+          loggerValues.push(msg);
+        },
       };
     });
 
@@ -48,7 +50,9 @@ describe('lib/base', () => {
     beforeEach(() => {
       loggerValues = [];
       logger = {
-        warn: (/** @type {string} */ msg) => { loggerValues.push(msg); },
+        warn: (/** @type {string} */ msg) => {
+          loggerValues.push(msg);
+        },
       };
     });
 
@@ -62,7 +66,9 @@ describe('lib/base', () => {
     });
 
     it('should not throw on valid value (array)', () => {
-      deepStrictEqual(checkDatasetBaseUrl(logger, ['http://example.com/']), ['http://example.com/']);
+      deepStrictEqual(checkDatasetBaseUrl(logger, ['http://example.com/']), [
+        'http://example.com/',
+      ]);
     });
 
     it('should warn on missing trailing slash', () => {

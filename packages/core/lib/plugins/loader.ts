@@ -62,9 +62,8 @@ export const loader = async (modulePath: string): Promise<TrifidPlugin> => {
 };
 
 const load = async (config: TrifidConfig): Promise<Record<string, LoadedPlugin>> => {
-  const source = (config.plugins && typeof config.plugins === 'object')
-    ? cloneDeep(config.plugins)
-    : {};
+  const source =
+    config.plugins && typeof config.plugins === 'object' ? cloneDeep(config.plugins) : {};
 
   const plugins: Record<string, LoadedPlugin> = {};
 

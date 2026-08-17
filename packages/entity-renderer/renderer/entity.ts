@@ -34,9 +34,18 @@ const toBoolean = (val: unknown) => {
 /**
  * Render HTML.
  */
-const createEntityRenderer = ({ options = {}, logger, query }: { options?: Record<string, any>; logger?: any; query?: any }) => {
+const createEntityRenderer = ({
+  options = {},
+  logger,
+  query,
+}: {
+  options?: Record<string, any>;
+  logger?: any;
+  query?: any;
+}) => {
   return async (req: any, { dataset, rewriteResponse, replaceIri, entityRoot, headers }: any) => {
-    const currentLanguage = req.session.get('currentLanguage') || req.session.get('defaultLanguage') || 'en';
+    const currentLanguage =
+      req.session.get('currentLanguage') || req.session.get('defaultLanguage') || 'en';
     const rendererConfig: Record<string, any> = { ...DEFAULTS, ...options };
 
     // Honor parameters in the request
@@ -65,16 +74,11 @@ const createEntityRenderer = ({ options = {}, logger, query }: { options?: Recor
     }
 
     if (req.query.lang) {
-      rendererConfig.preferredLanguages = [
-        req.query.lang,
-        ...DEFAULTS.preferredLanguages,
-      ];
+      rendererConfig.preferredLanguages = [req.query.lang, ...DEFAULTS.preferredLanguages];
     }
 
-    rendererConfig.highlightLanguage
-      = req.query.highlightLanguage
-        || currentLanguage
-        || rendererConfig.preferredLanguages[0];
+    rendererConfig.highlightLanguage =
+      req.query.highlightLanguage || currentLanguage || rendererConfig.preferredLanguages[0];
 
     if (req.query.compactMode !== undefined) {
       rendererConfig.compactMode = toBoolean(req.query.compactMode);
@@ -90,10 +94,7 @@ const createEntityRenderer = ({ options = {}, logger, query }: { options?: Recor
     }
 
     if (rendererConfig.simplifiedMode) {
-      rendererConfig.ignoreProperties = rdf.termSet([
-        ns.rdf.type,
-        ...DEFAULT_LABEL_PROPERTIES,
-      ]);
+      rendererConfig.ignoreProperties = rdf.termSet([ns.rdf.type, ...DEFAULT_LABEL_PROPERTIES]);
     }
 
     // rendererConfig.showImages = true

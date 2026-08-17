@@ -10,11 +10,7 @@ const distDir = join(packageRoot, 'dist');
 
 // Each entry is a path relative to the package root that must be available at
 // the same relative path inside `dist/` at runtime.
-const assets = [
-  'views',
-  'static',
-  join('lib', 'config', 'schema.json'),
-];
+const assets = ['views', 'static', join('lib', 'config', 'schema.json')];
 
 for (const asset of assets) {
   await cp(join(packageRoot, asset), join(distDir, asset), { recursive: true });

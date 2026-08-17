@@ -56,11 +56,13 @@ const onWorkspaceMounted = async (workspace) => {
       if (!sourceId || !targetId) {
         return;
       }
-      model.addLink(new GraphExplorer.Link({
-        typeId: link.linkTypeId,
-        sourceId,
-        targetId,
-      }));
+      model.addLink(
+        new GraphExplorer.Link({
+          typeId: link.linkTypeId,
+          sourceId,
+          targetId,
+        }),
+      );
     });
 
     workspace.forceLayout();

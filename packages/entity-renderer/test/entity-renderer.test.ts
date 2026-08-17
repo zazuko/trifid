@@ -96,7 +96,7 @@ describe('@zazuko/trifid-entity-renderer', () => {
         const entityUrl = `${getListenerURL(trifidListener)}/test/shouldRedirect`;
         const res = await fetch(entityUrl, {
           headers: {
-            'accept': 'text/html',
+            accept: 'text/html',
             'x-disable-schema-url-redirect': 'true',
           },
           redirect: 'manual',
@@ -160,7 +160,7 @@ describe('@zazuko/trifid-entity-renderer', () => {
         const entityUrl = `${getListenerURL(trifidListener)}/test/shouldRedirect`;
         const res = await fetch(entityUrl, {
           headers: {
-            'accept': 'text/html',
+            accept: 'text/html',
             'x-disable-schema-url-redirect': 'true',
           },
           redirect: 'manual',

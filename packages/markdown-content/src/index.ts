@@ -46,24 +46,33 @@ interface ContentEntry {
  * @param config configuration
  * @returns HTML string
  */
-const convertToHtml = async (markdownString: string, config: ContentConfiguration): Promise<string> => {
+const convertToHtml = async (
+  markdownString: string,
+  config: ContentConfiguration,
+): Promise<string> => {
   const processors: unknown[][] = [
     [remarkParse],
     [remarkFrontmatter],
     [remarkGfm],
     [remarkRehype],
-    [rehypeSlug, {
-      prefix: config.idPrefix,
-    }],
+    [
+      rehypeSlug,
+      {
+        prefix: config.idPrefix,
+      },
+    ],
   ];
 
   if (config.autoLink) {
-    processors.push([rehypeAutolinkHeadings, {
-      behavior: 'wrap',
-      properties: {
-        class: 'headers-autolink',
+    processors.push([
+      rehypeAutolinkHeadings,
+      {
+        behavior: 'wrap',
+        properties: {
+          class: 'headers-autolink',
+        },
       },
-    }]);
+    ]);
   }
 
   processors.push([addClasses, config.classes]);
@@ -196,7 +205,7 @@ const factory: TrifidPlugin = async (trifid) => {
 
     // Check config
     if (!directory || typeof directory !== 'string') {
-      throw new Error('\'directory\' should be a non-empty string');
+      throw new Error("'directory' should be a non-empty string");
     }
 
     const contentConfiguration: ContentConfiguration = {
@@ -219,13 +228,20 @@ const factory: TrifidPlugin = async (trifid) => {
      * @param _reply Reply.
      * @param done Done.
      */
-    const onRequestHook = (request: FastifyRequest, _reply: FastifyReply, done: (err?: Error) => void) => {
+    const onRequestHook = (
+      request: FastifyRequest,
+      _reply: FastifyReply,
+      done: (err?: Error) => void,
+    ) => {
       if (!request.session.has(LOCALS_PLUGIN_KEY)) {
         request.session.set(LOCALS_PLUGIN_KEY, {});
       }
 
-      const currentLanguage = (request.session.get('currentLanguage') || request.session.get('defaultLanguage') || 'en') as string;
-      const currentContent = (request.session.get(LOCALS_PLUGIN_KEY) as Record<string, unknown>) || {};
+      const currentLanguage = (request.session.get('currentLanguage') ||
+        request.session.get('defaultLanguage') ||
+        'en') as string;
+      const currentContent =
+        (request.session.get(LOCALS_PLUGIN_KEY) as Record<string, unknown>) || {};
       currentContent[namespace] = entriesForLanguage(store, currentLanguage);
       request.session.set(LOCALS_PLUGIN_KEY, currentContent);
       done();
@@ -257,10 +273,14 @@ const factory: TrifidPlugin = async (trifid) => {
          * @param reply Reply.
          */
         const routeHandler = async (request: FastifyRequest, reply: FastifyReply) => {
-          const content = request.session.get(LOCALS_PLUGIN_KEY) as Record<string, Record<string, string>> | undefined;
-          reply.type('text/html').send(await render(request, defaultValue('template', entry, template), {
-            content: content?.[namespace]?.[item.name] || '',
-          }));
+          const content = request.session.get(LOCALS_PLUGIN_KEY) as
+            | Record<string, Record<string, string>>
+            | undefined;
+          reply.type('text/html').send(
+            await render(request, defaultValue('template', entry, template), {
+              content: content?.[namespace]?.[item.name] || '',
+            }),
+          );
           return reply;
         };
 

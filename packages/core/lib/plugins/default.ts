@@ -30,7 +30,10 @@ const robotoFont = {
   },
 };
 
-const playfairDisplayPath = resolve('@fontsource/playfair-display', import.meta.url).replace(/^file:\/\//, '');
+const playfairDisplayPath = resolve('@fontsource/playfair-display', import.meta.url).replace(
+  /^file:\/\//,
+  '',
+);
 const playfairDisplayFont = {
   module: staticPlugin,
   paths: '/static/core-fonts/playfair-display',

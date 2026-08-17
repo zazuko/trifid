@@ -81,7 +81,10 @@ const defaultConfiguration: SparqlProxyOptions = {
   rewriteResults: true, // Allow rewriting the results
   formats: {},
   queryLogLevel: 'debug', // Log level for queries
-  serviceDescriptionWorkerUrl: new URL(`./lib/serviceDescriptionWorker${workerExtension}`, import.meta.url),
+  serviceDescriptionWorkerUrl: new URL(
+    `./lib/serviceDescriptionWorker${workerExtension}`,
+    import.meta.url,
+  ),
   serviceDescriptionTimeout: 5000, // max time to wait for the service description
   serviceDescriptionFormat: undefined, // override the accept header for the service description request. by default, will use content negotiation using formats `@zazuko/env-node` can parse
 };
@@ -99,7 +102,10 @@ const factory: TrifidPlugin = async (trifid) => {
 
   const endpoints = new Map<string, EndpointEntry>();
 
-  const options: SparqlProxyOptions = { ...defaultConfiguration, ...(config as Partial<SparqlProxyOptions>) };
+  const options: SparqlProxyOptions = {
+    ...defaultConfiguration,
+    ...(config as Partial<SparqlProxyOptions>),
+  };
   let dynamicEndpoints = false;
 
   if (objectLength(options.endpoints) > 0) {
@@ -160,7 +166,10 @@ const factory: TrifidPlugin = async (trifid) => {
 
       const endpointHeaders = endpointConfig.headers || {};
       if (endpointConfig.username && endpointConfig.password) {
-        endpointHeaders.Authorization = authBasicHeader(endpointConfig.username, endpointConfig.password);
+        endpointHeaders.Authorization = authBasicHeader(
+          endpointConfig.username,
+          endpointConfig.password,
+        );
       }
 
       const endpointDatasetBaseUrl = endpointConfig.datasetBaseUrl || datasetBaseUrl;
@@ -174,7 +183,10 @@ const factory: TrifidPlugin = async (trifid) => {
         datasetBaseUrl: endpointDatasetBaseUrl,
         allowRewriteToggle: endpointConfig.allowRewriteToggle ?? allowRewriteToggle,
         rewriteConfigValue: endpointRewriteConfigValue,
-        rewriteConfig: sparqlGetRewriteConfiguration(endpointRewriteConfigValue, endpointDatasetBaseUrl),
+        rewriteConfig: sparqlGetRewriteConfiguration(
+          endpointRewriteConfigValue,
+          endpointDatasetBaseUrl,
+        ),
       });
     }
   }
@@ -207,7 +219,8 @@ const factory: TrifidPlugin = async (trifid) => {
     },
   });
 
-  const minimalServiceDescription = () => rdf.clownface().blankNode().addOut(rdf.ns.rdf.type, rdf.ns.sd.Service).dataset;
+  const minimalServiceDescription = () =>
+    rdf.clownface().blankNode().addOut(rdf.ns.rdf.type, rdf.ns.sd.Service).dataset;
 
   let resolveServiceDescription: (value: ReturnType<typeof rdf.dataset>) => void;
   const serviceDescription: Promise<ReturnType<typeof rdf.dataset>> = new Promise((resolve) => {
@@ -218,17 +231,27 @@ const factory: TrifidPlugin = async (trifid) => {
     const { type, data } = message;
     switch (type) {
       case 'serviceDescription':
-        resolveServiceDescription(await rdf.dataset().import(
-          rdf.formats.parsers.import('application/n-triples', Readable.from(data)) as never,
-        ));
+        resolveServiceDescription(
+          await rdf
+            .dataset()
+            .import(
+              rdf.formats.parsers.import('application/n-triples', Readable.from(data)) as never,
+            ),
+        );
         break;
       case 'serviceDescriptionTimeOut':
-        logger.warn('The proxied SPARQL endpoint did not return a Service Description in a timely fashion. Will return a minimal document');
-        logger.info('You can increase the timeout using the \'serviceDescriptionTimeout\' configuration');
+        logger.warn(
+          'The proxied SPARQL endpoint did not return a Service Description in a timely fashion. Will return a minimal document',
+        );
+        logger.info(
+          "You can increase the timeout using the 'serviceDescriptionTimeout' configuration",
+        );
         resolveServiceDescription(minimalServiceDescription());
         break;
       case 'serviceDescriptionError':
-        logger.warn('Could not fetch the service description endpoint. A minimal one will be generated.');
+        logger.warn(
+          'Could not fetch the service description endpoint. A minimal one will be generated.',
+        );
         resolveServiceDescription(minimalServiceDescription());
         break;
     }
@@ -237,7 +260,9 @@ const factory: TrifidPlugin = async (trifid) => {
   // A crashing worker must never take the whole process down, and must not
   // leave the service description promise pending forever.
   worker.on('error', (error) => {
-    logger.error(`Service description worker error: ${error instanceof Error ? error.message : String(error)}`);
+    logger.error(
+      `Service description worker error: ${error instanceof Error ? error.message : String(error)}`,
+    );
     resolveServiceDescription(minimalServiceDescription());
   });
 
@@ -251,10 +276,7 @@ const factory: TrifidPlugin = async (trifid) => {
     defaultConfiguration: async () => {
       return {
         methods: ['GET', 'POST'],
-        paths: [
-          '/query',
-          '/query/',
-        ],
+        paths: ['/query', '/query/'],
       };
     },
     routeHandler: async () => {
@@ -280,7 +302,12 @@ const factory: TrifidPlugin = async (trifid) => {
           setCookie: (name: string, value: string, opts?: Record<string, unknown>) => unknown;
           clearCookie: (name: string, opts?: Record<string, unknown>) => unknown;
         };
-        const queryParams = request.query as { query?: string; rewrite?: string; format?: string; endpoint?: string };
+        const queryParams = request.query as {
+          query?: string;
+          rewrite?: string;
+          format?: string;
+          endpoint?: string;
+        };
         const body = request.body as { query?: string } | string | undefined;
 
         const savedEndpointName = req.cookies.endpointName || DEFAULT_ENDPOINT_NAME;
@@ -291,7 +318,10 @@ const factory: TrifidPlugin = async (trifid) => {
         if (req.cookies.endpointName !== endpointName && endpointName !== DEFAULT_ENDPOINT_NAME) {
           rep.setCookie('endpointName', endpointName, { maxAge: oneMonthMilliseconds, path: '/' });
           // Clear the cookie if the endpoint name is the default one
-        } else if (endpointName === DEFAULT_ENDPOINT_NAME && req.cookies.endpointName !== undefined) {
+        } else if (
+          endpointName === DEFAULT_ENDPOINT_NAME &&
+          req.cookies.endpointName !== undefined
+        ) {
           rep.clearCookie('endpointName', { path: '/' });
         }
 
@@ -318,13 +348,16 @@ const factory: TrifidPlugin = async (trifid) => {
         // Handle Service Description request
         if (Object.keys(queryParams).length === 0 && request.method === 'GET') {
           const dataset = rdf.dataset(await serviceDescription);
-          rdf.clownface({ dataset })
+          rdf
+            .clownface({ dataset })
             .has(rdf.ns.rdf.type, rdf.ns.sd.Service)
             .addOut(rdf.ns.sd.endpoint, rdf.namedNode(fullUrl));
 
           const accept = req.accepts();
           const negotiatedTypes = accept.type([...rdf.formats.serializers.keys()]);
-          const negotiatedType = Array.isArray(negotiatedTypes) ? negotiatedTypes[0] : negotiatedTypes;
+          const negotiatedType = Array.isArray(negotiatedTypes)
+            ? negotiatedTypes[0]
+            : negotiatedTypes;
           if (!negotiatedType) {
             reply.code(406).send();
             return reply;
@@ -351,7 +384,10 @@ const factory: TrifidPlugin = async (trifid) => {
           } else if (`${queryParams.rewrite}` === 'true') {
             rewriteConfigValueFromQuery = true;
           }
-          currentRewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValueFromQuery, endpoint.datasetBaseUrl);
+          currentRewriteConfig = sparqlGetRewriteConfiguration(
+            rewriteConfigValueFromQuery,
+            endpoint.datasetBaseUrl,
+          );
         }
         const { rewrite: rewriteValue, iriOrigin } = currentRewriteConfig;
         const rewriteResponse = rewriteValue
@@ -408,14 +444,17 @@ const factory: TrifidPlugin = async (trifid) => {
           }
 
           // TODO: remove this tweak once QLever supports other formats
-          if (engineMode === 'qlever' && !acceptHeader.startsWith('application/sparql-results+json')) {
+          if (
+            engineMode === 'qlever' &&
+            !acceptHeader.startsWith('application/sparql-results+json')
+          ) {
             acceptHeader = 'text/turtle';
           }
 
           const headers = {
             ...endpoint.headers,
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': acceptHeader,
+            Accept: acceptHeader,
           };
 
           const start = performance.now();
@@ -429,22 +468,25 @@ const factory: TrifidPlugin = async (trifid) => {
 
           if (!response) {
             logger.warn('No response from the endpoint, make sure that the endpoint is reachable');
-            response = new Response(JSON.stringify({
-              success: false,
-              message: 'No response from the endpoint',
-            }), { status: 502, headers: { 'content-type': 'application/json' } });
+            response = new Response(
+              JSON.stringify({
+                success: false,
+                message: 'No response from the endpoint',
+              }),
+              { status: 502, headers: { 'content-type': 'application/json' } },
+            );
           }
 
           const contentType = response.headers.get('content-type');
 
           let responseStream: any = response.body;
           if (rewriteResponse && options.rewriteResults) {
-            const replaceStream = new ReplaceStream(rewriteResponse.origin, rewriteResponse.replacement);
-            responseStream = Readable
-              .from(responseStream)
-              .pipe(replaceStream);
-            responseStream = Readable
-              .from(responseStream);
+            const replaceStream = new ReplaceStream(
+              rewriteResponse.origin,
+              rewriteResponse.replacement,
+            );
+            responseStream = Readable.from(responseStream).pipe(replaceStream);
+            responseStream = Readable.from(responseStream);
           }
           if (responseStream instanceof ReadableStream) {
             responseStream = Readable.fromWeb(responseStream);
@@ -461,9 +503,7 @@ const factory: TrifidPlugin = async (trifid) => {
         } catch (error) {
           logger.error('Error while querying the endpoint');
           logger.error(error);
-          reply
-            .code(500)
-            .send('Error while querying the endpoint');
+          reply.code(500).send('Error while querying the endpoint');
           return reply;
         }
       };

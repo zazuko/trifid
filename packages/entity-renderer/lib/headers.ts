@@ -7,9 +7,10 @@ import { sparqlSupportedTypes } from 'trifid-core';
  * @param req - The request object
  * @returns The accept header
  */
-export const getAcceptHeader = (
-  req: { query?: Record<string, unknown>; headers?: Record<string, unknown> },
-): string => {
+export const getAcceptHeader = (req: {
+  query?: Record<string, unknown>;
+  headers?: Record<string, unknown>;
+}): string => {
   const queryStringValue = `${req.query?.format ?? ''}`;
 
   const supportedQueryStringValues: Record<string, string> = {
@@ -28,10 +29,7 @@ export const getAcceptHeader = (
   }
 
   const acceptHeader = `${req.headers?.accept || 'text/html'}`.toLocaleLowerCase();
-  const selectedHeader = mimeparse.bestMatch([
-    ...sparqlSupportedTypes,
-    'text/html',
-  ], acceptHeader);
+  const selectedHeader = mimeparse.bestMatch([...sparqlSupportedTypes, 'text/html'], acceptHeader);
 
   return selectedHeader || acceptHeader;
 };

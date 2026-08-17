@@ -42,11 +42,7 @@ const factory = async ({ render }: { render: RenderFunction }) => {
 
         reply.status(404);
 
-        switch (accept.type([
-          'text/plain',
-          'json',
-          'html',
-        ])) {
+        switch (accept.type(['text/plain', 'json', 'html'])) {
           case 'json':
             reply.send({ success: false, message: 'Not found', status: 404 });
             break;

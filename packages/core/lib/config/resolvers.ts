@@ -1,9 +1,4 @@
-import {
-  cwdResolver,
-  envResolver,
-  fileCallback,
-  fileResolver,
-} from '../resolvers.ts';
+import { cwdResolver, envResolver, fileCallback, fileResolver } from '../resolvers.ts';
 
 /**
  *

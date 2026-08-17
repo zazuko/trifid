@@ -6,7 +6,7 @@ const factory: TrifidPlugin = async (trifid) => {
   const { config, logger } = trifid;
   const { target } = config;
   if (typeof target !== 'string' || !target) {
-    throw new Error('configuration is missing \'target\' field');
+    throw new Error("configuration is missing 'target' field");
   }
 
   return {

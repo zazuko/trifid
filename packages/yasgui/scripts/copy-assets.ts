@@ -9,11 +9,7 @@ import { fileURLToPath } from 'node:url';
 const packageRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const distDir = join(packageRoot, 'dist');
 
-const assets = [
-  'views',
-  'public',
-  'build',
-];
+const assets = ['views', 'public', 'build'];
 
 for (const asset of assets) {
   await cp(join(packageRoot, asset), join(distDir, asset), { recursive: true });

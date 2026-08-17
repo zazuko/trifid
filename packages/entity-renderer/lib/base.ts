@@ -16,11 +16,13 @@ export const checkSingleDatasetBaseUrl = (
   }
 
   if (!datasetBaseUrl) {
-    throw new Error('Value for \'datasetBaseUrl\' is missing');
+    throw new Error("Value for 'datasetBaseUrl' is missing");
   }
 
   if (!datasetBaseUrl.endsWith('/')) {
-    logger.warn(`The value for 'datasetBaseUrl' should usually end with a '/' ; it is not the case for '${datasetBaseUrl}'`);
+    logger.warn(
+      `The value for 'datasetBaseUrl' should usually end with a '/' ; it is not the case for '${datasetBaseUrl}'`,
+    );
   }
 
   return true;

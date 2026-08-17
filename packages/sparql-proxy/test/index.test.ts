@@ -9,22 +9,25 @@ describe('sparql-proxy', () => {
   let defaultTestConfig;
 
   const startTrifid = async (config) => {
-    const server = await trifidCore({
-      server: {
-        listener: {
-          port: 0,
-        },
-        logLevel: 'warn',
-      },
-    }, {
-      sparqlProxy: {
-        module: sparqlProxy,
-        config: {
-          ...defaultTestConfig,
-          ...config,
+    const server = await trifidCore(
+      {
+        server: {
+          listener: {
+            port: 0,
+          },
+          logLevel: 'warn',
         },
       },
-    });
+      {
+        sparqlProxy: {
+          module: sparqlProxy,
+          config: {
+            ...defaultTestConfig,
+            ...config,
+          },
+        },
+      },
+    );
 
     trifidListener = await server.start();
     return getListenerURL(trifidListener);
@@ -46,9 +49,7 @@ describe('sparql-proxy', () => {
   });
 
   describe('requesting service description', () => {
-    const forwardedProperties = rdf.termMap([
-      [rdf.ns.sd.feature],
-    ]);
+    const forwardedProperties = rdf.termMap([[rdf.ns.sd.feature]]);
 
     it('does not serve Service Description when there are any query string', async () => {
       // given
