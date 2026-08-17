@@ -1,5 +1,11 @@
 # @zazuko/trifid-plugin-ckan
 
+## 5.0.1
+
+### Patch Changes
+
+- 967c329: Update dependencies: `xmlbuilder2` to `^4.0.3` and `@tpluscode/rdf-string` to `^1.3.4`.
+
 ## 5.0.0
 
 ### Major Changes
