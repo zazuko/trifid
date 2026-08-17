@@ -6,20 +6,23 @@ import trifidCore, { getListenerURL } from '../../index.ts';
 import throwPlugin from '../../plugins/throw.ts';
 
 const createTrifidInstance = async (config) => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 0,
+  return await trifidCore(
+    {
+      server: {
+        listener: {
+          port: 0,
+        },
+        logLevel: 'warn',
       },
-      logLevel: 'warn',
     },
-  }, {
-    throw: {
-      module: throwPlugin,
-      paths: ['/throw'],
-      config,
+    {
+      throw: {
+        module: throwPlugin,
+        paths: ['/throw'],
+        config,
+      },
     },
-  });
+  );
 };
 
 describe('throw plugin', () => {

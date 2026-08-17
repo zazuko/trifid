@@ -41,10 +41,7 @@ export {
 } from './lib/sparql.ts';
 
 // Export some functions that can be used for testing
-export {
-  assertRejection,
-  getListenerURL,
-} from './lib/test.ts';
+export { assertRejection, getListenerURL } from './lib/test.ts';
 
 // Re-export the public types so that plugins can consume them from the package
 // entry (`import type { TrifidPlugin } from 'trifid-core'`).
@@ -80,14 +77,17 @@ export type {
  */
 const trifid = async (
   config?: TrifidConfigWithExtends | null,
-  additionalPlugins: Record<string, {
-    order?: number;
-    module: TrifidPlugin;
-    paths?: string | string[];
-    methods?: string | string[];
-    hosts?: string | string[];
-    config?: ConfigRecord;
-  }> = {},
+  additionalPlugins: Record<
+    string,
+    {
+      order?: number;
+      module: TrifidPlugin;
+      paths?: string | string[];
+      methods?: string | string[];
+      hosts?: string | string[];
+      config?: ConfigRecord;
+    }
+  > = {},
 ): Promise<{
   start: () => Promise<FastifyInstance>;
   server: FastifyInstance;
@@ -103,7 +103,7 @@ const trifid = async (
 
   // Dynamic server configuration
   const portFromConfig = fullConfig?.server?.listener?.port;
-  const port = (portFromConfig === 0 || portFromConfig === '0') ? 0 : (portFromConfig || defaultPort);
+  const port = portFromConfig === 0 || portFromConfig === '0' ? 0 : portFromConfig || defaultPort;
   const host = fullConfig?.server?.listener?.host || defaultHost;
   const portNumber = typeof port === 'string' ? parseInt(port, 10) : port;
 
@@ -130,7 +130,9 @@ const trifid = async (
   });
 
   // Register fastifyCompress and add custom compressible mime-types (in addition to mime-db)
-  await server.register(fastifyCompress, { customTypes: /(turtle|n-triples|n-quads|trig|json)(;.+)?$/ });
+  await server.register(fastifyCompress, {
+    customTypes: /(turtle|n-triples|n-quads|trig|json)(;.+)?$/,
+  });
 
   // Add support for `application/sparql-query` content type
   server.addContentTypeParser('application/sparql-query', (_request, payload, done) => {
@@ -208,10 +210,7 @@ const trifid = async (
       reply.callNotFound();
     });
 
-  const plugins = await pluginsAssembler(
-    fullConfig,
-    additionalPlugins,
-  );
+  const plugins = await pluginsAssembler(fullConfig, additionalPlugins);
   await applyPlugins(
     server,
     fullConfig.globals ?? {},

@@ -6,7 +6,7 @@ const factory: TrifidPlugin = async (trifid) => {
   const { config, paths } = trifid;
   const { directory } = config;
   if (typeof directory !== 'string' || !directory) {
-    throw new Error('configuration is missing \'directory\' field');
+    throw new Error("configuration is missing 'directory' field");
   }
 
   const staticConfiguration = {

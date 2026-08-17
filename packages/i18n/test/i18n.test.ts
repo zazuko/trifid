@@ -51,9 +51,7 @@ const createTrifidInstance = (config) => {
             defaultConfiguration: async () => {
               return {
                 methods: ['GET'],
-                paths: [
-                  '/',
-                ],
+                paths: ['/'],
               };
             },
             routeHandler: async () => {
@@ -90,7 +88,10 @@ describe('trifid-plugin-i18n', () => {
     try {
       await createTrifidInstance({});
     } catch (error) {
-      strictEqual(error.message, 'The \'directory\' configuration field should be a non-empty string.');
+      strictEqual(
+        error.message,
+        "The 'directory' configuration field should be a non-empty string.",
+      );
     }
   });
 

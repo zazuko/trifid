@@ -64,7 +64,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
 
       const res = await fetch(ckanUrl);
       const body = await res.text();
-      const expectedResult = await readFile(new URL('./support/empty-result.xml', import.meta.url), 'utf8');
+      const expectedResult = await readFile(
+        new URL('./support/empty-result.xml', import.meta.url),
+        'utf8',
+      );
 
       strictEqual(res.status, 200);
       strictEqual(removePrefixesFromBody(body), expectedResult);
@@ -86,14 +89,20 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       });
 
       it('should get a basic result for a known organization', async () => {
-        const expectedResult = await readFile(new URL('./support/basic-result.xml', import.meta.url), 'utf8');
+        const expectedResult = await readFile(
+          new URL('./support/basic-result.xml', import.meta.url),
+          'utf8',
+        );
 
         strictEqual(res.status, 200);
         strictEqual(removePrefixesFromBody(xmlText), expectedResult);
       });
 
       it('should take publisher at face value', async () => {
-        const publisher = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:publisher');
+        const publisher = xpath.evalFirst(
+          xmlBody,
+          '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:publisher',
+        );
 
         const expected = await parser.parseStringPromise(`
         <foaf:Organization>
@@ -103,7 +112,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       });
 
       it('should get landing page resource', () => {
-        const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage');
+        const landingPage = xpath.evalFirst(
+          xmlBody,
+          '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage',
+        );
 
         strictEqual(landingPage.$['rdf:resource'], 'https://example.com/');
       });
@@ -114,25 +126,61 @@ describe('@zazuko/trifid-plugin-ckan', () => {
       const euFreqPrefix = 'http://publications.europa.eu/resource/authority/frequency';
 
       strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/annual`), `${euFreqPrefix}/ANNUAL`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/semiannual`), `${euFreqPrefix}/ANNUAL_2`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/threeTimesAYear`), `${euFreqPrefix}/ANNUAL_3`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/biennial`), `${euFreqPrefix}/BIENNIAL`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/bimonthly`), `${euFreqPrefix}/BIMONTHLY`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/biweekly`), `${euFreqPrefix}/BIWEEKLY`);
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/semiannual`),
+        `${euFreqPrefix}/ANNUAL_2`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/threeTimesAYear`),
+        `${euFreqPrefix}/ANNUAL_3`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/biennial`),
+        `${euFreqPrefix}/BIENNIAL`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/bimonthly`),
+        `${euFreqPrefix}/BIMONTHLY`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/biweekly`),
+        `${euFreqPrefix}/BIWEEKLY`,
+      );
       strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/continuous`), `${euFreqPrefix}/CONT`);
       strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/daily`), `${euFreqPrefix}/DAILY`);
       strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/irregular`), `${euFreqPrefix}/IRREG`);
       strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/monthly`), `${euFreqPrefix}/MONTHLY`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/semimonthly`), `${euFreqPrefix}/MONTHLY_2`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/threeTimesAMonth`), `${euFreqPrefix}/MONTHLY_3`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/quarterly`), `${euFreqPrefix}/QUARTERLY`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/triennial`), `${euFreqPrefix}/TRIENNIAL`);
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/semimonthly`),
+        `${euFreqPrefix}/MONTHLY_2`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/threeTimesAMonth`),
+        `${euFreqPrefix}/MONTHLY_3`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/quarterly`),
+        `${euFreqPrefix}/QUARTERLY`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/triennial`),
+        `${euFreqPrefix}/TRIENNIAL`,
+      );
       strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/weekly`), `${euFreqPrefix}/WEEKLY`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/semiweekly`), `${euFreqPrefix}/WEEKLY_2`);
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/threeTimesAWeek`), `${euFreqPrefix}/WEEKLY_3`);
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/semiweekly`),
+        `${euFreqPrefix}/WEEKLY_2`,
+      );
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/threeTimesAWeek`),
+        `${euFreqPrefix}/WEEKLY_3`,
+      );
 
       // Should not convert unknown frequencies
-      strictEqual(convertLegacyFrequency(`${legacyFreqPrefix}/unknown`), `${legacyFreqPrefix}/unknown`);
+      strictEqual(
+        convertLegacyFrequency(`${legacyFreqPrefix}/unknown`),
+        `${legacyFreqPrefix}/unknown`,
+      );
 
       // Should not convert EU frequencies
       strictEqual(convertLegacyFrequency(`${euFreqPrefix}/ANNUAL`), `${euFreqPrefix}/ANNUAL`);
@@ -169,7 +217,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     });
 
     it('should get a correct contactPoint', async () => {
-      const contactPoint = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:contactPoint');
+      const contactPoint = xpath.evalFirst(
+        xmlBody,
+        '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:contactPoint',
+      );
 
       const expected = await parser.parseStringPromise(`
         <vcard:Organization>
@@ -180,7 +231,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     });
 
     it('should get structured publisher', async () => {
-      const publisher = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:publisher');
+      const publisher = xpath.evalFirst(
+        xmlBody,
+        '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:publisher',
+      );
 
       const expected = await parser.parseStringPromise(`
         <foaf:Organization rdf:about="https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw">
@@ -190,13 +244,17 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     });
 
     it('should get landing page resource', () => {
-      const landingPage = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage');
+      const landingPage = xpath.evalFirst(
+        xmlBody,
+        '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:landingPage',
+      );
 
       strictEqual(landingPage.$['rdf:resource'], 'https://agrarmarktdaten.admin.ch');
     });
 
     it('should use mapped themes', () => {
-      const themes = xpath.find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:theme')
+      const themes = xpath
+        .find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:theme')
         .map((theme) => theme.$['rdf:resource']);
 
       const expectedThemes = [
@@ -209,7 +267,10 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     });
 
     it('should get temporal PeriodOfTime', async () => {
-      const themes = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:temporal');
+      const themes = xpath.evalFirst(
+        xmlBody,
+        '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcterms:temporal',
+      );
 
       const expected = await parser.parseStringPromise(`
         <dcterms:PeriodOfTime>
@@ -220,13 +281,22 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     });
 
     it('should build correct distribution format', async () => {
-      const format = xpath.evalFirst(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution/dcat:Distribution/dcterms:format');
+      const format = xpath.evalFirst(
+        xmlBody,
+        '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution/dcat:Distribution/dcterms:format',
+      );
 
-      strictEqual(format.$['rdf:resource'], 'http://publications.europa.eu/resource/authority/file-type/SPARQLQ');
+      strictEqual(
+        format.$['rdf:resource'],
+        'http://publications.europa.eu/resource/authority/file-type/SPARQLQ',
+      );
     });
 
     it('should copy existing distributions', async () => {
-      const distributions = xpath.find(xmlBody, '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution');
+      const distributions = xpath.find(
+        xmlBody,
+        '//rdf:RDF/dcat:Catalog/dcat:dataset/dcat:Dataset/dcat:distribution',
+      );
 
       strictEqual(distributions.length, 2);
       const expected = await parser.parseStringPromise(`

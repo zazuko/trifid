@@ -22,10 +22,8 @@ const adder = ([selector, className]: [string, string]) => {
  * @param className Class name to add.
  * @returns Function that adds the class name to the properties.
  */
-const write = (className: string) => ({ properties }: Element) => {
-  if (!properties.className) {
-    properties.className = className;
-  } else {
-    properties.className = `${properties.className} ${className}`;
-  }
-};
+const write =
+  (className: string) =>
+  ({ properties }: Element) => {
+    properties.className = [...(properties.className ?? []), className];
+  };

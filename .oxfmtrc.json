@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+
+  // Scoped to JavaScript/TypeScript, matching what ESLint + @stylistic covered.
+  // Handlebars views are whitespace-sensitive, and test fixtures include
+  // deliberately malformed JSON that oxfmt cannot parse.
+  "ignorePatterns": [
+    "**/*.css",
+    "**/*.hbs",
+    "**/*.json",
+    "**/*.jsonc",
+    "**/*.md",
+    "**/*.yaml",
+    "**/*.yml"
+  ],
+
+  "printWidth": 100,
+
+  // Mirrors .editorconfig
+  "tabWidth": 2,
+  "useTabs": false,
+  "endOfLine": "lf",
+  "insertFinalNewline": true,
+
+  // Carried over from the former @stylistic/eslint-plugin config
+  "singleQuote": true,
+  "semi": true,
+  "trailingComma": "all",
+  "arrowParens": "always"
+}

@@ -28,7 +28,10 @@ describe('utils', () => {
     });
 
     it('should return false for a function', () => {
-      equal(assertObject(() => { }), false);
+      equal(
+        assertObject(() => {}),
+        false,
+      );
     });
 
     it('should return false for a boolean', () => {
@@ -66,7 +69,10 @@ describe('utils', () => {
     });
 
     it('should return 0 for a function', () => {
-      equal(objectLength(() => { }), 0);
+      equal(
+        objectLength(() => {}),
+        0,
+      );
     });
 
     it('should return 0 for a boolean', () => {
@@ -132,7 +138,10 @@ describe('utils', () => {
     });
 
     it('should return false for a function', () => {
-      equal(isValidUrl(() => { }), false);
+      equal(
+        isValidUrl(() => {}),
+        false,
+      );
     });
   });
 });

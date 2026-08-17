@@ -1,0 +1,62 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+
+  // Build outputs and generated artifacts
+  "ignorePatterns": [
+    "**/dist/",
+    "**/coverage/",
+    "packages/yasgui/build/"
+  ],
+
+  "plugins": ["typescript", "unicorn", "oxc"],
+
+  "categories": {
+    "correctness": "error"
+  },
+
+  "env": {
+    "es2024": true,
+    "node": true
+  },
+
+  "rules": {
+    // Keep console usage deliberate (build scripts disable it inline)
+    "no-console": "error",
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "no-var": "error",
+    "prefer-const": "error",
+
+    // `_`-prefixed parameters/variables mark intentionally unused values
+    "typescript/no-unused-vars": ["error", {
+      "args": "all",
+      "argsIgnorePattern": "^_",
+      "caughtErrors": "all",
+      "caughtErrorsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "destructuredArrayIgnorePattern": "^_"
+    }],
+
+    // `any` is used deliberately at untyped boundaries (RDF/clownface/lit)
+    "typescript/no-explicit-any": "off",
+
+    // `@ts-expect-error` is used in tests to assert invalid configurations;
+    // `@ts-ignore` must explain why it is needed
+    "typescript/ban-ts-comment": ["error", {
+      "ts-expect-error": false,
+      "ts-ignore": "allow-with-description"
+    }]
+  },
+
+  // Browser-served scripts (loaded raw or bundled with esbuild)
+  "overrides": [
+    {
+      "files": [
+        "packages/graph-explorer/static/**/*.js",
+        "packages/yasgui/plugins/**/*.js"
+      ],
+      "env": {
+        "browser": true
+      }
+    }
+  ]
+}

@@ -18,16 +18,12 @@ program
   .option('-c, --config <path>', 'configuration file', defaultConfigurationFile)
   .option('-p, --port <port>', 'listener port', parseInt)
   .option('--sparql-endpoint-url <url>', 'SPARQL endpoint URL')
-  .option(
-    '--dataset-base-url <url>',
-    'the base URL of the dataset to enable rewriting',
-  )
+  .option('--dataset-base-url <url>', 'the base URL of the dataset to enable rewriting')
   .parse(process.argv);
 
 const opts = program.opts();
-const configFile = (opts.config && !opts.config.startsWith('/'))
-  ? join(process.cwd(), opts.config)
-  : opts.config;
+const configFile =
+  opts.config && !opts.config.startsWith('/') ? join(process.cwd(), opts.config) : opts.config;
 
 // create a minimal configuration that extends the specified one
 const globals: Record<string, unknown> = {};

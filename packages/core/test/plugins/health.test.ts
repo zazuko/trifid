@@ -6,18 +6,21 @@ import trifidCore, { getListenerURL } from '../../index.ts';
 import healthPlugin from '../../plugins/health.ts';
 
 const createTrifidInstance = async () => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 0,
+  return await trifidCore(
+    {
+      server: {
+        listener: {
+          port: 0,
+        },
+        logLevel: 'warn',
       },
-      logLevel: 'warn',
     },
-  }, {
-    health: {
-      module: healthPlugin,
+    {
+      health: {
+        module: healthPlugin,
+      },
     },
-  });
+  );
 };
 
 describe('health plugin', () => {

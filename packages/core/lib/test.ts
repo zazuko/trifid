@@ -37,6 +37,6 @@ export const assertRejection = (promise: Promise<unknown>): Promise<void> => {
     () => {
       throw new Error('Expected promise to be rejected');
     },
-    () => { },
+    () => {},
   );
 };

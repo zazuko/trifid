@@ -44,14 +44,17 @@ const jsonLDToCSV = (jsonLD: Record<string, unknown>): string => {
     if (Array.isArray(value)) {
       // For each array item, check if it's an object with '@id', else use the item directly
       value.forEach((item) => {
-        const itemValue = (item && typeof item === 'object' && (item as Record<string, unknown>)['@id'])
-          ? (item as Record<string, unknown>)['@id']
-          : item;
+        const itemValue =
+          item && typeof item === 'object' && (item as Record<string, unknown>)['@id']
+            ? (item as Record<string, unknown>)['@id']
+            : item;
         rows.push(`"${escapedKey}","${String(itemValue).replace(/"/g, '""')}"`);
       });
     } else if (value && typeof value === 'object' && (value as Record<string, unknown>)['@id']) {
       // Handle object with '@id'
-      rows.push(`"${escapedKey}","${String((value as Record<string, unknown>)['@id']).replace(/"/g, '""')}"`);
+      rows.push(
+        `"${escapedKey}","${String((value as Record<string, unknown>)['@id']).replace(/"/g, '""')}"`,
+      );
     } else {
       // Handle other values (null/undefined will become empty strings)
       rows.push(`"${escapedKey}","${(value ? String(value) : '').replace(/"/g, '""')}"`);
@@ -192,7 +195,10 @@ export interface RewriteConfiguration {
  * @param datasetBaseUrl The dataset base URL to use in case rewriting is enabled.
  * @returns The computed value of the `rewrite` option.
  */
-export const getRewriteConfiguration = (value: unknown, datasetBaseUrl?: string): RewriteConfiguration => {
+export const getRewriteConfiguration = (
+  value: unknown,
+  datasetBaseUrl?: string,
+): RewriteConfiguration => {
   const iriOrigin = (iri: string) => {
     const parts = new URL(iri);
     parts.pathname = '/';
@@ -219,7 +225,9 @@ export const getRewriteConfiguration = (value: unknown, datasetBaseUrl?: string)
 
   const datasetBaseUrlValue = new URL(datasetBaseUrl);
   datasetBaseUrlValue.search = '';
-  datasetBaseUrlValue.searchParams.forEach((_value, key) => datasetBaseUrlValue.searchParams.delete(key));
+  datasetBaseUrlValue.searchParams.forEach((_value, key) =>
+    datasetBaseUrlValue.searchParams.delete(key),
+  );
   const datasetBaseUrlString = datasetBaseUrlValue.toString();
 
   return {
@@ -259,7 +267,10 @@ export interface SPARQLClient {
   /** Supported clients. */
   clients: { parsing: ParsingClient; simple: SimpleClient };
   /** Query function. */
-  query: (query: string, options?: QueryOptions) => Promise<QueryResult | Array<ResultRow> | boolean>;
+  query: (
+    query: string,
+    options?: QueryOptions,
+  ) => Promise<QueryResult | Array<ResultRow> | boolean>;
 }
 
 /**
@@ -309,7 +320,7 @@ export const generateClient = (sparqlEndpoint: string, options: QueryOptions): S
           }
           // `term.value` is declared read-only on RDF/JS terms, but we
           // intentionally rewrite it in place here.
-          ;(term as { value: string }).value = value;
+          (term as { value: string }).value = value;
         }
         return row;
       });
@@ -365,12 +376,14 @@ export const initQuery = (
   endpoints: Record<string, SPARQLClient>;
   query: (pluginLogger: Logger) => TrifidQuery;
 } => {
-  const endpoints = Object.fromEntries(Object.entries(configuredEndpoints).map(([name, options]) => {
-    logger.debug(`Configured following SPARQL endpoint: ${name}`);
-    const { url: endpointUrl, ...otherOptions } = options;
-    const url = new URL(endpointUrl, instanceHostname);
-    return [name, generateClient(url.toString(), otherOptions)];
-  }));
+  const endpoints = Object.fromEntries(
+    Object.entries(configuredEndpoints).map(([name, options]) => {
+      logger.debug(`Configured following SPARQL endpoint: ${name}`);
+      const { url: endpointUrl, ...otherOptions } = options;
+      const url = new URL(endpointUrl, instanceHostname);
+      return [name, generateClient(url.toString(), otherOptions)];
+    }),
+  );
 
   /**
    * Execute a SPARQL query.
@@ -378,22 +391,21 @@ export const initQuery = (
    * @param pluginLogger Plugin logger instance.
    * @returns Query result.
    */
-  const query = (pluginLogger: Logger) => async (
-    query: string,
-    options: TrifidQueryOptions = {},
-  ): Promise<unknown> => {
-    pluginLogger.debug(`SPARQL query: \n${query}`);
+  const query =
+    (pluginLogger: Logger) =>
+    async (query: string, options: TrifidQueryOptions = {}): Promise<unknown> => {
+      pluginLogger.debug(`SPARQL query: \n${query}`);
 
-    const { endpoint: configuredEndpoint, ...otherOptions } = options;
+      const { endpoint: configuredEndpoint, ...otherOptions } = options;
 
-    const endpoint = configuredEndpoint || 'default';
-    const client = endpoints[endpoint];
-    if (!client) {
-      throw new Error(`Unknown SPARQL endpoint: ${endpoint}`);
-    }
+      const endpoint = configuredEndpoint || 'default';
+      const client = endpoints[endpoint];
+      if (!client) {
+        throw new Error(`Unknown SPARQL endpoint: ${endpoint}`);
+      }
 
-    return await client.query(query, otherOptions);
-  };
+      return await client.query(query, otherOptions);
+    };
 
   return {
     endpoints,

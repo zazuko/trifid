@@ -25,10 +25,7 @@ describe('resolvers', () => {
   });
 
   it('env should not resolve to anything if it is another prefix', () => {
-    equal(
-      envResolver('something:TEST_VARIABLE'),
-      'something:TEST_VARIABLE',
-    );
+    equal(envResolver('something:TEST_VARIABLE'), 'something:TEST_VARIABLE');
   });
 
   it('env should resolve with the right prefix', () => {
@@ -69,14 +66,8 @@ describe('resolvers', () => {
     equal(cwdResolver('cwd:.'), process.cwd());
     equal(cwdResolver('cwd:./test.js'), `${process.cwd()}/test.js`);
     equal(cwdResolver('cwd:test.js'), `${process.cwd()}/test.js`);
-    equal(
-      cwdResolver('cwd:././././test.js'),
-      `${process.cwd()}/test.js`,
-    );
-    equal(
-      cwdResolver('cwd:./a/.././test.js'),
-      `${process.cwd()}/test.js`,
-    );
+    equal(cwdResolver('cwd:././././test.js'), `${process.cwd()}/test.js`);
+    equal(cwdResolver('cwd:./a/.././test.js'), `${process.cwd()}/test.js`);
     equal(cwdResolver('cwd:/test.js'), '/test.js');
     equal(cwdResolver('cwd:/a/b/c/test.js'), '/a/b/c/test.js');
   });
@@ -87,35 +78,17 @@ describe('resolvers', () => {
     equal(fileCallback()('.'), process.cwd());
     equal(fileCallback()('./test.js'), `${process.cwd()}/test.js`);
     equal(fileCallback()('test.js'), `${process.cwd()}/test.js`);
-    equal(
-      fileCallback()('././././test.js'),
-      `${process.cwd()}/test.js`,
-    );
-    equal(
-      fileCallback()('./a/.././test.js'),
-      `${process.cwd()}/test.js`,
-    );
+    equal(fileCallback()('././././test.js'), `${process.cwd()}/test.js`);
+    equal(fileCallback()('./a/.././test.js'), `${process.cwd()}/test.js`);
     equal(fileCallback()('/test.js'), '/test.js');
     equal(fileCallback()('/a/b/c/test.js'), '/a/b/c/test.js');
 
     // test with explicit 'undefined' base
     equal(fileCallback(undefined)('.'), process.cwd());
-    equal(
-      fileCallback(undefined)('./test.js'),
-      `${process.cwd()}/test.js`,
-    );
-    equal(
-      fileCallback(undefined)('test.js'),
-      `${process.cwd()}/test.js`,
-    );
-    equal(
-      fileCallback(undefined)('././././test.js'),
-      `${process.cwd()}/test.js`,
-    );
-    equal(
-      fileCallback(undefined)('./a/.././test.js'),
-      `${process.cwd()}/test.js`,
-    );
+    equal(fileCallback(undefined)('./test.js'), `${process.cwd()}/test.js`);
+    equal(fileCallback(undefined)('test.js'), `${process.cwd()}/test.js`);
+    equal(fileCallback(undefined)('././././test.js'), `${process.cwd()}/test.js`);
+    equal(fileCallback(undefined)('./a/.././test.js'), `${process.cwd()}/test.js`);
     equal(fileCallback(undefined)('/test.js'), '/test.js');
     equal(fileCallback(undefined)('/a/b/c/test.js'), '/a/b/c/test.js');
   });
@@ -131,24 +104,12 @@ describe('resolvers', () => {
     equal(fileCallback('/path/test')('../../'), '/');
     equal(fileCallback('/path/test')('../../..'), '/');
     equal(fileCallback('/path/test')('../../../'), '/');
-    equal(
-      fileCallback('/path/test')('./test.js'),
-      '/path/test/test.js',
-    );
+    equal(fileCallback('/path/test')('./test.js'), '/path/test/test.js');
     equal(fileCallback('/path/test')('test.js'), '/path/test/test.js');
-    equal(
-      fileCallback('/path/test')('././././test.js'),
-      '/path/test/test.js',
-    );
-    equal(
-      fileCallback('/path/test')('./a/.././test.js'),
-      '/path/test/test.js',
-    );
+    equal(fileCallback('/path/test')('././././test.js'), '/path/test/test.js');
+    equal(fileCallback('/path/test')('./a/.././test.js'), '/path/test/test.js');
     equal(fileCallback('/path/test')('/test.js'), '/test.js');
-    equal(
-      fileCallback('/path/test')('/a/b/c/test.js'),
-      '/a/b/c/test.js',
-    );
+    equal(fileCallback('/path/test')('/a/b/c/test.js'), '/a/b/c/test.js');
   });
 
   it('file resolver should not resolve on other prefix', () => {
@@ -157,14 +118,8 @@ describe('resolvers', () => {
 
   it('file resolver should resolve on the file prefix', () => {
     equal(fileResolver('file:test.js'), `${process.cwd()}/test.js`);
-    equal(
-      fileResolver('file:test.js', undefined),
-      `${process.cwd()}/test.js`,
-    );
-    equal(
-      fileResolver('file:test.js', '/path/test'),
-      '/path/test/test.js',
-    );
+    equal(fileResolver('file:test.js', undefined), `${process.cwd()}/test.js`);
+    equal(fileResolver('file:test.js', '/path/test'), '/path/test/test.js');
   });
 
   it('file resolver should behave the same as the file callback', () => {
@@ -178,26 +133,11 @@ describe('resolvers', () => {
     equal(fileResolver('file:../../', '/path/test'), '/');
     equal(fileResolver('file:../../..', '/path/test'), '/');
     equal(fileResolver('file:../../../', '/path/test'), '/');
-    equal(
-      fileResolver('file:./test.js', '/path/test'),
-      '/path/test/test.js',
-    );
-    equal(
-      fileResolver('file:test.js', '/path/test'),
-      '/path/test/test.js',
-    );
-    equal(
-      fileResolver('file:././././test.js', '/path/test'),
-      '/path/test/test.js',
-    );
-    equal(
-      fileResolver('file:./a/.././test.js', '/path/test'),
-      '/path/test/test.js',
-    );
+    equal(fileResolver('file:./test.js', '/path/test'), '/path/test/test.js');
+    equal(fileResolver('file:test.js', '/path/test'), '/path/test/test.js');
+    equal(fileResolver('file:././././test.js', '/path/test'), '/path/test/test.js');
+    equal(fileResolver('file:./a/.././test.js', '/path/test'), '/path/test/test.js');
     equal(fileResolver('file:/test.js', '/path/test'), '/test.js');
-    equal(
-      fileResolver('file:/a/b/c/test.js', '/path/test'),
-      '/a/b/c/test.js',
-    );
+    equal(fileResolver('file:/a/b/c/test.js', '/path/test'), '/a/b/c/test.js');
   });
 });

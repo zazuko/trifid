@@ -11,9 +11,9 @@ const defaults: i18n.ConfigurationOptions = {
   indent: '  ',
   extension: '.json',
   objectNotation: true,
-  logDebugFn: (_msg) => { },
-  logWarnFn: (_msg) => { },
-  logErrorFn: (_msg) => { },
+  logDebugFn: (_msg) => {},
+  logWarnFn: (_msg) => {},
+  logErrorFn: (_msg) => {},
 };
 
 const factory: TrifidPlugin = async (trifid) => {
@@ -21,9 +21,7 @@ const factory: TrifidPlugin = async (trifid) => {
 
   // Force user to define the `directory` parameter
   if (!config.directory || typeof config.directory !== 'string') {
-    throw new Error(
-      'The \'directory\' configuration field should be a non-empty string.',
-    );
+    throw new Error("The 'directory' configuration field should be a non-empty string.");
   }
 
   const i18nInstance = new I18n({
@@ -38,14 +36,21 @@ const factory: TrifidPlugin = async (trifid) => {
    * @param _reply Reply.
    * @param done Done function.
    */
-  const onRequestHookHandler = (request: FastifyRequest, _reply: FastifyReply, done: (err?: Error) => void) => {
+  const onRequestHookHandler = (
+    request: FastifyRequest,
+    _reply: FastifyReply,
+    done: (err?: Error) => void,
+  ) => {
     const session = request.session;
-    const currentLanguage = (session.get('currentLanguage') || session.get('defaultLanguage') || 'en') as string;
+    const currentLanguage = (session.get('currentLanguage') ||
+      session.get('defaultLanguage') ||
+      'en') as string;
     i18nInstance.setLocale(currentLanguage);
-    const t = (phrase: string) => i18nInstance.__({
-      phrase,
-      locale: currentLanguage,
-    });
+    const t = (phrase: string) =>
+      i18nInstance.__({
+        phrase,
+        locale: currentLanguage,
+      });
     session.set('t', t);
 
     registerTemplateHelper('i18n', (value: string) => {

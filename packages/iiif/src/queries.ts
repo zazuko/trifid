@@ -83,9 +83,7 @@ CONSTRUCT {
 };
 
 const describeNodes = (nodes: Term[]) => {
-  return nodes
-    .reduce((acc, node) => sparql`${acc} ${node}`, sparql`DESCRIBE`)
-    .toString();
+  return nodes.reduce((acc, node) => sparql`${acc} ${node}`, sparql`DESCRIBE`).toString();
 };
 
 const manifestExists = (iri: Term) => {

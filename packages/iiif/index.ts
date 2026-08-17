@@ -29,9 +29,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
     defaultConfiguration: async () => {
       return {
         methods: ['GET'],
-        paths: [
-          '/iiif/',
-        ],
+        paths: ['/iiif/'],
       };
     },
     routeHandler: async () => {
@@ -58,9 +56,11 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
           return;
         }
 
-        const uri = uriPrefix ? rdf.namedNode(`${uriPrefix}${fullUrlPathname}`) : rdf.namedNode(query.uri as string);
+        const uri = uriPrefix
+          ? rdf.namedNode(`${uriPrefix}${fullUrlPathname}`)
+          : rdf.namedNode(query.uri as string);
         logger.debug(`uri: ${uri.value}`);
-        if (!await api.exists(uri)) {
+        if (!(await api.exists(uri))) {
           logger.debug(`uri: ${uri.value} not found`);
           await notFound(request, reply);
           return;

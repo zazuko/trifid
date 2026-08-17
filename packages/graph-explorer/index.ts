@@ -22,7 +22,8 @@ const factory: TrifidPlugin = async (trifid) => {
     title: titleConfig,
   } = config;
 
-  const view = typeof template === 'string' && template ? template : `${currentDir}/views/graph-explorer.hbs`;
+  const view =
+    typeof template === 'string' && template ? template : `${currentDir}/views/graph-explorer.hbs`;
 
   // Serve static files for graph-explorer
   const distPath = resolve('graph-explorer/dist/', import.meta.url);
@@ -54,10 +55,7 @@ const factory: TrifidPlugin = async (trifid) => {
     defaultConfiguration: async () => {
       return {
         methods: ['GET'],
-        paths: [
-          '/graph-explorer',
-          '/graph-explorer/',
-        ],
+        paths: ['/graph-explorer', '/graph-explorer/'],
       };
     },
     routeHandler: async () => {
@@ -98,7 +96,7 @@ const factory: TrifidPlugin = async (trifid) => {
               schemaLabelProperty,
               language,
               languages,
-            }).replace(/'/g, '\\\''),
+            }).replace(/'/g, "\\'"),
           },
           { title },
         );

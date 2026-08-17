@@ -116,10 +116,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
     defaultConfiguration: async () => {
       return {
         methods: ['GET'],
-        paths: [
-          '/spex',
-          '/spex/',
-        ],
+        paths: ['/spex', '/spex/'],
       };
     },
     routeHandler: async () => createPlugin(server, config, render),

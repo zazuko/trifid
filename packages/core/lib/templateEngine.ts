@@ -85,7 +85,7 @@ const templateEngine = async (
   }
 
   if (!templateOptions?.files?.main) {
-    throw new Error('no \'main\' template was defined');
+    throw new Error("no 'main' template was defined");
   }
 
   // Register all partials
@@ -111,7 +111,7 @@ const templateEngine = async (
   );
   const mainTemplate = templates.main;
   if (!mainTemplate) {
-    throw new Error('no \'main\' template was defined');
+    throw new Error("no 'main' template was defined");
   }
 
   const render: RenderFunction = async (request, templatePath, context, options = {}) => {
@@ -127,10 +127,7 @@ const templateEngine = async (
 
     const renderedOptions = merge({}, mergedContext, templateOptions, options);
     const renderedPartials = Object.fromEntries(
-      Object.entries(templatesWithoutMain).map((t) => [
-        t[0],
-        t[1](renderedOptions),
-      ]),
+      Object.entries(templatesWithoutMain).map((t) => [t[0], t[1](renderedOptions)]),
     );
 
     return mainTemplate({

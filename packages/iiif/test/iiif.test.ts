@@ -73,7 +73,9 @@ describe('@zazuko/trifid-plugin-iiif', () => {
     });
 
     it('can serve IIIF', async () => {
-      const res = await fetch(`${getListenerURL(trifidListener)}/iiif/?uri=http://example.org/data`);
+      const res = await fetch(
+        `${getListenerURL(trifidListener)}/iiif/?uri=http://example.org/data`,
+      );
       await res.text(); // Just make sure that the stream is consumed
       // @TODO: use a real SPARQL endpoint to get real results ; the 500 is due to the fact that the SPARQL endpoint is not real
       strictEqual(res.status, 500);

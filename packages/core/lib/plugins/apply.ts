@@ -7,7 +7,11 @@ import type { Logger } from 'pino';
 
 import { initQuery } from '../sparql.ts';
 import type { SPARQLEndpointConfig } from '../sparql.ts';
-import type { ConfigRecord, FastifyRouteHandler, TemplateEngineInstance } from '../../types/index.ts';
+import type {
+  ConfigRecord,
+  FastifyRouteHandler,
+  TemplateEngineInstance,
+} from '../../types/index.ts';
 import type { StandardizedPlugin } from './standardize.ts';
 
 /**
@@ -96,9 +100,7 @@ const apply = async (
 
     if (pluginHosts.length === 0) {
       for (const path of pluginPaths) {
-        logger.debug(
-          `mount '${name}' plugin (methods=${baseRouteOptions.method}, path=${path})`,
-        );
+        logger.debug(`mount '${name}' plugin (methods=${baseRouteOptions.method}, path=${path})`);
         server.route({
           ...baseRouteOptions,
           url: path,

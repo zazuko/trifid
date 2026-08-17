@@ -15,15 +15,13 @@ const factory: TrifidPlugin = async (trifid) => {
   const { path } = config;
 
   if (typeof path !== 'string' || !path) {
-    throw new Error('configuration is missing \'path\' field');
+    throw new Error("configuration is missing 'path' field");
   }
 
-  const context: ConfigRecord = (config.context && typeof config.context === 'object')
-    ? config.context as ConfigRecord
-    : {};
-  const options: ConfigRecord = (config.options && typeof config.options === 'object')
-    ? config.options as ConfigRecord
-    : {};
+  const context: ConfigRecord =
+    config.context && typeof config.context === 'object' ? (config.context as ConfigRecord) : {};
+  const options: ConfigRecord =
+    config.options && typeof config.options === 'object' ? (config.options as ConfigRecord) : {};
 
   return {
     defaultConfiguration: async () => {
@@ -39,7 +37,10 @@ const factory: TrifidPlugin = async (trifid) => {
        * @param reply Reply.
        */
       const handler = async (request: FastifyRequest, reply: FastifyReply) => {
-        reply.status(200).type('text/html').send(await render(request, path, { ...context }, options));
+        reply
+          .status(200)
+          .type('text/html')
+          .send(await render(request, path, { ...context }, options));
         return reply;
       };
       return handler;

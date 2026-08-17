@@ -92,7 +92,8 @@ class LabelLoader {
   async fetchLabels(iris: any[]) {
     const uris = iris.map((x) => `<${this.replaceIri(x.value)}> `).join(' ');
     this.logger?.debug(`Fetching labels for terms without label: ${uris}`);
-    const response = await this.query(`
+    const response = await this.query(
+      `
 PREFIX schema: <http://schema.org/>
 
 CONSTRUCT {
@@ -102,7 +103,9 @@ CONSTRUCT {
     ?uri schema:name ?label
     VALUES ?uri { ${uris} }
   }
-}`, { ask: false, rewriteResponse: this.rewriteResponse, headers: this.headers });
+}`,
+      { ask: false, rewriteResponse: this.rewriteResponse, headers: this.headers },
+    );
     // Make sure the Content-Type is lower case and without parameters (e.g. charset)
     const fixedContentType = response.contentType.split(';')[0].trim().toLocaleLowerCase();
     const quadStream = parsers.import(fixedContentType, response.response);

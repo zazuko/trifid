@@ -10,20 +10,23 @@ import staticPlugin from '../../plugins/static.ts';
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
 const createTrifidInstance = async (config, paths) => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 0,
+  return await trifidCore(
+    {
+      server: {
+        listener: {
+          port: 0,
+        },
+        logLevel: 'warn',
       },
-      logLevel: 'warn',
     },
-  }, {
-    redirect: {
-      module: staticPlugin,
-      paths,
-      config,
+    {
+      redirect: {
+        module: staticPlugin,
+        paths,
+        config,
+      },
     },
-  });
+  );
 };
 
 describe('redirect plugin', () => {
@@ -32,7 +35,10 @@ describe('redirect plugin', () => {
   });
 
   it('should serve the specified resource (no path configured)', async () => {
-    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, []);
+    const trifidInstance = await createTrifidInstance(
+      { directory: `${currentDir}/../support/` },
+      [],
+    );
     const trifidListener = await trifidInstance.start();
     const pluginUrl = `${getListenerURL(trifidListener)}/test.txt`;
     const response = await fetch(pluginUrl);
@@ -47,7 +53,9 @@ describe('redirect plugin', () => {
   });
 
   it('should serve the specified resource (custom path configured)', async () => {
-    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, ['/static/']);
+    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, [
+      '/static/',
+    ]);
     const trifidListener = await trifidInstance.start();
     const pluginUrl = `${getListenerURL(trifidListener)}/static/test.txt`;
     const response = await fetch(pluginUrl);
@@ -62,7 +70,9 @@ describe('redirect plugin', () => {
   });
 
   it('should return a 404 on non-existant resources', async () => {
-    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, ['/static/']);
+    const trifidInstance = await createTrifidInstance({ directory: `${currentDir}/../support/` }, [
+      '/static/',
+    ]);
     const trifidListener = await trifidInstance.start();
     const pluginUrl = `${getListenerURL(trifidListener)}/static/test-not-exist.txt`;
     const response = await fetch(pluginUrl);

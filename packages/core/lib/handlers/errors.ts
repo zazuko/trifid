@@ -7,11 +7,7 @@ import type { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
  * @param request Request.
  * @param reply Reply.
  */
-const handler = async (
-  error: FastifyError,
-  request: FastifyRequest,
-  reply: FastifyReply,
-) => {
+const handler = async (error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
   request.log.error(error);
 
   // Errors are deliberately masked as a generic 500 response, so that no

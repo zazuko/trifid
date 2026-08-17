@@ -5,20 +5,23 @@ import trifidCore, { getListenerURL } from 'trifid-core';
 import markdownContentTrifidPlugin from '../src/index.ts';
 
 const createTrifidInstance = async (config) => {
-  return await trifidCore({
-    server: {
-      listener: {
-        port: 4242,
+  return await trifidCore(
+    {
+      server: {
+        listener: {
+          port: 4242,
+        },
+        logLevel: 'warn',
       },
-      logLevel: 'warn',
     },
-  }, {
-    markdownContent: {
-      module: markdownContentTrifidPlugin,
-      methods: ['GET'],
-      config,
+    {
+      markdownContent: {
+        module: markdownContentTrifidPlugin,
+        methods: ['GET'],
+        config,
+      },
     },
-  });
+  );
 };
 
 describe('@zazuko/trifid-markdown-content', () => {

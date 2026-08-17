@@ -92,7 +92,11 @@ export const factory: TrifidPlugin = async (trifid) => {
   worker.postMessage({
     type: 'config',
     data: {
-      contentType, url, baseIri, graphName, unionDefaultGraph,
+      contentType,
+      url,
+      baseIri,
+      graphName,
+      unionDefaultGraph,
     },
   });
 
@@ -212,7 +216,10 @@ export const factory: TrifidPlugin = async (trifid) => {
           const end = performance.now();
           const duration = end - start;
           reply.type(contentType);
-          reply.header('Server-Timing', `handler-fetch;dur=${duration};desc="Query execution time"`);
+          reply.header(
+            'Server-Timing',
+            `handler-fetch;dur=${duration};desc="Query execution time"`,
+          );
           logger.debug(`Sending the following ${contentType} response:\n${response}`);
           reply.status(200).send(response);
         } catch (error) {

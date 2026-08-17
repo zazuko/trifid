@@ -12,10 +12,10 @@ const SHUTDOWN_TIMEOUT_MS = 5000;
 // Only start OTel when an endpoint is explicitly configured; otherwise the
 // PeriodicExportingMetricReader timer keeps the event loop alive and the
 // export attempts on shutdown block process exit for several seconds.
-const otelEndpoint
-  = process.env.OTEL_EXPORTER_OTLP_ENDPOINT
-    || process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-    || process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT;
+const otelEndpoint =
+  process.env.OTEL_EXPORTER_OTLP_ENDPOINT ||
+  process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT ||
+  process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT;
 const otelDisabled = process.env.OTEL_SDK_DISABLED === 'true';
 
 if (!otelEndpoint || otelDisabled) {
@@ -61,9 +61,7 @@ if (!otelEndpoint || otelDisabled) {
     try {
       await Promise.race([
         sdk.shutdown(),
-        new Promise<void>((resolve) =>
-          setTimeout(resolve, SHUTDOWN_TIMEOUT_MS),
-        ),
+        new Promise<void>((resolve) => setTimeout(resolve, SHUTDOWN_TIMEOUT_MS)),
       ]);
     } catch {
       // ignore shutdown errors, we are exiting anyway

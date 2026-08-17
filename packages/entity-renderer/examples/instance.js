@@ -6,24 +6,31 @@ import entityRendererTrifidPlugin from '../index.ts';
 // endpoint against the configured host/port (it queries itself over HTTP).
 const port = 3000;
 
-export const createTrifidInstance = async (configFilePath, logLevel = 'debug', additionalConfig = {}) => {
+export const createTrifidInstance = async (
+  configFilePath,
+  logLevel = 'debug',
+  additionalConfig = {},
+) => {
   const configFile = join(process.cwd(), configFilePath);
-  return await trifid({
-    extends: [configFile],
-    server: {
-      logLevel,
-      listener: {
-        port,
-        host: '0.0.0.0',
+  return await trifid(
+    {
+      extends: [configFile],
+      server: {
+        logLevel,
+        listener: {
+          port,
+          host: '0.0.0.0',
+        },
       },
     },
-  }, {
-    entityRenderer: {
-      module: entityRendererTrifidPlugin,
-      config: {
-        followRedirects: true,
-        ...additionalConfig,
+    {
+      entityRenderer: {
+        module: entityRendererTrifidPlugin,
+        config: {
+          followRedirects: true,
+          ...additionalConfig,
+        },
       },
     },
-  });
+  );
 };

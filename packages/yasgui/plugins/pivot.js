@@ -64,9 +64,8 @@ const aggregators = {
  * @param {string[]} values Raw cell values.
  * @returns {number[]} Parsed numbers.
  */
-const numbers = (values) => values
-  .map((value) => Number.parseFloat(value))
-  .filter((value) => !Number.isNaN(value));
+const numbers = (values) =>
+  values.map((value) => Number.parseFloat(value)).filter((value) => !Number.isNaN(value));
 
 /**
  * Format an aggregated value for display.
@@ -152,18 +151,18 @@ class YasguiPivot {
 
   getBindings() {
     if (
-      !this.yasr
-      || !this.yasr.results
-      || !this.yasr.results.json
-      || !this.yasr.results.json.results
-      || !this.yasr.results.json.results.bindings
+      !this.yasr ||
+      !this.yasr.results ||
+      !this.yasr.results.json ||
+      !this.yasr.results.json.results ||
+      !this.yasr.results.json.results.bindings
     ) {
       return { variables: [], bindings: [] };
     }
 
     const json = this.yasr.results.json;
     const bindings = json.results.bindings;
-    const variables = (json.head && json.head.vars) ? json.head.vars : [];
+    const variables = json.head && json.head.vars ? json.head.vars : [];
 
     return { variables, bindings };
   }
@@ -208,27 +207,35 @@ class YasguiPivot {
 
     const controls = document.createElement('div');
     controls.className = 'trifid-pivot-controls';
-    controls.appendChild(buildSelect('Rows', fieldOptions, this.state.rowField, (value) => {
-      this.state.rowField = value;
-      redraw();
-    }));
-    controls.appendChild(buildSelect('Columns', optionalFieldOptions, this.state.columnField, (value) => {
-      this.state.columnField = value;
-      redraw();
-    }));
-    controls.appendChild(buildSelect(
-      'Aggregation',
-      Object.entries(aggregators).map(([value, { label }]) => ({ value, label })),
-      this.state.aggregator,
-      (value) => {
-        this.state.aggregator = value;
+    controls.appendChild(
+      buildSelect('Rows', fieldOptions, this.state.rowField, (value) => {
+        this.state.rowField = value;
         redraw();
-      },
-    ));
-    controls.appendChild(buildSelect('Value', optionalFieldOptions, this.state.valueField, (value) => {
-      this.state.valueField = value;
-      redraw();
-    }));
+      }),
+    );
+    controls.appendChild(
+      buildSelect('Columns', optionalFieldOptions, this.state.columnField, (value) => {
+        this.state.columnField = value;
+        redraw();
+      }),
+    );
+    controls.appendChild(
+      buildSelect(
+        'Aggregation',
+        Object.entries(aggregators).map(([value, { label }]) => ({ value, label })),
+        this.state.aggregator,
+        (value) => {
+          this.state.aggregator = value;
+          redraw();
+        },
+      ),
+    );
+    controls.appendChild(
+      buildSelect('Value', optionalFieldOptions, this.state.valueField, (value) => {
+        this.state.valueField = value;
+        redraw();
+      }),
+    );
     container.appendChild(controls);
 
     container.appendChild(this.buildTable(bindings));
@@ -256,9 +263,10 @@ class YasguiPivot {
       const rowKey = this.readValue(binding, rowField);
       const columnKey = columnField === NONE ? '' : this.readValue(binding, columnField);
       // Counting rows does not need a value, so fall back to the row key
-      const value = valueField === NONE
-        ? this.readValue(binding, rowField)
-        : this.readValue(binding, valueField);
+      const value =
+        valueField === NONE
+          ? this.readValue(binding, rowField)
+          : this.readValue(binding, valueField);
 
       if (!cells.has(rowKey)) {
         cells.set(rowKey, new Map());
@@ -284,9 +292,7 @@ class YasguiPivot {
     const headerRow = document.createElement('tr');
 
     const corner = document.createElement('th');
-    corner.textContent = columnField === NONE
-      ? rowField
-      : `${rowField} \\ ${columnField}`;
+    corner.textContent = columnField === NONE ? rowField : `${rowField} \\ ${columnField}`;
     headerRow.appendChild(corner);
 
     columnKeys.forEach((columnKey) => {
@@ -376,7 +382,8 @@ class YasguiPivot {
 
   getIcon() {
     const textIcon = document.createElement('div');
-    textIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>';
+    textIcon.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>';
     return textIcon;
   }
 }

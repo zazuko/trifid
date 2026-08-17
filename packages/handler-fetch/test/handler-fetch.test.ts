@@ -10,7 +10,8 @@ describe('trifid-handler-fetch', () => {
     store = new oxigraph.Store();
 
     // @ts-ignore -- oxigraph's typings require a full options object, but the format shorthand is fine at runtime
-    store.load(`@prefix ex: <http://example.org/> .
+    store.load(
+      `@prefix ex: <http://example.org/> .
     @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
     ex:person1 a foaf:Person ;
@@ -32,11 +33,13 @@ describe('trifid-handler-fetch', () => {
     ex:company2 a ex:Company ;
       ex:companyName "Innovate Ltd." ;
       ex:location "New York" .
-    `, {
-      format: 'text/turtle',
-      base_iri: 'http://example.org/',
-      to_graph_name: oxigraph.defaultGraph(),
-    });
+    `,
+      {
+        format: 'text/turtle',
+        base_iri: 'http://example.org/',
+        to_graph_name: oxigraph.defaultGraph(),
+      },
+    );
   });
 
   describe('check that required functions are defined', () => {
