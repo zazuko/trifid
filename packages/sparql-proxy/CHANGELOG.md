@@ -1,5 +1,13 @@
 # @zazuko/trifid-plugin-sparql-proxy
 
+## 3.0.1
+
+### Patch Changes
+
+- 967c329: Update `@zazuko/env-node` to `^3.1.0`.
+- Updated dependencies [967c329]
+  - trifid-core@6.0.2
+
 ## 3.0.0
 
 ### Major Changes
