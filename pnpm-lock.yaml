@@ -563,8 +563,8 @@ importers:
         specifier: ^10.1.3
         version: 10.1.3
       '@zazuko/yasgui':
-        specifier: ^4.6.1
-        version: 4.6.1
+        specifier: ^4.6.2
+        version: 4.6.2
       import-meta-resolve:
         specifier: ^4.2.0
         version: 4.2.0
@@ -2317,19 +2317,18 @@ packages:
     peerDependencies:
       vue: 3.x
 
-  '@zazuko/yasgui-utils@4.6.1':
-    resolution: {integrity: sha512-HpmAeLYy6e8qoKAt3A4T3tmcoT0N9tm5StwP7tsxB3jOibJfQzti1pMZh803OAM8cjQID38wrJSTgU/2vwLhLw==}
+  '@zazuko/yasgui-utils@4.6.2':
+    resolution: {integrity: sha512-jG9ZaPzjT9aDMe0PIGeScTZN7I5edUXV/QfnQSrHrzq+Opz/xBAFORFpwI4b0QMgmOpVfPxpn8DmrW9wcMIhBg==}
 
-  '@zazuko/yasgui@4.6.1':
-    resolution: {integrity: sha512-iVkcqW3ZplMyrrKTr+zBiPm7XKHUULvBkyqgZZyFlT2TcXdjJN/Yp6oBKRYH60NDAtD6bSLQOr985bmNnGOCDw==}
+  '@zazuko/yasgui@4.6.2':
+    resolution: {integrity: sha512-Zw45KdPoAE1KRaAoxIHdQqeJxvaVG1oQdntw0hy0ktX35Zu8ZccuOLrXCLwR+GU+0xMzLw8Mjw6BkSZV2vUuQw==}
 
-  '@zazuko/yasqe@4.6.1':
-    resolution: {integrity: sha512-VZZk283TmQVSD40k6i0drrdBq7CD/eIdB/GFu4iO4yfMQsK1hGlmfmlIyudjr0ydDuzg/LXzAGVJrsY2aF4m0Q==}
+  '@zazuko/yasqe@4.6.2':
+    resolution: {integrity: sha512-83iCLuBIgU04KBIaibxZTjKvrXD6sEe/+aqsHxLb4+ZVD4eaUwh5hFJEetuWkiKBY6WxTjVOmhKXvh2AAOR14g==}
     engines: {node: '>= 8'}
 
-  '@zazuko/yasr@4.6.1':
-    resolution: {integrity: sha512-RgAAAAb4eFL8qXfcA8vTrNoBbLh7Rl4hSD5k04/RyXo+2MrAMMcydfH8ocJ7DRGpwjRBRfP8KYOFco8UKyebUQ==}
-    engines: {node: '>= 8'}
+  '@zazuko/yasr@4.6.2':
+    resolution: {integrity: sha512-eiMaX6Uhc/yI42uMZin7RqgYAPZ8vGwyMRIAceO/RW7B6JuKA8KvvlgCrgag9AoGU8SC4Z9gQwQZ9SDUT6XUZA==}
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -6222,17 +6221,17 @@ snapshots:
       dagre: 0.8.5
       vue: 3.5.41(typescript@7.0.2)
 
-  '@zazuko/yasgui-utils@4.6.1':
+  '@zazuko/yasgui-utils@4.6.2':
     dependencies:
       dompurify: 3.4.13
       store: 2.0.12
 
-  '@zazuko/yasgui@4.6.1':
+  '@zazuko/yasgui@4.6.2':
     dependencies:
       '@tarekraafat/autocomplete.js': 7.2.0
-      '@zazuko/yasgui-utils': 4.6.1
-      '@zazuko/yasqe': 4.6.1
-      '@zazuko/yasr': 4.6.1
+      '@zazuko/yasgui-utils': 4.6.2
+      '@zazuko/yasqe': 4.6.2
+      '@zazuko/yasr': 4.6.2
       autosuggest-highlight: 3.3.4
       blueimp-md5: 2.19.0
       choices.js: 9.1.0
@@ -6242,19 +6241,19 @@ snapshots:
       lodash-es: 4.18.1
       sortablejs: 1.15.7
 
-  '@zazuko/yasqe@4.6.1':
+  '@zazuko/yasqe@4.6.2':
     dependencies:
-      '@zazuko/yasgui-utils': 4.6.1
+      '@zazuko/yasgui-utils': 4.6.2
       codemirror: 5.65.21
       lodash-es: 4.18.1
       query-string: 6.14.1
 
-  '@zazuko/yasr@4.6.1':
+  '@zazuko/yasr@4.6.2':
     dependencies:
       '@fortawesome/free-solid-svg-icons': 5.15.4
       '@json2csv/plainjs': 7.0.8
-      '@zazuko/yasgui-utils': 4.6.1
-      '@zazuko/yasqe': 4.6.1
+      '@zazuko/yasgui-utils': 4.6.2
+      '@zazuko/yasqe': 4.6.2
       codemirror: 5.65.21
       colors: 1.4.0
       column-resizer: 1.4.0
