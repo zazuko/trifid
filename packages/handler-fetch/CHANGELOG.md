@@ -1,5 +1,11 @@
 # trifid-handler-fetch
 
+## 4.0.1
+
+### Patch Changes
+
+- 4c40e5d: Update `uuid` to `^14.0.2`.
+
 ## 4.0.0
 
 ### Major Changes

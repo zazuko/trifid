@@ -1,5 +1,11 @@
 # trifid-core
 
+## 6.0.3
+
+### Patch Changes
+
+- 4c40e5d: Update `fastify` to `^5.12.1`.
+
 ## 6.0.2
 
 ### Patch Changes
