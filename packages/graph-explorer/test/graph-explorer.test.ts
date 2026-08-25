@@ -1,33 +1,15 @@
-import { strictEqual } from 'node:assert';
+import { rejects, strictEqual } from 'node:assert';
 import { describe, it, beforeEach, afterEach } from 'node:test';
 
-import trifidCore from 'trifid-core';
+import trifidCore, { getListenerURL } from 'trifid-core';
 
 import trifidPluginFactory from '../index.ts';
 
-/**
- * Get an endpoint of the Fastify Instance.
- *
- * @param {import('fastify').FastifyInstance} server Server.
- * @returns {string}
- */
-const getListenerURL = (server) => {
-  const addresses = server.addresses().map((address) => {
-    if (typeof address === 'string') {
-      return address;
-    }
-    return `http://${address.address}:${address.port}`;
-  });
-
-  if (addresses.length < 1) {
-    throw new Error('The listener is not listening');
-  }
-
-  return addresses[0];
-};
+import type { FastifyInstance } from 'fastify';
+import type { ConfigRecord } from 'trifid-core';
 
 describe('trifid-plugin-graph-explorer', () => {
-  let trifidListener;
+  let trifidListener: FastifyInstance;
 
   beforeEach(async () => {
     const trifidServer = await trifidCore(
@@ -75,5 +57,64 @@ describe('trifid-plugin-graph-explorer', () => {
     const res = await fetch(`${getListenerURL(trifidListener)}/graph-explorer/static/app.js`);
     await res.text(); // Just make sure that the stream is consumed
     strictEqual(res.status, 200);
+  });
+});
+
+describe('trifid-plugin-graph-explorer settings preset', () => {
+  let trifidListener: FastifyInstance | undefined;
+
+  /**
+   * Start a Trifid instance with the given plugin configuration.
+   *
+   * @param config Plugin configuration.
+   * @returns URL of the listener.
+   */
+  const start = async (config: ConfigRecord): Promise<string> => {
+    const trifidServer = await trifidCore(
+      {
+        server: {
+          listener: {
+            port: 0,
+          },
+          logLevel: 'warn',
+        },
+      },
+      {
+        graphExplorer: {
+          module: trifidPluginFactory,
+          config,
+        },
+      },
+    );
+    trifidListener = await trifidServer.start();
+    return getListenerURL(trifidListener);
+  };
+
+  afterEach(async () => {
+    if (trifidListener) {
+      await trifidListener.close();
+      trifidListener = undefined;
+    }
+  });
+
+  it('should use OWLStatsSettings by default', async () => {
+    const url = await start({});
+    const res = await fetch(`${url}/graph-explorer/`);
+    const body = await res.text();
+    strictEqual(body.includes('"settingsPreset":"OWLStatsSettings"'), true);
+  });
+
+  it('should forward the configured preset to the client', async () => {
+    const url = await start({ settingsPreset: 'QLeverSettings' });
+    const res = await fetch(`${url}/graph-explorer/`);
+    const body = await res.text();
+    strictEqual(body.includes('"settingsPreset":"QLeverSettings"'), true);
+  });
+
+  it('should reject an unsupported preset', async () => {
+    await rejects(
+      () => start({ settingsPreset: 'QLever' }),
+      /Unsupported settings preset 'QLever'/,
+    );
   });
 });

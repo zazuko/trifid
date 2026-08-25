@@ -1,8 +1,13 @@
 /* global GraphExplorer, graphExplorerConfig */
 
-const SparqlDialect = GraphExplorer.OWLStatsSettings;
-SparqlDialect.dataLabelProperty = graphExplorerConfig.dataLabelProperty;
-SparqlDialect.schemaLabelProperty = graphExplorerConfig.schemaLabelProperty;
+// The preset is validated server-side, so it is always one of the `*Settings`
+// exports. Presets are shared objects owned by the library, so the label
+// overrides are applied to a copy rather than mutating the export in place.
+const SparqlDialect = {
+  ...GraphExplorer[graphExplorerConfig.settingsPreset],
+  dataLabelProperty: graphExplorerConfig.dataLabelProperty,
+  schemaLabelProperty: graphExplorerConfig.schemaLabelProperty,
+};
 
 const onWorkspaceMounted = async (workspace) => {
   if (!workspace) {
