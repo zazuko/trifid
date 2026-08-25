@@ -30,7 +30,7 @@
   "scripts": {
     "prepare": "esbuild --minify --bundle plugins/deps.js --format=esm --outfile=build/deps.js && esbuild --minify --bundle plugins/map.js plugins/pivot.js plugins/map.css --format=iife --outdir=build --external:./deps.js --loader:.png=dataurl",
     "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=build --exclude=plugins --exclude=coverage --reporter=lcovonly --reporter=text node --conditions=source --test **/*.test.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -p tsconfig.test.json",
     "clean": "rimraf *.tgz dist/ build/ coverage/",
     "prebuild": "pnpm run clean && pnpm run prepare",
     "build": "tsc && node scripts/copy-assets.ts"
@@ -54,7 +54,7 @@
     "betterknown": "^1.2.0",
     "c8": "^12.0.0",
     "esbuild": "^0.28.2",
-    "fastify": "^5.12.0",
+    "fastify": "^5.12.1",
     "leaflet": "^1.9.4",
     "rimraf": "^6.1.3",
     "trifid-core": "workspace:^",

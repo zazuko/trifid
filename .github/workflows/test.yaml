@@ -86,6 +86,11 @@ jobs:
       - name: Run build of each package (in dependency order, mostly for typings)
         run: pnpm run build
 
+      # Runs after the build because packages resolve `trifid-core` types from
+      # its generated `dist/`, and this also covers the test files
+      - name: Typecheck
+        run: pnpm run typecheck
+
   otel:
     runs-on: ubuntu-latest
 

@@ -5,7 +5,9 @@ import trifidCore, { getListenerURL, assertRejection } from '../../index.ts';
 
 import redirectPlugin from '../../plugins/redirect.ts';
 
-const createTrifidInstance = async (config) => {
+import type { ConfigRecord } from '../../index.ts';
+
+const createTrifidInstance = async (config: ConfigRecord) => {
   return await trifidCore(
     {
       server: {

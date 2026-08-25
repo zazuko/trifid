@@ -5,7 +5,9 @@ import trifidCore, { getListenerURL } from '../../index.ts';
 
 import throwPlugin from '../../plugins/throw.ts';
 
-const createTrifidInstance = async (config) => {
+import type { ConfigRecord } from '../../index.ts';
+
+const createTrifidInstance = async (config: ConfigRecord) => {
   return await trifidCore(
     {
       server: {

@@ -1,25 +1,20 @@
 import { strictEqual, deepStrictEqual, throws, doesNotThrow } from 'node:assert';
-import { afterEach, beforeEach, describe, it } from 'node:test';
+import { beforeEach, describe, it } from 'node:test';
 
 import { checkSingleDatasetBaseUrl, checkDatasetBaseUrl } from '../lib/base.ts';
 
 describe('lib/base', () => {
   describe('checkSingleDatasetBaseUrl', () => {
-    let logger;
-    let loggerValues;
+    let logger: { warn: (message: string) => void };
+    let loggerValues: string[];
 
     beforeEach(() => {
       loggerValues = [];
       logger = {
-        warn: (/** @type {string} */ msg) => {
+        warn: (msg: string) => {
           loggerValues.push(msg);
         },
       };
-    });
-
-    afterEach(() => {
-      logger = undefined;
-      loggerValues = undefined;
     });
 
     it('should not throw on valid value', () => {
@@ -36,29 +31,22 @@ describe('lib/base', () => {
     });
 
     it('should throw on non-string value', () => {
-      // @ts-expect-error
       throws(() => checkSingleDatasetBaseUrl(logger, 42));
-      // @ts-expect-error
       throws(() => checkSingleDatasetBaseUrl(logger, ['http://example.com/']));
     });
   });
 
   describe('checkDatasetBaseUrl', () => {
-    let logger;
-    let loggerValues;
+    let logger: { warn: (message: string) => void };
+    let loggerValues: string[];
 
     beforeEach(() => {
       loggerValues = [];
       logger = {
-        warn: (/** @type {string} */ msg) => {
+        warn: (msg: string) => {
           loggerValues.push(msg);
         },
       };
-    });
-
-    afterEach(() => {
-      logger = undefined;
-      loggerValues = undefined;
     });
 
     it('should not throw on valid value (string)', () => {
@@ -90,9 +78,7 @@ describe('lib/base', () => {
     });
 
     it('should throw on array that contains a value that is not a string', () => {
-      // @ts-expect-error
       throws(() => checkDatasetBaseUrl(logger, [42, 'http://example.com']));
-      // @ts-expect-error
       throws(() => checkDatasetBaseUrl(logger, ['http://example.com', 42]));
     });
   });

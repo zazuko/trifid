@@ -3,34 +3,17 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, it, afterEach } from 'node:test';
 
-import trifidCore from 'trifid-core';
+import trifidCore, { getListenerURL } from 'trifid-core';
 
 import trifidPluginFactory from '../index.ts';
 
+import type { FastifyInstance, FastifyReply } from 'fastify';
+
+import type { ConfigRecord, RequestWithSession } from 'trifid-core';
+
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
-/**
- * Get an endpoint of the Fastify Instance.
- *
- * @param {import('fastify').FastifyInstance} server Server.
- * @returns {string}
- */
-const getListenerURL = (server) => {
-  const addresses = server.addresses().map((address) => {
-    if (typeof address === 'string') {
-      return address;
-    }
-    return `http://${address.address}:${address.port}`;
-  });
-
-  if (addresses.length < 1) {
-    throw new Error('The listener is not listening');
-  }
-
-  return addresses[0];
-};
-
-const createTrifidInstance = (config) => {
+const createTrifidInstance = (config: ConfigRecord) => {
   return trifidCore(
     {
       server: {
@@ -57,12 +40,13 @@ const createTrifidInstance = (config) => {
             routeHandler: async () => {
               /**
                * Route handler.
-               * @param {import('fastify').FastifyRequest & { session: Map<string, any> }} request Request.
-               * @param {import('fastify').FastifyReply} reply Reply.
+               * @param request Request.
+               * @param reply Reply.
                */
-              const handler = async (request, reply) => {
-                const session = request.session;
-                reply.send(session.get('t')('test'));
+              const handler = async (request: RequestWithSession, reply: FastifyReply) => {
+                // The i18n plugin stores the translation function in the session
+                const t = request.session.get('t') as (key: string) => string;
+                reply.send(t('test'));
               };
               return handler;
             },
@@ -74,7 +58,7 @@ const createTrifidInstance = (config) => {
 };
 
 describe('trifid-plugin-i18n', () => {
-  let trifidListener;
+  let trifidListener: FastifyInstance | undefined;
 
   afterEach(async () => {
     if (!trifidListener) {
@@ -89,7 +73,7 @@ describe('trifid-plugin-i18n', () => {
       await createTrifidInstance({});
     } catch (error) {
       strictEqual(
-        error.message,
+        (error as Error).message,
         "The 'directory' configuration field should be a non-empty string.",
       );
     }

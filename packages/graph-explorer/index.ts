@@ -9,6 +9,18 @@ import type { TrifidPlugin } from 'trifid-core';
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
+// SPARQL dialect presets exported by graph-explorer. They tune the queries the
+// data provider issues, so the right one depends on the endpoint software.
+// Keep in sync with the `*Settings` exports of the `graph-explorer` package.
+const settingsPresets = [
+  'RDFSettings',
+  'OWLRDFSSettings',
+  'OWLStatsSettings',
+  'DBPediaSettings',
+  'WikidataSettings',
+  'QLeverSettings',
+];
+
 const factory: TrifidPlugin = async (trifid) => {
   const { config, server, render } = trifid;
   const {
@@ -19,6 +31,7 @@ const factory: TrifidPlugin = async (trifid) => {
     schemaLabelProperty: schemaLabelPropertyConfig,
     language: languageConfig,
     languages: languagesConfig,
+    settingsPreset: settingsPresetConfig,
     title: titleConfig,
   } = config;
 
@@ -50,6 +63,16 @@ const factory: TrifidPlugin = async (trifid) => {
     { code: 'it', label: 'Italian' },
   ];
   const title = titleConfig || 'Graph Explorer';
+
+  const settingsPreset =
+    typeof settingsPresetConfig === 'string' && settingsPresetConfig
+      ? settingsPresetConfig
+      : 'OWLStatsSettings';
+  if (!settingsPresets.includes(settingsPreset)) {
+    throw new Error(
+      `Unsupported settings preset '${settingsPreset}', expected one of: ${settingsPresets.join(', ')}`,
+    );
+  }
 
   return {
     defaultConfiguration: async () => {
@@ -96,6 +119,7 @@ const factory: TrifidPlugin = async (trifid) => {
               schemaLabelProperty,
               language,
               languages,
+              settingsPreset,
             }).replace(/'/g, "\\'"),
           },
           { title },

@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "composite": false
+  },
+  "include": [
+    "index.ts",
+    "server.ts",
+    "otel.ts",
+    "lib/**/*.ts",
+    "plugins/**/*.ts",
+    "types/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "coverage",
+    "node_modules"
+  ]
+}

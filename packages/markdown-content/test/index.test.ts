@@ -4,7 +4,9 @@ import { describe, it } from 'node:test';
 import trifidCore, { getListenerURL } from 'trifid-core';
 import markdownContentTrifidPlugin from '../src/index.ts';
 
-const createTrifidInstance = async (config) => {
+import type { ConfigRecord } from 'trifid-core';
+
+const createTrifidInstance = async (config?: ConfigRecord) => {
   return await trifidCore(
     {
       server: {
@@ -34,7 +36,7 @@ describe('@zazuko/trifid-markdown-content', () => {
         trifidListener = await trifidInstance.start();
         throw new Error('should have thrown');
       } catch (e) {
-        strictEqual(e.message, 'should have thrown');
+        strictEqual((e as Error).message, 'should have thrown');
       } finally {
         if (trifidListener) {
           await trifidListener.close();

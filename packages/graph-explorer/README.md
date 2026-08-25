@@ -34,6 +34,29 @@ The following options are supported:
 - `template`: Path to an alternative template (default: `views/graph-explorer.hbs`)
 - `acceptBlankNodes`: Show blank nodes
 - `title`: Title of the Graph Explorer page
+- `settingsPreset`: SPARQL dialect preset to use (default: `OWLStatsSettings`)
+
+### Settings presets
+
+Graph Explorer ships several presets that tune the SPARQL queries the data
+provider issues, so the right one depends on the endpoint software and on how
+the data is modelled. The supported values are:
+
+- `OWLStatsSettings` (default): OWL/RDFS with class counts
+- `OWLRDFSSettings`: OWL/RDFS without class counts
+- `RDFSettings`: plain RDF, without OWL/RDFS specific assumptions
+- `DBPediaSettings`: tuned for DBpedia
+- `WikidataSettings`: tuned for Wikidata
+- `QLeverSettings`: tuned for [QLever](https://github.com/ad-freiburg/qlever) endpoints
+
+Trifid rejects any other value at startup, so a typo surfaces immediately
+instead of silently falling back to the default.
+
+```yaml
+config:
+  endpointUrl: https://example.com/query
+  settingsPreset: QLeverSettings
+```
 
 Example:
 
