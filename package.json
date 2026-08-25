@@ -11,6 +11,7 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "test": "pnpm run -r --if-present test",
+    "typecheck": "pnpm run -r --if-present typecheck",
     "release": "pnpm run build && changeset publish",
     "prepare": "husky",
     "build": "pnpm run -r --if-present build",

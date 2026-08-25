@@ -8,7 +8,7 @@
   "scripts": {
     "example-instance": "node ./examples/run-instance.js",
     "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=coverage --reporter lcovonly --reporter text node --conditions=source --test **/*.test.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -p tsconfig.test.json",
     "clean": "rimraf *.tgz dist/ coverage/",
     "build": "tsc && node scripts/copy-assets.ts"
   },

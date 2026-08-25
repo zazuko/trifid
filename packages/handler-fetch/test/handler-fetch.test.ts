@@ -4,7 +4,7 @@ import oxigraph from 'oxigraph';
 import { performOxigraphQuery } from '../lib/query.ts';
 
 describe('trifid-handler-fetch', () => {
-  let store;
+  let store: Parameters<typeof performOxigraphQuery>[0];
 
   before(async () => {
     store = new oxigraph.Store();

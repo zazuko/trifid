@@ -64,6 +64,9 @@ jobs:
       - name: Run linter
         run: pnpm run lint
 
+      - name: Typecheck (includes test files)
+        run: pnpm run typecheck
+
   build:
     runs-on: ubuntu-latest
 

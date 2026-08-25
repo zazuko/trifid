@@ -4,11 +4,14 @@ import trifidCore, { getListenerURL } from 'trifid-core';
 import rdf from '@zazuko/env-node';
 import sparqlProxy from '../index.ts';
 
-describe('sparql-proxy', () => {
-  let trifidListener;
-  let defaultTestConfig;
+import type { FastifyInstance } from 'fastify';
+import type { ConfigRecord } from 'trifid-core';
 
-  const startTrifid = async (config) => {
+describe('sparql-proxy', () => {
+  let trifidListener: FastifyInstance | undefined;
+  let defaultTestConfig: ConfigRecord;
+
+  const startTrifid = async (config?: ConfigRecord) => {
     const server = await trifidCore(
       {
         server: {
@@ -49,7 +52,7 @@ describe('sparql-proxy', () => {
   });
 
   describe('requesting service description', () => {
-    const forwardedProperties = rdf.termMap([[rdf.ns.sd.feature]]);
+    const forwardedProperties = rdf.termMap([[rdf.ns.sd.feature, undefined]]);
 
     it('does not serve Service Description when there are any query string', async () => {
       // given
@@ -61,7 +64,10 @@ describe('sparql-proxy', () => {
       const response = await rdf.fetch(`${url}/query?foo=bar`);
 
       // then
-      match(response.headers.get('content-type'), /^(text\/plain|text\/html|application\/json).*/);
+      match(
+        response.headers.get('content-type') ?? '',
+        /^(text\/plain|text\/html|application\/json).*/,
+      );
     });
 
     for (const [property] of forwardedProperties) {
@@ -126,7 +132,7 @@ describe('sparql-proxy', () => {
       deepEqual(service.out(rdf.ns.sd.endpoint).term, rdf.namedNode(`${url}/query`));
     });
 
-    for (const property of [rdf.namedNode('http://example.org/foo', rdf.ns.sd.nonStandardProp)]) {
+    for (const property of [rdf.namedNode('http://example.org/foo')]) {
       it(`removes non-standard property ${property.value}`, async () => {
         // given
         const url = await startTrifid();

@@ -7,9 +7,11 @@ import trifidCore, { assertRejection, getListenerURL } from '../../index.ts';
 
 import viewPlugin from '../../plugins/view.ts';
 
+import type { ConfigRecord } from '../../index.ts';
+
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
-const createTrifidInstance = async (config) => {
+const createTrifidInstance = async (config: ConfigRecord) => {
   return await trifidCore(
     {
       server: {

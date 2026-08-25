@@ -6,25 +6,27 @@ import { Parser as XMLParser } from 'xml2js';
 import xpath from 'xml2js-xpath';
 
 import { convertLegacyFrequency } from '../src/xml.ts';
-import { createTrifidInstance, getListenerURL } from './support/utils.js';
+import { createTrifidInstance, getListenerURL } from './support/utils.ts';
+
+import type { FastifyInstance } from 'fastify';
 
 /**
  * Remove prefixes from the body.
  *
- * @param {string} body The body to remove prefixes from.
- * @returns {string} The body with prefixes removed.
+ * @param body The body to remove prefixes from.
+ * @returns The body with prefixes removed.
  */
-const removePrefixesFromBody = (body) => {
+const removePrefixesFromBody = (body: string): string => {
   return body.replace(/<rdf:RDF.*>/g, '<rdf:RDF>');
 };
 
 /**
  * Checks if all properties in subset are present in superset (recursively).
  *
- * @param {any} superset
- * @param {any} subset
+ * @param superset
+ * @param subset
  */
-const assertContainsSubset = (superset, subset) => {
+const assertContainsSubset = (superset: any, subset: any) => {
   if (typeof subset !== 'object' || subset === null) {
     strictEqual(superset, subset);
     return;
@@ -36,8 +38,7 @@ const assertContainsSubset = (superset, subset) => {
 };
 
 describe('@zazuko/trifid-plugin-ckan', () => {
-  /** @type {import('fastify').FastifyInstance} */
-  let trifidListener;
+  let trifidListener: FastifyInstance;
 
   beforeEach(async () => {
     const trifidInstance = await createTrifidInstance({ logLevel: 'warn' });
@@ -74,12 +75,9 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     });
 
     describe('example organization', () => {
-      /** @type {Response} */
-      let res;
-      /** @type {string} */
-      let xmlText;
-      /** @type {any} */
-      let xmlBody;
+      let res: Response;
+      let xmlText: string;
+      let xmlBody: any;
 
       beforeEach(async () => {
         const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=http://example.com/my-org`;
@@ -207,8 +205,7 @@ describe('@zazuko/trifid-plugin-ckan', () => {
     const parser = new XMLParser({
       explicitArray: false,
     });
-    /** @type {any} */
-    let xmlBody;
+    let xmlBody: any;
 
     beforeEach(async () => {
       const ckanUrl = `${getListenerURL(trifidListener)}/ckan?organization=https://register.ld.admin.ch/opendataswiss/org/bundesamt-fur-landwirtschaft-blw`;

@@ -9,7 +9,7 @@ describe('ReplaceStream', () => {
     const replaceStream = new ReplaceStream('old', 'new');
     const input = new PassThrough();
     const output = new PassThrough();
-    const receivedData = [];
+    const receivedData: string[] = [];
 
     input.pipe(replaceStream).pipe(output);
     output.setEncoding('utf8');
@@ -17,7 +17,7 @@ describe('ReplaceStream', () => {
       receivedData.push(data);
     });
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       output.on('end', () => {
         equal(receivedData.join(''), 'new string');
         resolve();
@@ -31,7 +31,7 @@ describe('ReplaceStream', () => {
     const replaceStream = new ReplaceStream('old', 'new');
     const input = new PassThrough();
     const output = new PassThrough();
-    const receivedData = [];
+    const receivedData: string[] = [];
 
     input.pipe(replaceStream).pipe(output);
     output.setEncoding('utf8');
@@ -39,7 +39,7 @@ describe('ReplaceStream', () => {
       receivedData.push(data);
     });
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       output.on('end', () => {
         equal(receivedData.join(''), 'new string with new value');
         resolve();
@@ -53,7 +53,7 @@ describe('ReplaceStream', () => {
     const replaceStream = new ReplaceStream('old', 'new');
     const input = new PassThrough();
     const output = new PassThrough();
-    const receivedData = [];
+    const receivedData: string[] = [];
 
     input.pipe(replaceStream).pipe(output);
     output.setEncoding('utf8');
@@ -61,7 +61,7 @@ describe('ReplaceStream', () => {
       receivedData.push(data);
     });
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       output.on('end', () => {
         equal(receivedData.join(''), 'new and new');
         resolve();
@@ -84,7 +84,7 @@ describe('ReplaceStream', () => {
       equal(data, 'no match here');
     });
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       output.on('end', resolve);
       input.write('no match here');
       input.end();
@@ -102,7 +102,7 @@ describe('ReplaceStream', () => {
       equal(data, '');
     });
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       output.on('end', resolve);
       input.end();
     });
@@ -123,7 +123,7 @@ describe('ReplaceStream', () => {
       result += data;
     });
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       output.on('end', () => {
         equal(result, expectedOutput);
         resolve();

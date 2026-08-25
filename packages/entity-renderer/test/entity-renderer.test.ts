@@ -1,15 +1,15 @@
-// @ts-check
-
 import { strictEqual } from 'node:assert';
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { getListenerURL } from 'trifid-core';
 
-import { createTrifidInstance } from '../examples/instance.js';
+import { createTrifidInstance } from '../examples/instance.ts';
+
+import type { FastifyInstance } from 'fastify';
 
 const trifidConfigUrl = './examples/config/trifid.yaml';
 
 describe('@zazuko/trifid-entity-renderer', () => {
-  let trifidListener;
+  let trifidListener: FastifyInstance;
 
   describe('basic tests', () => {
     beforeEach(async () => {

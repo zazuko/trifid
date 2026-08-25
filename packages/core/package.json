@@ -16,7 +16,7 @@
   "scripts": {
     "test": "c8 --all --exclude='**/*.d.ts' --exclude='**/types/**' --exclude='test/**' --exclude=dist --exclude=scripts --exclude=coverage --reporter=lcov --reporter=text node --conditions=source --test test/**.test.ts test/**/*.test.ts",
     "watch": "nodemon server.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -p tsconfig.test.json",
     "build": "tsc && node scripts/copy-assets.ts",
     "clean": "rimraf *.tgz dist/ coverage/",
     "release": "changeset publish"

@@ -7,9 +7,13 @@ import trifidCore, { getListenerURL, assertRejection } from 'trifid-core';
 
 import handlerFetchTrifidPlugin from '../index.ts';
 
+import type { FastifyInstance } from 'fastify';
+
+import type { ConfigRecord } from 'trifid-core';
+
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
-const createTrifidInstance = async (config) => {
+const createTrifidInstance = async (config?: ConfigRecord) => {
   return await trifidCore(
     {
       server: {
@@ -43,13 +47,13 @@ describe('trifid-handler-fetch', () => {
         baseIri: 'http://example.com/',
         unionDefaultGraph: true,
       });
-      let trifidListener;
+      let trifidListener: FastifyInstance | undefined;
 
       try {
         trifidListener = await trifidInstance.start();
         throw new Error('should have thrown');
       } catch (e) {
-        strictEqual(e.message, 'should have thrown');
+        strictEqual((e as Error).message, 'should have thrown');
       } finally {
         if (trifidListener) {
           await trifidListener.close();
@@ -64,7 +68,7 @@ describe('trifid-handler-fetch', () => {
         baseIri: 'http://example.com/',
         unionDefaultGraph: true,
       });
-      let trifidListener;
+      let trifidListener: FastifyInstance | undefined;
 
       let errored = false;
 
