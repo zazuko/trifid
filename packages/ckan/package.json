@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@rdfjs/types": "^2.0.1",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.4.0",
     "@types/sparql-http-client": "^3.1.0",
     "@types/xml2js": "^0.4.14",
     "c8": "^12.0.0",

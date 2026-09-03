@@ -55,8 +55,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       '@types/sparql-http-client':
         specifier: ^3.1.0
         version: 3.1.0
@@ -191,8 +191,8 @@ importers:
         specifier: ^4.17.25
         version: 4.17.25
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -210,7 +210,7 @@ importers:
     dependencies:
       '@lit-labs/ssr':
         specifier: ^4.1.0
-        version: 4.1.0(@types/node@26.2.0)
+        version: 4.1.0(@types/node@26.4.0)
       '@opentelemetry/api':
         specifier: ^1.9.1
         version: 1.9.1
@@ -246,8 +246,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -280,8 +280,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -311,8 +311,8 @@ importers:
         version: 14.0.2
     devDependencies:
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -339,8 +339,8 @@ importers:
         specifier: ^0.13.12
         version: 0.13.12
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -382,8 +382,8 @@ importers:
         specifier: ^1.5.15
         version: 1.5.15
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       '@types/sparql-http-client':
         specifier: ^3.1.0
         version: 3.1.0
@@ -437,8 +437,8 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -474,8 +474,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -502,8 +502,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -551,8 +551,8 @@ importers:
         version: link:../yasgui
     devDependencies:
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       rimraf:
         specifier: ^6.1.3
         version: 6.1.3
@@ -573,8 +573,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@types/node':
-        specifier: ^26.2.0
-        version: 26.2.0
+        specifier: ^26.4.0
+        version: 26.4.0
       betterknown:
         specifier: ^1.2.0
         version: 1.2.0
@@ -2001,8 +2001,8 @@ packages:
   '@types/node@18.19.130':
     resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
 
-  '@types/node@26.2.0':
-    resolution: {integrity: sha512-5IviulTZeRNp2vAJ514cc/HUlY5nZ9fCbq9DMyC52BrhFZACo3nI0R7qBxhQmo/d27NFe96ur/b7Wwxklda+kg==}
+  '@types/node@26.4.0':
+    resolution: {integrity: sha512-faiGnoIrLH/V8cibOMEAZ8pMw6oXqSukl29ra4mN8GdaB2ZewzeaLj+INpV5N+Z1eKWzY+IzaIZH2EIR6YZRNQ==}
 
   '@types/oracledb@6.5.2':
     resolution: {integrity: sha512-kK1eBS/Adeyis+3OlBDMeQQuasIDLUYXsi2T15ccNJ0iyUpQ4xDF7svFu3+bGVrI0CMBUclPciz+lsQR3JX3TQ==}
@@ -4638,7 +4638,7 @@ snapshots:
 
   '@lit-labs/ssr-dom-shim@1.6.0': {}
 
-  '@lit-labs/ssr@4.1.0(@types/node@26.2.0)':
+  '@lit-labs/ssr@4.1.0(@types/node@26.4.0)':
     dependencies:
       '@lit-labs/ssr-client': 1.1.8
       '@lit-labs/ssr-dom-shim': 1.6.0
@@ -4651,7 +4651,7 @@ snapshots:
       node-fetch: 3.3.2
       parse5: 7.3.0
     optionalDependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@lit/reactive-element@1.6.3':
     dependencies:
@@ -5697,11 +5697,11 @@ snapshots:
 
   '@rdfjs/types@1.1.2':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@rdfjs/types@2.0.1':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@rubensworks/saxes@6.0.1':
     dependencies:
@@ -5749,7 +5749,7 @@ snapshots:
 
   '@types/bunyan@1.8.11':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/clownface@2.0.10':
     dependencies:
@@ -5758,7 +5758,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/debug@4.1.13':
     dependencies:
@@ -5772,7 +5772,7 @@ snapshots:
 
   '@types/http-link-header@1.0.7':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/i18n@0.13.12': {}
 
@@ -5788,30 +5788,30 @@ snapshots:
 
   '@types/memcached@2.2.10':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/ms@2.1.0': {}
 
   '@types/mysql@2.15.27':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/n3@1.26.1':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/node@18.19.130':
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@26.2.0':
+  '@types/node@26.4.0':
     dependencies:
       undici-types: 8.3.0
 
   '@types/oracledb@6.5.2':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/pg-pool@2.0.7':
     dependencies:
@@ -5819,13 +5819,13 @@ snapshots:
 
   '@types/pg@8.15.6':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
       pg-protocol: 1.16.0
       pg-types: 2.2.0
 
   '@types/pg@8.23.1':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
       pg-protocol: 1.16.0
       pg-types: 2.2.0
 
@@ -5845,18 +5845,18 @@ snapshots:
   '@types/rdfjs__environment@1.0.0':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/rdfjs__fetch-lite@3.0.11':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
       '@types/rdfjs__formats': 4.0.1
 
   '@types/rdfjs__formats@4.0.1':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
       '@types/rdfjs__parser-jsonld': 2.1.7
       '@types/rdfjs__parser-n3': 2.0.6
       '@types/rdfjs__serializer-jsonld': 2.0.5
@@ -5887,7 +5887,7 @@ snapshots:
     dependencies:
       '@rdfjs/types': 2.0.1
       '@types/jsonld': 1.5.15
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/rdfjs__serializer-jsonld@2.0.5':
     dependencies:
@@ -5900,7 +5900,7 @@ snapshots:
   '@types/rdfjs__serializer-turtle@1.1.0':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
       '@types/rdfjs__prefix-map': 0.1.5
 
   '@types/rdfjs__sink-map@2.0.5':
@@ -5921,12 +5921,12 @@ snapshots:
 
   '@types/readable-stream@2.3.15':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
       safe-buffer: 5.1.2
 
   '@types/readable-stream@4.0.24':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/sparql-http-client@3.1.0':
     dependencies:
@@ -5939,7 +5939,7 @@ snapshots:
 
   '@types/tedious@4.0.14':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@types/trusted-types@2.0.7': {}
 
@@ -5947,7 +5947,7 @@ snapshots:
 
   '@types/xml2js@0.4.14':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     optional: true
@@ -7874,7 +7874,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.2
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
       long: 5.3.2
 
   pstree.remy@1.1.8: {}
