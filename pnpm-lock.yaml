@@ -304,8 +304,8 @@ importers:
         specifier: ^1.9.1
         version: 1.9.1
       oxigraph:
-        specifier: ^0.5.9
-        version: 0.5.9
+        specifier: ^0.5.10
+        version: 0.5.10
       uuid:
         specifier: ^14.0.2
         version: 14.0.2
@@ -3524,8 +3524,8 @@ packages:
       vite-plus:
         optional: true
 
-  oxigraph@0.5.9:
-    resolution: {integrity: sha512-Oyxo/NE9imMvTPcK/TkQmAPALnJOns0XBk/r90SjnWg1fwBPSSZaNlVQ8YDKqeXHD2QISe1FfIVQtbgpKulqCQ==}
+  oxigraph@0.5.10:
+    resolution: {integrity: sha512-Zitpf6tGL7b9MoaGQw0V8BoWYQ/aknT35Byt0aA0CMICBsvVlkAHnnsKPDZ2eS05Fl2IBsJPNuHLjxD/5hc1qg==}
 
   oxlint@1.80.0:
     resolution: {integrity: sha512-5nTiSps4qdbCWLbxzuO00alHkEO2exR9YMN/ig6QXWrLsYSG0KaObOAM+l6oU2LcKPWoSAGYbkZIGEu1ViiWKA==}
@@ -7720,7 +7720,7 @@ snapshots:
       '@oxfmt/binding-win32-ia32-msvc': 0.65.0
       '@oxfmt/binding-win32-x64-msvc': 0.65.0
 
-  oxigraph@0.5.9: {}
+  oxigraph@0.5.10: {}
 
   oxlint@1.80.0:
     optionalDependencies:
