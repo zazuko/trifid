@@ -1,6 +1,8 @@
-import { describe, it } from 'node:test';
-import { strictEqual, match } from 'node:assert';
+import { describe, it, before, after } from 'node:test';
+import { strictEqual, match, ok } from 'node:assert';
+import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 import trifidCore, { assertRejection, getListenerURL } from '../../index.ts';
@@ -127,5 +129,94 @@ describe('view plugin', () => {
     match(text, /Template: Hello world!/);
 
     strictEqual(response.status, 200);
+  });
+
+  describe('template file reporting', () => {
+    let directory: string;
+
+    before(async () => {
+      directory = await mkdtemp(join(tmpdir(), 'trifid-view-'));
+      await writeFile(join(directory, 'good.hbs'), '<p>ok</p>');
+      await writeFile(join(directory, 'unreadable.hbs'), '<p>secret</p>');
+      await chmod(join(directory, 'unreadable.hbs'), 0o000);
+      await mkdir(join(directory, 'a-directory'));
+    });
+
+    after(async () => {
+      // Restore the permissions so that the directory can be removed
+      await chmod(join(directory, 'unreadable.hbs'), 0o644);
+      await rm(directory, { recursive: true, force: true });
+    });
+
+    /**
+     * Load the plugin and collect the errors it reports.
+     *
+     * @param config Plugin configuration.
+     * @returns The reported errors.
+     */
+    const loadPlugin = async (config: ConfigRecord) => {
+      const errors: string[] = [];
+      const logger = {
+        error: (message: unknown) => {
+          errors.push(`${message}`);
+        },
+      };
+
+      try {
+        // @ts-expect-error only the fields used by the factory are provided
+        await viewPlugin({ config, logger, render: async () => '' });
+      } catch {
+        // The missing `path` case rejects, which is asserted separately
+      }
+
+      return errors;
+    };
+
+    it('should report a missing path', async () => {
+      const errors = await loadPlugin({});
+
+      strictEqual(errors.length, 1);
+      match(errors.join('\n'), /missing 'path' field/);
+    });
+
+    it('should report a path that does not exist', async () => {
+      const errors = await loadPlugin({ path: join(directory, 'nope.hbs') });
+
+      strictEqual(errors.length, 1);
+      match(errors.join('\n'), /does not exist/);
+    });
+
+    it('should report a file that cannot be read', async (t) => {
+      // `root` bypasses the permission bits, so the file would be readable
+      if (process.getuid?.() === 0) {
+        t.skip('running as root, file permissions are not enforced');
+        return;
+      }
+
+      const errors = await loadPlugin({ path: join(directory, 'unreadable.hbs') });
+
+      strictEqual(errors.length, 1);
+      match(errors.join('\n'), /permission denied/);
+    });
+
+    it('should report a path that is not a file', async () => {
+      const errors = await loadPlugin({ path: join(directory, 'a-directory') });
+
+      strictEqual(errors.length, 1);
+      match(errors.join('\n'), /is not a file/);
+    });
+
+    it('should report nothing for a readable template file', async () => {
+      const errors = await loadPlugin({ path: join(directory, 'good.hbs') });
+
+      strictEqual(errors.length, 0);
+    });
+
+    it('should include the configured path in the message', async () => {
+      const path = join(directory, 'nope.hbs');
+      const errors = await loadPlugin({ path });
+
+      ok(errors.join('\n').includes(path));
+    });
   });
 });
