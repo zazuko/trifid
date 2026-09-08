@@ -40,7 +40,7 @@ const factory: TrifidPlugin = async (trifid) => {
     typeof template === 'string' && template ? template : `${currentDir}/views/graph-explorer.hbs`;
 
   // Serve static files for graph-explorer
-  const distPath = resolve('graph-explorer/dist/', import.meta.url);
+  const distPath = resolve('graph-explorer/dist', import.meta.url);
   server.register(fastifyStatic, {
     root: distPath.replace(/^file:\/\//, ''),
     prefix: joinSubpath(subpath, '/graph-explorer/assets/'),
