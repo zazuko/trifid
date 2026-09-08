@@ -193,15 +193,20 @@ export interface RewriteConfiguration {
  *
  * @param value The value from the configuration (ideally: true, false or auto ; default="auto").
  * @param datasetBaseUrl The dataset base URL to use in case rewriting is enabled.
+ * @param subpath The subpath the instance is served under (defaults to `/`).
  * @returns The computed value of the `rewrite` option.
  */
 export const getRewriteConfiguration = (
   value: unknown,
   datasetBaseUrl?: string,
+  subpath: string = '/',
 ): RewriteConfiguration => {
+  // The origin of the instance includes the subpath it is served under, so that
+  // `https://example.com/SUBPATH/path/resource` maps to the dataset IRI
+  // `http://example.org/path/resource` and back again.
   const iriOrigin = (iri: string) => {
     const parts = new URL(iri);
-    parts.pathname = '/';
+    parts.pathname = subpath;
     parts.search = '';
     parts.username = '';
     parts.password = '';
@@ -380,7 +385,13 @@ export const initQuery = (
     Object.entries(configuredEndpoints).map(([name, options]) => {
       logger.debug(`Configured following SPARQL endpoint: ${name}`);
       const { url: endpointUrl, ...otherOptions } = options;
-      const url = new URL(endpointUrl, instanceHostname);
+      // A root-relative endpoint URL (e.g. `/query`) points at a route of this
+      // very Trifid instance, which lives under the configured subpath, so it
+      // is resolved against the instance base rather than the host root.
+      // Absolute URLs are unaffected, and with the default subpath (`/`) this
+      // resolves exactly as before.
+      const relativeEndpointUrl = endpointUrl.startsWith('/') ? endpointUrl.slice(1) : endpointUrl;
+      const url = new URL(relativeEndpointUrl, instanceHostname);
       return [name, generateClient(url.toString(), otherOptions)];
     }),
   );

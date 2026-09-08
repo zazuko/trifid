@@ -19,7 +19,9 @@ import {
   defaultLogLevel,
   defaultLogFormat,
   defaultPort,
+  defaultSubpath,
 } from './lib/config/default.ts';
+import { normalizeSubpath } from './lib/subpath.ts';
 import pluginsAssembler from './lib/plugins/assembler.ts';
 import applyPlugins from './lib/plugins/apply.ts';
 import templateEngine from './lib/templateEngine.ts';
@@ -39,6 +41,10 @@ export {
   serializeQuadStream as sparqlSerializeQuadStream,
   getRewriteConfiguration as sparqlGetRewriteConfiguration,
 } from './lib/sparql.ts';
+
+// Export the subpath helpers so that plugins can mount their own static
+// files and build URLs under the configured subpath
+export { normalizeSubpath, joinSubpath } from './lib/subpath.ts';
 
 // Export some functions that can be used for testing
 export { assertRejection, getListenerURL } from './lib/test.ts';
@@ -105,6 +111,9 @@ const trifid = async (
   const portFromConfig = fullConfig?.server?.listener?.port;
   const port = portFromConfig === 0 || portFromConfig === '0' ? 0 : portFromConfig || defaultPort;
   const host = fullConfig?.server?.listener?.host || defaultHost;
+
+  // Subpath the instance is served under; `/` keeps the historical behaviour
+  const subpath = normalizeSubpath(fullConfig?.server?.subpath ?? defaultSubpath);
   const portNumber = typeof port === 'string' ? parseInt(port, 10) : port;
 
   // Logger configuration
@@ -185,7 +194,7 @@ const trifid = async (
   server.register(fastifyFormBody);
 
   // Template engine configuration
-  const templateEngineInstance = await templateEngine(template, trifidLocals);
+  const templateEngineInstance = await templateEngine(template, trifidLocals, subpath);
   const { render } = templateEngineInstance;
 
   // Add error and not found handlers (requires template engine to be ready)
@@ -217,9 +226,12 @@ const trifid = async (
     plugins,
     logger,
     templateEngineInstance,
-    `http://${host}:${portNumber}/`,
+    // Relative endpoint URLs resolve against the instance, which lives under
+    // the subpath
+    `http://${host}:${portNumber}${subpath}`,
     trifidEvents,
     notFound,
+    subpath,
   );
 
   const start = async () => {

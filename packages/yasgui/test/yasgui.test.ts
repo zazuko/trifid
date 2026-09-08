@@ -101,3 +101,57 @@ describe('trifid-plugin-yasgui', () => {
     });
   });
 });
+
+describe('trifid-plugin-yasgui served under a subpath', () => {
+  let trifidListener: FastifyInstance;
+
+  beforeEach(async () => {
+    const trifidServer = await trifidCore(
+      {
+        server: {
+          listener: {
+            port: 0,
+          },
+          logLevel: 'warn',
+          subpath: '/SUBPATH',
+        },
+      },
+      {
+        yasgui: {
+          module: trifidPluginFactory,
+          paths: ['/sparql', '/sparql/'],
+        },
+      },
+    );
+    trifidListener = await trifidServer.start();
+  });
+
+  afterEach(async () => {
+    await trifidListener.close();
+  });
+
+  it('should serve YASGUI under the subpath', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/SUBPATH/sparql/`);
+    await res.text();
+    strictEqual(res.status, 200);
+  });
+
+  it('should not serve YASGUI at the root anymore', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/sparql/`);
+    await res.text();
+    strictEqual(res.status, 404);
+  });
+
+  it('should serve the static assets under the subpath', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/SUBPATH/yasgui-dist/yasgui.min.css`);
+    await res.text();
+    strictEqual(res.status, 200);
+  });
+
+  it('should reference the assets with the subpath in the page', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/SUBPATH/sparql/`);
+    const body = await res.text();
+    strictEqual(body.includes('/SUBPATH/yasgui-dist/yasgui.min.js'), true);
+    strictEqual(body.includes('"/yasgui-dist/yasgui.min.js"'), false);
+  });
+});

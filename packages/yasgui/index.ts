@@ -3,6 +3,7 @@ import { dirname } from 'node:path';
 
 import { resolve } from 'import-meta-resolve';
 import fastifyStatic from '@fastify/static';
+import { joinSubpath } from 'trifid-core';
 
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { TrifidPlugin } from 'trifid-core';
@@ -10,7 +11,7 @@ import type { TrifidPlugin } from 'trifid-core';
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
 const trifidFactory: TrifidPlugin = async (trifid) => {
-  const { config, render, server } = trifid;
+  const { config, render, server, subpath } = trifid;
   const { template, endpointUrl, urlShortener, catalog, defaultQuery, mapKind } = config;
 
   const endpoint = typeof endpointUrl === 'string' && endpointUrl ? endpointUrl : '/query';
@@ -32,7 +33,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
   const yasguiPath = resolve('@zazuko/yasgui/build/', import.meta.url);
   server.register(fastifyStatic, {
     root: yasguiPath.replace(/^file:\/\//, ''),
-    prefix: '/yasgui-dist/',
+    prefix: joinSubpath(subpath, '/yasgui-dist/'),
     decorateReply: false,
   });
 
@@ -41,7 +42,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
   const publicPath = fileURLToPath(publicDirectory);
   server.register(fastifyStatic, {
     root: publicPath.replace(/^file:\/\//, ''),
-    prefix: '/yasgui-public/',
+    prefix: joinSubpath(subpath, '/yasgui-public/'),
     decorateReply: false,
   });
 
@@ -50,7 +51,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
   const pluginsPath = fileURLToPath(pluginsUrl);
   server.register(fastifyStatic, {
     root: pluginsPath.replace(/^file:\/\//, ''),
-    prefix: '/yasgui-plugins/',
+    prefix: joinSubpath(subpath, '/yasgui-plugins/'),
     decorateReply: false,
   });
 

@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { resolve } from 'import-meta-resolve';
 import fastifyStatic from '@fastify/static';
+import { joinSubpath } from 'trifid-core';
 
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type { ConfigRecord, RenderFunction, TrifidPlugin } from 'trifid-core';
@@ -40,11 +41,13 @@ const defaultOptions: SpexUserOptions = {
  * @param server Fastify server instance.
  * @param config Plugin configuration.
  * @param render Trifid render function.
+ * @param subpath Subpath the instance is served under.
  */
 const createPlugin = async (
   server: FastifyInstance,
   config: ConfigRecord,
   render: RenderFunction,
+  subpath: string,
 ) => {
   const options = { ...defaultOptions, ...(config as Partial<SpexUserOptions>) };
   const spexOptions = {
@@ -62,7 +65,7 @@ const createPlugin = async (
   const distPath = dirname(resolve('@zazuko/spex', import.meta.url));
   server.register(fastifyStatic, {
     root: distPath.replace(/^file:\/\//, ''),
-    prefix: '/spex/static/',
+    prefix: joinSubpath(subpath, '/spex/static/'),
     decorateReply: false,
   });
 
@@ -110,7 +113,7 @@ const createPlugin = async (
 };
 
 const trifidFactory: TrifidPlugin = async (trifid) => {
-  const { server, config, render } = trifid;
+  const { server, config, render, subpath } = trifid;
 
   return {
     defaultConfiguration: async () => {
@@ -119,7 +122,7 @@ const trifidFactory: TrifidPlugin = async (trifid) => {
         paths: ['/spex', '/spex/'],
       };
     },
-    routeHandler: async () => createPlugin(server, config, render),
+    routeHandler: async () => createPlugin(server, config, render, subpath),
   };
 };
 

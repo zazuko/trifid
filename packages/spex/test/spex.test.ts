@@ -62,3 +62,52 @@ describe('trifid-plugin-spex', () => {
     strictEqual(res.status, 200);
   });
 });
+
+describe('trifid-plugin-spex served under a subpath', () => {
+  let trifidListener: FastifyInstance;
+
+  beforeEach(async () => {
+    const trifidServer = await trifidCore(
+      {
+        server: {
+          listener: {
+            port: 0,
+          },
+          logLevel: 'warn',
+          subpath: '/SUBPATH',
+        },
+      },
+      {
+        spex: {
+          module: trifidPluginFactory,
+          config: {
+            endpointUrl: '/test',
+          },
+        },
+      },
+    );
+    trifidListener = await trifidServer.start();
+  });
+
+  afterEach(async () => {
+    await trifidListener.close();
+  });
+
+  it('should serve SPEX under the subpath', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/SUBPATH/spex/`);
+    await res.text();
+    strictEqual(res.status, 200);
+  });
+
+  it('should not serve SPEX at the root anymore', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/spex/`);
+    await res.text();
+    strictEqual(res.status, 404);
+  });
+
+  it('should serve the static assets under the subpath', async () => {
+    const res = await fetch(`${getListenerURL(trifidListener)}/SUBPATH/spex/static/spex.umd.cjs`);
+    await res.text();
+    strictEqual(res.status, 200);
+  });
+});

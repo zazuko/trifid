@@ -81,6 +81,11 @@ export interface TrifidServerConfig {
     /** The port to listen on. */
     port?: number | string;
   };
+  /**
+   * Serve the instance under a subpath instead of the root of the domain
+   * (e.g. `/SUBPATH`). Defaults to `/`.
+   */
+  subpath?: string;
   /** The log level. */
   logLevel?: LogLevel;
   /** The log format. */
@@ -170,6 +175,11 @@ export interface TrifidPluginArgument {
   server: TrifidServer;
   /** The Trifid configuration. */
   config: ConfigRecord;
+  /**
+   * The subpath the instance is served under, normalized so that it always
+   * starts and ends with a slash (`/` by default).
+   */
+  subpath: string;
   /** The render function. */
   render: RenderFunction;
   /** The SPARQL query function. */

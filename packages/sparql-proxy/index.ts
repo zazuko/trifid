@@ -98,7 +98,7 @@ const sparqlQueryCounter = meter.createCounter('sparql_queries_total', {
 });
 
 const factory: TrifidPlugin = async (trifid) => {
-  const { logger, config, trifidEvents, notFound } = trifid;
+  const { logger, config, trifidEvents, notFound, subpath } = trifid;
 
   const endpoints = new Map<string, EndpointEntry>();
 
@@ -141,7 +141,7 @@ const factory: TrifidPlugin = async (trifid) => {
   const datasetBaseUrl = options.datasetBaseUrl;
   const allowRewriteToggle = options.allowRewriteToggle;
   const rewriteConfigValue = options.rewrite;
-  const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl);
+  const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, datasetBaseUrl, subpath);
 
   endpoints.set(DEFAULT_ENDPOINT_NAME, {
     endpointUrl: options.endpointUrl,
@@ -186,6 +186,7 @@ const factory: TrifidPlugin = async (trifid) => {
         rewriteConfig: sparqlGetRewriteConfiguration(
           endpointRewriteConfigValue,
           endpointDatasetBaseUrl,
+          subpath,
         ),
       });
     }
@@ -387,6 +388,7 @@ const factory: TrifidPlugin = async (trifid) => {
           currentRewriteConfig = sparqlGetRewriteConfiguration(
             rewriteConfigValueFromQuery,
             endpoint.datasetBaseUrl,
+            subpath,
           );
         }
         const { rewrite: rewriteValue, iriOrigin } = currentRewriteConfig;

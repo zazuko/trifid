@@ -6,6 +6,7 @@ import type { FastifyInstance, FastifyReply, FastifyRequest, HTTPMethods } from 
 import type { Logger } from 'pino';
 
 import { initQuery } from '../sparql.ts';
+import { joinSubpath } from '../subpath.ts';
 import type { SPARQLEndpointConfig } from '../sparql.ts';
 import type {
   ConfigRecord,
@@ -23,6 +24,8 @@ import type { StandardizedPlugin } from './standardize.ts';
  * @param templateEngine Template engine instance.
  * @param instanceHostname Instance hostname.
  * @param trifidEvents Trifid events emitter.
+ * @param notFound Not found handler.
+ * @param subpath Subpath the instance is served under.
  */
 const apply = async (
   server: FastifyInstance,
@@ -33,6 +36,7 @@ const apply = async (
   instanceHostname: string,
   trifidEvents: EventEmitter,
   notFound: (request: FastifyRequest, reply: FastifyReply) => Promise<void>,
+  subpath: string = '/',
 ) => {
   const { query: querySparql } = initQuery(
     logger,
@@ -63,6 +67,7 @@ const apply = async (
       notFound,
       registerTemplateHelper: registerHelper,
       trifidEvents,
+      subpath,
     });
 
     let routeHandler: FastifyRouteHandler | undefined;
@@ -100,21 +105,23 @@ const apply = async (
 
     if (pluginHosts.length === 0) {
       for (const path of pluginPaths) {
-        logger.debug(`mount '${name}' plugin (methods=${baseRouteOptions.method}, path=${path})`);
+        const url = joinSubpath(subpath, path);
+        logger.debug(`mount '${name}' plugin (methods=${baseRouteOptions.method}, path=${url})`);
         server.route({
           ...baseRouteOptions,
-          url: path,
+          url,
         });
       }
     } else {
       for (const host of pluginHosts) {
         for (const path of pluginPaths) {
+          const url = joinSubpath(subpath, path);
           logger.debug(
-            `mount '${name}' plugin (methods=${baseRouteOptions.method}, path=${path}, host=${host})`,
+            `mount '${name}' plugin (methods=${baseRouteOptions.method}, path=${url}, host=${host})`,
           );
           server.route({
             ...baseRouteOptions,
-            url: path,
+            url,
             constraints: {
               host,
             },

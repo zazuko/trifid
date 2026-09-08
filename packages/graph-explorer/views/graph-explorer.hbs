@@ -1,19 +1,19 @@
 <div class="trifid-graph-explorer">
   <style>
     @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
-    @import url("/graph-explorer/static/style.css");
+    @import url("{{subpath}}graph-explorer/static/style.css");
   </style>
 
   {{!--
     The "full" bundle already contains React 19 and its own styles (injected at
     runtime), so no React needs to be loaded from a CDN here.
   --}}
-  <script src="/graph-explorer/assets/graph-explorer-full.min.js"></script>
+  <script src="{{subpath}}graph-explorer/assets/graph-explorer-full.min.js"></script>
 
   <div id="trifid-plugin-graph-explorer"></div>
 
   <script>
     const graphExplorerConfig = JSON.parse('{{{ graphExplorerConfig }}}');
   </script>
-  <script src="/graph-explorer/static/app.js"></script>
+  <script src="{{subpath}}graph-explorer/static/app.js"></script>
 </div>

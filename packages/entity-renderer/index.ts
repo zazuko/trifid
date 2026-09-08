@@ -41,7 +41,7 @@ const fixContentTypeHeader = (contentType: string) => {
 };
 
 const factory: TrifidPlugin = async (trifid) => {
-  const { render, logger, query, notFound } = trifid;
+  const { render, logger, query, notFound, subpath } = trifid;
   // The entity-renderer configuration is highly dynamic; values are narrowed
   // where it matters and otherwise treated as opaque.
   const config = trifid.config as Record<string, any>;
@@ -80,7 +80,7 @@ const factory: TrifidPlugin = async (trifid) => {
     logger.debug('No datasetBaseUrl provided, no rewriting will be done');
   }
   datasetBaseUrls.forEach((value) => {
-    const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, value);
+    const rewriteConfig = sparqlGetRewriteConfiguration(rewriteConfigValue, value, subpath);
     // Just to have all the fields explicitly defined
     const { rewrite: rewriteValue, replaceIri, iriOrigin, datasetBaseUrl } = rewriteConfig;
     dbu.set(value, {

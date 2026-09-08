@@ -1,9 +1,11 @@
 import fastifyStatic from '@fastify/static';
 
+import { joinSubpath } from '../lib/subpath.ts';
+
 import type { TrifidPlugin } from '../types/index.ts';
 
 const factory: TrifidPlugin = async (trifid) => {
-  const { config, paths } = trifid;
+  const { config, paths, subpath } = trifid;
   const { directory } = config;
   if (typeof directory !== 'string' || !directory) {
     throw new Error("configuration is missing 'directory' field");
@@ -17,14 +19,14 @@ const factory: TrifidPlugin = async (trifid) => {
     // Register static file serving for the root path
     trifid.server.register(fastifyStatic, {
       ...staticConfiguration,
-      prefix: '/',
+      prefix: subpath,
     });
   } else {
     // Register static file serving for each configured path
     paths.forEach((path) => {
       trifid.server.register(fastifyStatic, {
         ...staticConfiguration,
-        prefix: path,
+        prefix: joinSubpath(subpath, path),
       });
     });
   }

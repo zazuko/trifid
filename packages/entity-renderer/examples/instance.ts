@@ -12,6 +12,7 @@ export const createTrifidInstance = async (
   configFilePath: string,
   logLevel: LogLevel = 'debug',
   additionalConfig: ConfigRecord = {},
+  subpath?: string,
 ) => {
   const configFile = join(process.cwd(), configFilePath);
   return await trifid(
@@ -23,6 +24,7 @@ export const createTrifidInstance = async (
           port,
           host: '0.0.0.0',
         },
+        ...(subpath ? { subpath } : {}),
       },
     },
     {
