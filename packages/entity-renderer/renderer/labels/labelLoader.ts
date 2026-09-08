@@ -9,7 +9,26 @@ import type { Term } from '@rdfjs/types';
  * chunkSize: The number of labels to be fetched by each query
  * concurrency: Number of concurrent queries'
  * timeout: The timeout. Will return the successful chunks
+ * labelQuery: The query used to fetch the labels
  */
+
+/**
+ * The query used to fetch the labels of the terms that do not have one yet.
+ *
+ * `{{iris}}` is replaced by the chunk of IRIs the labels are fetched for, as a
+ * space separated list of `<...>` terms.
+ */
+const DEFAULT_LABEL_QUERY = `
+PREFIX schema: <http://schema.org/>
+
+CONSTRUCT {
+  ?uri schema:name ?label .
+} WHERE {
+  GRAPH ?g {
+    ?uri schema:name ?label
+    VALUES ?uri { {{iris}} }
+  }
+}`;
 
 class LabelLoader {
   query: any;
@@ -17,6 +36,7 @@ class LabelLoader {
   rewriteResponse: any;
   headers: any;
   labelNamespaces: any;
+  labelQuery: string;
   chunkSize: number;
   queue: PQueue;
   logger: any;
@@ -28,6 +48,7 @@ class LabelLoader {
       rewriteResponse,
       labelNamespace,
       labelNamespaces,
+      labelQuery,
       chunkSize,
       concurrency,
       timeout,
@@ -42,6 +63,8 @@ class LabelLoader {
     this.headers = headers;
 
     this.labelNamespaces = labelNamespace ? [labelNamespace] : labelNamespaces;
+    this.labelQuery =
+      typeof labelQuery === 'string' && labelQuery ? labelQuery : DEFAULT_LABEL_QUERY;
     this.chunkSize = chunkSize || 30;
     this.queue = new PQueue({
       concurrency: concurrency || 2,
@@ -90,22 +113,14 @@ class LabelLoader {
   }
 
   async fetchLabels(iris: any[]) {
-    const uris = iris.map((x) => `<${this.replaceIri(x.value)}> `).join(' ');
+    const uris = iris.map((x) => `<${this.replaceIri(x.value)}>`).join(' ');
     this.logger?.debug(`Fetching labels for terms without label: ${uris}`);
-    const response = await this.query(
-      `
-PREFIX schema: <http://schema.org/>
-
-CONSTRUCT {
-  ?uri schema:name ?label .
-} WHERE {
-  GRAPH ?g {
-    ?uri schema:name ?label
-    VALUES ?uri { ${uris} }
-  }
-}`,
-      { ask: false, rewriteResponse: this.rewriteResponse, headers: this.headers },
-    );
+    const query = this.labelQuery.split('{{iris}}').join(uris);
+    const response = await this.query(query, {
+      ask: false,
+      rewriteResponse: this.rewriteResponse,
+      headers: this.headers,
+    });
     // Make sure the Content-Type is lower case and without parameters (e.g. charset)
     const fixedContentType = response.contentType.split(';')[0].trim().toLocaleLowerCase();
     const quadStream = parsers.import(fixedContentType, response.response);
@@ -126,4 +141,4 @@ CONSTRUCT {
   }
 }
 
-export { LabelLoader };
+export { LabelLoader, DEFAULT_LABEL_QUERY };

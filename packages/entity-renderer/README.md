@@ -100,6 +100,30 @@ The default redirect query supports `http://www.w3.org/2011/http#` and `http://w
   If enabled, the user can still disable this behavior by either:
   - setting the `disableSchemaUrlRedirect` query parameter to `true`
   - setting the `x-disable-schema-url-redirect` header to `true`
+- `labelLoader.labelQuery`: The `CONSTRUCT` query used to fetch the labels of the terms that do not have one yet.
+  The `{{iris}}` placeholder is replaced by the IRIs of the current chunk, as a space separated list of `<...>` terms.
+  By default, labels are fetched from `schema:name`:
+
+  ```yaml
+  labelLoader:
+    chunkSize: 30
+    concurrency: 2
+    timeout: 4000
+    labelQuery: |
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+      CONSTRUCT {
+        ?uri rdfs:label ?label .
+      } WHERE {
+        GRAPH ?g {
+          ?uri rdfs:label ?label
+          VALUES ?uri { {{iris}} }
+        }
+      }
+  ```
+
+  Note that the terms to fetch labels for are the ones without a `schema:name`, so a query returning other properties is useful to
+  complement the labels of an instance that models them differently.
 - `allowEndpointSwitch`: If set to `true`, the plugin will allow the user to switch the endpoint by setting the `endpoint` query parameter.
   This will inject a `endpointName` cookie while querying the SPARQL endpoint and is meant to be used with the `sparql-proxy` Trifid plugin.
   The default value is `false`.
