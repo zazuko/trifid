@@ -1,5 +1,61 @@
 # trifid-core
 
+## 6.1.0
+
+### Minor Changes
+
+- ae47ffc: Add support for serving an instance under a subpath.
+  
+  Instances are served at the root of a domain by default. Deployments that only
+  have a subdomain, and already serve other things on it, can now mount Trifid
+  under a subpath instead:
+  
+  ```yaml
+  server:
+    subpath: /SUBPATH
+  ```
+  
+  A resource whose IRI is `http://example.org/path/resource` is then served as
+  `https://example.com/SUBPATH/path/resource`. The subpath is applied to the
+  routes of every plugin, to the static files, to the templates, and to the IRI
+  rewriting, so links and content negotiation keep pointing at the right place.
+  
+  Endpoint URLs configured as root-relative paths (such as `url: /query`) refer to
+  a route of the instance itself, so they now resolve under the subpath too and do
+  not need to be adjusted.
+  
+  Templates receive the subpath as the `subpath` variable, which always ends with a
+  slash so that it can be interpolated directly:
+  
+  ```handlebars
+  <link rel="stylesheet" href="{{subpath}}static/core/style.css" />
+  ```
+  
+  Plugins receive it as `subpath` on their argument, and `normalizeSubpath` /
+  `joinSubpath` are exported to help them mount their own static files.
+  
+  The default value is `/`, which is exactly the previous behaviour, so existing
+  configurations and plugins are unaffected.
+
+### Patch Changes
+
+- e83a5ba: Report an unusable template file in the `view` plugin instead of failing on the
+  first request.
+  
+  The template is only read when a request comes in, so a `path` pointing at a
+  file that does not exist, cannot be read, or is not a file at all stayed
+  unnoticed until the route was hit and answered with a 500. Those cases are now
+  reported as an error when the instance starts:
+  
+  ```
+  ERROR (welcome): the template file '/srv/trifid/welcome.hbs' does not exist
+  ERROR (welcome): the template file '/srv/trifid/welcome.hbs' cannot be read (permission denied)
+  ERROR (welcome): the template path '/srv/trifid/views' is not a file
+  ```
+  
+  A missing `path` field is now logged as well, in addition to the error that was
+  already thrown.
+
 ## 6.0.3
 
 ### Patch Changes

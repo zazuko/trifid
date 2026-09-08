@@ -1,5 +1,23 @@
 # trifid-plugin-graph-explorer
 
+## 3.3.0
+
+### Minor Changes
+
+- ae47ffc: Serve the static assets and the page under the subpath configured with
+  `server.subpath`, instead of always at the root of the domain.
+  
+  Nothing changes for instances that do not configure a subpath.
+
+### Patch Changes
+
+- aec9547: Resolve the Graph Explorer assets without a trailing slash.
+  
+  `graph-explorer` ships no `exports` field, so this specifier did not trigger the
+  `DEP0155` deprecation warning yet, but it would as soon as the package adds one.
+  
+  The resolved directory, and therefore the files being served, are unchanged.
+
 ## 3.2.0
 
 ### Minor Changes
