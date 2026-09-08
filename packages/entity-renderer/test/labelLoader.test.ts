@@ -21,8 +21,10 @@ const createLoader = (options: Record<string, unknown> = {}) => {
   let sentQuery = '';
 
   const loader = new LabelLoader({
-    ...options,
+    // Defaults first so that a test can override them, except `query` which
+    // always has to be the recorder below
     replaceIri: (value: string) => value,
+    ...options,
     query: async (query: string) => {
       sentQuery = query;
       return { contentType: 'application/n-triples', response: Readable.from('') };
@@ -87,16 +89,16 @@ describe('labelLoader', () => {
   });
 
   it('should rewrite the IRIs before putting them in the query', async () => {
-    const loader = new LabelLoader({
+    const { loader, sentQuery } = createLoader({
+      labelQuery: 'VALUES ?uri { {{iris}} }',
       replaceIri: (value: string) => value.replace('http://example.com/', 'http://example.org/'),
-      query: async (query: string) => {
-        ok(query.includes('<http://example.org/a>'));
-        ok(!query.includes('example.com'));
-        return { contentType: 'application/n-triples', response: Readable.from('') };
-      },
     });
 
     await loader.fetchLabels([{ value: 'http://example.com/a' }]);
+
+    // Asserting on the whole query keeps this exact: the rewritten IRI is the
+    // only one that ends up in it
+    strictEqual(sentQuery(), 'VALUES ?uri { <http://example.org/a> }');
   });
 
   it('should expose the default query', () => {
