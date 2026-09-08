@@ -75,6 +75,9 @@
         "options": {
           "type": "object",
           "additionalProperties": true
+        },
+        "subpath": {
+          "type": "string"
         }
       },
       "additionalProperties": false

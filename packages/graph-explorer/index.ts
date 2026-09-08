@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { resolve } from 'import-meta-resolve';
 import fastifyStatic from '@fastify/static';
+import { joinSubpath } from 'trifid-core';
 
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { TrifidPlugin } from 'trifid-core';
@@ -22,7 +23,7 @@ const settingsPresets = [
 ];
 
 const factory: TrifidPlugin = async (trifid) => {
-  const { config, server, render } = trifid;
+  const { config, server, render, subpath } = trifid;
   const {
     template,
     endpointUrl,
@@ -42,12 +43,12 @@ const factory: TrifidPlugin = async (trifid) => {
   const distPath = resolve('graph-explorer/dist/', import.meta.url);
   server.register(fastifyStatic, {
     root: distPath.replace(/^file:\/\//, ''),
-    prefix: '/graph-explorer/assets/',
+    prefix: joinSubpath(subpath, '/graph-explorer/assets/'),
     decorateReply: false,
   });
   server.register(fastifyStatic, {
     root: `${currentDir}/static/`,
-    prefix: '/graph-explorer/static/',
+    prefix: joinSubpath(subpath, '/graph-explorer/static/'),
     decorateReply: false,
   });
 

@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f77f00" />
   <title>{{#if title}}{{ title }}{{else}}Trifid{{/if}}</title>
-  <link rel="stylesheet" href="/static/core/style.css" />
+  <link rel="stylesheet" href="{{subpath}}static/core/style.css" />
 {{#each styles}}
   <link rel="stylesheet" href="{{ this }}" />
 {{/each}}
-  <link rel="shortcut icon" href="/static/core/favicon.ico" />
+  <link rel="shortcut icon" href="{{subpath}}static/core/favicon.ico" />
 </head>
 
 <body>

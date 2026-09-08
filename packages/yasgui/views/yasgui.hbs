@@ -9,9 +9,9 @@
 
 <div class="trifid-content">
   <style type="text/css">
-    @import url("/yasgui-dist/yasgui.min.css");
-    @import url("/yasgui-plugins/map.css");
-    @import url("/yasgui-public/yasgui.css");
+    @import url("{{subpath}}yasgui-dist/yasgui.min.css");
+    @import url("{{subpath}}yasgui-plugins/map.css");
+    @import url("{{subpath}}yasgui-public/yasgui.css");
   </style>
 
   <div id="yasgui"></div>
@@ -21,14 +21,14 @@
     <a href="https://github.com/zazuko/trifid/tree/main/packages/yasgui" target="_blank" rel="noreferrer noopener">Trifid plugin</a>
   </p>
 
-  <script src="/yasgui-dist/yasgui.min.js"></script>
+  <script src="{{subpath}}yasgui-dist/yasgui.min.js"></script>
   <script>
     const YasguiMapPluginDefaultOptions = {
       mapKind: '{{ mapKind }}'
     };
   </script>
-  <script src="/yasgui-plugins/map.js"></script>
-  <script src="/yasgui-plugins/pivot.js"></script>
+  <script src="{{subpath}}yasgui-plugins/map.js"></script>
+  <script src="{{subpath}}yasgui-plugins/pivot.js"></script>
 
   <script>
     const config = {

@@ -181,3 +181,59 @@ describe('@zazuko/trifid-entity-renderer', () => {
     });
   });
 });
+
+describe('@zazuko/trifid-entity-renderer served under a subpath', () => {
+  let trifidListener: FastifyInstance;
+
+  beforeEach(async () => {
+    const trifidInstance = await createTrifidInstance(trifidConfigUrl, 'warn', {}, '/SUBPATH');
+    trifidListener = await trifidInstance.start();
+  });
+
+  afterEach(async () => {
+    await trifidListener.close();
+  });
+
+  it('should render an entity under the subpath', async () => {
+    const entityUrl = `${getListenerURL(trifidListener)}/SUBPATH/person/amy-farrah-fowler`;
+    const res = await fetch(entityUrl);
+    strictEqual(res.status, 200);
+    const resText = await res.text();
+    strictEqual(resText.toLocaleLowerCase().includes('amy'), true);
+  });
+
+  it('should not render the entity at the root anymore', async () => {
+    const entityUrl = `${getListenerURL(trifidListener)}/person/amy-farrah-fowler`;
+    const res = await fetch(entityUrl);
+    await res.text();
+    strictEqual(res.status, 404);
+  });
+
+  it('should rewrite the IRIs of the response with the subpath', async () => {
+    const origin = getListenerURL(trifidListener);
+    const res = await fetch(`${origin}/SUBPATH/person/amy-farrah-fowler`, {
+      headers: {
+        accept: 'text/turtle',
+      },
+    });
+    strictEqual(res.status, 200);
+    const resText = await res.text();
+
+    // The dataset IRIs are served back under the subpath…
+    strictEqual(resText.includes(`${origin}/SUBPATH/person/amy-farrah-fowler`), true);
+    // …and never at the root
+    strictEqual(resText.includes(`${origin}/person/amy-farrah-fowler`), false);
+  });
+
+  it('should render the HTML page with subpath-prefixed assets', async () => {
+    const entityUrl = `${getListenerURL(trifidListener)}/SUBPATH/person/amy-farrah-fowler`;
+    const res = await fetch(entityUrl, {
+      headers: {
+        accept: 'text/html',
+      },
+    });
+    strictEqual(res.status, 200);
+    const resText = await res.text();
+    strictEqual(resText.includes('href="/SUBPATH/static/core/style.css"'), true);
+  });
+});

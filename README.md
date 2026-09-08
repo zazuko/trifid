@@ -133,6 +133,48 @@ For example:
 export NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
 
+### Serving under a subpath
+
+By default Trifid is served at the root of a domain.
+If you already serve other things on that domain, Trifid can be mounted under a subpath instead by setting `server.subpath`:
+
+```yaml
+server:
+  subpath: /SUBPATH
+```
+
+With that configuration, a resource whose IRI is `http://example.org/path/resource` is served as `https://example.com/SUBPATH/path/resource` instead of `https://example.com/path/resource`.
+
+The subpath applies to everything the instance exposes: plugin routes, static assets, the templates, and the IRI rewriting.
+Endpoint URLs that are configured as root-relative paths (such as `url: /query`) keep pointing at the instance, so they resolve under the subpath as well and do not need to be changed.
+
+The default value is `/`, which keeps the historical behaviour, so existing configurations are unaffected.
+
+#### Using the subpath in templates
+
+The subpath is exposed to the template engine as the `subpath` variable.
+It always ends with a slash (and is simply `/` when no subpath is configured), so assets can be referenced by interpolating it directly:
+
+```handlebars
+<link rel="stylesheet" href="{{subpath}}static/core/style.css" />
+<a href="{{subpath}}">Home</a>
+```
+
+Plugins that serve their own static files can prefix them using the `joinSubpath` helper exported by `trifid-core`:
+
+```js
+import { joinSubpath } from 'trifid-core';
+
+const factory = async (trifid) => {
+  const { server, subpath } = trifid;
+
+  server.register(fastifyStatic, {
+    root: someDirectory,
+    prefix: joinSubpath(subpath, '/my-plugin/static/'),
+  });
+};
+```
+
 ## Production Best Practices
 
 Note that it is not recommended to run Node applications on [well-known ports](http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) (< 1024).
@@ -167,6 +209,8 @@ If you want to use a file that contains your triples instead of a SPARQL endpoin
 ### Reverse Proxy
 
 If you run Trifid behind a reverse proxy, the proxy must set the `X-Forwarded-Host` header field.
+
+If the proxy serves Trifid under a subpath rather than at the root of the domain, configure that subpath with [`server.subpath`](#serving-under-a-subpath) and forward the requests with the prefix intact.
 
 ## Debugging
 

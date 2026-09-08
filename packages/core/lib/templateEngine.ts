@@ -51,11 +51,13 @@ const forceRefresh = false;
  *
  * @param defaultOptions Default optioons for the template engine.
  * @param locals Trifid locals.
+ * @param subpath Subpath the instance is served under.
  * @returns Template engine instance.
  */
 const templateEngine = async (
   defaultOptions: ConfigRecord,
   locals: Map<string, unknown>,
+  subpath: string = '/',
 ): Promise<TemplateEngineInstance> => {
   const registerHelper: RegisterTemplateHelper = (name, fn) => {
     Handlebars.registerHelper(name, fn);
@@ -120,12 +122,12 @@ const templateEngine = async (
     const localsObject = Object.fromEntries(locals.entries());
     const mergedSession = merge(session, context.session as ConfigRecord | undefined);
     const mergedLocals = merge(localsObject, context.locals as ConfigRecord | undefined);
-    const mergedContext = merge({}, context);
+    const mergedContext = merge({ subpath }, context);
     mergedContext.locals = mergedLocals;
     mergedContext.session = mergedSession;
     const body = template(mergedContext);
 
-    const renderedOptions = merge({}, mergedContext, templateOptions, options);
+    const renderedOptions = merge({ subpath }, mergedContext, templateOptions, options);
     const renderedPartials = Object.fromEntries(
       Object.entries(templatesWithoutMain).map((t) => [t[0], t[1](renderedOptions)]),
     );
