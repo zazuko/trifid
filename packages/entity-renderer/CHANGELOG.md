@@ -1,5 +1,91 @@
 # @zazuko/trifid-renderer-entity
 
+## 2.1.0
+
+### Minor Changes
+
+- cd25a42: Bound the number of terms the label loader fetches labels for, through the new
+  `labelLoader.maxTerms` option (`1000` by default, `0` to disable the limit).
+  
+  Labels are fetched in chunks, and the number of chunks was not bounded. An
+  entity describing a very large graph could therefore queue thousands of queries
+  against the SPARQL endpoint to render a single page: a resource resolving to
+  129'000 unlabelled IRIs queued more than 4'000 label queries, which kept hitting
+  the endpoint even after the request had already failed.
+  
+  The terms are now capped, and the chunks that have not started yet are dropped
+  as soon as one of them fails, so a slow endpoint is no longer flooded with the
+  remaining queries. The chunks that did succeed are still used, instead of the
+  whole render failing.
+  
+  When the limit is reached, a warning is logged and the remaining terms are
+  rendered with their IRI instead of a label.
+- cd25a42: Make the predicates the label loader looks for configurable through the
+  `labelLoader.predicates` option.
+  
+  Labels were only ever looked for under `schema:name`, which does not fit
+  instances that model them differently. The predicates can now be configured, and
+  are used both to decide which terms are still missing a label and to fetch them:
+  
+  ```yaml
+  labelLoader:
+    predicates:
+      - http://xmlns.com/foaf/0.1/name
+      - http://www.w3.org/2004/02/skos/core#prefLabel
+      - http://schema.org/name
+      - http://www.w3.org/2000/01/rdf-schema#label
+  ```
+  
+  The default query now selects the labels through a `{{predicates}}` placeholder,
+  so configuring the predicates is enough and the query does not have to be
+  replaced as well. Custom queries can use the same placeholder.
+  
+  The default is `schema:name`, and the default query is equivalent to the
+  previous one, so instances that do not configure anything keep fetching labels
+  exactly as before.
+- ab0eea3: Make the query used by the label loader configurable through the
+  `labelLoader.labelQuery` option.
+  
+  The label loader used a hardcoded query fetching labels from `schema:name`,
+  which does not fit instances that model their labels differently. The query can
+  now be replaced:
+  
+  ```yaml
+  labelLoader:
+    chunkSize: 30
+    labelQuery: |
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  
+      CONSTRUCT {
+        ?uri rdfs:label ?label .
+      } WHERE {
+        GRAPH ?g {
+          ?uri rdfs:label ?label
+          VALUES ?uri { {{iris}} }
+        }
+      }
+  ```
+  
+  The `{{iris}}` placeholder is replaced by the IRIs of the current chunk, as a
+  space separated list of `<...>` terms.
+  
+  The default query is unchanged, so instances that do not configure it keep
+  fetching labels exactly as before.
+- ae47ffc: Take the subpath configured with `server.subpath` into account when mapping a
+  request to a dataset IRI, and when rewriting the IRIs of the response.
+  
+  A request for `https://example.com/SUBPATH/path/resource` now resolves the
+  IRI `http://example.org/path/resource`, and the rendered entity links back to
+  the subpath-prefixed URLs.
+  
+  Nothing changes for instances that do not configure a subpath.
+
+### Patch Changes
+
+- Updated dependencies [ae47ffc]
+- Updated dependencies [e83a5ba]
+  - trifid-core@6.1.0
+
 ## 2.0.0
 
 ### Major Changes

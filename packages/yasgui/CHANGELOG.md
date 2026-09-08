@@ -1,5 +1,31 @@
 # trifid-plugin-yasgui
 
+## 4.2.0
+
+### Minor Changes
+
+- ae47ffc: Serve the static assets and the page under the subpath configured with
+  `server.subpath`, instead of always at the root of the domain.
+  
+  Nothing changes for instances that do not configure a subpath.
+
+### Patch Changes
+
+- aec9547: Resolve the YASGUI assets without a trailing slash, to stop Node from printing a
+  deprecation warning on every startup:
+  
+  ```
+  [DEP0155] DeprecationWarning: Use of deprecated trailing slash pattern mapping
+  "./build/" in the "exports" field module resolution of the package at
+  @zazuko/yasgui/package.json
+  ```
+  
+  The specifier ended with a slash, which Node resolves through the deprecated
+  trailing slash pattern mapping of the `exports` field. `@zazuko/yasgui` itself
+  uses the modern `"./*"` subpath pattern, so only the specifier had to change.
+  
+  The resolved directory, and therefore the files being served, are unchanged.
+
 ## 4.1.1
 
 ### Patch Changes

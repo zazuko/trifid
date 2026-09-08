@@ -1,5 +1,14 @@
 # trifid-plugin-spex
 
+## 4.1.0
+
+### Minor Changes
+
+- ae47ffc: Serve the static assets and the page under the subpath configured with
+  `server.subpath`, instead of always at the root of the domain.
+  
+  Nothing changes for instances that do not configure a subpath.
+
 ## 4.0.0
 
 ### Major Changes
