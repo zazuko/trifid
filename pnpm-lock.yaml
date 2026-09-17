@@ -332,8 +332,8 @@ importers:
   packages/i18n:
     dependencies:
       i18n:
-        specifier: ^0.15.3
-        version: 0.15.3(supports-color@7.2.0)
+        specifier: ^0.15.4
+        version: 0.15.4(supports-color@7.2.0)
     devDependencies:
       '@types/i18n':
         specifier: ^0.13.12
@@ -3045,8 +3045,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  i18n@0.15.3:
-    resolution: {integrity: sha512-tW/AA5R4lJZLnd60Agcd0PfXB1C2G7UqTrdNewuv/SIYdxcHkCE8w4Zx1SgCjJ+2BLuAAGIG/KXb/xNYF1lO5Q==}
+  i18n@0.15.4:
+    resolution: {integrity: sha512-rR122qceQidRpn/oJE16fC1rNtYUZsrgpQ8vKkFgu6hTgcM/s0yMBsGpj0Nbe2df8gh3Fb10AeEyWFZZZatvPg==}
     engines: {node: '>=10'}
 
   iconv-lite@0.6.3:
@@ -7027,7 +7027,7 @@ snapshots:
 
   husky@9.1.7: {}
 
-  i18n@0.15.3(supports-color@7.2.0):
+  i18n@0.15.4(supports-color@7.2.0):
     dependencies:
       '@messageformat/core': 3.4.0
       debug: 4.4.3(supports-color@7.2.0)
