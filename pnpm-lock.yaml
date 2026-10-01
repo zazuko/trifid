@@ -15,8 +15,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       lint-staged:
-        specifier: ^17.5.1
-        version: 17.5.1
+        specifier: ^17.6.0
+        version: 17.6.0
       oxfmt:
         specifier: ^0.70.0
         version: 0.70.0
@@ -3187,8 +3187,8 @@ packages:
   light-my-request@6.6.0:
     resolution: {integrity: sha512-CHYbu8RtboSIoVsHZ6Ye4cj4Aw/yg2oAFimlF7mNvfDV192LR7nDiKtSIfCuLT7KokPSTn/9kfVLm5OGN0A28A==}
 
-  lint-staged@17.5.1:
-    resolution: {integrity: sha512-7EDuco1xnBMeVpvAbeMq1U5KXwJGLmY8q6l+Ye78r36C4mPc+Vg1Z2SK8gHyRTyvPro90A0q5/FAZ+Au23d6QQ==}
+  lint-staged@17.6.0:
+    resolution: {integrity: sha512-nOhBfYkZEwkFtNzD5pK9s9LkcWoxJ+whLzEnhqi9nl7zTB5n7tg8+9iYgMGx2Wm3VlLu8cbNj0RACzY+nWi5iQ==}
     engines: {node: '>=22.22.1'}
     hasBin: true
 
@@ -7168,7 +7168,7 @@ snapshots:
       process-warning: 4.0.1
       set-cookie-parser: 2.7.2
 
-  lint-staged@17.5.1:
+  lint-staged@17.6.0:
     dependencies:
       picomatch: 4.0.7
       string-argv: 0.3.2
