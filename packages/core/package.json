@@ -62,7 +62,7 @@
     "@fastify/cookie": "^11.1.2",
     "@fastify/cors": "^11.3.0",
     "@fastify/formbody": "^9.0.0",
-    "@fastify/otel": "^0.21.0",
+    "@fastify/otel": "^0.21.1",
     "@fastify/static": "^10.1.5",
     "@fontsource/playfair-display": "^5.3.0",
     "@fontsource/roboto": "^5.3.0",
