@@ -55,8 +55,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       '@types/sparql-http-client':
         specifier: ^3.1.0
         version: 3.1.0
@@ -188,11 +188,11 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@types/lodash':
-        specifier: ^4.17.25
-        version: 4.17.25
+        specifier: ^4.17.26
+        version: 4.17.26
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -210,7 +210,7 @@ importers:
     dependencies:
       '@lit-labs/ssr':
         specifier: ^4.1.0
-        version: 4.1.0(@types/node@26.6.4)
+        version: 4.1.0(@types/node@26.6.5)
       '@opentelemetry/api':
         specifier: ^1.9.1
         version: 1.9.1
@@ -246,8 +246,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -280,8 +280,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -311,8 +311,8 @@ importers:
         version: 14.0.3
     devDependencies:
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -339,8 +339,8 @@ importers:
         specifier: ^0.13.12
         version: 0.13.12
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -382,8 +382,8 @@ importers:
         specifier: ^1.5.15
         version: 1.5.15
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       '@types/sparql-http-client':
         specifier: ^3.1.0
         version: 3.1.0
@@ -437,8 +437,8 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -474,8 +474,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -502,8 +502,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       c8:
         specifier: ^12.0.0
         version: 12.0.0
@@ -551,8 +551,8 @@ importers:
         version: link:../yasgui
     devDependencies:
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       rimraf:
         specifier: ^6.1.3
         version: 6.1.3
@@ -573,8 +573,8 @@ importers:
         version: 4.2.0
     devDependencies:
       '@types/node':
-        specifier: ^26.6.4
-        version: 26.6.4
+        specifier: ^26.6.5
+        version: 26.6.5
       betterknown:
         specifier: ^1.2.0
         version: 1.2.0
@@ -1980,8 +1980,8 @@ packages:
   '@types/jsonld@1.5.15':
     resolution: {integrity: sha512-PlAFPZjL+AuGYmwlqwKEL0IMP8M8RexH0NIPGfCVWSQ041H2rR/8OlyZSD7KsCVoN8vCfWdtWDBxX8yBVP+xow==}
 
-  '@types/lodash@4.17.25':
-    resolution: {integrity: sha512-+K1NIO8I+F9/wNulfVvu23QYd0Pe9/OCqRrim4NoYIf1VoEDL90Ve4ClzpyqBLc7NpGGWRvYNCKZ1BE/Jpf8dQ==}
+  '@types/lodash@4.17.26':
+    resolution: {integrity: sha512-48NWfiY6oNcKOh47Z4h+sIvwcQR91h6KPhaYKgeMIrkT2jV82Gy90SErj60vW8jQbeMSOSbhIv3bZ7JoqPPVhA==}
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -1997,9 +1997,6 @@ packages:
 
   '@types/node@18.19.130':
     resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
-
-  '@types/node@26.6.4':
-    resolution: {integrity: sha512-ldVPDCzj7fsaGZrLB0NuHuTvJcsNasysBAqMolr/cgxrLd1xbqxIr3XJiPnHHJUCxj5sNF1vnRj9aWnrVh5Jcg==}
 
   '@types/node@26.6.5':
     resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
@@ -4627,7 +4624,7 @@ snapshots:
 
   '@lit-labs/ssr-dom-shim@1.6.0': {}
 
-  '@lit-labs/ssr@4.1.0(@types/node@26.6.4)':
+  '@lit-labs/ssr@4.1.0(@types/node@26.6.5)':
     dependencies:
       '@lit-labs/ssr-client': 1.1.8
       '@lit-labs/ssr-dom-shim': 1.6.0
@@ -4640,7 +4637,7 @@ snapshots:
       node-fetch: 3.3.2
       parse5: 7.3.0
     optionalDependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@lit/reactive-element@1.6.3':
     dependencies:
@@ -5687,7 +5684,7 @@ snapshots:
 
   '@rdfjs/types@2.0.1':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@rubensworks/saxes@6.0.1':
     dependencies:
@@ -5762,7 +5759,7 @@ snapshots:
 
   '@types/jsonld@1.5.15': {}
 
-  '@types/lodash@4.17.25': {}
+  '@types/lodash@4.17.26': {}
 
   '@types/mdast@4.0.4':
     dependencies:
@@ -5777,15 +5774,11 @@ snapshots:
   '@types/n3@1.26.1':
     dependencies:
       '@rdfjs/types': 2.0.1
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/node@18.19.130':
     dependencies:
       undici-types: 5.26.5
-
-  '@types/node@26.6.4':
-    dependencies:
-      undici-types: 8.9.0
 
   '@types/node@26.6.5':
     dependencies:
@@ -5899,7 +5892,7 @@ snapshots:
 
   '@types/readable-stream@2.3.15':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       safe-buffer: 5.1.2
 
   '@types/readable-stream@4.0.24':
@@ -5921,7 +5914,7 @@ snapshots:
 
   '@types/xml2js@0.4.14':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     optional: true
