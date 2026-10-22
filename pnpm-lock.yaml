@@ -372,8 +372,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       through2:
-        specifier: ^5.0.11
-        version: 5.0.11
+        specifier: ^5.0.12
+        version: 5.0.12
     devDependencies:
       '@rdfjs/types':
         specifier: ^2.0.1
@@ -1469,6 +1469,7 @@ packages:
   '@opentelemetry/propagator-jaeger@2.12.0':
     resolution: {integrity: sha512-Kz2Vz+NILW7S1WtN4rV1wr76fMtT/RRWvAMFBc91uTIi2dDMXxrfBKNe2KH7yaCfFp1X0xfAuabzuFczvoPB6A==}
     engines: {node: ^18.19.0 || >=20.6.0}
+    deprecated: Package no longer supported. See https://github.com/open-telemetry/opentelemetry-js/pull/7077
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
 
@@ -1533,12 +1534,14 @@ packages:
   '@opentelemetry/sdk-trace-base@2.12.0':
     resolution: {integrity: sha512-JOERgZCxRM06FEJ5kEWxlSRChah6MmXDx3KwCruqEv/iEyLkTokCSemf2y1w8oIHtfrr8EVTpzebq/31vn2Cpg==}
     engines: {node: ^18.19.0 || >=20.6.0}
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       '@opentelemetry/api': '>=1.3.0 <1.10.0'
 
   '@opentelemetry/sdk-trace-node@2.12.0':
     resolution: {integrity: sha512-9DufH1IlmQMoKAfot5y/FhTP1RnmhLb5K6eKmJO/bvzPjYwPAazoiAUbTZFdPbqxOXN0FEbhZx/e6SB1Og4jmg==}
     engines: {node: ^18.19.0 || >=20.6.0}
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
 
@@ -3708,6 +3711,10 @@ packages:
     resolution: {integrity: sha512-oIGGmcpTLwPga8Bn6/Z75SVaH1z5dUut2ibSyAMVhmUggWpmDn2dapB0n7f8nwaSiRtepAsfJyfXIO5DCVAODg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
+  readable-stream@4.8.0:
+    resolution: {integrity: sha512-2jhTTU3Eilp/2DMT71gbcoqC35eQHasMJH0RHkYxwlxIv3+FR6Y5xAFZIwEGLxKkjZYEFlsiMNIdwUqjK2lLHQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
   readable-web-to-node-stream@5.0.0:
     resolution: {integrity: sha512-BYDNE3p8516xCm5yCkwXt4lTLSjYAFzPtMot7dwpNz3tb5nwcLUfq9N1yiaAYFOA+9BVKi13aOIUPdv96t/Xzg==}
     engines: {node: '>=18'}
@@ -4002,8 +4009,8 @@ packages:
   through2@2.0.5:
     resolution: {integrity: sha512-/mrRod8xqpA+IHSLyGCQ2s8SPHiCDEeQJSep1jqLYeEUClOFG2Qsh+4FU6G9VeqpZnGW/Su8LQGc4YKni5rYSQ==}
 
-  through2@5.0.11:
-    resolution: {integrity: sha512-g3ACuADXGxvApYBg83YNLCSGeQUkKnXjH0FEBLmtap5vDN6pFfLr8uhVUqynb704X6Q3KpgLW2enSZ7WE+Vp5A==}
+  through2@5.0.12:
+    resolution: {integrity: sha512-jB27X6bxGfqls4H2nhYRw0s4SvTMUBQHGowymrXDzMDb0iJGqChY65IK1NFUnvz09zyDxZUOMarxl87Dr1nXAw==}
 
   tinyexec@1.3.1:
     resolution: {integrity: sha512-GCvB3aoys96IuDFBMcTB46JOR6mdMtAToqwiW8JlWhsoh1mhHi/xn9ss/Dg7N555GiJyEt2qzoG/NHCwM6h1EA==}
@@ -5609,7 +5616,7 @@ snapshots:
       '@rdfjs/sink': 2.0.1
       duplex-to: 2.0.0
       jsonld-streaming-parser: 5.0.1
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   '@rdfjs/parser-n3@2.2.0':
     dependencies:
@@ -5621,7 +5628,7 @@ snapshots:
 
   '@rdfjs/prefix-map@0.1.2':
     dependencies:
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   '@rdfjs/serializer-jsonld-ext@4.0.2':
     dependencies:
@@ -5633,14 +5640,14 @@ snapshots:
   '@rdfjs/serializer-jsonld@2.0.1':
     dependencies:
       '@rdfjs/sink': 2.0.1
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   '@rdfjs/serializer-ntriples@2.0.1':
     dependencies:
       '@rdfjs/sink': 2.0.1
       '@rdfjs/to-ntriples': 3.0.1
       duplex-to: 2.0.0
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   '@rdfjs/serializer-turtle@1.1.5':
     dependencies:
@@ -5651,7 +5658,7 @@ snapshots:
       '@rdfjs/term-map': 2.0.2
       '@rdfjs/to-ntriples': 3.0.1
       '@rdfjs/tree': 0.2.1
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
       stream-chunks: 1.0.0
 
   '@rdfjs/sink-map@2.0.1': {}
@@ -6152,7 +6159,7 @@ snapshots:
     dependencies:
       '@types/rdfjs__fetch-lite': 3.0.11
       is-stream: 4.0.1
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
       readable-web-to-node-stream: 5.0.0
 
   '@zazuko/rdf-utils-fs@3.3.1(@rdfjs/types@2.0.1)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)':
@@ -6160,7 +6167,7 @@ snapshots:
       '@rdfjs/types': 2.0.1
       '@types/rdfjs__environment': 1.0.0
       '@types/rdfjs__formats': 4.0.1
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   '@zazuko/spex@0.2.2(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)(typescript@7.0.2)':
     dependencies:
@@ -7136,7 +7143,7 @@ snapshots:
       http-link-header: 1.1.4
       jsonld-context-parser: 3.1.0
       rdf-data-factory: 2.0.2
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   jsonld@9.0.0:
     dependencies:
@@ -7608,7 +7615,7 @@ snapshots:
   n3@2.3.0:
     dependencies:
       buffer: 6.0.3
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   nanoid@3.3.18: {}
 
@@ -7892,7 +7899,7 @@ snapshots:
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
       rdf-data-factory: 1.1.3
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
       relative-to-absolute-iri: 1.0.8
       validate-iri: 1.0.1
 
@@ -7902,7 +7909,7 @@ snapshots:
       '@types/readable-stream': 4.0.24
       buffer: 6.0.3
       rdf-data-factory: 2.0.2
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
       relative-to-absolute-iri: 1.0.8
       validate-iri: 1.0.1
 
@@ -7937,9 +7944,17 @@ snapshots:
       process: 0.11.10
       string_decoder: 1.3.0
 
+  readable-stream@4.8.0:
+    dependencies:
+      abort-controller: 3.0.0
+      buffer: 6.0.3
+      events: 3.3.0
+      process: 0.11.10
+      string_decoder: 1.3.0
+
   readable-web-to-node-stream@5.0.0:
     dependencies:
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   readdirp@3.6.0:
     dependencies:
@@ -8239,9 +8254,9 @@ snapshots:
       readable-stream: 2.3.8
       xtend: 4.0.2
 
-  through2@5.0.11:
+  through2@5.0.12:
     dependencies:
-      readable-stream: 4.7.0
+      readable-stream: 4.8.0
 
   tinyexec@1.3.1: {}
 

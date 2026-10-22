@@ -39,7 +39,7 @@
     "@zazuko/env": "^3.0.1",
     "jsonld": "^9.0.0",
     "sparql-http-client": "^3.1.0",
-    "through2": "^5.0.11"
+    "through2": "^5.0.12"
   },
   "devDependencies": {
     "@rdfjs/types": "^2.0.1",
