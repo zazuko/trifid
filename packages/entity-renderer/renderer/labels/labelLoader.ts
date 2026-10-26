@@ -233,8 +233,9 @@ class LabelLoader {
     /*
      * A chunk failing means the endpoint is not keeping up (the queue times out
      * each task), so the chunks that have not started yet are dropped instead of
-     * being sent anyway. Note that `queue.clear()` leaves their promises
-     * unsettled, hence the race below rather than awaiting all of them.
+     * being sent anyway. `queue.clear()` rejects their promises with an
+     * `AbortError`, which lands in the `catch` below where `cancel()` is a no-op.
+     * The race below returns without waiting for the chunks already running.
      */
     const cancel = () => {
       if (cancelled) {

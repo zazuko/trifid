@@ -294,7 +294,7 @@ describe('labelLoader', () => {
         },
       });
 
-      // `queue.clear()` leaves the pending promises unsettled, so this must not hang
+      // The dropped chunks reject with an `AbortError`, this must neither throw nor hang
       const datasets = await Promise.race([
         loader.tryFetchAll(pointerWithTerms(400)),
         new Promise((_resolve, reject) => setTimeout(() => reject(new Error('hung')), 5000)),
