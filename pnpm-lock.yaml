@@ -39,8 +39,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)
       '@zazuko/prefixes':
-        specifier: ^2.6.1
-        version: 2.6.1
+        specifier: ^3.0.1
+        version: 3.0.1
       is-graph-pointer:
         specifier: ^2.2.0
         version: 2.2.0
@@ -224,8 +224,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)
       '@zazuko/prefixes':
-        specifier: ^2.6.1
-        version: 2.6.1
+        specifier: ^3.0.1
+        version: 3.0.1
       '@zazuko/rdf-entity-webcomponent':
         specifier: ^0.7.7
         version: 0.7.7
@@ -2285,6 +2285,9 @@ packages:
 
   '@zazuko/prefixes@2.6.1':
     resolution: {integrity: sha512-fbOadP7twxt0ZYT9mgIC+xQMk6f3pYYLI5a/2UJ/mc/ygqb/NoVv2ryK3lTtoi74xwkdpUeDwIuFQSosowzUgg==}
+
+  '@zazuko/prefixes@3.0.1':
+    resolution: {integrity: sha512-H+SZWBkiLfaQWw9Z6oCaq8Lp3w+yYdIc4snhGH6cI4Blxin85ly+W/KwIdp+pURA1XA7EESab97licxBOBqiKw==}
 
   '@zazuko/rdf-entity-webcomponent@0.7.7':
     resolution: {integrity: sha512-n5v5+pwRBB/ddQwlajGR5tkR0FN/YKtl8sQ8Gnd0LG3mUwMxROSC2G6R+BWwlvwmF5RDx4r0R1yuQ2p8l32utQ==}
@@ -5706,7 +5709,7 @@ snapshots:
       '@rdfjs/term-map': 2.0.2
       '@rdfjs/types': 2.0.1
       '@tpluscode/rdf-ns-builders': 5.0.0
-      '@zazuko/prefixes': 2.6.1
+      '@zazuko/prefixes': 3.0.1
 
   '@types/aws-lambda@8.10.164': {}
 
@@ -6116,6 +6119,8 @@ snapshots:
       readable-stream: 4.7.0
 
   '@zazuko/prefixes@2.6.1': {}
+
+  '@zazuko/prefixes@3.0.1': {}
 
   '@zazuko/rdf-entity-webcomponent@0.7.7':
     dependencies:
