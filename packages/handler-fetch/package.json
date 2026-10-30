@@ -43,7 +43,7 @@
     "handler-fetch"
   ],
   "dependencies": {
-    "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/api": "^1.10.0",
     "oxigraph": "^0.5.11",
     "uuid": "^14.0.3"
   },
