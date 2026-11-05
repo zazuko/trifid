@@ -461,8 +461,8 @@ importers:
         specifier: ^1.9.1
         version: 1.9.1
       '@vocabulary/sd':
-        specifier: ^1.0.6
-        version: 1.0.6(@rdfjs/types@2.0.1)
+        specifier: ^1.1.0
+        version: 1.1.0(@rdfjs/types@2.0.1)
       '@zazuko/env-node':
         specifier: ^3.1.0
         version: 3.1.0(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__fetch-lite@3.0.11)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)
@@ -2207,8 +2207,8 @@ packages:
   '@vanillawc/wc-codemirror@1.9.8':
     resolution: {integrity: sha512-tdhzg+5MsTEml0at43IAYrwfwLY5l5r56I5l9WlDOheNjMZgAD5yoYYkK3RQY1Pi6JqLpVIxBi9LEqVQggHBPQ==}
 
-  '@vocabulary/sd@1.0.6':
-    resolution: {integrity: sha512-X+/obW6TM4viB18wooW3c//oVwiBO7nDapGkBCxWwqmM5gmWFaNAgdqD6p17wGRC4rvlhXRhqBNuIOJ30i5O8w==}
+  '@vocabulary/sd@1.1.0':
+    resolution: {integrity: sha512-+Mod58PyxiP0R8Ln65sXa60XZ3Qp1Ecyc4/10Kq9mn9+C//OX0ve6YB7LJof2ypCre8QjO0+sWkAxV0ji7eL7Q==}
     peerDependencies:
       '@rdfjs/types': ^2.0.0
 
@@ -5968,7 +5968,7 @@ snapshots:
 
   '@vanillawc/wc-codemirror@1.9.8': {}
 
-  '@vocabulary/sd@1.0.6(@rdfjs/types@2.0.1)':
+  '@vocabulary/sd@1.1.0(@rdfjs/types@2.0.1)':
     dependencies:
       '@rdfjs/types': 2.0.1
 
