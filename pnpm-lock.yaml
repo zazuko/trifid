@@ -464,8 +464,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0(@rdfjs/types@2.0.1)
       '@zazuko/env-node':
-        specifier: ^3.1.0
-        version: 3.1.0(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__fetch-lite@3.0.11)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)
+        specifier: ^3.1.3
+        version: 3.1.3(@rdfjs/types@2.0.1)(@tpluscode/rdf-ns-builders@5.0.0)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__fetch-lite@3.0.11)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)(@zazuko/prefixes@3.0.1)
       trifid-core:
         specifier: workspace:^
         version: link:../core
@@ -2244,8 +2244,13 @@ packages:
     peerDependencies:
       '@types/rdfjs__environment': ^1.0.0
 
-  '@zazuko/env-node@3.1.0':
-    resolution: {integrity: sha512-6hN+SWcU4m4soS8Bmxx4L3Fql0dnmDPpb2NOnQ8k3nDsu8EpFgyYEmlkzMlZhcJp8PuZY9lDpVFGw0SnIlM1Cw==}
+  '@zazuko/env-core@1.1.5':
+    resolution: {integrity: sha512-LTzG5g2kuBZXPdDbI+ZkKUilYRf0EVpZqEodsScGUG28WeukWAZ7xLqnzSJQsiEwyWHZHTTh/O5o/jlNBo7azQ==}
+    peerDependencies:
+      '@types/rdfjs__environment': ^1.0.0
+
+  '@zazuko/env-node@3.1.3':
+    resolution: {integrity: sha512-kuKqIll7K2sPbRk+2zMQLCj03sdiC3Q8F9o4llNq2frSEtVd6LpF1FToRls2tBkFdK+pyxO1sr16gLey9IStuQ==}
     peerDependencies:
       '@types/rdfjs__fetch-lite': ^3.0.11
       '@types/rdfjs__formats': ^4.0.1
@@ -2279,6 +2284,23 @@ packages:
       '@types/rdfjs__term-map': ^2.0.10
       '@types/rdfjs__term-set': ^2.0.9
       '@types/rdfjs__traverser': ^0.1.5
+
+  '@zazuko/env@3.0.6':
+    resolution: {integrity: sha512-/eHZiENflA+CZTySCPd7cPRxpSmAVwEmq8hVpbDAPgNjXBR5tX1fWBvhCz9PjAiwuNye6QBMDioZkx/oPT0hig==}
+    peerDependencies:
+      '@rdfjs/types': ^2
+      '@tpluscode/rdf-ns-builders': '>=5'
+      '@types/clownface': ^2.0.0
+      '@types/rdf-dataset-ext': ^1.0.8
+      '@types/rdfjs__data-model': ^2.0.9
+      '@types/rdfjs__dataset': ^2.0.7
+      '@types/rdfjs__environment': ^1.0.0
+      '@types/rdfjs__formats': ^4.0.1
+      '@types/rdfjs__namespace': ^2.0.10
+      '@types/rdfjs__term-map': ^2.0.10
+      '@types/rdfjs__term-set': ^2.0.9
+      '@types/rdfjs__traverser': ^0.1.5
+      '@zazuko/prefixes': '>=2.1.0'
 
   '@zazuko/formats-lazy@1.0.2':
     resolution: {integrity: sha512-cnJ//IHDWdjj0rB4tOoTHKnQyTA1HziH0VswdFbocQtvEKi9Ev9Xx7c3xhMZdLcvQ+BL74QJkx5kVyC+hbUPFQ==}
@@ -6028,16 +6050,22 @@ snapshots:
       '@rdfjs/environment': 1.0.0
       '@types/rdfjs__environment': 1.0.0
 
-  '@zazuko/env-node@3.1.0(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__fetch-lite@3.0.11)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)':
+  '@zazuko/env-core@1.1.5(@types/rdfjs__environment@1.0.0)':
+    dependencies:
+      '@rdfjs/environment': 1.0.0
+      '@types/rdfjs__environment': 1.0.0
+
+  '@zazuko/env-node@3.1.3(@rdfjs/types@2.0.1)(@tpluscode/rdf-ns-builders@5.0.0)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__fetch-lite@3.0.11)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)(@zazuko/prefixes@3.0.1)':
     dependencies:
       '@rdfjs/formats': 4.0.1
       '@types/rdfjs__fetch-lite': 3.0.11
       '@types/rdfjs__formats': 4.0.1
-      '@zazuko/env': 3.0.1(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)
+      '@zazuko/env': 3.0.6(@rdfjs/types@2.0.1)(@tpluscode/rdf-ns-builders@5.0.0)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)(@zazuko/prefixes@3.0.1)
       '@zazuko/rdf-fetch': 1.0.2
       '@zazuko/rdf-utils-fs': 3.3.1(@rdfjs/types@2.0.1)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)
     transitivePeerDependencies:
       - '@rdfjs/types'
+      - '@tpluscode/rdf-ns-builders'
       - '@types/clownface'
       - '@types/rdf-dataset-ext'
       - '@types/rdfjs__data-model'
@@ -6047,6 +6075,7 @@ snapshots:
       - '@types/rdfjs__term-map'
       - '@types/rdfjs__term-set'
       - '@types/rdfjs__traverser'
+      - '@zazuko/prefixes'
 
   '@zazuko/env@2.5.3(@rdfjs/types@2.0.1)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)':
     dependencies:
@@ -6098,6 +6127,33 @@ snapshots:
       '@types/rdfjs__traverser': 0.1.5
       '@zazuko/env-core': 1.1.2(@types/rdfjs__environment@1.0.0)
       '@zazuko/prefixes': 2.6.1
+      clownface: 2.0.3
+      get-stream: 9.0.1
+      rdf-dataset-ext: 1.1.0
+
+  '@zazuko/env@3.0.6(@rdfjs/types@2.0.1)(@tpluscode/rdf-ns-builders@5.0.0)(@types/clownface@2.0.10)(@types/rdf-dataset-ext@1.0.8)(@types/rdfjs__data-model@2.0.9)(@types/rdfjs__dataset@2.0.7)(@types/rdfjs__environment@1.0.0)(@types/rdfjs__formats@4.0.1)(@types/rdfjs__namespace@2.0.10)(@types/rdfjs__term-map@2.0.10)(@types/rdfjs__term-set@2.0.9)(@types/rdfjs__traverser@0.1.5)(@zazuko/prefixes@3.0.1)':
+    dependencies:
+      '@rdfjs/data-model': 2.1.2
+      '@rdfjs/dataset': 2.0.3
+      '@rdfjs/formats': 4.0.1
+      '@rdfjs/namespace': 2.0.1
+      '@rdfjs/term-map': 2.0.2
+      '@rdfjs/term-set': 2.0.3
+      '@rdfjs/traverser': 0.1.4
+      '@rdfjs/types': 2.0.1
+      '@tpluscode/rdf-ns-builders': 5.0.0
+      '@types/clownface': 2.0.10
+      '@types/rdf-dataset-ext': 1.0.8
+      '@types/rdfjs__data-model': 2.0.9
+      '@types/rdfjs__dataset': 2.0.7
+      '@types/rdfjs__environment': 1.0.0
+      '@types/rdfjs__formats': 4.0.1
+      '@types/rdfjs__namespace': 2.0.10
+      '@types/rdfjs__term-map': 2.0.10
+      '@types/rdfjs__term-set': 2.0.9
+      '@types/rdfjs__traverser': 0.1.5
+      '@zazuko/env-core': 1.1.5(@types/rdfjs__environment@1.0.0)
+      '@zazuko/prefixes': 3.0.1
       clownface: 2.0.3
       get-stream: 9.0.1
       rdf-dataset-ext: 1.1.0
