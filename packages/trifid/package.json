@@ -40,7 +40,7 @@
   "dependencies": {
     "@zazuko/trifid-entity-renderer": "workspace:^",
     "@zazuko/trifid-plugin-sparql-proxy": "workspace:^",
-    "commander": "^15.0.0",
+    "commander": "^15.1.0",
     "trifid-core": "workspace:^",
     "trifid-handler-fetch": "workspace:^",
     "trifid-plugin-graph-explorer": "workspace:^",
