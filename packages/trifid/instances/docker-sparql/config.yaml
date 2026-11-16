@@ -31,8 +31,8 @@ plugins:
         concurrency: 2
         timeout: 4000
 
-  yasgui:
-    module: trifid-plugin-yasgui
+  ldforge:
+    module: trifid-plugin-ldforge
     paths:
       - /sparql
       - /sparql/

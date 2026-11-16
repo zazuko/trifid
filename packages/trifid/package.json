@@ -46,6 +46,7 @@
     "trifid-plugin-graph-explorer": "workspace:^",
     "trifid-plugin-i18n": "workspace:^",
     "trifid-plugin-spex": "workspace:^",
+    "trifid-plugin-ldforge": "workspace:^",
     "trifid-plugin-yasgui": "workspace:^"
   },
   "devDependencies": {

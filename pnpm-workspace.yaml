@@ -6,6 +6,7 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - graph-explorer
   - "@zazuko/*"
+  - "@ldforge/*"
 
 allowBuilds:
   "@fortawesome/fontawesome-common-types": false

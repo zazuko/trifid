@@ -22,8 +22,8 @@ plugins:
     config:
       path: file:welcome.hbs
 
-  yasgui:
-    module: trifid-plugin-yasgui
+  ldforge:
+    module: trifid-plugin-ldforge
     paths:
       - /sparql
       - /sparql/

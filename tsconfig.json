@@ -31,6 +31,7 @@
     { "path": "./packages/sparql-proxy" },
     { "path": "./packages/spex" },
     { "path": "./packages/trifid" },
+    { "path": "./packages/ldforge" },
     { "path": "./packages/yasgui" }
   ]
 }

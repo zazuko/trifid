@@ -5,6 +5,7 @@
   "ignorePatterns": [
     "**/dist/",
     "**/coverage/",
+    "packages/ldforge/build/",
     "packages/yasgui/build/"
   ],
 
@@ -52,6 +53,7 @@
     {
       "files": [
         "packages/graph-explorer/static/**/*.js",
+        "packages/ldforge/browser/**/*.ts",
         "packages/yasgui/plugins/**/*.js"
       ],
       "env": {

@@ -16,7 +16,7 @@ And then add in the `config.yaml` file the following part:
 ```yaml
 plugins:
   # […] your other plugins
-  yasgui:
+  graph-explorer:
     module: trifid-plugin-graph-explorer
     paths: # by default
       - /graph-explorer
@@ -30,7 +30,7 @@ plugins:
 
 The following options are supported:
 
-- `endpointUrl`: URL to the SPARQL endpoint which will be used in the YASGUI interface
+- `endpointUrl`: URL to the SPARQL endpoint which will be used in the Graph Explorer interface
 - `template`: Path to an alternative template (default: `views/graph-explorer.hbs`)
 - `acceptBlankNodes`: Show blank nodes
 - `title`: Title of the Graph Explorer page

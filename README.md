@@ -18,9 +18,15 @@ The serializations include HTML rendering based on customizable templates.
 If a SPARQL endpoint is the source of the RDF data, some additional plugins are enabled by default.
 
 - [SPARQL Proxy](./packages/sparql-proxy/): Public access to the configured store.
-- [YASGUI](./packages/yasgui/): UI to write, execute, and analyze SPARQL queries.
+- [LDForge](./packages/ldforge/): UI to write, execute, and analyze SPARQL queries.
 - [Graph Explorer](./packages/graph-explorer/): UI to explore the data in a graph view
 - [SPEX](./packages/spex/): Introspects the data on the endpoint and shows the data model
+
+For historical reasons, [Yasgui](./packages/yasgui/) is still available as an
+alternative editor. LDForge is the default in the bundled examples; Yasgui must
+be configured explicitly by adding `trifid-plugin-yasgui` to the `plugins` section
+of your configuration. See [editor configuration](#default-editor-and-yasgui-alternative)
+for an example.
 
 ### Further use
 
@@ -98,12 +104,61 @@ The following parameters are available:
 - `--sparql-endpoint-url`: Expects a SPARQL HTTP query interface URL value, which will be used by the Trifid SPARQL handler
 - `--dataset-base-url`: Expects a Base URL value, which will be used to translate the request URLs
 
+## Development preview
+
+```sh
+pnpm install
+pnpm build
+pnpm dev
+```
+
+Open http://127.0.0.1:8081/sparql/ for the native LDForge editor backed by the
+TBBT dataset. The original Yasgui editor is also available at
+http://127.0.0.1:8081/yasgui/. Both plugins remain supported; bundled examples use
+LDForge by default. The server watches imported source files. After changing browser
+code, run `pnpm --filter trifid-plugin-ldforge exec node scripts/build-browser.ts`
+and reload the page. See [the plugin documentation](./packages/ldforge/README.md)
+for configuration and migration details.
+
 ## Configuration
 
 Trifid uses YAML or JSON configuration files.
 One configuration file can use another file as base.
 The `extends` property must point to the other file.
 Values of the base file will be overwritten.
+
+### Default editor and Yasgui alternative
+
+The bundled examples use **LDForge at `/sparql/`** as their default editor.
+The original `trifid-plugin-yasgui` package is still included and existing
+configurations that use it continue to work.
+
+**There is no automatic fallback to Yasgui.** If LDForge fails to load or a query
+fails, Trifid does not redirect to Yasgui or retry the query there. Users must
+open the other editor themselves.
+
+To offer both editors, configure separate routes:
+
+```yaml
+plugins:
+  ldforge:
+    module: trifid-plugin-ldforge
+    paths: [/sparql, /sparql/]
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths: [/yasgui, /yasgui/]
+```
+
+This is the setup used by `pnpm dev`: LDForge is at `/sparql/` and Yasgui at
+`/yasgui/`. The other bundled examples only configure LDForge; add the Yasgui
+entry explicitly if you want to offer that alternative in those deployments.
+
+To use **Yasgui as the default editor**, change `module: trifid-plugin-ldforge`
+to `module: trifid-plugin-yasgui` in the existing editor entry and retain its
+`/sparql` and `/sparql/` paths. Do not mount both plugins on the same paths.
+Review any editor-specific configuration and custom templates when switching.
+Each editor keeps its own browser storage; saved queries are not automatically
+transferred between them.
 
 ### Examples
 
@@ -235,7 +290,8 @@ Here is the list of all packages that are maintained here:
 | [`@zazuko/trifid-markdown-content`](./packages/markdown-content) | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-markdown-content.svg)](https://npm.im/@zazuko/trifid-markdown-content)       | Create pages from Markdown files  |
 | [`@zazuko/trifid-plugin-sparql-proxy`](./packages/sparql-proxy)  | [![](https://badge.fury.io/js/@zazuko%2Ftrifid-plugin-sparql-proxy.svg)](https://npm.im/@zazuko/trifid-plugin-sparql-proxy) | Trifid plugin for SPARQL proxy    |
 | [`trifid-plugin-spex`](./packages/spex)                          | [![](https://badge.fury.io/js/trifid-plugin-spex.svg)](https://npm.im/trifid-plugin-spex)                                   | SPEX plugin for Trifid            |
-| [`trifid-plugin-yasgui`](./packages/yasgui)                      | [![](https://badge.fury.io/js/trifid-plugin-yasgui.svg)](https://npm.im/trifid-plugin-yasgui)                               | YASGUI plugin for Trifid          |
+| [`trifid-plugin-yasgui`](./packages/yasgui) | [![](https://badge.fury.io/js/trifid-plugin-yasgui.svg)](https://npm.im/trifid-plugin-yasgui) | Original YASGUI plugin for Trifid |
+| [`trifid-plugin-ldforge`](./packages/ldforge)                      | [![](https://badge.fury.io/js/trifid-plugin-ldforge.svg)](https://npm.im/trifid-plugin-ldforge)                               | LDForge plugin for Trifid          |
 
 ## Support
 

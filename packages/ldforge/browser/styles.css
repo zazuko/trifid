@@ -1,0 +1,7 @@
+#ldforge-app { color: #20252b; margin-block: 1.5rem; }
+#ldforge-connection { display: flex; align-items: center; gap: .65rem; flex-wrap: wrap; margin-bottom: 1rem; }
+#ldforge-connection label { font-weight: 600; }
+#ldforge-connection input { flex: 1; min-width: min(100%, 18rem); border: 1px solid #bdc7cf; border-radius: .35rem; padding: .6rem .75rem; font: inherit; }
+#ldforge-connection button { border: 1px solid #c46500; border-radius: .35rem; padding: .6rem .85rem; background: #c46500; color: white; cursor: pointer; font: inherit; }
+#ldforge-status { font-size: .875rem; }
+#ldforge-editor { min-width: 0; }

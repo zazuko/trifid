@@ -1,0 +1,71 @@
+{
+  "name": "trifid-plugin-ldforge",
+  "description": "Native LDForge SPARQL editor and result renderers for Trifid",
+  "type": "module",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "source": "./index.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "homepage": "https://github.com/zazuko/trifid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zazuko/trifid.git",
+    "directory": "packages/ldforge"
+  },
+  "bugs": {
+    "url": "https://github.com/zazuko/trifid/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build-browser.ts && tsc && node scripts/copy-assets.ts",
+    "test": "c8 --all --exclude=dist --exclude=build --exclude=browser --exclude=scripts --exclude=test node --conditions=source --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.test.json && tsc -p tsconfig.browser.json",
+    "clean": "rimraf dist build coverage"
+  },
+  "author": {
+    "name": "Zazuko GmbH",
+    "url": "https://zazuko.com/"
+  },
+  "keywords": [
+    "trifid",
+    "trifid-plugin",
+    "ldforge",
+    "sparql"
+  ],
+  "dependencies": {
+    "@fastify/static": "^10.1.8",
+    "@ldforge/core": "^1.0.1",
+    "@ldforge/editor": "^1.2.1",
+    "@ldforge/renderers": "^1.1.1",
+    "@ldforge/prefixes": "^1.0.1",
+    "@ldforge/charts": "^1.0.1",
+    "@ldforge/geo": "^1.1.1",
+    "@ldforge/network": "^1.0.1",
+    "@ldforge/timeline": "^1.0.1",
+    "@ldforge/pivot": "^1.0.1",
+    "@ldforge/tree": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "c8": "^12.0.0",
+    "esbuild": "^0.28.2",
+    "fastify": "^5.12.8",
+    "rimraf": "^6.1.3",
+    "trifid-core": "workspace:^",
+    "typescript": "^7.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,0 +1,25 @@
+<div class="trifid-header-title-small">
+  <div class="trifid-content"><div class="container">
+    <h1>Query Data</h1>
+    <p>Write SPARQL queries and explore your linked data with LDForge</p>
+  </div></div>
+</div>
+<div class="trifid-content">
+  <link rel="stylesheet" href="{{subpath}}ldforge-assets/app.css">
+  <div id="ldforge-app">
+    <form id="ldforge-connection">
+      <label for="ldforge-endpoint">SPARQL endpoint</label>
+      <input id="ldforge-endpoint" type="url" list="ldforge-endpoints" required>
+      <datalist id="ldforge-endpoints"></datalist>
+      <button type="submit">Connect</button>
+      <output id="ldforge-status" aria-live="polite"></output>
+    </form>
+    <div id="ldforge-editor"></div>
+  </div>
+  <p><a href="https://github.com/mightymax/ldforge" target="_blank" rel="noopener noreferrer">About LDForge</a>
+    -
+    <a href="https://github.com/mightymax/trifid/tree/ldforge-integration/packages/ldforge" target="_blank" rel="noopener noreferrer">Trifid plugin</a>
+  </p>
+  <script id="ldforge-config" type="application/json">{{{editorConfig}}}</script>
+  <script type="module" src="{{subpath}}ldforge-assets/app.js"></script>
+</div>

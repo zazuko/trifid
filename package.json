@@ -15,7 +15,8 @@
     "release": "pnpm run build && changeset publish",
     "prepare": "husky",
     "build": "pnpm run -r --if-present build",
-    "clean": "pnpm run -r --if-present clean"
+    "clean": "pnpm run -r --if-present clean",
+    "dev": "pnpm --filter trifid-plugin-ldforge exec node scripts/build-browser.ts && node --watch --conditions=source packages/trifid/server.ts -c packages/trifid/instances/development.yaml"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts}": [

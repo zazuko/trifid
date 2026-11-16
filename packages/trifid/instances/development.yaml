@@ -1,0 +1,14 @@
+# The dataset keeps its canonical localhost:8080 IRIs. Trifid rewrites resource
+# requests to the current listener, so dereferencing also works on this port.
+extends:
+  - file:./tbbt/config.yaml
+server:
+  listener:
+    host: 127.0.0.1
+    port: 8081
+
+# Keep both query interfaces available for comparison.
+plugins:
+  yasgui:
+    module: trifid-plugin-yasgui
+    paths: [/yasgui, /yasgui/]
