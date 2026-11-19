@@ -50,7 +50,7 @@
     "@types/xml2js": "^0.4.14",
     "c8": "^12.0.0",
     "fastify": "^5.12.8",
-    "rimraf": "^6.1.3",
+    "rimraf": "^6.1.4",
     "trifid-core": "workspace:^",
     "trifid-handler-fetch": "workspace:^",
     "typescript": "^7.0.2",
